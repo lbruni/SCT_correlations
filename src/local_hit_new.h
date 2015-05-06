@@ -30,16 +30,18 @@ public:
                 
                 if(id.at(i) == m_plane_number_1 && id.at(j) ==  m_plane_number_2){
                     pos_plane1 = pos.at(i); pos_plane2 = pos.at(j);
+                 h->Fill(pos_plane1,pos_plane2);
                 }
+                
             }
         }
         
-        h->Fill(pos_plane1,pos_plane2);
+       
     }
     void Draw(const char* options){
         h->Draw(options);
     }
-    TH2D *h; 
+    TH2D *h = nullptr;
     int m_plane_number_1, m_plane_number_2;
     std::string m_name;
     
@@ -75,7 +77,7 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    virtual void End();
-    virtual void run();
+     void Run();
     std::vector<correlations> m_corr;
 };
 
@@ -129,7 +131,12 @@ void local_hit_new::Init(TTree *tree)
    // Init() will be called many times when running on PROOF
    // (once per file to be processed).
 
-    m_corr.emplace_back("name",1,2);
+    m_corr.emplace_back("x position d0 d8",0,8);
+    m_corr.emplace_back("x position d0 d2",0,2);
+    m_corr.emplace_back("x position d0 d3",0,3);
+    m_corr.emplace_back("x position d0 d4",0,4);
+    m_corr.emplace_back("x position d0 d5",0,5);
+    m_corr.emplace_back("x position d0 d1",0,1);
    // Set object pointer
    ID = 0;
    x = 0;
@@ -148,9 +155,10 @@ void local_hit_new::Init(TTree *tree)
 }
 
 void local_hit_new::End(){
- TCanvas *c1 = new TCanvas("c1","c1", 1000, 800);
+    TCanvas *c1 = new TCanvas("c1","c1", 1000, 800);
+    c1->Divide(3,2);
     for (int i=0;i<m_corr.size();++i){
-        
+        c1->cd(i+1);
         m_corr.at(i).Draw("colz");
         c1->SaveAs(m_corr.at(i).m_name.c_str());
     }
@@ -184,9 +192,8 @@ Int_t local_hit_new::Cut(Long64_t entry)
 }
 
 
-void local_hit_new::run(){
+void local_hit_new::Run(){
     local_hit_new t;
-   // t.Init();
     t.Loop();
     t.End();
 }

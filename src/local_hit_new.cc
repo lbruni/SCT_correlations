@@ -3,9 +3,8 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
-
-
 using namespace std;
+
 void local_hit_new::Loop()
 {
     Double_t x_0, y_0;
@@ -16,9 +15,9 @@ void local_hit_new::Loop()
     Double_t x_5, y_5;
     Double_t x_8, y_8;
     
-    vector<double> &id = *ID;
-    vector<double> &x_pos = *x;
-    vector<double> &y_pos = *y;
+    std::vector<double> &id = *ID;
+    std::vector<double> &x_pos = *x;
+    std::vector<double> &y_pos = *y;
    
     if (fChain == 0) return;
    Long64_t nentries = fChain->GetEntriesFast();
@@ -29,7 +28,8 @@ void local_hit_new::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
        for(size_t i=0;i<m_corr.size();++i){
-           m_corr[i].fill(id,x_pos);
+           m_corr[i].fill(id,y_pos);
+        
        }
       
    }

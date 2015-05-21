@@ -212,6 +212,15 @@ S_plot_collection::S_plot_collection(TFile* file) : m_file(file)
 }
 
 
+void S_plot_collection::reset()
+{
+
+  m_planes.clear();
+  m_plots.clear();
+  m_drawOption.clear();
+  m_trees.clear();
+}
+
 void S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis)
 {
   addPlot(PlotType, name, x_axis, y_axis, S_DrawOption());

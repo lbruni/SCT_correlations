@@ -121,7 +121,7 @@ class  DllExport S_plot_collection{
 public:
   S_plot_collection(TFile* file);
 
-
+  void reset();
   void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis);
 
   void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);

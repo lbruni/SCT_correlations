@@ -188,7 +188,7 @@ plot* create_plot(const char* type, const char* name, axis_ref* x, axis_ref* y)
 
   if (s_type.compare(sct::plot_residual()) == 0)
   {
-    return dynamic_cast<plot*>(new correlations(name, x, y));
+    return dynamic_cast<plot*>(new residual(name, x, y));
   }
 
 

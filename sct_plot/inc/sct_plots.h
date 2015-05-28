@@ -35,11 +35,19 @@ public:
   static const char*  col_zsdata_strip();
   static const char*  col_zsdata_m26();
   static const char*  col_zsdata_apix();
-
-
-  static  const char* plot_hitmap();
-  static  const char* plot_correlation();
-  static  const char* plot_residual();
+  static const char* col_fitpoints();
+  static const char* col_fitpoints_local();
+  static const char* col_local_hit();
+  static const char* plot_hitmap();
+  static const char* plot_correlation();
+  static const char* plot_residual();
+  static const char* plot_clusterSize();
+  static const char* plot_projectOnPixel();
+  static const char* plot_find_correspondingX();
+  static const char* plot_find_correspondingXY();
+  static const char* plot_Event_size();
+  static const char* plot_find_nearest();
+  static const char* plot_plane_distance();
 };
 class treeCollection;
 
@@ -48,19 +56,32 @@ class plot;
 class plane;
 class S_treeCollection;
 
+struct plane_hit
+{
+  plane_hit(Double_t x_, Double_t y_) :x(x_), y(y_){}
+  Double_t x, y;
+};
 class DllExport S_plane{
 public:
   S_plane();
 #ifndef __CINT__
   S_plane(double ID, treeCollection* hits);
+  void setTreeCollection(treeCollection* hits);
 #endif
   S_plane(double ID, S_treeCollection* hits);
+  S_plane(const char* name,Double_t ID);
+  bool isSetTreeCollectionSet() const;
+  void setTreeCollection(S_treeCollection* hits);
+  const char * getName() const;
+  bool next() ;
+  plane_hit get() const;
 
-
-  axis_ref* getX();
-  axis_ref* getY();
+  axis_ref* getX() const;
+  axis_ref* getY() const;
 #ifndef __CINT__
 private:
+  Double_t m_ID =0 ;
+  std::string m_name;
   std::shared_ptr<plane> m_plane;
 #endif
   ClassDef(S_plane, 0);
@@ -73,10 +94,11 @@ private:
 class DllExport S_plot{
 public:
   S_plot();
+  S_plot(const S_plot& );
   S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y);
-
+  S_plot(const char* type, const char* name, S_plane* x, S_plane* y);
   void fill();
-  void Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
+  Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
 #ifndef __CINT__
 private:
   std::shared_ptr<plot> m_plot;
@@ -120,15 +142,16 @@ public:
 class  DllExport S_plot_collection{
 public:
   S_plot_collection(TFile* file);
-
+  void addFile(TFile* file);
   void reset();
   void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis);
 
   void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);
-
+  void addPlot(const char* name,S_plot pl );
+  void addPlot(const char* PlotType, const char* name, S_plane p1 ,S_plane  p2);
   void Draw();
-  void Draw(const char* name);
-  void Draw(const char* name, const S_DrawOption& option);
+  Long64_t Draw(const char* name);
+  Long64_t Draw(const char* name, const S_DrawOption& option);
 
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
@@ -137,12 +160,12 @@ private:
   treeCollection* getCollection(const char* name);
 
   S_plane* getPlane(double ID, treeCollection* coll);
-
-  std::vector<S_plane> m_planes;
-  std::map<std::string, S_plot> m_plots;
+  S_plane* pushPlane(S_plane pl);
+  std::vector<std::shared_ptr<S_plane>> m_planes;
+  std::vector<std::pair<std::string, S_plot>> m_plots;
   std::map<std::string, S_DrawOption> m_drawOption;
-  std::map<std::string, treeCollection*> m_trees;
-  TFile *m_file = NULL;
+ std::vector< std::pair<std::string, treeCollection*>> m_trees;
+  std::vector<TFile*> m_file;
 #endif
   ClassDef(S_plot_collection, 0);
 };

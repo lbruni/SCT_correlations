@@ -113,7 +113,7 @@ Int_t treeCollection::GetEntries() const
 {
   if (m_tree==NULL)
   {
-    return 1000000000000;
+    return kMaxInt;
   }
   return m_tree->GetNumberOfEvents();
 }
@@ -177,7 +177,7 @@ Int_t treeCollection::GetEntries() const
 {
   if (fChain == NULL)
   {
-    return 1000000000000;
+    return kMaxInt;
   }
   return fChain->GetEntries();
 }

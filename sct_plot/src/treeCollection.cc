@@ -124,6 +124,16 @@ Int_t treeCollection::GetEntries() const
 #else
 
 
+treeCollection::treeCollection(const char *name)
+{
+  fChain = NULL;
+  if (!getFromGlobal(name, this))
+  {
+    std::cout << "collection not found. name: \"" << name << "\"" << std::endl;
+  }
+
+  event_nr = *event_nr_pointer;
+}
 
 
 
@@ -145,6 +155,7 @@ treeCollection::treeCollection(TTree *tree) : fChain(0)
   fChain->SetBranchAddress("y", &y, &b_y);
   fChain->SetBranchAddress("event_nr", &event_nr, &b_event_nr);
   event_nr_pointer=&event_nr;
+  push2global(tree->GetName(), this);
 }
 treeCollection::~treeCollection()
 {
@@ -154,13 +165,20 @@ treeCollection::~treeCollection()
 
 Int_t treeCollection::GetEntry(Long64_t entry)
 {
-  // Read contents of entry.
-  if (!fChain) return 0;
+  if (fChain== NULL)
+  {
+    event_nr = *event_nr_pointer;
+    return 0;
+  }
   return fChain->GetEntry(entry);
 }
 
 Int_t treeCollection::GetEntries() const 
 {
+  if (fChain == NULL)
+  {
+    return 1000000000000;
+  }
   return fChain->GetEntries();
 }
 

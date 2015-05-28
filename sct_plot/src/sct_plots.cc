@@ -556,14 +556,20 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
 {
   if (last == -1)
   {
+    last = kMaxInt;
     for (auto & e : m_trees)
     {
       auto l = e.second->GetEntries();
-      if (last > 0 && l != last)
+      if (last < kMaxInt && l != last)
       {
         std::cout << "trees must have the same length" << std::endl;
+
+
       }
-      last = l;
+      if (l < last)
+      {
+        last = l;
+      }
     }
   }
 

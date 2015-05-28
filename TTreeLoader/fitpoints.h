@@ -46,6 +46,24 @@ public:
   virtual void     Show(Long64_t entry = -1);
 };
 
+
+class Hit_output_impl{
+public:
+  TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+ 
+
+  // Declaration of leaf types
+  std::vector<double>  m_ID;
+  std::vector<double>  m_x;
+  std::vector<double>  m_y;
+  Int_t           event_nr;
+  void set(double x, double y, double id);
+  void setEventNr(Int_t eventNR);
+  void fill();
+  Int_t Draw(const char* axis, const char* cuts, const char * options);
+  Hit_output_impl(const char* name);
+  ~Hit_output_impl();
+};
 #endif
 
 

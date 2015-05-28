@@ -70,3 +70,34 @@ Int_t Hit_extractor::GetNumberOfEvents()
   return m_hits->GetEntries();
 }
 
+
+
+Hit_output::Hit_output(const char* name) :m_hits(new Hit_output_impl(name))
+{
+
+}
+
+Hit_output::~Hit_output()
+{
+  delete m_hits;
+}
+
+void Hit_output::set(Double_t x, Double_t y, Double_t ID)
+{
+  m_hits->set(x, y, ID);
+}
+
+void Hit_output::setEventNR(Int_t eventNr)
+{
+  m_hits->setEventNr(eventNr);
+}
+
+void Hit_output::fill()
+{
+  m_hits->fill();
+}
+
+Int_t Hit_output::Draw(const char* axis, const char* cuts, const char * options)
+{
+ return  m_hits->Draw(axis, cuts, options);
+}

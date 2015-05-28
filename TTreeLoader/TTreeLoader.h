@@ -6,6 +6,7 @@
 
 #include "TTree.h"
 class fitpoints;
+class Hit_output_impl;
 class DllExport Hit_extractor{
 public:
   
@@ -29,4 +30,21 @@ private:
   Int_t m_entry=0;
 };
 
+
+class DllExport Hit_output{
+public:
+
+
+  Hit_output(const char* name);
+  virtual ~Hit_output();
+
+
+  void set(Double_t x,Double_t y,Double_t ID);
+  void setEventNR(Int_t eventNr);
+
+  void fill();
+  Int_t Draw(const char* axis, const char* cuts, const char * options);
+private:
+  Hit_output_impl *m_hits;
+};
 #endif // TTreeLoader_h__

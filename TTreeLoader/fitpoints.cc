@@ -150,3 +150,44 @@ void fitpoints::Loop()
     std::cout << std::endl;
   }
 }
+
+Hit_output_impl::Hit_output_impl(const char* name)
+{
+  fChain = new TTree(name, name);
+  fChain->Branch("x", &m_x);
+  fChain->Branch("y", &m_y);
+  fChain->Branch("ID", &m_ID);
+
+  fChain->Branch("event_nr", &event_nr);
+}
+
+void Hit_output_impl::set(double x, double y, double id)
+{
+  m_x.push_back(x);
+  m_y.push_back(y);
+  m_ID.push_back(id);
+}
+
+void Hit_output_impl::setEventNr(Int_t eventNR)
+{
+  event_nr = eventNR;
+}
+
+void Hit_output_impl::fill()
+{
+  fChain->Fill();
+  event_nr = 0;
+  m_ID.clear();
+  m_x.clear();
+  m_y.clear();
+}
+
+Int_t Hit_output_impl::Draw(const char* axis, const char* cuts, const char * options)
+{
+  return  fChain->Draw(axis, cuts, options);
+}
+
+Hit_output_impl::~Hit_output_impl()
+{
+  delete fChain;
+}

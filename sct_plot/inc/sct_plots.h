@@ -29,6 +29,28 @@
 
 #include "Rtypes.h"
 
+
+class S_plane;
+
+class DllExport sct_coll{
+public:
+static  S_plane apix_hit_local();
+static  S_plane apix_hit();
+static  S_plane apix_zs_data();
+static  S_plane apix_fitted();
+static  S_plane apix_fitted_local();
+static  S_plane DUT_hit_local();
+static  S_plane DUT_hit();
+static  S_plane DUT_zs_data();
+static  S_plane DUT_fitted();
+static  S_plane DUT_fitted_local();
+static  S_plane tel_hit_local(double ID);
+static  S_plane tel_hit(double ID);
+static  S_plane tel_zs_data(double ID);
+static  S_plane tel_fitted(double ID);
+static  S_plane tel_fitted_local(double ID);
+};
+
 class DllExport sct{
 public:
   static const char* col_hit();
@@ -75,6 +97,7 @@ class axis_ref;
 class plot;
 class plane;
 class S_treeCollection;
+class S_Axis;
 struct plane_hit
 {
   plane_hit(Double_t x_, Double_t y_) :x(x_), y(y_){}
@@ -96,6 +119,9 @@ public:
   const char * getName() const;
   bool next() ;
   plane_hit get() const;
+
+  S_Axis getX_def() const;
+  S_Axis getY_def() const;
 
   axis_ref* getX() const;
   axis_ref* getY() const;

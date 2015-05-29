@@ -48,6 +48,26 @@ public:
   static const char* plot_Event_size();
   static const char* plot_find_nearest();
   static const char* plot_plane_distance();
+  static const char* plot_find_nearest_strip();
+  static const char* plot_A_if_B();
+  static const char* plot_rotated();
+};
+class S_plot_def;
+class DllExport sct_plot{
+public:
+static  S_plot_def s_hitmap(const char* name);
+static  S_plot_def s_correlation(const char* name);
+static  S_plot_def s_residual(const char* name);
+static  S_plot_def s_clusterSize(const char* name);
+static  S_plot_def s_projectOnPixel(const char* name);
+static  S_plot_def s_find_correspondingX(const char* name);
+static  S_plot_def s_find_correspondingXY(const char* name);
+static  S_plot_def s_Event_size(const char* name);
+static  S_plot_def s_find_nearest(const char* name);
+static  S_plot_def s_plane_distance(const char* name);
+static  S_plot_def s_find_nearest_strip(const char* name);
+static  S_plot_def s_A_if_B(const char* name);
+static  S_plot_def s_rotated(const char* name ,Double_t angle);
 };
 class treeCollection;
 
@@ -55,12 +75,13 @@ class axis_ref;
 class plot;
 class plane;
 class S_treeCollection;
-
 struct plane_hit
 {
   plane_hit(Double_t x_, Double_t y_) :x(x_), y(y_){}
   Double_t x, y;
 };
+
+
 class DllExport S_plane{
 public:
   S_plane();
@@ -88,7 +109,23 @@ private:
 };
 
 
+class DllExport S_plot_def{
+public:
+  S_plot_def();
+  S_plot_def(const char* type, const char* name);
+  void setParameter(const char* tag, const char* value);
+  const char * getParameter(const char* tag, const char* default_value);
+#ifndef __CINT__
 
+  void setParameter(const std::string & tag, const std::string& value);
+  std::string getParameter(const std::string &  tag, const std::string &  default_value);
+
+
+  std::map<std::string, std::string> m_tags;
+  std::string m_name, m_type;
+#endif
+  ClassDef(S_plot_def, 0);
+};
 
 
 class DllExport S_plot{
@@ -97,6 +134,8 @@ public:
   S_plot(const S_plot& );
   S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y);
   S_plot(const char* type, const char* name, S_plane* x, S_plane* y);
+  S_plot(S_plot_def plotdef, S_plane* x, S_plane* y);
+  S_plot(S_plot_def plotdef, axis_ref* x, axis_ref* y);
   void fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
 #ifndef __CINT__
@@ -146,9 +185,11 @@ public:
   void reset();
   void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis);
 
+  void addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis);
   void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);
   void addPlot(const char* name,S_plot pl );
   void addPlot(const char* PlotType, const char* name, S_plane p1 ,S_plane  p2);
+  void addPlot(S_plot_def plot_def, S_plane p1, S_plane  p2);
   void Draw();
   Long64_t Draw(const char* name);
   Long64_t Draw(const char* name, const S_DrawOption& option);

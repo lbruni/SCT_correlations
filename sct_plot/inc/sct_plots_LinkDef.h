@@ -8,4 +8,6 @@
 #pragma link C++ class S_plot;
 #pragma link C++ class S_plane;
 #pragma link C++ class S_treeCollection;
+#pragma link C++ class S_plot_def;
+#pragma link C++ class sct_plot;
 #endif

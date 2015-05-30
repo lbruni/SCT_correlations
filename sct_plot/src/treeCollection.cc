@@ -5,45 +5,6 @@
 #include <iostream>
 
 
-class root_event{
-public:
-  std::vector<double>  *m_ID;
-  std::vector<double>  *m_x;
-  std::vector<double>  *m_y;
-  Int_t*                m_event_nr;
-};
-std::map<std::string, root_event> gEvents;
-void push2global(const char * name, treeCollection* tree){
-  gEvents[name].m_ID = tree->ID;
-  gEvents[name].m_x = tree->x;
-  gEvents[name].m_y = tree->y;
-  gEvents[name].m_event_nr = &tree->event_nr;
-}
-
-bool getFromGlobal(const char* name, treeCollection* tree){
-  
-  if (!isClobalCollection(name))
-  {
-    return false;
-  }
-
-  tree->ID = gEvents[name].m_ID;
-  tree->x= gEvents[name].m_x;
-  tree->y=gEvents[name].m_y;
-  tree->event_nr_pointer = gEvents[name].m_event_nr;
-  
-  return true;
-}
-
-bool isClobalCollection(const char* name)
-{
-  auto it = gEvents.find(name);
-  if (it == gEvents.end())
-  {
-    return false;
-  }
-  return true;
-}
 
 #ifdef _DEBUG
 
@@ -69,16 +30,13 @@ treeCollection::treeCollection(TTree *tree/*=0*/)
   ID = new std::vector<double>();
   event_nr = 0;
   event_nr_pointer = &event_nr;
-  push2global(tree->GetName(), this);
+
 }
 
 treeCollection::treeCollection(const char *name)
 {
   m_tree = NULL;
-  if (!getFromGlobal(name, this))
-  {
-    std::cout << "collection not found. name: \"" << name << "\"" << std::endl;
-  }
+
   
   event_nr = *event_nr_pointer;
 }
@@ -201,10 +159,7 @@ Int_t treeCollection::GetEntries() const
 treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr) :
 m_tree(new Hit_output(name)), m_x(x), m_y(y), m_ID(ID), m_event_nr(event_nr)
 {
-  gEvents[name].m_event_nr = event_nr;
-  gEvents[name].m_ID = ID;
-  gEvents[name].m_x = x;
-  gEvents[name].m_y = y;
+
 }
 
 treeCollection_ouput::~treeCollection_ouput()

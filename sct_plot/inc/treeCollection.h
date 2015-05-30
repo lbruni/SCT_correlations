@@ -15,9 +15,10 @@
 // Header file for the classes stored in the TTree if any.
 #include <vector>
 #include "Rtypes.h"
+#include "sct_event_buffer.h"
 
 
-bool isClobalCollection(const char* name);
+
 #ifdef _DEBUG
 class Hit_extractor;
 class Hit_output;
@@ -28,13 +29,9 @@ class Hit_output;
 class treeCollection {
 public :
 
-
+  root_event m_buffer;
    // Declaration of leaf types
-  std::vector<double>  *ID;
-  std::vector<double>  *x;
-  std::vector<double>  *y;
    Int_t                event_nr;
-   Int_t                *event_nr_pointer;
 
    treeCollection(TTree *tree);
    treeCollection(const char *name);
@@ -67,13 +64,10 @@ public:
   virtual ~treeCollection_ouput();
   void fill();
   Int_t Draw(const char* axis, const char* cuts, const char * options);
-private:
+
+  root_event m_buffer;
 #ifdef _DEBUG
   Hit_output *m_tree;
-  std::vector<double>  *m_ID;
-  std::vector<double>  *m_x;
-  std::vector<double>  *m_y;
-  Int_t*                m_event_nr;
 #else //release
  
  

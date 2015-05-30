@@ -194,6 +194,7 @@ public:
   TString m_options = "colz", m_cuts = "", m_axis = "x:y";
   ClassDef(S_DrawOption, 0);
 };
+
 class S_treeCollection{
 public:
   S_treeCollection(TTree *tree);
@@ -204,6 +205,12 @@ public:
 #endif // !__CINT__
   ClassDef(S_treeCollection, 0);
 };
+#ifndef __CINT__
+class sct_event_buffer;
+#endif // !__CINT__
+
+
+
 class  DllExport S_plot_collection{
 public:
   S_plot_collection(TFile* file);
@@ -228,6 +235,9 @@ private:
 
   S_plane* getPlane(double ID, treeCollection* coll);
   S_plane* pushPlane(S_plane pl);
+
+  std::shared_ptr<sct_event_buffer> m_eventBuffer;
+
   std::vector<std::shared_ptr<S_plane>> m_planes;
   std::vector<std::pair<std::string, S_plot>> m_plots;
   std::map<std::string, S_DrawOption> m_drawOption;

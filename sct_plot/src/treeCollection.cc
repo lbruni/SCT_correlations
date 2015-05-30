@@ -4,7 +4,7 @@
 #include <TCanvas.h>
 #include <iostream>
 
-
+#include "sct_global.h"
 
 #ifdef _DEBUG
 
@@ -15,52 +15,55 @@
 
 treeCollection::~treeCollection()
 {
+
+  delete m_buffer.m_ID;
+  delete m_buffer.m_x;
+  delete m_buffer.m_y;
   if (!m_tree) return;
   delete m_tree;
 }
 
 
 
-treeCollection::treeCollection(TTree *tree/*=0*/) 
+treeCollection::treeCollection(TTree *tree/*=0*/) :m_buffer(new std::vector<double>(), new std::vector<double>(), new std::vector<double>(),&event_nr)
 {
   std::cout << tree->GetName() << std::endl;
   m_tree = new Hit_extractor(tree);
-  x = new std::vector<double>();
-  y = new std::vector<double>();
-  ID = new std::vector<double>();
   event_nr = 0;
-  event_nr_pointer = &event_nr;
-
+  getGlobalPlotCollection()->set(tree->GetName(), &m_buffer);
 }
 
 treeCollection::treeCollection(const char *name)
 {
   m_tree = NULL;
-
+  if (!getGlobalPlotCollection()->get(name, &m_buffer))
+  {
+    std::cout << "collection not found. name: \"" << name << "\"" << std::endl;
+  }
   
-  event_nr = *event_nr_pointer;
+  event_nr = *(m_buffer.m_event_nr);
 }
 
 Int_t treeCollection::GetEntry(Long64_t entry)
 {
   if (m_tree==NULL)
   {
-    event_nr = *event_nr_pointer;
+    event_nr = *(m_buffer.m_event_nr);
     return 0;
   }
   m_tree->GetEvent(entry);
-  x->clear();
-  y->clear();
-  ID->clear();
+  m_buffer.m_x->clear();
+  m_buffer.m_y->clear();
+  m_buffer.m_ID->clear();
   event_nr = 0;
 
 
   for (Int_t i = 0; i < m_tree->GetNumberOfEntries(); ++i)
   {
     m_tree->getEntry(i);
-    x->push_back(m_tree->getX());
-    y->push_back(m_tree->getY());
-    ID->push_back(m_tree->getID());
+    m_buffer.m_x->push_back(m_tree->getX());
+    m_buffer.m_y->push_back(m_tree->getY());
+    m_buffer.m_ID->push_back(m_tree->getID());
     
   }
   event_nr = m_tree->getEventNr();
@@ -85,12 +88,12 @@ Int_t treeCollection::GetEntries() const
 treeCollection::treeCollection(const char *name)
 {
   fChain = NULL;
-  if (!getFromGlobal(name, this))
+  if (!getGlobalPlotCollection()->get(name, &m_buffer))
   {
     std::cout << "collection not found. name: \"" << name << "\"" << std::endl;
   }
 
-  event_nr = *event_nr_pointer;
+  event_nr = *m_buffer.m_event_nr;
 }
 
 
@@ -99,21 +102,19 @@ treeCollection::treeCollection(const char *name)
 
 treeCollection::treeCollection(TTree *tree) : fChain(0)
 {
-  ID = 0;
-  x = 0;
-  y = 0;
+
   // Set branch addresses and branch pointers
   if (!tree) return;
   fChain = tree;
   fCurrent = -1;
   fChain->SetMakeClass(1);
 
-  fChain->SetBranchAddress("ID", &ID, &b_ID);
-  fChain->SetBranchAddress("x", &x, &b_x);
-  fChain->SetBranchAddress("y", &y, &b_y);
+  fChain->SetBranchAddress("ID", &m_buffer.m_ID, &b_ID);
+  fChain->SetBranchAddress("x", &m_buffer.m_x, &b_x);
+  fChain->SetBranchAddress("y", &m_buffer.m_y, &b_y);
   fChain->SetBranchAddress("event_nr", &event_nr, &b_event_nr);
-  event_nr_pointer=&event_nr;
-  push2global(tree->GetName(), this);
+  m_buffer.m_event_nr=&event_nr;
+  getGlobalPlotCollection()->set(tree->GetName(), &m_buffer);
 }
 treeCollection::~treeCollection()
 {
@@ -125,7 +126,7 @@ Int_t treeCollection::GetEntry(Long64_t entry)
 {
   if (fChain== NULL)
   {
-    event_nr = *event_nr_pointer;
+    event_nr = *m_buffer.m_event_nr;
     return 0;
   }
   return fChain->GetEntry(entry);
@@ -157,9 +158,9 @@ Int_t treeCollection::GetEntries() const
 
 
 treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr) :
-m_tree(new Hit_output(name)), m_x(x), m_y(y), m_ID(ID), m_event_nr(event_nr)
+m_tree(new Hit_output(name)),m_buffer(ID,x,y,event_nr)
 {
-
+  getGlobalPlotCollection()->set(name, &m_buffer);
 }
 
 treeCollection_ouput::~treeCollection_ouput()
@@ -169,11 +170,11 @@ treeCollection_ouput::~treeCollection_ouput()
 
 void treeCollection_ouput::fill()
 {
-  for (size_t i = 0; i < m_x->size();++i)
+  for (size_t i = 0; i < m_buffer.m_x->size();++i)
   {
-    m_tree->set(m_x->at(i), m_y->at(i), m_ID->at(i));
+    m_tree->set(m_buffer.m_x->at(i), m_buffer.m_y->at(i), m_buffer.m_ID->at(i));
   }
-  m_tree->setEventNR(*m_event_nr);
+  m_tree->setEventNR(*m_buffer.m_event_nr);
   m_tree->fill();
 }
 
@@ -185,14 +186,10 @@ Int_t treeCollection_ouput::Draw(const char* axis, const char* cuts, const char 
 #else 
 
 
-treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr) 
+treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr) :m_buffer(ID,x,y,event_nr)
 {
  
-  gEvents[name].m_event_nr = event_nr;
-  gEvents[name].m_ID = ID;
-  gEvents[name].m_x = x;
-  gEvents[name].m_y = y;
-
+  getGlobalPlotCollection()->set(name ,&m_buffer);
   m_tree = new TTree(name, name);
   
   

@@ -20,7 +20,7 @@ plane_hit rotate(const  plane_hit& h, double Angle){
 
 
 
-plane::plane(double ID, treeCollection* hits) :m_hits(hits), m_ID(ID), m_x(hits->x, hits->ID, ID), m_y(hits->y, hits->ID, ID)
+plane::plane(double ID, treeCollection* hits) :m_hits(hits), m_ID(ID), m_x(hits->m_buffer.m_x, hits->m_buffer.m_ID, ID), m_y(hits->m_buffer.m_y, hits->m_buffer.m_ID, ID)
 {
 
 }

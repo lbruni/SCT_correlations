@@ -576,29 +576,33 @@ public:
 };
 class clusterSize :public plot_hit2d{
 public:
-  clusterSize(const S_plot_def& plot_def, axis_ref* x, axis_ref* y) :plot_hit2d(plot_def, x, y){}
-
+  static const char* pixelDistance_name(){ return "pixelDistance___"; }
+  clusterSize(const S_plot_def& plot_def, axis_ref* x, axis_ref* y) :plot_hit2d(plot_def, x, y) {
+    m_cl = clusterMaker<Double_t>(atof(m_plot_def.getParameter(clusterSize::pixelDistance_name(), "2")));
+  }
   virtual void processEventStart() override {
     m_cl.reset();
   }
 
   virtual void processHit(double x, double y) override{
 
-    m_cl.push_pixel(pixelHit<Double_t>(m_x->get(), m_y->get()));
+    m_cl.push_pixel(pixelHit<Double_t>(x, y));
   }
   virtual void processEventEnd() override {
 
 
     for (size_t i = 0; i < m_cl.NumOfCluster(); ++i){
-
-      pushHit(m_cl.getCluster(i).m_hits.size(), 0);
+      pushHit(m_cl.getCluster(i).getPos().m_x, m_cl.getCluster(i).getPos().m_y, 0);
+      pushHit(m_cl.getCluster(i).m_hits.size(), 1);
     }
   }
   clusterMaker<Double_t> m_cl;
   virtual s_plane_collection getOutputcollection() {
 
+    
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), S_plane(m_outTree->m_name.c_str(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("clusterPos"), S_plane(m_outTree->m_name.c_str(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), S_plane(m_outTree->m_name.c_str(), 1)));
     return ret;
   }
 };
@@ -794,6 +798,18 @@ S_plot_def sct_plot::s_coordinate_transform(const char* name, Double_t x_slope, 
 const char* sct::plot_coordinate_transform()
 {
   return "coordinate_transform____";
+}
+
+S_plot_def sct_plot::s_clustering(const char* name, Double_t Pixel_distance/*=2*/, bool save2disk /*=true*/)
+{
+
+
+   auto ret= S_plot_def(sct::plot_clusterSize(), name, save2disk);
+
+   ret.setParameter(clusterSize::pixelDistance_name(), std::to_string(Pixel_distance));
+   return ret;
+  
+
 }
 
 S_plot_def sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, bool save2disk)

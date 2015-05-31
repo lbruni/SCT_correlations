@@ -8,7 +8,11 @@ public:
 
   T m_x, m_y;
 };
+template <typename T>
+bool operator== (const pixelHit<T>& h1, const pixelHit<T>& h2){
 
+  return ((h1.m_x == h2.m_x) && (h1.m_y == h2.m_y));
+}
 template <typename  T>
 T hitDistance(const pixelHit<T>& h1, const pixelHit<T>& h2){
   T xdiff = (h1.m_x - h2.m_x);
@@ -25,10 +29,10 @@ public:
   Cluster(const pixelHit_t& h){
     m_hits.push_back(h);
   }
-  bool pushHit(const pixelHit_t& h){
+  bool pushHit(const pixelHit_t& h,const T& distance = 2 ){
 
     for (auto& e : m_hits){
-      if (hitDistance(h, e) < 2)
+      if (hitDistance(h, e) < distance)
       {
         m_hits.push_back(h);
         return true;
@@ -47,9 +51,12 @@ public:
 template <typename T>
 class clusterMaker{
 public:
+  clusterMaker(T pixelDistance = 2, bool allowHitDuplication = true) :m_pixelDistance(pixelDistance), m_allowHitDuplication(allowHitDuplication){}
   using cluster_t = Cluster < T > ;
+  using pixelHit_t = pixelHit < T > ;
   void reset(){
     m_cluster.clear();
+    m_hits.clear();
   }
   size_t NumOfCluster(){
     return m_cluster.size();
@@ -84,11 +91,20 @@ public:
     return s;
   }
   void push_pixel(const pixelHit<T>& h){
+    if (!m_allowHitDuplication)
+    {
+      if (isDuplicated(h))
+      {
+        return;
+      }
+
+      m_hits.push_back(h);
+    }
     bool clusterFound = false;
     for (auto& e : m_cluster)
     {
 
-      if (e.pushHit(h))
+      if (e.pushHit(h,m_pixelDistance))
       {
         clusterFound = true;
       }
@@ -101,9 +117,20 @@ public:
     }
   }
 
+  bool isDuplicated(const pixelHit<T>& h){
+
+    auto it = find(m_hits.begin(), m_hits.end(), h);
+    if (it == m_hits.end()){
 
 
+      return false;
+    }
 
+    return true;
+  }
+  T m_pixelDistance;
+  bool m_allowHitDuplication;
+  std::vector<pixelHit_t> m_hits;
   std::vector<cluster_t> m_cluster;
 };
 

@@ -119,10 +119,6 @@ S_plot_def sct_plot::s_residual(const char* name, bool save2disk )
   return S_plot_def(sct::plot_residual(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_clusterSize(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_clusterSize(), name,save2disk);
-}
 
 S_plot_def sct_plot::s_projectOnPixel(const char* name, bool save2disk )
 {

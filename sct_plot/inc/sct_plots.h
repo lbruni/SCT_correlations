@@ -29,7 +29,11 @@
 
 #include "Rtypes.h"
 
-enum  axis_def:int{
+enum  axis_def
+#ifndef __CINT__
+  :int
+#endif // !__CINT__
+{
   x_axis_def,
   y_axis_def
 };
@@ -84,7 +88,7 @@ public:
 static  S_plot_def s_hitmap(const char* name,bool save2disk =true);
 static  S_plot_def s_correlation(const char* name,bool save2disk =true);
 static  S_plot_def s_residual(const char* name,bool save2disk =true);
-static  S_plot_def s_clusterSize(const char* name,bool save2disk =true);
+static  S_plot_def s_clustering(const char* name,Double_t Pixel_distance=2, bool save2disk =true);
 static  S_plot_def s_projectOnPixel(const char* name,bool save2disk =true);
 static  S_plot_def s_find_correspondingX(const char* name,bool save2disk =true);
 static  S_plot_def s_find_correspondingXY(const char* name,bool save2disk =true);

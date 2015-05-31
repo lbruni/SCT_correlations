@@ -166,6 +166,7 @@ public:
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
 #ifndef __CINT__
 private:
+  S_plot_def m_plotDef;
   std::shared_ptr<plot> m_plot;
 #endif
   ClassDef(S_plot, 0);

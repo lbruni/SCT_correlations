@@ -51,15 +51,7 @@ void S_plot_collection::addPlot(const char* name, S_plot pl)
 
 void S_plot_collection::addPlot(const char* PlotType, const char* name, S_plane p1, S_plane p2)
 {
-  auto p1_pointer = pushPlane(std::move(p1));
-  auto p2_pointer = pushPlane(std::move(p2));
-  if (p1_pointer && p2_pointer)
-  {
-    addPlot(name, S_plot(PlotType, name, p1_pointer, p2_pointer));
-  }
-  else{
-    std::cout << "planes not set correctly!! \n";
-  }
+  addPlot(S_plot_def(PlotType, name), std::move(p1), std::move(p2));
 
 }
 

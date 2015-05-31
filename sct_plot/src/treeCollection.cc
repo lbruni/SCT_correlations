@@ -157,46 +157,68 @@ Int_t treeCollection::GetEntries() const
 
 
 
-treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr) :
-m_tree(new Hit_output(name)),m_buffer(ID,x,y,event_nr)
-{
+
+
+treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr, bool save2disk/*=true*/) :
+ m_buffer(ID, x, y, event_nr), m_name(name)
+{ 
+  if (save2disk)
+  {
+    m_tree=new Hit_output(name);
+  }
   getGlobalPlotCollection()->set(name, &m_buffer);
 }
-
 treeCollection_ouput::~treeCollection_ouput()
 {
-  delete m_tree;
+  if (m_tree)
+  {
+    delete m_tree;
+  }
 }
 
 void treeCollection_ouput::fill()
 {
+  if (!m_tree)
+  {
+    return; // nothing to do 
+  }
   for (size_t i = 0; i < m_buffer.m_x->size();++i)
   {
     m_tree->set(m_buffer.m_x->at(i), m_buffer.m_y->at(i), m_buffer.m_ID->at(i));
   }
   m_tree->setEventNR(*m_buffer.m_event_nr);
   m_tree->fill();
+
 }
 
 Int_t treeCollection_ouput::Draw(const char* axis, const char* cuts, const char * options)
 {
+  if (!m_tree)
+  {
+    std::cout << "collection not stored: \"" << m_name << "\"" << std::endl;
+    return -1; // nothing to do 
+  }
  return m_tree->Draw(axis, cuts, options);
 }
 
 #else 
 
 
-treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr) :m_buffer(ID,x,y,event_nr)
+treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr, bool save2disk/*=true*/) :m_buffer(ID, x, y, event_nr),m_name(name)
 {
  
   getGlobalPlotCollection()->set(name ,&m_buffer);
-  m_tree = new TTree(name, name);
+  if (save2disk)
+  {
+    m_tree = new TTree(name, name);
+    m_tree->Branch("ID", ID);
+    m_tree->Branch("x", x);
+    m_tree->Branch("y", y);
+    m_tree->Branch("event_nr", event_nr);
+  }
   
   
-  m_tree->Branch("ID",ID);
-  m_tree->Branch("x", x);
-  m_tree->Branch("y", y);
-  m_tree->Branch("event_nr", event_nr);
+
 }
 
 treeCollection_ouput::~treeCollection_ouput()
@@ -206,11 +228,19 @@ treeCollection_ouput::~treeCollection_ouput()
 
 void treeCollection_ouput::fill()
 {
-  m_tree->Fill();
+  if (m_tree)
+  {
+    m_tree->Fill();
+  }
 }
 
 Int_t treeCollection_ouput::Draw(const char* axis, const char* cuts, const char * options)
 {
+  if (!m_tree)
+  {
+    std::cout << "collection not stored: \"" << m_name << "\"" << std::endl;
+    return -1; // nothing to do 
+  }
   return m_tree->Draw(axis, cuts, options);
 }
 

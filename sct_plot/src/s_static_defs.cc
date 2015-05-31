@@ -104,64 +104,61 @@ const char* sct::plot_rotated()
 
 
 
-S_plot_def sct_plot::s_hitmap(const char* name)
+S_plot_def sct_plot::s_hitmap(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_hitmap(), name);
+  return S_plot_def(sct::plot_hitmap(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_correlation(const char* name)
+S_plot_def sct_plot::s_correlation(const char* name,bool save2disk )
 {
-  return S_plot_def(sct::plot_correlation(), name);
+  return S_plot_def(sct::plot_correlation(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_residual(const char* name)
+S_plot_def sct_plot::s_residual(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_residual(), name);
+  return S_plot_def(sct::plot_residual(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_clusterSize(const char* name)
+S_plot_def sct_plot::s_clusterSize(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_clusterSize(), name);
+  return S_plot_def(sct::plot_clusterSize(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_projectOnPixel(const char* name)
+S_plot_def sct_plot::s_projectOnPixel(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_projectOnPixel(), name);
+  return S_plot_def(sct::plot_projectOnPixel(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_find_correspondingX(const char* name)
+S_plot_def sct_plot::s_find_correspondingX(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_find_correspondingX(), name);
+  return S_plot_def(sct::plot_find_correspondingX(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_find_correspondingXY(const char* name)
+S_plot_def sct_plot::s_find_correspondingXY(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_find_correspondingXY(), name);
+  return S_plot_def(sct::plot_find_correspondingXY(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_Event_size(const char* name)
+S_plot_def sct_plot::s_Event_size(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_Event_size(), name);
+  return S_plot_def(sct::plot_Event_size(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_find_nearest(const char* name)
+S_plot_def sct_plot::s_find_nearest(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_find_nearest(), name);
+  return S_plot_def(sct::plot_find_nearest(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_plane_distance(const char* name)
+S_plot_def sct_plot::s_plane_distance(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_plane_distance(), name);
+  return S_plot_def(sct::plot_plane_distance(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_find_nearest_strip(const char* name)
-{
-  return S_plot_def(sct::plot_find_nearest_strip(), name);
-}
 
-S_plot_def sct_plot::s_A_if_B(const char* name)
+
+S_plot_def sct_plot::s_A_if_B(const char* name, bool save2disk )
 {
-  return S_plot_def(sct::plot_A_if_B(), name);
+  return S_plot_def(sct::plot_A_if_B(), name,save2disk);
 }
 
 

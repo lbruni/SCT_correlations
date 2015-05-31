@@ -11,4 +11,6 @@
 #pragma link C++ class S_plot_def;
 #pragma link C++ class sct_plot;
 #pragma link C++ class sct_coll;
+#pragma link C++ class s_plane_collection;
+
 #endif

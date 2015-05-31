@@ -65,7 +65,7 @@ double plane::axis_vector::get() const
 class plotPlaneVsPlane :public plot{
 public:
   plotPlaneVsPlane(const  S_plot_def& plot_def, S_plane* x, S_plane* y) :m_plot_def(plot_def),m_x(x), m_y(y){
-    m_outTree = std::make_shared<treeCollection_ouput>(plot_def.m_name.c_str(), &m_x_points, &m_y_points, &m_id, &m_current);
+    m_outTree = std::make_shared<treeCollection_ouput>(plot_def.m_name.c_str(), &m_x_points, &m_y_points, &m_id, &m_current,plot_def.m_save2disk);
 
   }
 
@@ -167,6 +167,13 @@ public:
     return sqrt(h.x*h.x + h.y * h.y);
   }
   double m__id = 0 , m_status =0;
+
+  virtual s_plane_collection getOutputcollection() {
+  
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("A_and_b"),S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 class plot_find_correspondingX :public plotPlaneVsPlane{
 public:
@@ -181,6 +188,12 @@ public:
     }
 
   }
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("plot_find_correspondingX"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 class plot_Event_size :public plotPlaneVsPlane{
 public:
@@ -191,6 +204,13 @@ public:
 
   }
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) {};
+
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("Event_size"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 class plot_find_correspondingXY :public plotPlaneVsPlane{
 public:
@@ -203,7 +223,12 @@ public:
     }
 
   }
+  virtual s_plane_collection getOutputcollection() {
 
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("correspondingXY"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 
 class plot_a_if_b_has_a_hit :public plotPlaneVsPlane{
@@ -217,12 +242,38 @@ public:
     pushHit(p1.x, p1.y, 0);
     pushHit(p2.x, p2.y, 1);
   }
+  virtual s_plane_collection getOutputcollection() {
 
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("A_if_B_has_a_hit_get_A"), S_plane(m_outTree->m_name.c_str(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("A_if_B_has_a_hit_get_B"), S_plane(m_outTree->m_name.c_str(), 1)));
+    return ret;
+  }
 };
 class find_nearest_strip :public plotPlaneVsPlane{
 public:
-  find_nearest_strip(const  S_plot_def& plot_def , S_plane* x, S_plane* y) : plotPlaneVsPlane(plot_def, x, y){}
+  find_nearest_strip(const  S_plot_def& plot_def , S_plane* x, S_plane* y) : plotPlaneVsPlane(plot_def, x, y){
+    try {
+      auto ax = atoi(m_plot_def.getParameter(std::string(axis_name()), std::string("0")).c_str());
+      if (ax==x_axis_def )
+      {
+        m_axis = x_axis_def;
+      }
+      else if (ax == y_axis_def){
+        m_axis = y_axis_def;
 
+      }
+      else
+      {
+        std::cout << "[find_nearest_strip] unable to convert to axis def" << std::endl;
+      }
+    }
+    catch (...){
+      std::cout << "[find_nearest_strip] unable to convert" << std::endl;
+    }
+
+  }
+  static  const char* axis_name(){ return "axis____"; }
   virtual void processEventStart() {
     m_hit1.clear();
     m_hit2.clear();
@@ -244,8 +295,17 @@ public:
     for (size_t i = 0; i < m_dist.size(); ++i)
     {
       auto e = m_dist.at(i);
-      auto r1 = abs(e.y);
-
+      double r1 = 0;
+      if (m_axis == x_axis_def)
+      {
+        r1 = abs(e.x);
+      }
+      else if (m_axis == y_axis_def) {
+        r1 = abs(e.y);
+      }
+      else{
+        std::cout << "unknown axis" << std::endl;
+      }
       if (r1 > 0 && r1 < r)
       {
         r = r1;
@@ -264,6 +324,16 @@ public:
     }
   }
   std::vector<plane_hit> m_dist,m_hit1, m_hit2;
+  axis_def m_axis;
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_distance"), S_plane(m_outTree->m_name.c_str(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_plane1"), S_plane(m_outTree->m_name.c_str(), 1)));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_plane2"), S_plane(m_outTree->m_name.c_str(), 2)));
+    return ret;
+  }
+
 };
 class find_nearest :public plotPlaneVsPlane{
 public:
@@ -309,13 +379,22 @@ public:
     }
   }
   std::vector<plane_hit> m_dist, m_hit1, m_hit2;
+
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane(m_outTree->m_name.c_str(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane(m_outTree->m_name.c_str(), 1)));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane(m_outTree->m_name.c_str(), 2)));
+    return ret;
+  }
 };
 class plot2d :public plot{
 
 public:
   plot2d(const S_plot_def& plot_def, axis_ref* x, axis_ref* y) :m_x(x), m_y(y), m_plot_def(plot_def){
    
-    m_outTree = std::make_shared<treeCollection_ouput>(plot_def.m_name.c_str(), &m_x_points, &m_y_points, &m_id, &m_current);
+    m_outTree = std::make_shared<treeCollection_ouput>(plot_def.m_name.c_str(), &m_x_points, &m_y_points, &m_id, &m_current,plot_def.m_save2disk);
   
   }
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override{
@@ -419,14 +498,65 @@ public:
     pushHit(h.x,h.y);
   }
   double angele=0;
+
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("rotated"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
+
+class coordinate_transform : public plot_hit2d {
+public:
+  static const char* x_slope_name(){ return "x_slope___"; }
+  static const char* y_slope_name(){ return "y_slope___"; }
+  static const char* x_offset_name(){ return "x_offset_"; }
+  static const char* y_offset_name(){ return "y_offset_"; }
+  coordinate_transform(const S_plot_def& plot_def, axis_ref* x, axis_ref* y) :plot_hit2d(plot_def, x, y){
+    try {
+
+      m_x_offset = atof(m_plot_def.getParameter(std::string(x_offset_name()), std::string("0")).c_str());
+      m_y_offset = atof(m_plot_def.getParameter(std::string(y_offset_name()), std::string("0")).c_str());
+      m_x_slope= atof(m_plot_def.getParameter(std::string(x_slope_name()), std::string("0")).c_str());
+      m_y_slope = atof(m_plot_def.getParameter(std::string(y_slope_name()), std::string("0")).c_str());
+    }
+    catch (...){
+      std::cout << "[coordinate_transform] unable to convert" <<std::endl;
+    }
+
+  }
+  virtual void processHit(double x, double y) override{
+
+    
+    pushHit( x*m_x_slope +m_x_offset, y*m_y_slope + m_y_offset);
+  }
+  double m_x_slope = 0;
+  double m_y_slope = 0;
+  double m_x_offset = 0;
+  double m_y_offset = 0;
+
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("coordinate_transform"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
+};
+
+
 class hitmap :public plot_hit2d{
 public:
   hitmap(const S_plot_def& plot_def, axis_ref* x, axis_ref* y) :plot_hit2d(plot_def, x, y){}
   virtual void processHit(double x, double y) override{
     pushHit(m_x->get(), m_y->get());
   }
+  virtual s_plane_collection getOutputcollection() {
 
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("hitmap"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 class ProjectOnPixel :public plot_hit2d{
 public:
@@ -437,7 +567,12 @@ public:
   }
 
   double m_x_pixelsize = 0.074, m_ypixelsize = 100000;
+  virtual s_plane_collection getOutputcollection() {
 
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("ProjectOnPixel"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 class clusterSize :public plot_hit2d{
 public:
@@ -460,7 +595,12 @@ public:
     }
   }
   clusterMaker<Double_t> m_cl;
+  virtual s_plane_collection getOutputcollection() {
 
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 class correlations :public plot_corr2d{
 public:
@@ -476,7 +616,12 @@ public:
   virtual void processHit(double x, double y) override{
     pushHit(x, y);
   }
+  virtual s_plane_collection getOutputcollection() {
 
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("correlations"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
 };
 
 class residual : public plot_corr2d {
@@ -487,6 +632,13 @@ public:
   }
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "x") override{
     return  m_outTree->Draw(axis, cuts, options);
+  }
+
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("residual"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
   }
 private:
   double m_cut = -1;
@@ -529,7 +681,12 @@ plot* create_plot(const S_plot_def& plot_def, axis_ref* x, axis_ref* y){
     return dynamic_cast<plot*>(new  rotated_plane(plot_def, x, y));
 
   }
+  if (s_type.compare(sct::plot_coordinate_transform()) == 0)
+  {
 
+    return dynamic_cast<plot*>(new  coordinate_transform(plot_def, x, y));
+
+  }
   std::cout << "cant find plot type : \"" << s_type << "\"" << std::endl;
   return nullptr;
 }
@@ -613,12 +770,36 @@ S_DrawOption::S_DrawOption(const char* options /*= "colz"*/, const char* cuts /*
 }
 
 
-S_plot_def sct_plot::s_rotated(const char* name, Double_t angle)
+S_plot_def sct_plot::s_rotated(const char* name, Double_t angle,  bool save2disk)
 {
-  auto ret = S_plot_def(sct::plot_rotated(), name);
+  auto ret = S_plot_def(sct::plot_rotated(), name,save2disk);
   ret.setParameter(rotated_plane::Angle_name(), std::to_string(angle));
 
   return ret;
 }
 
 
+
+
+S_plot_def sct_plot::s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk /*= true*/)
+{
+  auto ret = S_plot_def(sct::plot_coordinate_transform(), name, save2disk);
+  ret.setParameter(coordinate_transform::x_offset_name(), std::to_string(x_offset));
+  ret.setParameter(coordinate_transform::y_offset_name(), std::to_string(y_offset));
+  ret.setParameter(coordinate_transform::x_slope_name(), std::to_string(x_slope));
+  ret.setParameter(coordinate_transform::y_slope_name(), std::to_string(y_slope));
+  return ret;
+}
+
+const char* sct::plot_coordinate_transform()
+{
+  return "coordinate_transform____";
+}
+
+S_plot_def sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, bool save2disk)
+{
+
+  auto ret = S_plot_def(sct::plot_find_nearest_strip(), name, save2disk);
+  ret.setParameter(find_nearest_strip::axis_name(), std::to_string(search_axis));
+  return ret;
+}

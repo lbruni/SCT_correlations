@@ -18,6 +18,10 @@ public:
   virtual void fill() = 0;
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") = 0;
   virtual void setParameter(const char* tag, const char * value){}
+  virtual s_plane_collection getOutputcollection() { 
+    s_plane_collection ret;
+    return ret;
+  }
 };
 
 plot* create_plot(const char* type, const char* name, axis_ref* x, axis_ref* y);

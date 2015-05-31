@@ -60,22 +60,22 @@ private:
 class treeCollection_ouput {
 public:
 
-  treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr);
+  treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr,bool save2disk=true);
   virtual ~treeCollection_ouput();
   void fill();
   Int_t Draw(const char* axis, const char* cuts, const char * options);
 
   root_event m_buffer;
 #ifdef _DEBUG
-  Hit_output *m_tree;
+  Hit_output *m_tree=nullptr;
 #else //release
  
  
-  TTree          *m_tree;   //!pointer to the analyzed TTree or TChain
+  TTree          *m_tree=nullptr;   //!pointer to the analyzed TTree or TChain
  
 #endif // _DEBUG
 
-
+  std::string m_name;
 };
 
 #endif

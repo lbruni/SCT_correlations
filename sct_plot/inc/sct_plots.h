@@ -29,7 +29,10 @@
 
 #include "Rtypes.h"
 
-
+enum  axis_def:int{
+  x_axis_def,
+  y_axis_def
+};
 class S_plane;
 
 class DllExport sct_coll{
@@ -73,23 +76,25 @@ public:
   static const char* plot_find_nearest_strip();
   static const char* plot_A_if_B();
   static const char* plot_rotated();
+  static const char* plot_coordinate_transform();
 };
 class S_plot_def;
 class DllExport sct_plot{
 public:
-static  S_plot_def s_hitmap(const char* name);
-static  S_plot_def s_correlation(const char* name);
-static  S_plot_def s_residual(const char* name);
-static  S_plot_def s_clusterSize(const char* name);
-static  S_plot_def s_projectOnPixel(const char* name);
-static  S_plot_def s_find_correspondingX(const char* name);
-static  S_plot_def s_find_correspondingXY(const char* name);
-static  S_plot_def s_Event_size(const char* name);
-static  S_plot_def s_find_nearest(const char* name);
-static  S_plot_def s_plane_distance(const char* name);
-static  S_plot_def s_find_nearest_strip(const char* name);
-static  S_plot_def s_A_if_B(const char* name);
-static  S_plot_def s_rotated(const char* name ,Double_t angle);
+static  S_plot_def s_hitmap(const char* name,bool save2disk =true);
+static  S_plot_def s_correlation(const char* name,bool save2disk =true);
+static  S_plot_def s_residual(const char* name,bool save2disk =true);
+static  S_plot_def s_clusterSize(const char* name,bool save2disk =true);
+static  S_plot_def s_projectOnPixel(const char* name,bool save2disk =true);
+static  S_plot_def s_find_correspondingX(const char* name,bool save2disk =true);
+static  S_plot_def s_find_correspondingXY(const char* name,bool save2disk =true);
+static  S_plot_def s_Event_size(const char* name,bool save2disk =true);
+static  S_plot_def s_find_nearest(const char* name,bool save2disk =true);
+static  S_plot_def s_plane_distance(const char* name,bool save2disk =true);
+static  S_plot_def s_find_nearest_strip(const char* name, axis_def search_axis,bool save2disk = true);
+static  S_plot_def s_A_if_B(const char* name,bool save2disk =true);
+static  S_plot_def s_rotated(const char* name ,Double_t angle,bool save2disk =true);
+static  S_plot_def s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
 };
 class treeCollection;
 
@@ -126,19 +131,32 @@ public:
   axis_ref* getX() const;
   axis_ref* getY() const;
 #ifndef __CINT__
-private:
   Double_t m_ID =0 ;
+private:
   std::string m_name;
   std::shared_ptr<plane> m_plane;
 #endif
   ClassDef(S_plane, 0);
 };
-
+class DllExport s_plane_collection{
+public:
+  s_plane_collection(){}
+  S_plane get(Int_t i);
+  S_plane get(const char* name);
+  S_plane operator()();
+  const char* getName(Int_t i);
+  void showNames() const;
+  Int_t size() const;
+#ifndef __CINT__
+  std::vector<std::pair<std::string, S_plane>> m_planes;
+#endif
+  ClassDef(s_plane_collection, 0);
+};
 
 class DllExport S_plot_def{
 public:
-  S_plot_def();
-  S_plot_def(const char* type, const char* name);
+
+  S_plot_def(const char* type, const char* name,bool save2disk=true);
   void setParameter(const char* tag, const char* value);
   const char * getParameter(const char* tag, const char* default_value);
 #ifndef __CINT__
@@ -149,8 +167,11 @@ public:
 
   std::map<std::string, std::string> m_tags;
   std::string m_name, m_type;
+  bool m_save2disk;
 #endif
   ClassDef(S_plot_def, 0);
+private:
+  S_plot_def(){}
 };
 
 
@@ -160,10 +181,12 @@ public:
   S_plot(const S_plot& );
   S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y);
   S_plot(const char* type, const char* name, S_plane* x, S_plane* y);
-  S_plot(S_plot_def plotdef, S_plane* x, S_plane* y);
-  S_plot(S_plot_def plotdef, axis_ref* x, axis_ref* y);
+  S_plot(const S_plot_def& plotdef, S_plane* x, S_plane* y);
+  S_plot(const S_plot_def& plotdef, axis_ref* x, axis_ref* y);
   void fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
+  s_plane_collection getOutputcollection();
+
 #ifndef __CINT__
 private:
   S_plot_def m_plotDef;
@@ -174,10 +197,7 @@ private:
 
 
 
-enum  axis_def{
-  x_axis_def,
-  y_axis_def
-};
+
 class DllExport S_Axis{
 public:
   S_Axis(const char* collctionName, double planeID, axis_def axis);
@@ -217,17 +237,17 @@ public:
   S_plot_collection(TFile* file);
   void addFile(TFile* file);
   void reset();
-  void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis);
+  s_plane_collection addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis);
 
-  void addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis);
-  void addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);
-  void addPlot(const char* name,S_plot pl );
-  void addPlot(const char* PlotType, const char* name, S_plane p1 ,S_plane  p2);
-  void addPlot(S_plot_def plot_def, S_plane p1, S_plane  p2);
+  s_plane_collection addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis);
+  s_plane_collection addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);
+  s_plane_collection addPlot(const char* name, S_plot pl);
+  s_plane_collection addPlot(const char* PlotType, const char* name, S_plane p1, S_plane  p2);
+  s_plane_collection addPlot(S_plot_def plot_def, S_plane p1, S_plane  p2);
   void Draw();
   Long64_t Draw(const char* name);
   Long64_t Draw(const char* name, const S_DrawOption& option);
-
+  Long64_t Draw(const S_plane& name, const S_DrawOption& option);
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
 private:

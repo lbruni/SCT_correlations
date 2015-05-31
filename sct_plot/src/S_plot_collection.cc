@@ -31,47 +31,55 @@ void S_plot_collection::reset()
   m_trees.clear();
 }
 
-void S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis)
+s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis)
 {
-  addPlot(PlotType, name, x_axis, y_axis, S_DrawOption());
+ return addPlot(PlotType, name, x_axis, y_axis, S_DrawOption());
 }
 
-void S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option)
+s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option)
 {
-  m_plots.push_back(std::make_pair(name, S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis))));
-  //m_plots[name] std::move(S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis)));
   m_drawOption[name] = option;
+  return addPlot(name, S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis)));
+
+
+  //m_plots.push_back(std::make_pair(name, S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis))));
+  //m_plots[name] std::move(S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis)));
+
 }
 
-void S_plot_collection::addPlot(const char* name, S_plot pl)
+s_plane_collection S_plot_collection::addPlot(const char* name, S_plot pl)
 {
   m_plots.push_back(std::make_pair(name, std::move(pl)));
   m_drawOption[name] = S_DrawOption();
+  return m_plots.back().second.getOutputcollection();
 }
 
-void S_plot_collection::addPlot(const char* PlotType, const char* name, S_plane p1, S_plane p2)
+s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_plane p1, S_plane p2)
 {
-  addPlot(S_plot_def(PlotType, name), std::move(p1), std::move(p2));
+ return addPlot(S_plot_def(PlotType, name), std::move(p1), std::move(p2));
 
 }
 
-void S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S_plane p2)
+s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S_plane p2)
 {
   auto p1_pointer = pushPlane(std::move(p1));
   auto p2_pointer = pushPlane(std::move(p2));
 
   if (p1_pointer && p2_pointer)
   {
-    addPlot(plot_def.m_name.c_str(), S_plot(plot_def, p1_pointer, p2_pointer));
+   return addPlot(plot_def.m_name.c_str(), std::move(S_plot(plot_def, p1_pointer, p2_pointer)));
   }
   else{
     std::cout << "planes not set correctly!! \n";
   }
+
+  return s_plane_collection();
 }
 
-void S_plot_collection::addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis)
+s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis)
 {
   m_plots.push_back(std::make_pair(plot_def.m_name, S_plot(plot_def, getAxis_ref(x_axis), getAxis_ref(y_axis))));
+  return m_plots.back().second.getOutputcollection();
 }
 
 void S_plot_collection::Draw()
@@ -101,6 +109,24 @@ Long64_t S_plot_collection::Draw(const char* name, const S_DrawOption& option)
     }
   }
   return 0;
+}
+
+Long64_t S_plot_collection::Draw(const S_plane& name, const S_DrawOption& option)
+{
+
+  S_DrawOption local(option);
+
+ 
+  
+  if (option.m_cuts.Length() == 0){
+   
+    local.m_cuts = TString("ID==") + TString(std::to_string(name.m_ID).c_str());
+  }
+  else{
+    local.m_cuts = TString("(")+option.m_cuts+ TString(") && ID == ") + TString(std::to_string(name.m_ID).c_str());
+  }
+  return Draw(name.getName(), local);
+
 }
 
 void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)

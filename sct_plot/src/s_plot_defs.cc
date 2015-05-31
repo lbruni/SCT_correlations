@@ -1,14 +1,10 @@
 #include "sct_plots.h"
 #include <iostream>
-S_plot_def::S_plot_def(const char* type, const char* name) :m_type(type), m_name(name)
+S_plot_def::S_plot_def(const char* type, const char* name, bool save2disk/*=true*/) :m_type(type), m_name(name), m_save2disk(save2disk)
 {
 
 }
 
-S_plot_def::S_plot_def()
-{
-  std::cout << "[S_plot_def] unsupported default constructor do not call \n";
-}
 
 void S_plot_def::setParameter(const char* tag, const char* value)
 {

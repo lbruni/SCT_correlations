@@ -2,36 +2,47 @@
 #include <iostream>
 #include "sct_plots_internal.h"
 
-S_plot::S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y)
+
+
+s_plane_collection S_plot::getOutputcollection()
+{
+  if (m_plot)
+  {
+    return m_plot->getOutputcollection();
+  }
+  return s_plane_collection();
+}
+
+S_plot::S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y) :m_plotDef(type, name)
 {
   m_plot = std::shared_ptr<plot>(create_plot(type, name, x, y));
 }
 
-S_plot::S_plot() :m_plot(nullptr)
+S_plot::S_plot() : m_plot(nullptr), m_plotDef("error","error")
 {
   std::cout << "[S_plot] unsupported default constructor" << std::endl;
 }
 
 
 
-S_plot::S_plot(const char* type, const char* name, S_plane* x, S_plane* y)
+S_plot::S_plot(const char* type, const char* name, S_plane* x, S_plane* y) :m_plotDef(type,name)
 {
   m_plot = std::shared_ptr<plot>(create_plot(type, name, x, y));
 }
 
-S_plot::S_plot(const S_plot& pl)
+S_plot::S_plot(const S_plot& pl) : m_plotDef(pl.m_plotDef)
 {
   m_plot = pl.m_plot;
 }
 
 
 
-S_plot::S_plot(S_plot_def plotdef, S_plane* x, S_plane* y)
+S_plot::S_plot(const S_plot_def& plotdef, S_plane* x, S_plane* y) :m_plotDef(plotdef)
 {
   m_plot = std::shared_ptr<plot>(create_plot(plotdef, x, y));
 }
 
-S_plot::S_plot(S_plot_def plotdef, axis_ref* x, axis_ref* y)
+S_plot::S_plot(const S_plot_def& plotdef, axis_ref* x, axis_ref* y) : m_plotDef(plotdef)
 {
   m_plot = std::shared_ptr<plot>(create_plot(plotdef, x, y));
 }

@@ -140,10 +140,7 @@ S_plot_def sct_plot::s_Event_size(const char* name, bool save2disk )
   return S_plot_def(sct::plot_Event_size(), name,save2disk);
 }
 
-S_plot_def sct_plot::s_find_nearest(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_find_nearest(), name,save2disk);
-}
+
 
 S_plot_def sct_plot::s_plane_distance(const char* name, bool save2disk )
 {

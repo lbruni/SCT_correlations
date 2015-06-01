@@ -7,7 +7,9 @@
 #include "TVector.h"
 #include "TMath.h"
 #include "sct_plots_internal.h"
-
+#include "TH2.h"
+#include "TH2D.h"
+#include "TAxis.h"
 
 plane_hit rotate(const  plane_hit& h, double Angle){
 
@@ -254,7 +256,7 @@ class find_nearest_strip :public plotPlaneVsPlane{
 public:
   find_nearest_strip(const  S_plot_def& plot_def , S_plane* x, S_plane* y) : plotPlaneVsPlane(plot_def, x, y){
     try {
-      auto ax = atoi(m_plot_def.getParameter(std::string(axis_name()), std::string("0")).c_str());
+      auto ax = atoi(m_plot_def.getParameter(axis_name(), "0"));
       if (ax==x_axis_def )
       {
         m_axis = x_axis_def;
@@ -267,13 +269,19 @@ public:
       {
         std::cout << "[find_nearest_strip] unable to convert to axis def" << std::endl;
       }
+
+
+      m_cutOff = atof(m_plot_def.getParameter(cutOff_name(), "1000000000"));
     }
     catch (...){
       std::cout << "[find_nearest_strip] unable to convert" << std::endl;
     }
 
+
+
   }
   static  const char* axis_name(){ return "axis____"; }
+  static  const char* cutOff_name(){ return "cutOff____"; }
   virtual void processEventStart() {
     m_hit1.clear();
     m_hit2.clear();
@@ -288,8 +296,8 @@ public:
   }
 
   virtual void processEventEnd() {
-    const double no_hit = 10000000000;
-    double r = no_hit;
+    
+    double r = m_cutOff;
     plane_hit dist(0, 0), h1(0, 0), h2(0, 0);
 
     for (size_t i = 0; i < m_dist.size(); ++i)
@@ -316,13 +324,14 @@ public:
 
     }
 
-    if (r < no_hit)
+    if (r < m_cutOff)
     {
       pushHit(dist.x, dist.y,0);
       pushHit(h1.x, h1.y,1);
       pushHit(h2.x, h2.y,2);
     }
   }
+  double m_cutOff;
   std::vector<plane_hit> m_dist,m_hit1, m_hit2;
   axis_def m_axis;
   virtual s_plane_collection getOutputcollection() {
@@ -337,7 +346,20 @@ public:
 };
 class find_nearest :public plotPlaneVsPlane{
 public:
-  find_nearest(const  S_plot_def& plot_def , S_plane* x, S_plane* y) : plotPlaneVsPlane(plot_def, x, y){}
+  
+  static const char* x_cutOff_name(){ return "x_cutOff___"; }
+  static const char* y_cutOff_name(){ return "y_cutOff___"; }
+  find_nearest(const  S_plot_def& plot_def , S_plane* x, S_plane* y) : plotPlaneVsPlane(plot_def, x, y){
+    try{
+
+      m_x_cutOff = atof(m_plot_def.getParameter(x_cutOff_name(), "100000"));
+      m_y_cutOff = atof(m_plot_def.getParameter(y_cutOff_name(), "100000"));
+    }
+    catch (...){
+      std::cout << "[find_nearest]  unable to convert parameter" << std::endl;
+
+    }
+  }
   virtual void processEventStart() {
     m_hit1.clear();
     m_hit2.clear();
@@ -353,15 +375,24 @@ public:
 
   virtual void processEventEnd() {
 
-    double r = 10000000000000;
+    double r = m_c_noHit;
+    double x_diff = m_x_cutOff;
+
+
     plane_hit dist(0, 0),h1(0,0),h2(0,0);
 
     for (size_t i = 0; i < m_dist.size();++i)
     {
       auto e = m_dist.at(i);
-      auto r1 = sqrt((e.x)*(e.x) + (e.y)*(e.y));
+      auto r1 = TMath::Sqrt((e.x)*(e.x) + (e.y)*(e.y));
 
-      if (r1 > 0 && r1 < r)
+      if (r1 > 0 
+        && 
+        r1 < r 
+        && 
+        abs(e.x) < m_x_cutOff
+        && 
+        abs(e.y)<m_y_cutOff )
       {
         r = r1;
         dist = e;
@@ -371,13 +402,15 @@ public:
 
     }
 
-    if (r < 100000000000)
+    if (r < m_c_noHit)
     {
       pushHit(dist.x, dist.y,0);
       pushHit(h1.x, h1.y,1);
       pushHit(h2.x, h1.y,2);
     }
   }
+  const double m_c_noHit = 100000000000;
+  double m_x_cutOff, m_y_cutOff;
   std::vector<plane_hit> m_dist, m_hit1, m_hit2;
 
   virtual s_plane_collection getOutputcollection() {
@@ -477,6 +510,33 @@ public:
     processEventEnd();
   }
 };
+
+
+class hitMultiplizity :public plot_hit2d{
+
+  hitMultiplizity(const S_plot_def& plot_def, axis_ref* x, axis_ref* y) :plot_hit2d(plot_def, x, y){}
+
+  virtual void processEventStart() {
+    m_counter = 0;
+
+  }
+  virtual void processHit(double x, double y) {
+    ++m_counter; 
+  };
+  virtual void processEventEnd() {
+  
+    pushHit(m_counter, 0);
+  }
+
+  Int_t m_counter = 0;
+  virtual s_plane_collection getOutputcollection() {
+
+    s_plane_collection ret;
+    ret.m_planes.push_back(std::make_pair(std::string("HitMultiplicity"), S_plane(m_outTree->m_name.c_str(), 0)));
+    return ret;
+  }
+};
+
 class rotated_plane: public plot_hit2d {
 public:
   static const char* Angle_name(){ return "ANGLE___"; }
@@ -812,10 +872,148 @@ S_plot_def sct_plot::s_clustering(const char* name, Double_t Pixel_distance/*=2*
 
 }
 
-S_plot_def sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, bool save2disk)
-{
 
+
+S_plot_def sct_plot::s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk /*=true*/)
+{
+  auto ret=S_plot_def(sct::plot_find_nearest(), name, save2disk);
+
+  ret.setParameter(find_nearest::x_cutOff_name(), std::to_string(x_cutoff));
+  ret.setParameter(find_nearest::y_cutOff_name(), std::to_string(y_cutoff));
+  return ret;
+}
+
+S_plot_def sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff /*=100000*/, bool save2disk /*= true*/)
+{
   auto ret = S_plot_def(sct::plot_find_nearest_strip(), name, save2disk);
+  ret.setParameter(find_nearest_strip::cutOff_name(), std::to_string(cutOfff));
   ret.setParameter(find_nearest_strip::axis_name(), std::to_string(search_axis));
   return ret;
+}
+
+
+
+void SCT_helpers::CutTH2(TH2* h, S_XCut x_cut, S_YCut y_cut, S_ZCut z_cut)
+{
+  bool set2zero_x =false,set2zero_y =false, set2zero_z = false;
+  Double_t x = 0, y = 0,z=0;
+
+  for (Int_t x_bin = 0; x_bin <= h->GetNbinsX(); ++x_bin)
+  {
+    set2zero_x= false;
+    x = h->GetXaxis()->GetBinCenter(x_bin);
+    if (x_cut.isOutOfRange(x))
+    {
+      set2zero_x = true;
+    }
+    
+    for (Int_t y_bin = 0; y_bin <= h->GetNbinsY(); ++y_bin)
+    {
+      auto bin = h->GetBin(x_bin, y_bin);
+      if (set2zero_x)
+      {
+        h->SetBinContent(bin, 0);
+        continue;
+      }
+      set2zero_y = false;
+      set2zero_z = false;
+      y = h->GetYaxis()->GetBinCenter(y_bin);
+      if (y_cut.isOutOfRange(y))
+      {
+        set2zero_y = true;
+      }
+
+
+      z = h->GetBinContent(bin);
+      if (z_cut.isOutOfRange(z))
+      {
+        set2zero_z= true;
+      }
+
+      if (set2zero_y || set2zero_z)
+      {
+        h->SetBinContent(bin, 0);
+      }
+    }
+
+  }
+}
+
+void SCT_helpers::CutTH2(TH2* h2, S_ZCut z)
+{
+  CutTH2(h2, S_XCut(), S_YCut(), z);
+}
+
+S_Cut::S_Cut(Double_t min_, Double_t max_) :m_min(min_), m_max(max_), m_cut_min(true), m_cut_max(true)
+{
+
+}
+
+S_Cut::S_Cut(Double_t min_) : m_min(min_), m_max(0), m_cut_min(true), m_cut_max(false)
+{
+
+}
+
+S_Cut::S_Cut() : m_min(0), m_max(0), m_cut_min(false), m_cut_max(false)
+{
+
+}
+
+bool S_Cut::isOutOfRange(Double_t x)
+{
+  if (m_cut_min && m_min > x)
+  {
+    return true;
+  }
+
+  if (m_cut_max && m_max < x)
+  {
+    return true;
+  }
+  return false;
+}
+
+S_XCut::S_XCut(Double_t min_, Double_t max_) : S_Cut(min_, max_)
+{
+
+}
+
+S_XCut::S_XCut(Double_t min_) : S_Cut(min_)
+{
+
+}
+
+S_XCut::S_XCut()
+{
+
+}
+
+S_YCut::S_YCut(Double_t min_, Double_t max_) : S_Cut(min_, max_)
+{
+
+}
+
+S_YCut::S_YCut(Double_t min_) : S_Cut(min_)
+{
+
+}
+
+S_YCut::S_YCut()
+{
+
+}
+
+S_ZCut::S_ZCut(Double_t min_, Double_t max_) : S_Cut(min_, max_)
+{
+
+}
+
+S_ZCut::S_ZCut(Double_t min_) : S_Cut(min_)
+{
+
+}
+
+S_ZCut::S_ZCut()
+{
+
 }

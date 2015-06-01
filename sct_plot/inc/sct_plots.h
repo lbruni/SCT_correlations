@@ -39,6 +39,51 @@ enum  axis_def
 };
 class S_plane;
 
+class DllExport S_Cut
+{
+public:
+  S_Cut(Double_t min_, Double_t max_);
+  S_Cut(Double_t min_);
+  S_Cut();
+  Double_t m_min, m_max;
+  Bool_t m_cut_min, m_cut_max;
+
+  bool isOutOfRange(Double_t x);
+
+  ClassDef(S_Cut, 0);
+};
+class DllExport  S_XCut :public S_Cut
+{
+public:
+  S_XCut(Double_t min_, Double_t max_);
+  S_XCut(Double_t min_);
+  S_XCut();
+  ClassDef(S_XCut, 0);
+};
+class DllExport S_YCut :public S_Cut
+{
+public:
+  S_YCut(Double_t min_, Double_t max_);
+  S_YCut(Double_t min_);
+  S_YCut();
+  ClassDef(S_YCut, 0);
+};
+class  DllExport S_ZCut :public S_Cut
+{
+public:
+  S_ZCut(Double_t min_, Double_t max_);
+  S_ZCut(Double_t min_);
+  S_ZCut();
+  ClassDef(S_ZCut, 0);
+};
+class TH2;
+class DllExport SCT_helpers{
+public:
+  static void CutTH2(TH2* h2, S_XCut x, S_YCut y, S_ZCut z);
+  static void CutTH2(TH2* h2, S_ZCut z);
+
+};
+
 class DllExport sct_coll{
 public:
 static  S_plane apix_hit_local();
@@ -93,9 +138,9 @@ static  S_plot_def s_projectOnPixel(const char* name,bool save2disk =true);
 static  S_plot_def s_find_correspondingX(const char* name,bool save2disk =true);
 static  S_plot_def s_find_correspondingXY(const char* name,bool save2disk =true);
 static  S_plot_def s_Event_size(const char* name,bool save2disk =true);
-static  S_plot_def s_find_nearest(const char* name,bool save2disk =true);
+static  S_plot_def s_find_nearest(const char* name,Double_t x_cutoff, Double_t y_cutoff, bool save2disk =true);
+static  S_plot_def s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff =100000,bool save2disk = true);
 static  S_plot_def s_plane_distance(const char* name,bool save2disk =true);
-static  S_plot_def s_find_nearest_strip(const char* name, axis_def search_axis,bool save2disk = true);
 static  S_plot_def s_A_if_B(const char* name,bool save2disk =true);
 static  S_plot_def s_rotated(const char* name ,Double_t angle,bool save2disk =true);
 static  S_plot_def s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);

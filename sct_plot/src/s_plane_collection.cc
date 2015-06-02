@@ -4,7 +4,7 @@
 
 S_plane s_plane_collection::get(Int_t i)
 {
-  if (i<m_planes.size())
+  if (i< static_cast<Int_t>(m_planes.size()))
   {
     return m_planes[i].second;
   }
@@ -33,7 +33,7 @@ S_plane s_plane_collection::operator()()
 
 const char* s_plane_collection::getName(Int_t i)
 {
-  if (i< m_planes.size())
+  if (i< static_cast<Int_t>(m_planes.size()))
   {
     return m_planes.at(i).first.c_str();
   }

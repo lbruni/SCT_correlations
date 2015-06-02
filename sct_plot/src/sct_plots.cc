@@ -45,7 +45,7 @@ plane::axis_vector::axis_vector(std::vector<double>* axis, std::vector<double>* 
 bool plane::axis_vector::next()
 {
   do{
-    if (++m_curr >= m_ID->size())
+    if (++m_curr >= static_cast<Int_t>(m_ID->size()))
     {
       m_curr = -1;
       return false;

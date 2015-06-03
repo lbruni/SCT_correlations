@@ -59,6 +59,10 @@ s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* 
  return addPlot(S_plot_def(PlotType, name), std::move(p1), std::move(p2));
 
 }
+s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1)
+{
+  return addPlot(plot_def, p1.getX_def(), p1.getY_def());
+}
 
 s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S_plane p2)
 {

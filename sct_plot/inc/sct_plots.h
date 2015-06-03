@@ -293,6 +293,7 @@ public:
   s_plane_collection addPlot(const char* name, S_plot pl);
   s_plane_collection addPlot(const char* PlotType, const char* name, S_plane p1, S_plane  p2);
   s_plane_collection addPlot(S_plot_def plot_def, S_plane p1, S_plane  p2);
+  s_plane_collection addPlot(S_plot_def plot_def, S_plane p1);
   void Draw();
   Long64_t Draw(const char* name);
   Long64_t Draw(const char* name, const S_DrawOption& option);

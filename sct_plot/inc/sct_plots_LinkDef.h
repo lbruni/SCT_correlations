@@ -16,6 +16,7 @@
 #pragma link C++ class S_XCut;
 #pragma link C++ class S_YCut;
 #pragma link C++ class S_ZCut;
+#pragma link C++ class SCT_helpers;
 
 
 

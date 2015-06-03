@@ -1,8 +1,15 @@
 #include "sct_plots.h"
 #include <iostream>
+#include <atomic>
+
+std::atomic<int> g_plot_count =0;
+
 S_plot_def::S_plot_def(const char* type, const char* name, bool save2disk/*=true*/) :m_type(type), m_name(name), m_save2disk(save2disk)
 {
-
+  if (m_name.empty())
+  {
+    m_name = m_type + std::to_string(g_plot_count++);
+  }
 }
 
 

@@ -38,7 +38,7 @@ LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 # build SCOM  library
 add_subdirectory(sct_plot)
 
-
+add_subdirectory(main)
 
 #######################################################
 # Print out system information useful for bug reports #

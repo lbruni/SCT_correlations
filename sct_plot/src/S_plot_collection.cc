@@ -13,7 +13,7 @@ S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_share
 {
 
   addFile(file);
-  setGlobalPlotCollection(m_eventBuffer.get());
+ 
 }
 
 
@@ -38,6 +38,7 @@ s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* 
 
 s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option)
 {
+  Buffer_accessor buffer(m_eventBuffer.get());
   m_drawOption[name] = option;
   return addPlot(name, S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis)));
 
@@ -66,11 +67,13 @@ s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1)
 
 s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S_plane p2)
 {
+  Buffer_accessor buffer(m_eventBuffer.get());
   auto p1_pointer = pushPlane(std::move(p1));
   auto p2_pointer = pushPlane(std::move(p2));
 
   if (p1_pointer && p2_pointer)
   {
+ 
    return addPlot(plot_def.m_name.c_str(), std::move(S_plot(plot_def, p1_pointer, p2_pointer)));
   }
   else{
@@ -82,6 +85,7 @@ s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S
 
 s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis)
 {
+ Buffer_accessor  buffer( m_eventBuffer.get());
   m_plots.push_back(std::make_pair(plot_def.m_name, S_plot(plot_def, getAxis_ref(x_axis), getAxis_ref(y_axis))));
   return m_plots.back().second.getOutputcollection();
 }

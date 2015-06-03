@@ -31,7 +31,7 @@ public :
 
   root_event m_buffer;
    // Declaration of leaf types
-   Int_t                event_nr;
+   Int_t                event_nr =0;
 
    treeCollection(TTree *tree);
    treeCollection(const char *name);

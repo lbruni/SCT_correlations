@@ -1,12 +1,25 @@
 #include "sct_event_buffer.h"
+#include "sct_global.h"
+#include <mutex>
 
- 
-sct_event_buffer *gPlotCollection;
+std::mutex gplotBuffer_mutex;
+sct_event_buffer *gPlotCollection =nullptr;
 
-sct_event_buffer *getGlobalPlotCollection(){
-  return gPlotCollection;
+
+
+Buffer_accessor::Buffer_accessor(sct_event_buffer * buffer)
+{
+  gplotBuffer_mutex.lock();
+  gPlotCollection = buffer;
 }
 
-void setGlobalPlotCollection(sct_event_buffer* buffer){
-  gPlotCollection = buffer;
+Buffer_accessor::~Buffer_accessor()
+{
+  gPlotCollection = nullptr;
+  gplotBuffer_mutex.unlock();
+}
+
+sct_event_buffer * Buffer_accessor::getGlobalPlotCollection()
+{
+  return gPlotCollection;
 }

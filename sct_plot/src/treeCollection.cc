@@ -30,15 +30,33 @@ treeCollection::treeCollection(TTree *tree/*=0*/) :m_buffer(new std::vector<doub
   std::cout << tree->GetName() << std::endl;
   m_tree = new Hit_extractor(tree);
   event_nr = 0;
-  getGlobalPlotCollection()->set(tree->GetName(), &m_buffer);
+ 
+  auto buffer = Buffer_accessor::getGlobalPlotCollection();
+  if (!buffer)
+  {
+    std::cout << "global buffer not set" << std::endl;
+    return;
+
+  }
+  buffer->set(tree->GetName(), &m_buffer);
 }
 
 treeCollection::treeCollection(const char *name)
 {
   m_tree = NULL;
-  if (!getGlobalPlotCollection()->get(name, &m_buffer))
+  
+  auto buffer = Buffer_accessor::getGlobalPlotCollection();
+  if (!buffer)
+  {
+    std::cout << "global buffer not set" << std::endl;
+    return;
+
+  }
+  
+  if (!buffer->get(name, &m_buffer))
   {
     std::cout << "collection not found. name: \"" << name << "\"" << std::endl;
+    return;
   }
   
   event_nr = *(m_buffer.m_event_nr);
@@ -88,7 +106,16 @@ Int_t treeCollection::GetEntries() const
 treeCollection::treeCollection(const char *name)
 {
   fChain = NULL;
-  if (!getGlobalPlotCollection()->get(name, &m_buffer))
+  auto buffer = Buffer_accessor::getGlobalPlotCollection();
+  if (!buffer)
+  {
+    std::cout << "global buffer not set" << std::endl;
+    return;
+
+  }
+
+
+  if (!buffer->get(name, &m_buffer))
   {
     std::cout << "collection not found. name: \"" << name << "\"" << std::endl;
   }
@@ -114,7 +141,16 @@ treeCollection::treeCollection(TTree *tree) : fChain(0)
   fChain->SetBranchAddress("y", &m_buffer.m_y, &b_y);
   fChain->SetBranchAddress("event_nr", &event_nr, &b_event_nr);
   m_buffer.m_event_nr=&event_nr;
-  getGlobalPlotCollection()->set(tree->GetName(), &m_buffer);
+
+  auto buffer = Buffer_accessor::getGlobalPlotCollection();
+  if (!buffer)
+  {
+    std::cout << "global buffer not set" << std::endl;
+    return;
+
+  }
+
+  buffer->set(tree->GetName(), &m_buffer);
 }
 treeCollection::~treeCollection()
 {
@@ -166,7 +202,15 @@ treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double
   {
     m_tree=new Hit_output(name);
   }
-  getGlobalPlotCollection()->set(name, &m_buffer);
+  auto buffer = Buffer_accessor::getGlobalPlotCollection();
+  if (!buffer)
+  {
+    std::cout << "global buffer not set" << std::endl;
+    return;
+
+  }
+  
+  buffer->set(name, &m_buffer);
 }
 treeCollection_ouput::~treeCollection_ouput()
 {
@@ -207,7 +251,16 @@ Int_t treeCollection_ouput::Draw(const char* axis, const char* cuts, const char 
 treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr, bool save2disk/*=true*/) :m_buffer(ID, x, y, event_nr),m_name(name)
 {
  
-  getGlobalPlotCollection()->set(name ,&m_buffer);
+
+  auto buffer = Buffer_accessor::getGlobalPlotCollection();
+  if (!buffer)
+  {
+    std::cout << "global buffer not set" << std::endl;
+    return;
+
+  }
+
+  buffer->set(name ,&m_buffer);
   if (save2disk)
   {
     m_tree = new TTree(name, name);

@@ -283,46 +283,41 @@ public:
   static  const char* axis_name(){ return "axis____"; }
   static  const char* cutOff_name(){ return "cutOff____"; }
   virtual void processEventStart() {
-    m_hit1.clear();
-    m_hit2.clear();
-    m_dist.clear();
+
+    dist = plane_hit(0, 0);
+    h1 = plane_hit(0, 0);
+    h2 = plane_hit(0, 0);
+    r = m_cutOff;
   }
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) {
 
+    plane_hit e(p1.x - p2.x, p1.y - p2.y);
+    double r1 = 0;
+    if (m_axis == x_axis_def)
+    {
+      r1 = abs(e.x);
+    }
+    else if (m_axis == y_axis_def) {
+      r1 = abs(e.y);
+    }
+    else{
+      std::cout << "unknown axis" << std::endl;
+    }
 
-    m_dist.emplace_back((p1.x - p2.x), (p1.y - p2.y));
-    m_hit1.emplace_back(p1.x, p1.y);
-    m_hit2.emplace_back(p2.x, p2.y);
+    if (r1 > 0 && r1 < r)
+    {
+      r = r1;
+      dist = e;
+      h1 = p1;
+      h2 = p2;
+    }
+
   }
 
   virtual void processEventEnd() {
     
-    double r = m_cutOff;
-    plane_hit dist(0, 0), h1(0, 0), h2(0, 0);
 
-    for (size_t i = 0; i < m_dist.size(); ++i)
-    {
-      auto e = m_dist.at(i);
-      double r1 = 0;
-      if (m_axis == x_axis_def)
-      {
-        r1 = abs(e.x);
-      }
-      else if (m_axis == y_axis_def) {
-        r1 = abs(e.y);
-      }
-      else{
-        std::cout << "unknown axis" << std::endl;
-      }
-      if (r1 > 0 && r1 < r)
-      {
-        r = r1;
-        dist = e;
-        h1 = m_hit1.at(i);
-        h2 = m_hit2.at(i);
-      }
 
-    }
 
     if (r < m_cutOff)
     {
@@ -332,7 +327,8 @@ public:
     }
   }
   double m_cutOff;
-  std::vector<plane_hit> m_dist,m_hit1, m_hit2;
+  plane_hit dist = plane_hit(0, 0), h1=plane_hit(0, 0), h2=plane_hit(0, 0);
+  double r = 10000000;
   axis_def m_axis;
   virtual s_plane_collection getOutputcollection() {
 

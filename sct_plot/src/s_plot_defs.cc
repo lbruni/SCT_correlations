@@ -2,7 +2,7 @@
 #include <iostream>
 #include <atomic>
 
-std::atomic<int> g_plot_count =0;
+int g_plot_count =0;
 
 S_plot_def::S_plot_def(const char* type, const char* name, bool save2disk/*=true*/) :m_type(type), m_name(name), m_save2disk(save2disk)
 {

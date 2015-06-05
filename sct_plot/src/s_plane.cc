@@ -1,6 +1,7 @@
 #include "sct_plots.h"
 #include <iostream>
 #include "sct_plots_internal.h"
+#include "internal/plane.hh"
 
 S_plane::S_plane(double ID, treeCollection* hits) : m_ID(ID)
 {

@@ -67,7 +67,7 @@ s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1)
 
 s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S_plane p2)
 {
-  Buffer_accessor buffer(m_eventBuffer.get());
+    Buffer_accessor buffer(m_eventBuffer.get());
   auto p1_pointer = pushPlane(std::move(p1));
   auto p2_pointer = pushPlane(std::move(p2));
 
@@ -86,7 +86,16 @@ s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S
 s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis)
 {
  Buffer_accessor  buffer( m_eventBuffer.get());
-  m_plots.push_back(std::make_pair(plot_def.m_name, S_plot(plot_def, getAxis_ref(x_axis), getAxis_ref(y_axis))));
+
+ plot_def.m_axis.push_back(getAxis_ref(x_axis));
+ plot_def.m_axis.push_back(getAxis_ref(y_axis));
+
+  return addPlot_internal(plot_def);
+}
+
+s_plane_collection S_plot_collection::addPlot_internal(S_plot_def plot_def)
+{
+  m_plots.push_back(std::make_pair(plot_def.m_name, S_plot(plot_def)));
   return m_plots.back().second.getOutputcollection();
 }
 

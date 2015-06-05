@@ -103,6 +103,17 @@ const char* sct::plot_rotated()
 
 
 
+const char* sct::plot_coordinate_transform()
+{
+  return "coordinate_transform____";
+}
+
+const char* sct::plot_hitMultiplizity()
+{
+  return "hitMultiplizity___";
+}
+
+
 
 S_plot_def sct_plot::s_hitmap(const char* name, bool save2disk )
 {

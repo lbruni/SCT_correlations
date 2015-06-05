@@ -126,6 +126,7 @@ public:
   static const char* plot_A_if_B();
   static const char* plot_rotated();
   static const char* plot_coordinate_transform();
+  static const char* plot_hitMultiplizity();
 };
 class S_plot_def;
 class DllExport sct_plot{
@@ -144,6 +145,7 @@ static  S_plot_def s_plane_distance(const char* name,bool save2disk =true);
 static  S_plot_def s_A_if_B(const char* name,bool save2disk =true);
 static  S_plot_def s_rotated(const char* name ,Double_t angle,bool save2disk =true);
 static  S_plot_def s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
+static  S_plot_def s_coordinate_transform_move(const char* name, Double_t x_offset,  Double_t y_offset, bool save2disk = true);
 };
 class treeCollection;
 
@@ -196,11 +198,17 @@ public:
   const char* getName(Int_t i);
   void showNames() const;
   Int_t size() const;
+  void push_back(const S_plane& pl);
+  void push_back(const char* name,const S_plane& pl);
 #ifndef __CINT__
   std::vector<std::pair<std::string, S_plane>> m_planes;
 #endif
   ClassDef(s_plane_collection, 0);
 };
+DllExport s_plane_collection& operator+(s_plane_collection& pl1, const s_plane_collection& pl2);
+DllExport s_plane_collection operator+(const s_plane_collection& pl1, const s_plane_collection& pl2);
+DllExport s_plane_collection& operator+(s_plane_collection& pl1, const S_plane& pl2);
+DllExport s_plane_collection operator+(const s_plane_collection& pl1, const S_plane& pl2);
 
 class DllExport S_plot_def{
 public:
@@ -208,12 +216,16 @@ public:
   S_plot_def(const char* type, const char* name,bool save2disk=true);
   void setParameter(const char* tag, const char* value);
   const char * getParameter(const char* tag, const char* default_value);
+
+ 
+
 #ifndef __CINT__
 
   void setParameter(const std::string & tag, const std::string& value);
   std::string getParameter(const std::string &  tag, const std::string &  default_value);
 
-
+  std::vector<S_plane*> m_planes;
+  std::vector<axis_ref*> m_axis;
   std::map<std::string, std::string> m_tags;
   std::string m_name, m_type;
   bool m_save2disk;
@@ -232,6 +244,7 @@ public:
   S_plot(const char* type, const char* name, S_plane* x, S_plane* y);
   S_plot(const S_plot_def& plotdef, S_plane* x, S_plane* y);
   S_plot(const S_plot_def& plotdef, axis_ref* x, axis_ref* y);
+  S_plot(const S_plot_def& plotdef);
   void fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
   s_plane_collection getOutputcollection();
@@ -301,6 +314,7 @@ public:
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
 private:
+  s_plane_collection addPlot_internal(S_plot_def plot_def);
   axis_ref* getAxis_ref(const S_Axis & axis);
   treeCollection* getCollection(const char* name);
 

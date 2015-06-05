@@ -98,9 +98,9 @@ void find_nearest::processEventEnd()
 s_plane_collection find_nearest::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane(getOutputName(), 0)));
-  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane(getOutputName(), 1)));
-  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane(getOutputName(), 2)));
+  ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane_def(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane_def(getOutputName(), 1)));
+  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane_def(getOutputName(), 2)));
   return ret;
 }
 

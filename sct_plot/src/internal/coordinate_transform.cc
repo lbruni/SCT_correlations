@@ -61,7 +61,7 @@ void coordinate_transform::processHit(double x, double y)
 s_plane_collection coordinate_transform::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("coordinate_transform"), S_plane(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("coordinate_transform"), S_plane_def(getOutputName(), 0)));
   return ret;
 }
 

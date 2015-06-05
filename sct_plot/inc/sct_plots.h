@@ -83,24 +83,24 @@ public:
   static void CutTH2(TH2* h2, S_ZCut z);
 
 };
-
+class S_plane_def;
 class DllExport sct_coll{
 public:
-static  S_plane apix_hit_local();
-static  S_plane apix_hit();
-static  S_plane apix_zs_data();
-static  S_plane apix_fitted();
-static  S_plane apix_fitted_local();
-static  S_plane DUT_hit_local();
-static  S_plane DUT_hit();
-static  S_plane DUT_zs_data();
-static  S_plane DUT_fitted();
-static  S_plane DUT_fitted_local();
-static  S_plane tel_hit_local(double ID);
-static  S_plane tel_hit(double ID);
-static  S_plane tel_zs_data(double ID);
-static  S_plane tel_fitted(double ID);
-static  S_plane tel_fitted_local(double ID);
+static  S_plane_def apix_hit_local();
+static  S_plane_def apix_hit();
+static  S_plane_def apix_zs_data();
+static  S_plane_def apix_fitted();
+static  S_plane_def apix_fitted_local();
+static  S_plane_def DUT_hit_local();
+static  S_plane_def DUT_hit();
+static  S_plane_def DUT_zs_data();
+static  S_plane_def DUT_fitted();
+static  S_plane_def DUT_fitted_local();
+static  S_plane_def tel_hit_local(double ID);
+static  S_plane_def tel_hit(double ID);
+static  S_plane_def tel_zs_data(double ID);
+static  S_plane_def tel_fitted(double ID);
+static  S_plane_def tel_fitted_local(double ID);
 };
 
 class DllExport sct{
@@ -160,19 +160,38 @@ struct plane_hit
   Double_t x, y;
 };
 
+class DllExport S_plane_def{
 
+public:
+  S_plane_def(const char* name, Double_t ID);
+
+  Double_t getID() const;
+  const char* getName() const;
+
+  S_Axis getX_def() const;
+  S_Axis getY_def() const;
+#ifndef __CINT__
+
+private:
+  Double_t m_ID = 0;
+  std::string m_name;
+
+#endif
+};
 class DllExport S_plane{
 public:
   S_plane();
 #ifndef __CINT__
-  S_plane(double ID, treeCollection* hits);
+
+  S_plane(const S_plane_def& plane_def, treeCollection* hits);
   void setTreeCollection(treeCollection* hits);
 #endif
-  S_plane(double ID, S_treeCollection* hits);
-  S_plane(const char* name,Double_t ID);
-  bool isSetTreeCollectionSet() const;
-  void setTreeCollection(S_treeCollection* hits);
+
+  S_plane(const S_plane_def& plane_def, S_treeCollection* hits);
+
+
   const char * getName() const;
+  Double_t getID() const;
   bool next() ;
   plane_hit get() const;
 
@@ -182,9 +201,7 @@ public:
   axis_ref* getX() const;
   axis_ref* getY() const;
 #ifndef __CINT__
-  Double_t m_ID =0 ;
-private:
-  std::string m_name;
+  S_plane_def m_plane_def;
   std::shared_ptr<plane> m_plane;
 #endif
   ClassDef(S_plane, 0);
@@ -192,24 +209,22 @@ private:
 class DllExport s_plane_collection{
 public:
   s_plane_collection(){}
-  S_plane get(Int_t i);
-  S_plane get(const char* name);
-  S_plane operator()();
-  const char* getName(Int_t i);
+  S_plane_def get(Int_t i) const;
+  S_plane_def get(const char* name) const;
+  S_plane_def operator()() const;
+  const char* getName(Int_t i) const;
   void showNames() const;
   Int_t size() const;
-  void push_back(const S_plane& pl);
-  void push_back(const char* name,const S_plane& pl);
+  void push_back(const S_plane_def& pl);
+  void push_back(const char* name,const S_plane_def& pl);
 #ifndef __CINT__
-  std::vector<std::pair<std::string, S_plane>> m_planes;
+  std::vector<std::pair<std::string, S_plane_def>> m_planes;
 #endif
   ClassDef(s_plane_collection, 0);
 };
-DllExport s_plane_collection& operator+(s_plane_collection& pl1, const s_plane_collection& pl2);
-DllExport s_plane_collection operator+(const s_plane_collection& pl1, const s_plane_collection& pl2);
-DllExport s_plane_collection& operator+(s_plane_collection& pl1, const S_plane& pl2);
-DllExport s_plane_collection operator+(const s_plane_collection& pl1, const S_plane& pl2);
-
+DllExport s_plane_collection operator+(s_plane_collection pl1, const s_plane_collection& pl2);
+DllExport s_plane_collection operator+(s_plane_collection pl1, const S_plane_def& pl2);
+DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def& pl2);
 class DllExport S_plot_def{
 public:
 
@@ -299,27 +314,28 @@ public:
   S_plot_collection(TFile* file);
   void addFile(TFile* file);
   void reset();
-  s_plane_collection addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis);
+  s_plane_collection addPlot(const char* PlotType, const char* name, const S_Axis& x_axis, const S_Axis& y_axis);
 
-  s_plane_collection addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis);
+  s_plane_collection addPlot(S_plot_def plot_def, const S_Axis& x_axis, const S_Axis& y_axis);
   s_plane_collection addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);
-  s_plane_collection addPlot(const char* name, S_plot pl);
-  s_plane_collection addPlot(const char* PlotType, const char* name, S_plane p1, S_plane  p2);
-  s_plane_collection addPlot(S_plot_def plot_def, S_plane p1, S_plane  p2);
-  s_plane_collection addPlot(S_plot_def plot_def, S_plane p1);
+  s_plane_collection addPlot(const char* name, const S_plot& pl);
+  s_plane_collection addPlot(const char* PlotType, const char* name, const S_plane_def& p1, const S_plane_def & p2);
+  s_plane_collection addPlot(const S_plot_def& plot_def, const S_plane_def& p1, const S_plane_def & p2);
+  s_plane_collection addPlot(const S_plot_def& plot_def,const  S_plane_def& p1);
+  s_plane_collection addPlot(S_plot_def plot_def, const  s_plane_collection& p1);
   void Draw();
   Long64_t Draw(const char* name);
   Long64_t Draw(const char* name, const S_DrawOption& option);
-  Long64_t Draw(const S_plane& name, const S_DrawOption& option);
+  Long64_t Draw(const S_plane_def& name, const S_DrawOption& option);
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
 private:
-  s_plane_collection addPlot_internal(S_plot_def plot_def);
+  s_plane_collection addPlot_internal(const S_plot_def& plot_def);
   axis_ref* getAxis_ref(const S_Axis & axis);
   treeCollection* getCollection(const char* name);
 
   S_plane* getPlane(double ID, treeCollection* coll);
-  S_plane* pushPlane(S_plane pl);
+  S_plane* pushPlane(const S_plane_def& pl);
 
   std::shared_ptr<sct_event_buffer> m_eventBuffer;
 

@@ -13,7 +13,7 @@ S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_share
 {
 
   addFile(file);
- 
+
 }
 
 
@@ -31,9 +31,9 @@ void S_plot_collection::reset()
   m_trees.clear();
 }
 
-s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis)
+s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, const S_Axis& x_axis, const S_Axis& y_axis)
 {
- return addPlot(PlotType, name, x_axis, y_axis, S_DrawOption());
+  return addPlot(PlotType, name, x_axis, y_axis, S_DrawOption());
 }
 
 s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option)
@@ -48,33 +48,52 @@ s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* 
 
 }
 
-s_plane_collection S_plot_collection::addPlot(const char* name, S_plot pl)
+s_plane_collection S_plot_collection::addPlot(const char* name, const S_plot& pl)
 {
   m_plots.push_back(std::make_pair(name, std::move(pl)));
   m_drawOption[name] = S_DrawOption();
   return m_plots.back().second.getOutputcollection();
 }
 
-s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_plane p1, S_plane p2)
+s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, const S_plane_def& p1, const S_plane_def & p2)
 {
- return addPlot(S_plot_def(PlotType, name), std::move(p1), std::move(p2));
+  return addPlot(S_plot_def(PlotType, name), p1, p2);
 
 }
-s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1)
+
+
+s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, const s_plane_collection& p1)
+{
+  Buffer_accessor buffer(m_eventBuffer.get());
+  for (auto &e : p1.m_planes)
+  {
+    auto p1_pointer = pushPlane(e.second);
+    if (!p1_pointer)
+    {
+      std::cout << "[S_plot_collection] planes not set correctly!!" << std::endl;
+      return s_plane_collection();
+    }
+    plot_def.m_planes.push_back(p1_pointer);
+  }
+
+  return addPlot_internal(plot_def);
+}
+
+s_plane_collection S_plot_collection::addPlot(const S_plot_def& plot_def, const  S_plane_def& p1)
 {
   return addPlot(plot_def, p1.getX_def(), p1.getY_def());
 }
 
-s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S_plane p2)
+s_plane_collection S_plot_collection::addPlot(const  S_plot_def& plot_def, const S_plane_def& p1, const S_plane_def & p2)
 {
-    Buffer_accessor buffer(m_eventBuffer.get());
-  auto p1_pointer = pushPlane(std::move(p1));
-  auto p2_pointer = pushPlane(std::move(p2));
+  Buffer_accessor buffer(m_eventBuffer.get());
+  auto p1_pointer = pushPlane(p1);
+  auto p2_pointer = pushPlane(p2);
 
   if (p1_pointer && p2_pointer)
   {
- 
-   return addPlot(plot_def.m_name.c_str(), std::move(S_plot(plot_def, p1_pointer, p2_pointer)));
+
+    return addPlot(plot_def.m_name.c_str(), std::move(S_plot(plot_def, p1_pointer, p2_pointer)));
   }
   else{
     std::cout << "planes not set correctly!! \n";
@@ -83,17 +102,16 @@ s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_plane p1, S
   return s_plane_collection();
 }
 
-s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, S_Axis x_axis, S_Axis y_axis)
+s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, const S_Axis& x_axis, const S_Axis& y_axis)
 {
- Buffer_accessor  buffer( m_eventBuffer.get());
-
- plot_def.m_axis.push_back(getAxis_ref(x_axis));
- plot_def.m_axis.push_back(getAxis_ref(y_axis));
+  Buffer_accessor  buffer(m_eventBuffer.get());
+  plot_def.m_axis.push_back(getAxis_ref(x_axis));
+  plot_def.m_axis.push_back(getAxis_ref(y_axis));
 
   return addPlot_internal(plot_def);
 }
 
-s_plane_collection S_plot_collection::addPlot_internal(S_plot_def plot_def)
+s_plane_collection S_plot_collection::addPlot_internal(const S_plot_def& plot_def)
 {
   m_plots.push_back(std::make_pair(plot_def.m_name, S_plot(plot_def)));
   return m_plots.back().second.getOutputcollection();
@@ -128,19 +146,19 @@ Long64_t S_plot_collection::Draw(const char* name, const S_DrawOption& option)
   return 0;
 }
 
-Long64_t S_plot_collection::Draw(const S_plane& name, const S_DrawOption& option)
+Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& option)
 {
 
   S_DrawOption local(option);
 
- 
-  
+
+
   if (option.m_cuts.Length() == 0){
-   
-    local.m_cuts = TString("ID==") + TString(std::to_string(name.m_ID).c_str());
+
+    local.m_cuts = TString("ID==") + TString(std::to_string(name.getID()).c_str());
   }
   else{
-    local.m_cuts = TString("(")+option.m_cuts+ TString(") && ID == ") + TString(std::to_string(name.m_ID).c_str());
+    local.m_cuts = TString("(") + option.m_cuts + TString(") && ID == ") + TString(std::to_string(name.getID()).c_str());
   }
   return Draw(name.getName(), local);
 
@@ -156,7 +174,7 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
       auto l = e.second->GetEntries();
       if (last < kMaxInt && l != last)
       {
-        if (l<kMaxInt)
+        if (l < kMaxInt)
         {
           std::cout << "trees must have the same length" << std::endl;
         }
@@ -212,7 +230,7 @@ treeCollection* S_plot_collection::getCollection(const char* name)
   if (m_eventBuffer->IsCollection(name))
   {
     treeCollection* tree_pointer = new treeCollection(name);
-   
+
     m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
     return tree_pointer;
   }
@@ -243,7 +261,7 @@ treeCollection* S_plot_collection::getCollection(const char* name)
 
 
   treeCollection* tree_pointer = new treeCollection(collection);
-  
+
   m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
   return tree_pointer;
 
@@ -256,23 +274,21 @@ S_plane* S_plot_collection::getPlane(double ID, treeCollection* coll)
     return nullptr;
   }
 
-  m_planes.push_back(std::make_shared<S_plane>(ID, coll));
+  m_planes.push_back(std::make_shared<S_plane>(S_plane_def(coll->getName(), ID), coll));
   return m_planes.back().get();
 }
 
-S_plane* S_plot_collection::pushPlane(S_plane pl)
+S_plane* S_plot_collection::pushPlane(const S_plane_def& pl)
 {
-  if (!pl.isSetTreeCollectionSet())
-  {
-    auto pl_pointer = getCollection(pl.getName());
-    if (!pl_pointer)
-    {
-      return nullptr;
-    }
-    pl.setTreeCollection(pl_pointer);
 
+  auto pl_pointer = getCollection(pl.getName());
+  if (!pl_pointer)
+  {
+    return nullptr;
   }
-  m_planes.push_back(std::make_shared<S_plane>(pl));
+
+
+  m_planes.push_back(std::make_shared<S_plane>(pl, pl_pointer));
 
   return m_planes.back().get();
 }

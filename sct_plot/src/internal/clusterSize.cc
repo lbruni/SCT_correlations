@@ -49,8 +49,8 @@ s_plane_collection clusterSize::getOutputcollection()
 {
 
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("clusterPos"), S_plane(getOutputName(), 0)));
-  ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), S_plane(getOutputName(), 1)));
+  ret.m_planes.push_back(std::make_pair(std::string("clusterPos"), S_plane_def(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), S_plane_def(getOutputName(), 1)));
   return ret;
 }
 

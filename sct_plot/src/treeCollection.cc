@@ -3,7 +3,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <iostream>
-
+#include "TTree.h"
 #include "sct_global.h"
 
 #ifdef _DEBUG
@@ -41,7 +41,7 @@ treeCollection::treeCollection(TTree *tree/*=0*/) :m_buffer(new std::vector<doub
   buffer->set(tree->GetName(), &m_buffer);
 }
 
-treeCollection::treeCollection(const char *name)
+treeCollection::treeCollection(const char *name) :m_name(name)
 {
   m_tree = NULL;
   
@@ -100,10 +100,28 @@ Int_t treeCollection::GetEntries() const
 
 
 
+const char* treeCollection::getName() const
+{
+  if (m_tree)
+  {
+    return m_tree->getName();
+  }
+
+  return m_name.c_str();
+}
+
 #else
+const char* treeCollection::getName() const
+{
+  if (fChain)
+  {
+    return fChain->GetName();
+  }
+  return m_name.c_str();
+}
 
 
-treeCollection::treeCollection(const char *name)
+treeCollection::treeCollection(const char *name):m_name(name)
 {
   fChain = NULL;
   auto buffer = Buffer_accessor::getGlobalPlotCollection();

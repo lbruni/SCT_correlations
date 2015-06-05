@@ -17,7 +17,7 @@ void plot_find_correspondingX::processHit(const plane_hit& p1, const plane_hit& 
 s_plane_collection plot_find_correspondingX::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("plot_find_correspondingX"), S_plane(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("plot_find_correspondingX"), S_plane_def(getOutputName(), 0)));
   return ret;
 }
 
@@ -43,7 +43,7 @@ void plot_find_correspondingXY::processHit(const plane_hit&  p1, const plane_hit
  s_plane_collection plot_find_correspondingXY::getOutputcollection() {
 
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("correspondingXY"), S_plane(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("correspondingXY"), S_plane_def(getOutputName(), 0)));
   return ret;
 }
 

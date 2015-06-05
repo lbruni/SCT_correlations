@@ -32,6 +32,6 @@ void plot_Event_size::processHit(const plane_hit& p1, const plane_hit& p2)
 s_plane_collection plot_Event_size::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("Event_size"), S_plane(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("Event_size"), S_plane_def(getOutputName(), 0)));
   return ret;
 }

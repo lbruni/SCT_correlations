@@ -22,6 +22,6 @@ void hitmap::processHit(double x, double y)
 s_plane_collection hitmap::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("hitmap"), S_plane(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("hitmap"), S_plane_def(getOutputName(), 0)));
   return ret;
 }

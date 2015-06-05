@@ -168,83 +168,83 @@ S_plot_def sct_plot::s_A_if_B(const char* name, bool save2disk )
 
 
 
-S_plane sct_coll::apix_hit_local()
+S_plane_def sct_coll::apix_hit_local()
 {
-  return S_plane(sct::col_local_hit(), 20);
+  return S_plane_def(sct::col_local_hit(), 20);
 }
 
-S_plane sct_coll::apix_hit()
+S_plane_def sct_coll::apix_hit()
 {
-  return S_plane(sct::col_hit(), 20);
+  return S_plane_def(sct::col_hit(), 20);
 }
 
-S_plane sct_coll::apix_zs_data()
+S_plane_def sct_coll::apix_zs_data()
 {
-  return S_plane(sct::col_zsdata_apix(), 20);
-}
-
-
-
-S_plane sct_coll::apix_fitted()
-{
-  return S_plane(sct::col_fitpoints(), 20);
-}
-
-S_plane sct_coll::apix_fitted_local()
-{
-  return S_plane(sct::col_fitpoints_local(), 20);
-}
-
-S_plane sct_coll::DUT_hit_local()
-{
-  return S_plane(sct::col_local_hit(), 8);
-}
-
-S_plane sct_coll::DUT_hit()
-{
-  return S_plane(sct::col_hit(), 8);
-}
-
-S_plane sct_coll::DUT_zs_data()
-{
-  return S_plane(sct::col_zsdata_strip(), 8);
+  return S_plane_def(sct::col_zsdata_apix(), 20);
 }
 
 
 
-S_plane sct_coll::DUT_fitted()
+S_plane_def sct_coll::apix_fitted()
 {
-  return S_plane(sct::col_fitpoints(), 8);
+  return S_plane_def(sct::col_fitpoints(), 20);
 }
 
-S_plane sct_coll::DUT_fitted_local()
+S_plane_def sct_coll::apix_fitted_local()
 {
-  return S_plane(sct::col_fitpoints_local(), 8);
+  return S_plane_def(sct::col_fitpoints_local(), 20);
 }
 
-S_plane sct_coll::tel_hit_local(double ID)
+S_plane_def sct_coll::DUT_hit_local()
 {
-  return S_plane(sct::col_local_hit(), ID);
+  return S_plane_def(sct::col_local_hit(), 8);
 }
 
-S_plane sct_coll::tel_hit(double ID)
+S_plane_def sct_coll::DUT_hit()
 {
-  return S_plane(sct::col_hit(), ID);
+  return S_plane_def(sct::col_hit(), 8);
 }
 
-S_plane sct_coll::tel_zs_data(double ID)
+S_plane_def sct_coll::DUT_zs_data()
 {
-  return S_plane(sct::col_zsdata_m26(), ID);
+  return S_plane_def(sct::col_zsdata_strip(), 8);
 }
 
 
 
-S_plane sct_coll::tel_fitted(double ID)
+S_plane_def sct_coll::DUT_fitted()
 {
-  return S_plane(sct::col_fitpoints(), ID);
+  return S_plane_def(sct::col_fitpoints(), 8);
 }
 
-S_plane sct_coll::tel_fitted_local(double ID)
+S_plane_def sct_coll::DUT_fitted_local()
 {
-  return S_plane(sct::col_fitpoints_local(), ID);
+  return S_plane_def(sct::col_fitpoints_local(), 8);
+}
+
+S_plane_def sct_coll::tel_hit_local(double ID)
+{
+  return S_plane_def(sct::col_local_hit(), ID);
+}
+
+S_plane_def sct_coll::tel_hit(double ID)
+{
+  return S_plane_def(sct::col_hit(), ID);
+}
+
+S_plane_def sct_coll::tel_zs_data(double ID)
+{
+  return S_plane_def(sct::col_zsdata_m26(), ID);
+}
+
+
+
+S_plane_def sct_coll::tel_fitted(double ID)
+{
+  return S_plane_def(sct::col_fitpoints(), ID);
+}
+
+S_plane_def sct_coll::tel_fitted_local(double ID)
+{
+  return S_plane_def(sct::col_fitpoints_local(), ID);
 }

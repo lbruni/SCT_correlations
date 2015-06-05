@@ -24,7 +24,7 @@ public:
   Int_t GetNumberOfEntries();
   Int_t GetEvent(Long64_t eventNr);
   Int_t GetNumberOfEvents();
-
+  const char* getName() const;
 private:
   fitpoints *m_hits;
   Int_t m_entry=0;

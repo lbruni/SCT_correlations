@@ -72,6 +72,11 @@ Int_t Hit_extractor::GetNumberOfEvents()
 
 
 
+const char* Hit_extractor::getName() const
+{
+  return m_hits->getName();
+}
+
 Hit_output::Hit_output(const char* name) :m_hits(new Hit_output_impl(name))
 {
 

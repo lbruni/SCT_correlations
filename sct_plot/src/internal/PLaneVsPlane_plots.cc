@@ -128,7 +128,7 @@ double plane_distance::hit_abs(const plane_hit& h)
 s_plane_collection plane_distance::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), S_plane(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), S_plane_def(getOutputName(), 0)));
   return ret;
 }
 registerPlot(plane_distance, sct::plot_plane_distance());

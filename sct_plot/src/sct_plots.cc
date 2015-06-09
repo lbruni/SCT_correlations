@@ -139,7 +139,7 @@ public:
     {
     
     if (hit_abs(p2) < 0.1){
-      if (abs(p1.y)<0.2)
+      if (TMath::Abs(p1.y)<0.2)
       {
         m_status = 0;
       }
@@ -149,7 +149,7 @@ public:
       }
     }
     else{
-      if (abs(p1.y) < 0.2)
+      if (TMath::Abs(p1.y) < 0.2)
       {
         m_status = 10;
       }
@@ -219,7 +219,7 @@ public:
   plot_find_correspondingXY(const  S_plot_def& plot_def , S_plane* x, S_plane* y) : plotPlaneVsPlane(plot_def, x, y){}
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) {
 
-    if (abs(p1.x - p2.x) < 0.1 && abs(p1.y - p2.y) < 0.1)
+    if (TMath::Abs(p1.x - p2.x) < 0.1 && TMath::Abs(p1.y - p2.y) < 0.1)
     {
       pushHit(p1.x, p1.y);
     }
@@ -295,10 +295,10 @@ public:
     double r1 = 0;
     if (m_axis == x_axis_def)
     {
-      r1 = abs(e.x);
+      r1 = TMath::Abs(e.x);
     }
     else if (m_axis == y_axis_def) {
-      r1 = abs(e.y);
+      r1 = TMath::Abs(e.y);
     }
     else{
       std::cout << "unknown axis" << std::endl;
@@ -386,9 +386,9 @@ public:
         && 
         r1 < r 
         && 
-        abs(e.x) < m_x_cutOff
+	  TMath::Abs(e.x) < m_x_cutOff
         && 
-        abs(e.y)<m_y_cutOff )
+	  TMath::Abs(e.y)<m_y_cutOff )
       {
         r = r1;
         dist = e;

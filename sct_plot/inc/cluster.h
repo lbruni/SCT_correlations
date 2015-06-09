@@ -13,6 +13,8 @@ bool operator== (const pixelHit<T>& h1, const pixelHit<T>& h2){
 
   return ((h1.m_x == h2.m_x) && (h1.m_y == h2.m_y));
 }
+
+
 template <typename  T>
 T hitDistance(const pixelHit<T>& h1, const pixelHit<T>& h2){
   T xdiff = (h1.m_x - h2.m_x);
@@ -29,7 +31,8 @@ public:
   Cluster(const pixelHit_t& h){
     m_hits.push_back(h);
   }
-  bool pushHit(const pixelHit_t& h,const T& distance = 2 ){
+
+    bool pushHit(const pixelHit_t& h,const T& distance = 2 ){
 
     for (auto& e : m_hits){
       if (hitDistance(h, e) < distance)

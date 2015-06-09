@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "internal/axis_ref.hh"
+#include "sct_plots.h"
 
 
 
@@ -15,6 +16,8 @@ public:
 
   axis_ref* getX();
   axis_ref* getY();
+  bool next();
+  plane_hit get() const;
 
 private:
   class axis_vector :public axis_ref{

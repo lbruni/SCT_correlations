@@ -61,6 +61,7 @@ const char* find_nearest_strip::cutOff_name()
 
 void find_nearest_strip::processEventStart()
 {
+  
   dist = plane_hit(0, 0);
   h1 = plane_hit(0, 0);
   h2 = plane_hit(0, 0);
@@ -87,6 +88,10 @@ void find_nearest_strip::processHit(const plane_hit& p1, const plane_hit& p2)
     dist = e;
     h1 = p1;
     h2 = p2;
+  }
+  if (r1==0)
+  {
+    std::cout << "[find_nearest_strip] error r1== 0" << std::endl;
   }
 }
 

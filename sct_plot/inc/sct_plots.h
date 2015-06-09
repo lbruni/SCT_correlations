@@ -127,6 +127,8 @@ public:
   static const char* plot_rotated();
   static const char* plot_coordinate_transform();
   static const char* plot_hitMultiplizity();
+  static const char* plot_efficieny_map();
+  static const char* plot_cut_x_y();
 };
 class S_plot_def;
 class DllExport sct_plot{
@@ -146,6 +148,12 @@ static  S_plot_def s_A_if_B(const char* name,bool save2disk =true);
 static  S_plot_def s_rotated(const char* name ,Double_t angle,bool save2disk =true);
 static  S_plot_def s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
 static  S_plot_def s_coordinate_transform_move(const char* name, Double_t x_offset,  Double_t y_offset, bool save2disk = true);
+
+static  S_plot_def s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut , bool save2disk = true);
+static  S_plot_def s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
+
+
+static  S_plot_def s_cut_x_y(const char* name,const  S_XCut& x_cut,const  S_YCut& y_cut, bool save2disk = true);
 };
 class treeCollection;
 
@@ -227,7 +235,7 @@ DllExport s_plane_collection operator+(s_plane_collection pl1, const S_plane_def
 DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def& pl2);
 class DllExport S_plot_def{
 public:
-
+  
   S_plot_def(const char* type, const char* name,bool save2disk=true);
   void setParameter(const char* tag, const char* value);
   const char * getParameter(const char* tag, const char* default_value);
@@ -263,9 +271,8 @@ public:
   void fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
   s_plane_collection getOutputcollection();
-
 #ifndef __CINT__
-private:
+
   S_plot_def m_plotDef;
   std::shared_ptr<plot> m_plot;
 #endif

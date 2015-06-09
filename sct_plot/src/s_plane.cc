@@ -40,27 +40,12 @@ Double_t S_plane::getID() const
 bool S_plane::next()
 {
 
-  if (getX()->next()){
-    if (!getY()->next())
-    {
-      std::cout << "vector have different length" << std::endl;
-      return false;
-    }
-
-    return true;
-  }
-
-  if (getY()->next())
-  {
-    std::cout << "vector have different length" << std::endl;
-    return false;
-  }
-  return false;
+  return m_plane->next();
 }
 
 plane_hit S_plane::get() const
 {
-  return plane_hit(getX()->get(), getY()->get());
+  return m_plane->get();
 }
 
 S_Axis S_plane::getX_def() const

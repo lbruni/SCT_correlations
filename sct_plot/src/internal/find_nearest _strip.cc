@@ -7,9 +7,7 @@
 
 class find_nearest_strip :public plotPlaneVsPlane{
 public:
-  find_nearest_strip(const  S_plot_def& plot_def);
-  static  const char* axis_name();
-  static  const char* cutOff_name();
+  find_nearest_strip(const char* name, bool save2disk, axis_def search_axis, Double_t cutOfff);
   virtual void processEventStart();
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
 
@@ -19,44 +17,15 @@ public:
   double r = 10000000;
   axis_def m_axis;
   virtual s_plane_collection getOutputcollection();
-
+  virtual const char* getType() const override;
 };
 
-registerPlot(find_nearest_strip, sct::plot_find_nearest_strip());
 
-find_nearest_strip::find_nearest_strip(const S_plot_def& plot_def) : plotPlaneVsPlane(plot_def)
+
+
+find_nearest_strip::find_nearest_strip(const char* name, bool save2disk, axis_def search_axis, Double_t cutOfff) :plotPlaneVsPlane(name, save2disk), m_axis(search_axis), m_cutOff(cutOfff)
 {
-  try {
-    auto ax = atoi(m_plot_def.getParameter(axis_name(), "0"));
-    if (ax == x_axis_def)
-    {
-      m_axis = x_axis_def;
-    }
-    else if (ax == y_axis_def){
-      m_axis = y_axis_def;
-
-    }
-    else
-    {
-      std::cout << "[find_nearest_strip] unable to convert to axis def" << std::endl;
-    }
-
-
-    m_cutOff = atof(m_plot_def.getParameter(cutOff_name(), "1000000000"));
-  }
-  catch (...){
-    std::cout << "[find_nearest_strip] unable to convert" << std::endl;
-  }
-}
-
-const char* find_nearest_strip::axis_name()
-{
-  return "axis____";
-}
-
-const char* find_nearest_strip::cutOff_name()
-{
-  return "cutOff____";
+  
 }
 
 void find_nearest_strip::processEventStart()
@@ -116,10 +85,12 @@ s_plane_collection find_nearest_strip::getOutputcollection()
 }
 
 
-S_plot_def sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff /*=100000*/, bool save2disk /*= true*/)
+const char* find_nearest_strip::getType() const
 {
-  auto ret = S_plot_def(sct::plot_find_nearest_strip(), name, save2disk);
-  ret.setParameter(find_nearest_strip::cutOff_name(), std::to_string(cutOfff));
-  ret.setParameter(find_nearest_strip::axis_name(), std::to_string(search_axis));
-  return ret;
+  return sct::plot_find_nearest_strip();
+}
+
+S_plot sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff /*=100000*/, bool save2disk /*= true*/)
+{
+  return S_plot(new find_nearest_strip(name, save2disk, search_axis, cutOfff));
 }

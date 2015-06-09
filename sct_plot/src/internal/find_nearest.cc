@@ -7,9 +7,8 @@
 class find_nearest :public plotPlaneVsPlane{
 public:
 
-  static const char* x_cutOff_name();
-  static const char* y_cutOff_name();
-  find_nearest(const  S_plot_def& plot_def);
+
+  find_nearest(const char* name,bool save2disk,double x_cutOff,double y_cutOff);
   virtual void processEventStart();
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
 
@@ -19,29 +18,15 @@ public:
   double r;
   plane_hit  dist = plane_hit(0, 0), h1 = plane_hit(0, 0), h2 = plane_hit(0, 0);
   virtual s_plane_collection getOutputcollection();
+
+  virtual const char* getType() const override;
 };
 
-const char* find_nearest::x_cutOff_name()
+
+
+find_nearest::find_nearest(const char* name, bool save2disk, double x_cutOff, double y_cutOff) :plotPlaneVsPlane(name, save2disk), m_x_cutOff(x_cutOff), m_y_cutOff(y_cutOff)
 {
-  return "x_cutOff___";
-}
 
-const char* find_nearest::y_cutOff_name()
-{
-  return "y_cutOff___";
-}
-
-find_nearest::find_nearest(const S_plot_def& plot_def) : plotPlaneVsPlane(plot_def)
-{
-  try{
-
-    m_x_cutOff = atof(m_plot_def.getParameter(x_cutOff_name(), "100000"));
-    m_y_cutOff = atof(m_plot_def.getParameter(y_cutOff_name(), "100000"));
-  }
-  catch (...){
-    std::cout << "[find_nearest]  unable to convert parameter" << std::endl;
-
-  }
 }
 
 void find_nearest::processEventStart()
@@ -100,14 +85,15 @@ s_plane_collection find_nearest::getOutputcollection()
   return ret;
 }
 
-registerPlot(find_nearest, sct::plot_find_nearest());
 
 
-S_plot_def sct_plot::s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk /*=true*/)
+
+const char* find_nearest::getType() const
 {
-  auto ret = S_plot_def(sct::plot_find_nearest(), name, save2disk);
+  return sct::plot_find_nearest();
+}
 
-  ret.setParameter(find_nearest::x_cutOff_name(), std::to_string(x_cutoff));
-  ret.setParameter(find_nearest::y_cutOff_name(), std::to_string(y_cutoff));
-  return ret;
+S_plot sct_plot::s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk /*=true*/)
+{
+      return S_plot(new find_nearest(name, save2disk, x_cutoff, y_cutoff));
 }

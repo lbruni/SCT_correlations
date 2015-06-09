@@ -5,41 +5,32 @@
 
 class cut_x_y :public plot_hit2d{
 public:
-  cut_x_y(const S_plot_def& plot_def);
+  cut_x_y(const char* name, bool save2disk, const S_XCut& xcut, const S_YCut& ycut);
   virtual void processHit(double x, double y) override;
   virtual s_plane_collection getOutputcollection();
 
-  static const char* xmin_name(){ return "x_min___"; }
-  static const char* xmax_name(){ return "x_max___"; }
-  static const char* ymin_name(){ return "y_min___"; }
-  static const char* ymax_name(){ return "y_max___"; }
-  S_XCut xcut;
-  S_YCut ycut;
+  S_XCut m_xcut;
+  S_YCut m_ycut;
+
+  virtual const char* getType() const override;
 };
-registerPlot(cut_x_y, sct::plot_cut_x_y());
-cut_x_y::cut_x_y(const S_plot_def& plot_def) :plot_hit2d(plot_def)
+
+
+
+cut_x_y::cut_x_y(const char* name, bool save2disk, const S_XCut& xcut, const S_YCut& ycut) :plot_hit2d(name, save2disk), m_xcut(xcut), m_ycut(ycut)
 {
-  try{
 
-    xcut = S_XCut(atof(m_plot_def.getParameter(xmin_name(), "-100000")), atof(m_plot_def.getParameter(xmax_name(), "100000")));
-    ycut = S_YCut(atof(m_plot_def.getParameter(ymin_name(), "-100000")), atof(m_plot_def.getParameter(ymax_name(), "100000")));
-    
-  }
-  catch (...){
-    std::cout << "[cut_x_y]  unable to convert parameter" << std::endl;
-
-  }
 }
 
 void cut_x_y::processHit(double x, double y)
 {
 
-  if (xcut.isOutOfRange(x))
+  if (m_xcut.isOutOfRange(x))
   {
     return;
   }
 
-  if (ycut.isOutOfRange(y))
+  if (m_ycut.isOutOfRange(y))
   {
     return;
   }
@@ -55,41 +46,14 @@ s_plane_collection cut_x_y::getOutputcollection()
 
 
 
-S_plot_def sct_plot::s_cut_x_y(const char* name, const S_XCut& x_cut, const S_YCut& y_cut, bool save2disk /*= true*/)
+const char* cut_x_y::getType() const
 {
-  S_plot_def ret(sct::plot_cut_x_y(), name, save2disk);
+  return sct::plot_cut_x_y();
+}
 
-
-
-  if (x_cut.m_cut_min){
-    ret.setParameter(cut_x_y::xmin_name(), std::to_string(x_cut.m_min));
-  }
-  else{
-    ret.setParameter(cut_x_y::xmin_name(), std::to_string(-100000));
-  }
-
-  if (x_cut.m_cut_max){
-    ret.setParameter(cut_x_y::xmax_name(), std::to_string(x_cut.m_max));
-  }
-  else{
-    ret.setParameter(cut_x_y::xmax_name(), std::to_string(100000));
-  }
-
-
-  if (y_cut.m_cut_min){
-    ret.setParameter(cut_x_y::ymin_name(), std::to_string(y_cut.m_min));
-  }
-  else{
-    ret.setParameter(cut_x_y::ymin_name(), std::to_string(-100000));
-  }
-
-  if (y_cut.m_cut_max){
-    ret.setParameter(cut_x_y::ymax_name(), std::to_string(y_cut.m_max));
-  }
-  else{
-    ret.setParameter(cut_x_y::ymax_name(), std::to_string(100000));
-  }
-  return ret;
+S_plot sct_plot::s_cut_x_y(const char* name, const S_XCut& x_cut, const S_YCut& y_cut, bool save2disk /*= true*/)
+{
+  return S_plot(new cut_x_y(name, save2disk, x_cut, y_cut));
 }
 
 const char* sct::plot_cut_x_y()

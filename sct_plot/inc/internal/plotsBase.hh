@@ -3,25 +3,28 @@
 #include "sct_plots.h"
 
 
-#include "factory.hh"
 
-#define registerPlot(derivedClass,identifier) registerClass(plot,derivedClass,identifier) 
 
 class plot{
 public:
-
-  using MainType= std::string;
-  using Parameter_t = S_plot_def;
-  using Parameter_ref = const Parameter_t &;
-  plot(Parameter_ref plot_def);
+  
+  plot(const char* name,bool save2disk);
+  virtual const char* getType() const = 0;
+  virtual bool isReady()=0 ;
+  virtual void pushAxis(axis_ref* axis)=0;
+  virtual void pushPlane(S_plane* axis)=0;
   virtual void fill() = 0;
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") = 0;
   virtual void setParameter(const char* tag, const char * value);
   virtual s_plane_collection getOutputcollection();
-  Parameter_t m_plot_def;
+
   virtual const char* getOutputName()  const = 0 ;
-  static std::unique_ptr < plot > create(MainType name, Parameter_ref para);
-  static std::unique_ptr < plot > create(Parameter_ref para);
+  const char* getName() const;
+  bool getSave2disk() const;
+private:
+  
+  mutable std::string m_name;
+  bool m_save2disk=true;
 };
 
 

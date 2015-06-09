@@ -1,7 +1,8 @@
 #include "internal/find_coressponding.hh"
 
 
-plot_find_correspondingX::plot_find_correspondingX(const S_plot_def& plot_def) : plotPlaneVsPlane(plot_def)
+
+plot_find_correspondingX::plot_find_correspondingX(const char* name, bool save2disk) : plotPlaneVsPlane(name,save2disk)
 {
 
 }
@@ -21,10 +22,16 @@ s_plane_collection plot_find_correspondingX::getOutputcollection()
   return ret;
 }
 
-registerPlot(plot_find_correspondingX, sct::plot_find_correspondingX());
 
 
-plot_find_correspondingXY::plot_find_correspondingXY(const  S_plot_def& plot_def) : plotPlaneVsPlane(plot_def){
+
+const char* plot_find_correspondingX::getType() const
+{
+  return sct::plot_find_correspondingX();
+}
+
+plot_find_correspondingXY::plot_find_correspondingXY(const char* name, bool save2disk) : plotPlaneVsPlane(name, save2disk)
+{
 
 }
 
@@ -47,4 +54,19 @@ void plot_find_correspondingXY::processHit(const plane_hit&  p1, const plane_hit
   return ret;
 }
 
- registerPlot(plot_find_correspondingXY, sct::plot_find_correspondingXY());
+
+
+ const char* plot_find_correspondingXY::getType() const
+ {
+   return sct::plot_find_correspondingXY();
+ }
+
+ S_plot sct_plot::s_find_correspondingX(const char* name, bool save2disk)
+ {
+   return S_plot(new plot_find_correspondingX(name, save2disk));
+ }
+
+ S_plot sct_plot::s_find_correspondingXY(const char* name, bool save2disk)
+ {  
+   return S_plot(new plot_find_correspondingXY(name, save2disk));
+ }

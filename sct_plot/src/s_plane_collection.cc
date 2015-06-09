@@ -30,6 +30,10 @@ S_plane_def s_plane_collection::operator()() const
 {
   return get(0);
 }
+s_plane_collection::s_plane_collection(const S_plane_def& plane_)
+{
+  push_back(plane_);
+}
 
 const char* s_plane_collection::getName(Int_t i) const
 {

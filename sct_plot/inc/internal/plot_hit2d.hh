@@ -5,7 +5,7 @@
 
 class plot_hit2d :public plot2d{
 public:
-  plot_hit2d(const S_plot_def& plot_def);
+  plot_hit2d(const char* name, bool save2disk);
   virtual void processEventStart();
   virtual void processHit(double x, double y) = 0;
   virtual void processEventEnd();

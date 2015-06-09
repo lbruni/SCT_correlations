@@ -131,29 +131,30 @@ public:
   static const char* plot_cut_x_y();
 };
 class S_plot_def;
+class S_plot;
 class DllExport sct_plot{
 public:
-static  S_plot_def s_hitmap(const char* name,bool save2disk =true);
-static  S_plot_def s_correlation(const char* name,bool save2disk =true);
-static  S_plot_def s_residual(const char* name,bool save2disk =true);
-static  S_plot_def s_clustering(const char* name,Double_t Pixel_distance=2, bool save2disk =true);
-static  S_plot_def s_projectOnPixel(const char* name,bool save2disk =true);
-static  S_plot_def s_find_correspondingX(const char* name,bool save2disk =true);
-static  S_plot_def s_find_correspondingXY(const char* name,bool save2disk =true);
-static  S_plot_def s_Event_size(const char* name,bool save2disk =true);
-static  S_plot_def s_find_nearest(const char* name,Double_t x_cutoff, Double_t y_cutoff, bool save2disk =true);
-static  S_plot_def s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff =100000,bool save2disk = true);
-static  S_plot_def s_plane_distance(const char* name,bool save2disk =true);
-static  S_plot_def s_A_if_B(const char* name,bool save2disk =true);
-static  S_plot_def s_rotated(const char* name ,Double_t angle,bool save2disk =true);
-static  S_plot_def s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
-static  S_plot_def s_coordinate_transform_move(const char* name, Double_t x_offset,  Double_t y_offset, bool save2disk = true);
+  static  S_plot s_hitmap(const char* name, bool save2disk = true);
+  static  S_plot s_correlation(const char* name, bool save2disk = true);
+static  S_plot s_residual(const char* name, bool save2disk = true);
+static  S_plot s_clustering(const char* name, Double_t Pixel_distance = 2, bool save2disk = true);
+static  S_plot s_projectOnPixel(const char* name, bool save2disk = true);
+static  S_plot s_find_correspondingX(const char* name, bool save2disk = true);
+static  S_plot s_find_correspondingXY(const char* name, bool save2disk = true);
+static  S_plot s_Event_size(const char* name, bool save2disk = true);
+static  S_plot s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk = true);
+static  S_plot s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff = 100000, bool save2disk = true);
+static  S_plot s_plane_distance(const char* name, bool save2disk = true);
+static  S_plot s_A_if_B(const char* name, bool save2disk = true);
+static  S_plot s_rotated(const char* name, Double_t angle, bool save2disk = true);
+static  S_plot s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
+static  S_plot s_coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, bool save2disk = true);
 
-static  S_plot_def s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut , bool save2disk = true);
-static  S_plot_def s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
+static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, bool save2disk = true);
+static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
+static  S_plot s_hitMultiplizity(const char* name, bool save2disk = true);
 
-
-static  S_plot_def s_cut_x_y(const char* name,const  S_XCut& x_cut,const  S_YCut& y_cut, bool save2disk = true);
+static  S_plot s_cut_x_y(const char* name, const  S_XCut& x_cut, const  S_YCut& y_cut, bool save2disk = true);
 };
 class treeCollection;
 
@@ -216,6 +217,7 @@ public:
 };
 class DllExport s_plane_collection{
 public:
+  s_plane_collection(const S_plane_def& plane_);
   s_plane_collection(){}
   S_plane_def get(Int_t i) const;
   S_plane_def get(const char* name) const;
@@ -263,17 +265,14 @@ class DllExport S_plot{
 public:
   S_plot();
   S_plot(const S_plot& );
-  S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y);
-  S_plot(const char* type, const char* name, S_plane* x, S_plane* y);
-  S_plot(const S_plot_def& plotdef, S_plane* x, S_plane* y);
-  S_plot(const S_plot_def& plotdef, axis_ref* x, axis_ref* y);
-  S_plot(const S_plot_def& plotdef);
   void fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
   s_plane_collection getOutputcollection();
+  const char* getName() const;
+  const char* getType() const;
 #ifndef __CINT__
-
-  S_plot_def m_plotDef;
+  S_plot(plot* plot_);
+  
   std::shared_ptr<plot> m_plot;
 #endif
   ClassDef(S_plot, 0);
@@ -321,15 +320,11 @@ public:
   S_plot_collection(TFile* file);
   void addFile(TFile* file);
   void reset();
-  s_plane_collection addPlot(const char* PlotType, const char* name, const S_Axis& x_axis, const S_Axis& y_axis);
+  s_plane_collection addPlot( S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis);
 
-  s_plane_collection addPlot(S_plot_def plot_def, const S_Axis& x_axis, const S_Axis& y_axis);
-  s_plane_collection addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option);
-  s_plane_collection addPlot(const char* name, const S_plot& pl);
-  s_plane_collection addPlot(const char* PlotType, const char* name, const S_plane_def& p1, const S_plane_def & p2);
-  s_plane_collection addPlot(const S_plot_def& plot_def, const S_plane_def& p1, const S_plane_def & p2);
-  s_plane_collection addPlot(const S_plot_def& plot_def,const  S_plane_def& p1);
-  s_plane_collection addPlot(S_plot_def plot_def, const  s_plane_collection& p1);
+  s_plane_collection addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2);
+  s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1);
+  s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1);
   void Draw();
   Long64_t Draw(const char* name);
   Long64_t Draw(const char* name, const S_DrawOption& option);
@@ -337,7 +332,7 @@ public:
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
 private:
-  s_plane_collection addPlot_internal(const S_plot_def& plot_def);
+  s_plane_collection addPlot_internal(S_plot plot_def);
   axis_ref* getAxis_ref(const S_Axis & axis);
   treeCollection* getCollection(const char* name);
 

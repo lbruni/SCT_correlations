@@ -8,17 +8,20 @@ class axis_ref;
 class plot2d :public plot{
 
 public:
-  plot2d(const S_plot_def& plot_def);
+  plot2d(const char* name, bool save2disk);
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
   virtual void ProcessEvent() = 0;
   virtual void fill() override final;
   void pushHit(Double_t x, Double_t y);
   void pushHit(Double_t x, Double_t y, Double_t ID);
 
+  virtual bool isReady();
+  virtual void pushAxis(axis_ref* axis);
+  virtual void pushPlane(S_plane* axis);
   virtual const char* getOutputName()  const;
 protected:
-  axis_ref* m_x;
-  axis_ref* m_y;
+  axis_ref* m_x=nullptr;
+  axis_ref* m_y=nullptr;
   std::vector<double> m_x_points, m_y_points, m_id;
 
   std::shared_ptr<treeCollection_ouput> m_outTree;

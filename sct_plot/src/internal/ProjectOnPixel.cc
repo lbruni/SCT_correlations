@@ -4,17 +4,17 @@
 
 class ProjectOnPixel :public plot_hit2d{
 public:
-  ProjectOnPixel(const S_plot_def& plot_def);
+  ProjectOnPixel(const char* name, bool save2disk);
 
   virtual void processHit(double x, double y) override;
 
   double m_x_pixelsize = 0.074, m_ypixelsize = 100000;
-  virtual s_plane_collection getOutputcollection();
+  virtual s_plane_collection getOutputcollection() override;
+  virtual const char* getType() const override;
 };
-registerPlot(ProjectOnPixel, sct::plot_projectOnPixel());
 
 
-ProjectOnPixel::ProjectOnPixel(const S_plot_def& plot_def) :plot_hit2d(plot_def)
+ProjectOnPixel::ProjectOnPixel(const char* name, bool save2disk) : plot_hit2d(name, save2disk)
 {
 
 }
@@ -29,4 +29,14 @@ s_plane_collection ProjectOnPixel::getOutputcollection()
   s_plane_collection ret;
   ret.m_planes.push_back(std::make_pair(std::string("ProjectOnPixel"), S_plane_def(getOutputName(), 0)));
   return ret;
+}
+
+const char* ProjectOnPixel::getType() const
+{
+  return sct::plot_projectOnPixel();
+}
+
+S_plot sct_plot::s_projectOnPixel(const char* name, bool save2disk)
+{
+  return S_plot(new ProjectOnPixel(name, save2disk));
 }

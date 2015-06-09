@@ -1,16 +1,18 @@
 #include "internal/PLaneVsPlane_plots.hh"
+#include "sct_plots.h"
 
 
 class plot_a_if_b_has_a_hit :public plotPlaneVsPlane{
 public:
-  plot_a_if_b_has_a_hit(const  S_plot_def& plot_def);
+  plot_a_if_b_has_a_hit(const char* name ,bool save2disk);
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) override;
   virtual s_plane_collection getOutputcollection();
+  virtual const char* getType() const override;
+
 };
 
-registerPlot(plot_a_if_b_has_a_hit, sct::plot_A_if_B());
 
-plot_a_if_b_has_a_hit::plot_a_if_b_has_a_hit(const S_plot_def& plot_def) : plotPlaneVsPlane(plot_def)
+plot_a_if_b_has_a_hit::plot_a_if_b_has_a_hit(const char* name, bool save2disk) : plotPlaneVsPlane(name,save2disk)
 {
 
 }
@@ -29,3 +31,13 @@ s_plane_collection plot_a_if_b_has_a_hit::getOutputcollection()
   return ret;
 }
 
+
+const char* plot_a_if_b_has_a_hit::getType() const
+{
+  return sct::plot_A_if_B();
+}
+
+S_plot sct_plot::s_A_if_B(const char* name, bool save2disk)
+{
+  return S_plot(new plot_a_if_b_has_a_hit(name,save2disk));
+}

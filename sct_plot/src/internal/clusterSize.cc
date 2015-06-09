@@ -5,31 +5,30 @@
 
 class clusterSize :public plot_hit2d{
 public:
-  static const char* pixelDistance_name();
-  clusterSize(const S_plot_def& plot_def);
+  clusterSize(const char*name, bool save2disk,double clusterSize_);
   virtual void processEventStart() override;
-
+  virtual const char* getType() const override;
   virtual void processHit(double x, double y) override;
   virtual void processEventEnd() override;
   clusterMaker<Double_t> m_cl;
   virtual s_plane_collection getOutputcollection();
 };
-registerPlot(clusterSize, sct::plot_clusterSize());
 
 
-const char* clusterSize::pixelDistance_name()
+
+clusterSize::clusterSize(const char*name, bool save2disk, double clusterSize_) : plot_hit2d(name, save2disk)
 {
-  return "pixelDistance___";
-}
-
-clusterSize::clusterSize(const S_plot_def& plot_def) :plot_hit2d(plot_def)
-{
-  m_cl = clusterMaker<Double_t>(atof(m_plot_def.getParameter(clusterSize::pixelDistance_name(), "2")));
+  m_cl = clusterMaker<Double_t>(clusterSize_);
 }
 
 void clusterSize::processEventStart()
 {
   m_cl.reset();
+}
+
+const char* clusterSize::getType() const
+{
+  return sct::plot_clusterSize();
 }
 
 void clusterSize::processHit(double x, double y)
@@ -54,14 +53,7 @@ s_plane_collection clusterSize::getOutputcollection()
   return ret;
 }
 
-S_plot_def sct_plot::s_clustering(const char* name, Double_t Pixel_distance/*=2*/, bool save2disk /*=true*/)
+S_plot sct_plot::s_clustering(const char* name, Double_t Pixel_distance/*=2*/, bool save2disk /*=true*/)
 {
-
-
-  auto ret = S_plot_def(sct::plot_clusterSize(), name, save2disk);
-
-  ret.setParameter(clusterSize::pixelDistance_name(), std::to_string(Pixel_distance));
-  return ret;
-
-
+  return S_plot(new clusterSize(name,save2disk,Pixel_distance));
 }

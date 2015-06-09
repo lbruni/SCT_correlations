@@ -115,55 +115,19 @@ const char* sct::plot_hitMultiplizity()
 
 
 
-S_plot_def sct_plot::s_hitmap(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_hitmap(), name,save2disk);
-}
-
-S_plot_def sct_plot::s_correlation(const char* name,bool save2disk )
-{
-  return S_plot_def(sct::plot_correlation(), name,save2disk);
-}
-
-S_plot_def sct_plot::s_residual(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_residual(), name,save2disk);
-}
-
-
-S_plot_def sct_plot::s_projectOnPixel(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_projectOnPixel(), name,save2disk);
-}
-
-S_plot_def sct_plot::s_find_correspondingX(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_find_correspondingX(), name,save2disk);
-}
-
-S_plot_def sct_plot::s_find_correspondingXY(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_find_correspondingXY(), name,save2disk);
-}
-
-S_plot_def sct_plot::s_Event_size(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_Event_size(), name,save2disk);
-}
 
 
 
-S_plot_def sct_plot::s_plane_distance(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_plane_distance(), name,save2disk);
-}
 
 
 
-S_plot_def sct_plot::s_A_if_B(const char* name, bool save2disk )
-{
-  return S_plot_def(sct::plot_A_if_B(), name,save2disk);
-}
+
+
+
+
+
+
+
 
 
 

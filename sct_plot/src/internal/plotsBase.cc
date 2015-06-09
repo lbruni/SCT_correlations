@@ -1,9 +1,9 @@
 #include "internal/plotsBase.hh"
-#include "factoryDef.hh"
+#include <string>
 
-plot::plot(Parameter_ref plot_def) :m_plot_def(plot_def)
+int g_plot_count_intern = 0;
+plot::plot(const char* name, bool save2disk) :m_name(name), m_save2disk(save2disk)
 {
-
 }
 
 void plot::setParameter(const char* tag, const char * value)
@@ -17,18 +17,17 @@ s_plane_collection plot::getOutputcollection()
   return ret;
 }
 
-
-
-
-std::unique_ptr < plot > plot::create(MainType name, Parameter_ref para)
+const char* plot::getName() const
 {
-return  Class_factory_Utilities::Factory<plot>::Create(name, para);
-
+  if (m_name.empty())
+  {
+       m_name = getType() + std::to_string(g_plot_count_intern++);
+  }
+  return m_name.c_str();
 }
 
-std::unique_ptr < plot > plot::create(Parameter_ref para)
+bool plot::getSave2disk() const
 {
-  return  Class_factory_Utilities::Factory<plot>::Create(para.m_type, para);
+  return m_save2disk;
 }
 
-registerBaseClassDef(plot);

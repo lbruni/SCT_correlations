@@ -3,7 +3,7 @@
 
 class hitMultiplizity :public plot_hit2d{
 public:
-  hitMultiplizity(const S_plot_def& plot_def);
+  hitMultiplizity(const char* name, bool save2disk);
 
   virtual void processEventStart();
   virtual void processHit(double x, double y);;
@@ -11,11 +11,14 @@ public:
 
   Int_t m_counter = 0;
   virtual s_plane_collection getOutputcollection();
+
+  virtual const char* getType() const override;
 };
 
-registerPlot(hitMultiplizity, sct::plot_hitMultiplizity());
 
-hitMultiplizity::hitMultiplizity(const S_plot_def& plot_def) :plot_hit2d(plot_def)
+
+
+hitMultiplizity::hitMultiplizity(const char* name, bool save2disk) : plot_hit2d(name, save2disk)
 {
 
 }
@@ -40,4 +43,14 @@ s_plane_collection hitMultiplizity::getOutputcollection()
   s_plane_collection ret;
   ret.m_planes.push_back(std::make_pair(std::string("HitMultiplicity"), S_plane_def(getOutputName(), 0)));
   return ret;
+}
+
+const char* hitMultiplizity::getType() const
+{
+  return sct::plot_hitMultiplizity();
+}
+
+S_plot sct_plot::s_hitMultiplizity(const char* name, bool save2disk /*= true*/)
+{
+  return S_plot(new hitMultiplizity(name, save2disk));
 }

@@ -2,7 +2,8 @@
 #include "internal/plane.hh"
 #include <iostream>
 
-plot_hit2d::plot_hit2d(const S_plot_def& plot_def) :plot2d(plot_def)
+
+plot_hit2d::plot_hit2d(const char* name, bool save2disk) : plot2d(name,save2disk)
 {
 
 }

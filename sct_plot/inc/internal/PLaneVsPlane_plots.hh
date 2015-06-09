@@ -6,9 +6,17 @@
 #include <memory>
 
 class treeCollection_ouput;
+
+
 class plotPlaneVsPlane :public plot{
 public:
-  plotPlaneVsPlane(const  S_plot_def& plot_def);
+  
+  
+  plotPlaneVsPlane(const char* name, bool save2disk);
+  virtual bool isReady()override;
+  virtual void pushAxis(axis_ref* axis) override;
+  virtual void pushPlane(S_plane* axis) override;
+
 
   virtual void processEventStart();
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) = 0;
@@ -24,7 +32,7 @@ public:
   Int_t m_current = 0;
 
 
-  S_plane *m_x, *m_y;
+  S_plane *m_x =nullptr, *m_y=nullptr;
 
   Int_t m_size_x = 0, m_size_y = 0;
 };
@@ -32,12 +40,12 @@ public:
 
 class plane_distance :public plotPlaneVsPlane {
 public:
-  plane_distance(const  S_plot_def& plot_def);
+  plane_distance(const char* name, bool save2disk);
   virtual void processEventStart();
   virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
   static double hit_abs(const plane_hit& h);
   double m__id = 0, m_status = 0;
-
+  virtual const char* getType() const override;
   virtual s_plane_collection getOutputcollection();
 };
 

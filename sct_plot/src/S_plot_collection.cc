@@ -7,7 +7,7 @@
 
 #include "sct_event_buffer.h"
 #include "sct_global.h"
-
+#include "internal/plotsBase.hh"
 
 S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_event_buffer>())
 {
@@ -31,38 +31,36 @@ void S_plot_collection::reset()
   m_trees.clear();
 }
 
-s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, const S_Axis& x_axis, const S_Axis& y_axis)
-{
-  return addPlot(PlotType, name, x_axis, y_axis, S_DrawOption());
-}
-
-s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, S_Axis x_axis, S_Axis y_axis, S_DrawOption option)
+s_plane_collection S_plot_collection::addPlot( S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis)
 {
   Buffer_accessor buffer(m_eventBuffer.get());
-  m_drawOption[name] = option;
-  return addPlot(name, S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis)));
-
-
-  //m_plots.push_back(std::make_pair(name, S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis))));
-  //m_plots[name] std::move(S_plot(PlotType, name, getAxis_ref(x_axis), getAxis_ref(y_axis)));
-
+  plot_def.m_plot->pushAxis(getAxis_ref(x_axis));
+  plot_def.m_plot->pushAxis(getAxis_ref(y_axis));
+  return addPlot_internal(std::move(plot_def));
 }
 
-s_plane_collection S_plot_collection::addPlot(const char* name, const S_plot& pl)
+s_plane_collection S_plot_collection::addPlot_internal(S_plot plot_def)
 {
-  m_plots.push_back(std::make_pair(name, std::move(pl)));
-  m_drawOption[name] = S_DrawOption();
+  m_plots.push_back(std::make_pair(plot_def.getName(), std::move(plot_def)));
+  if (!m_plots.back().second.m_plot->isReady())
+  {
+    std::cout << "[S_plot_collection]  unable to create plot " << plot_def.getType() << ":"<< plot_def.getName()<< "\n";
+   return s_plane_collection();
+  }
+   
   return m_plots.back().second.getOutputcollection();
 }
 
-s_plane_collection S_plot_collection::addPlot(const char* PlotType, const char* name, const S_plane_def& p1, const S_plane_def & p2)
+s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1)
 {
-  return addPlot(S_plot_def(PlotType, name), p1, p2);
-
+  return addPlot(std::move(plot_def), s_plane_collection(p1));
 }
 
-
-s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, const s_plane_collection& p1)
+s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2)
+{
+  return addPlot(std::move(plot_def), p1 + p2);
+}
+s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const s_plane_collection& p1)
 {
   Buffer_accessor buffer(m_eventBuffer.get());
   for (auto &e : p1.m_planes)
@@ -73,49 +71,12 @@ s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, const s_plane
       std::cout << "[S_plot_collection] planes not set correctly!!" << std::endl;
       return s_plane_collection();
     }
-    plot_def.m_planes.push_back(p1_pointer);
+    plot_def.m_plot->pushPlane(p1_pointer);
   }
 
   return addPlot_internal(plot_def);
 }
 
-s_plane_collection S_plot_collection::addPlot(const S_plot_def& plot_def, const  S_plane_def& p1)
-{
-  return addPlot(plot_def, p1.getX_def(), p1.getY_def());
-}
-
-s_plane_collection S_plot_collection::addPlot(const  S_plot_def& plot_def, const S_plane_def& p1, const S_plane_def & p2)
-{
-  Buffer_accessor buffer(m_eventBuffer.get());
-  auto p1_pointer = pushPlane(p1);
-  auto p2_pointer = pushPlane(p2);
-
-  if (p1_pointer && p2_pointer)
-  {
-
-    return addPlot(plot_def.m_name.c_str(), std::move(S_plot(plot_def, p1_pointer, p2_pointer)));
-  }
-  else{
-    std::cout << "planes not set correctly!! \n";
-  }
-
-  return s_plane_collection();
-}
-
-s_plane_collection S_plot_collection::addPlot(S_plot_def plot_def, const S_Axis& x_axis, const S_Axis& y_axis)
-{
-  Buffer_accessor  buffer(m_eventBuffer.get());
-  plot_def.m_axis.push_back(getAxis_ref(x_axis));
-  plot_def.m_axis.push_back(getAxis_ref(y_axis));
-
-  return addPlot_internal(plot_def);
-}
-
-s_plane_collection S_plot_collection::addPlot_internal(const S_plot_def& plot_def)
-{
-  m_plots.push_back(std::make_pair(plot_def.m_name, S_plot(plot_def)));
-  return m_plots.back().second.getOutputcollection();
-}
 
 void S_plot_collection::Draw()
 {

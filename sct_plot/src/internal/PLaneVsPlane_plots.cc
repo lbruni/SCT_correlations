@@ -4,18 +4,50 @@
 #include <memory>
 #include <iostream>
 
-plotPlaneVsPlane::plotPlaneVsPlane(const S_plot_def& plot_def) :plot(plot_def)
+plotPlaneVsPlane::plotPlaneVsPlane(const char* name, bool save2disk) :plot(name,save2disk)
 {
-  if (m_plot_def.m_planes.size()==2)
+ 
+}
+
+bool plotPlaneVsPlane::isReady()
+{
+  if (!m_x)
   {
-    m_x = m_plot_def.m_planes[0];
-    m_y = m_plot_def.m_planes[1];
+    return false;
+    std::cout << "[plotPlaneVsPlane] first plane not set \n";
   }
-  else{
-    std::cout << "[plotPlaneVsPlane] unable to extract planes" << std::endl;
+
+  if (!m_y)
+  {
+    return false;
+    std::cout << "[plotPlaneVsPlane] second plane not set \n";
+  }
+  m_outTree = std::make_shared<treeCollection_ouput>(getName(), &m_x_points, &m_y_points, &m_id, &m_current, getSave2disk());
+  return true;
+}
+
+void plotPlaneVsPlane::pushAxis(axis_ref* axis)
+{
+  std::cout << "[plotPlaneVsPlane] axis not supported as input " << std::endl;
+  
+}
+
+void plotPlaneVsPlane::pushPlane(S_plane* plane_)
+{
+  if (!m_x)
+  {
+    m_x = plane_;
     return;
   }
-  m_outTree = std::make_shared<treeCollection_ouput>(plot_def.m_name.c_str(), &m_x_points, &m_y_points, &m_id, &m_current, plot_def.m_save2disk);
+
+  if (!m_y)
+  {
+    m_y = plane_;
+    return;
+  }
+
+
+  std::cout << "[plotPlaneVsPlane] this class only supports two input planes \n";
 }
 
 void plotPlaneVsPlane::processEventStart()
@@ -74,10 +106,15 @@ Long64_t plotPlaneVsPlane::Draw(const char* options, const char* cuts /*= ""*/, 
 
 const char* plotPlaneVsPlane::getOutputName() const
 {
-  return m_outTree->m_name.c_str();
+  if (m_outTree)
+  {
+    return m_outTree->m_name.c_str();
+  }
+  return getName();
 }
 
-plane_distance::plane_distance(const S_plot_def& plot_def) : plotPlaneVsPlane(plot_def)
+
+plane_distance::plane_distance(const char* name, bool save2disk) : plotPlaneVsPlane(name,save2disk)
 {
 
 }
@@ -125,10 +162,21 @@ double plane_distance::hit_abs(const plane_hit& h)
   return sqrt(h.x*h.x + h.y * h.y);
 }
 
+const char* plane_distance::getType() const
+{
+  return sct::plot_plane_distance();
+}
+
 s_plane_collection plane_distance::getOutputcollection()
 {
   s_plane_collection ret;
   ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), S_plane_def(getOutputName(), 0)));
   return ret;
 }
-registerPlot(plane_distance, sct::plot_plane_distance());
+
+
+
+S_plot sct_plot::s_plane_distance(const char* name, bool save2disk)
+{
+  return S_plot(new plane_distance(name, save2disk));
+}

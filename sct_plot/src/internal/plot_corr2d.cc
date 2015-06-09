@@ -1,7 +1,8 @@
 #include "internal/plot_corr2d.hh"
 #include "internal/plane.hh"
 
-plot_corr2d::plot_corr2d(const S_plot_def& plot_def) :plot2d(plot_def)
+
+plot_corr2d::plot_corr2d(const char*name, bool save2disk) : plot2d(name,save2disk)
 {
 
 }

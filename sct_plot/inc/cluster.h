@@ -122,14 +122,14 @@ public:
 
   bool isDuplicated(const pixelHit<T>& h){
 
-    auto it = find(m_hits.begin(), m_hits.end(), h);
-    if (it == m_hits.end()){
-
-
-      return false;
+    for (auto&e : m_hits)
+    {
+      if (e==h)
+      {
+        return true;
+      }
     }
-
-    return true;
+    return false;
   }
   T m_pixelDistance;
   bool m_allowHitDuplication;

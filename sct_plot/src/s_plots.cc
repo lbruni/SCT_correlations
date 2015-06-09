@@ -1,7 +1,7 @@
 #include "sct_plots.h"
 #include <iostream>
 #include "sct_plots_internal.h"
-
+#include "internal/plotsBase.hh"
 
 
 s_plane_collection S_plot::getOutputcollection()
@@ -13,9 +13,9 @@ s_plane_collection S_plot::getOutputcollection()
   return s_plane_collection();
 }
 
-S_plot::S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y) :m_plotDef(type, name)
+S_plot::S_plot(const char* type, const char* name, axis_ref* x, axis_ref* y) :S_plot(S_plot_def(type, name),x,y)
 {
-  m_plot = std::shared_ptr<plot>(create_plot(type, name, x, y));
+  
 }
 
 S_plot::S_plot() : m_plot(nullptr), m_plotDef("error","error")
@@ -25,9 +25,9 @@ S_plot::S_plot() : m_plot(nullptr), m_plotDef("error","error")
 
 
 
-S_plot::S_plot(const char* type, const char* name, S_plane* x, S_plane* y) :m_plotDef(type,name)
+S_plot::S_plot(const char* type, const char* name, S_plane* x, S_plane* y) :S_plot(S_plot_def(type, name), x, y)
 {
-  m_plot = std::shared_ptr<plot>(create_plot(type, name, x, y));
+  
 }
 
 S_plot::S_plot(const S_plot& pl) : m_plotDef(pl.m_plotDef)
@@ -39,14 +39,29 @@ S_plot::S_plot(const S_plot& pl) : m_plotDef(pl.m_plotDef)
 
 S_plot::S_plot(const S_plot_def& plotdef, S_plane* x, S_plane* y) :m_plotDef(plotdef)
 {
-  m_plot = std::shared_ptr<plot>(create_plot(plotdef, x, y));
+  m_plotDef.m_planes.push_back(x);
+  m_plotDef.m_planes.push_back(y);
+  m_plot = std::shared_ptr<plot>(std::move(plot::create(m_plotDef)));
 }
 
 S_plot::S_plot(const S_plot_def& plotdef, axis_ref* x, axis_ref* y) : m_plotDef(plotdef)
 {
-  m_plot = std::shared_ptr<plot>(create_plot(plotdef, x, y));
+  m_plotDef.m_axis.push_back(x);
+  m_plotDef.m_axis.push_back(y);
+
+  m_plot = std::shared_ptr<plot>(std::move(plot::create(m_plotDef)));
 }
 
+S_plot::S_plot(const S_plot_def& plotdef) :m_plotDef(plotdef)
+{
+  if (m_plotDef.m_axis.empty() && m_plotDef.m_planes.empty())
+  {
+    std::cout << "[S_plot] no axis or planes are defined unable to create the plot\n";
+    return;
+  }
+  m_plot = std::shared_ptr<plot>(std::move(plot::create(m_plotDef)));
+
+}
 void S_plot::fill()
 {
   if (!m_plot) {

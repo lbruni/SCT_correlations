@@ -5,7 +5,8 @@ FIND_PACKAGE( ROOT REQUIRED)
 
 
 AUX_SOURCE_DIRECTORY( src library_sources )
-
+AUX_SOURCE_DIRECTORY( src/internal library_sources_internals )
+SOURCE_GROUP(internals FILES ${library_sources_internals})
 SET(ProjectDict_name SCT_plotsDict.cxx)
 
 
@@ -24,7 +25,7 @@ SET(MY_INCLUDE_DIRECTORIES ./sct_plot/inc ./inc  ${ROOT_INCLUDE_DIR} )
 set(Project_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/${ProjectDict_name}) 
 
 ROOT_GENERATE_DICTIONARY_OLD("${Project_HEADERS}" "${Project_DICTIONARY}" "${MY_INCLUDE_DIRECTORIES}")
-ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources}  ${Project_DICTIONARY} )
+ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources} ${library_sources_internals} ${Project_DICTIONARY} )
 
 
 

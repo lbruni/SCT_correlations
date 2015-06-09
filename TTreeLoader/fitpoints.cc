@@ -98,6 +98,12 @@ void fitpoints::Show(Long64_t entry)
   if (!fChain) return;
   fChain->Show(entry);
 }
+
+const char* fitpoints::getName() const
+{
+ return fChain->GetName();
+}
+
 Int_t fitpoints::Cut(Long64_t entry)
 {
   // This function may be called from Loop.

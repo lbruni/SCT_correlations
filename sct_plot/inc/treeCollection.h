@@ -31,14 +31,14 @@ public :
 
   root_event m_buffer;
    // Declaration of leaf types
-   Int_t                event_nr;
+   Int_t                event_nr =0;
 
    treeCollection(TTree *tree);
    treeCollection(const char *name);
    virtual ~treeCollection();
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Int_t    GetEntries() const;
-
+   const char* getName() const;
 private:
 #ifdef _DEBUG
   Hit_extractor *m_tree;
@@ -52,7 +52,7 @@ private:
   Int_t           fCurrent; //!current Tree number in a TChain
 #endif // _DEBUG
 
-  
+  std::string m_name;
 };
 
 

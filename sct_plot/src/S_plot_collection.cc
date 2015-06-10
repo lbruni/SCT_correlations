@@ -101,10 +101,37 @@ Long64_t S_plot_collection::Draw(const char* name, const S_DrawOption& option)
   {
     if (e.first == name)
     {
-      return  e.second.Draw(option.m_options, option.m_cuts, option.m_axis);
+      return  e.second.Draw(option);
     }
   }
   return 0;
+}
+Long64_t S_plot_collection::Draw(const s_plane_collection& name, const S_DrawOption& option)
+{
+  if (name.m_planes.size()>1)
+  {
+    std::cout << "[S_plot_collection] multiple planes defined. use DrawAll to Draw all planes. this function only draws the first plane" << std::endl;
+  }
+  if (name.m_planes.empty())
+  {
+    std::cout << "[S_plot_collection] no planes defined" << std::endl;
+    return -1;
+  }
+  return Draw(name.get(0), option);
+
+}
+Long64_t S_plot_collection::DrawAll(const s_plane_collection& name, const S_DrawOption& option)
+{
+  if (name.m_planes.empty())
+  {
+    std::cout << "[S_plot_collection] no planes defined" << std::endl;
+    return -1;
+  }
+
+  for (auto&e : name.m_planes){
+
+    Draw(e.second, option);
+  }
 }
 
 Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& option)
@@ -112,15 +139,9 @@ Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& op
 
   S_DrawOption local(option);
 
+  TCut dummy = ("ID == " + std::to_string(name.getID())).c_str();
+  local.cut_add(dummy);
 
-
-  if (option.m_cuts.Length() == 0){
-
-    local.m_cuts = TString("ID==") + TString(std::to_string(name.getID()).c_str());
-  }
-  else{
-    local.m_cuts = TString("(") + option.m_cuts + TString(") && ID == ") + TString(std::to_string(name.getID()).c_str());
-  }
   return Draw(name.getName(), local);
 
 }

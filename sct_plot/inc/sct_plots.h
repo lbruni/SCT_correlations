@@ -28,7 +28,7 @@
 #include "TString.h"
 
 #include "Rtypes.h"
-
+#include "TCut.h"
 enum  axis_def
 #ifndef __CINT__
   :int
@@ -38,6 +38,14 @@ enum  axis_def
   y_axis_def
 };
 class S_plane;
+class S_DrawOption;
+class treeCollection;
+
+class axis_ref;
+class plot;
+class plane;
+class S_treeCollection;
+class S_Axis;
 
 class DllExport S_Cut
 {
@@ -156,13 +164,7 @@ static  S_plot s_hitMultiplizity(const char* name, bool save2disk = true);
 
 static  S_plot s_cut_x_y(const char* name, const  S_XCut& x_cut, const  S_YCut& y_cut, bool save2disk = true);
 };
-class treeCollection;
 
-class axis_ref;
-class plot;
-class plane;
-class S_treeCollection;
-class S_Axis;
 struct plane_hit
 {
   plane_hit(Double_t x_, Double_t y_) :x(x_), y(y_){}
@@ -220,7 +222,10 @@ public:
   s_plane_collection(const S_plane_def& plane_);
   s_plane_collection(){}
   S_plane_def get(Int_t i) const;
-  S_plane_def get(const char* name) const;
+  s_plane_collection getByName(const char* name) const;
+  s_plane_collection getByType(const char* type) const;
+  S_plane_def get(const char* name,const char* type) const;
+  s_plane_collection get(const char* nameOrType) const;
   S_plane_def operator()() const;
   const char* getName(Int_t i) const;
   void showNames() const;
@@ -267,6 +272,8 @@ public:
   S_plot(const S_plot& );
   void fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
+  Long64_t Draw(const char* options, const TCut& cuts , const char* axis = "y:x");
+  Long64_t Draw(const S_DrawOption& opt);
   s_plane_collection getOutputcollection();
   const char* getName() const;
   const char* getType() const;
@@ -294,8 +301,38 @@ public:
 class DllExport S_DrawOption{
 public:
 
-  S_DrawOption(const char* options = "colz", const char* cuts = "", const char * axis = "y:x");
-  TString m_options = "colz", m_cuts = "", m_axis = "x:y";
+  S_DrawOption(const char* options, const char* cuts ="", const char * axis = "y:x");
+  S_DrawOption(const char* options, TCut cuts , const char * axis = "y:x");
+  S_DrawOption();
+  S_DrawOption& options(const char* option);
+  S_DrawOption& opt_colz();
+  S_DrawOption& cut(const char* cut_);
+  S_DrawOption& cut_add(const TCut& cut_);
+  S_DrawOption& cut_x(Double_t min_,Double_t max_);
+  S_DrawOption& cut_x_min(Double_t min_);
+  S_DrawOption& cut_x_max(Double_t max_);
+  S_DrawOption& cut_y(Double_t min_, Double_t max_);
+  S_DrawOption& cut_y_min(Double_t min_);
+  S_DrawOption& cut_y_max(Double_t max_);
+  S_DrawOption& draw_axis(const char* axis_);
+  S_DrawOption& draw_x();
+  S_DrawOption& draw_y();
+  S_DrawOption& draw_x_VS_y();
+  S_DrawOption& draw_y_VS_x();
+  S_DrawOption& output_object(TObject* out_);
+
+  const char* getOptions() const;
+  const char* getAxis() const;
+  TCut getCut() const;
+private:
+#ifndef __CINT__
+
+  std::string m_options = "colz", m_axis = "x:y";
+  TCut m_cut;
+  TObject* m_output_object = nullptr;
+  mutable std::string m_axis_dummy;
+#endif // !__CINT__
+
   ClassDef(S_DrawOption, 0);
 };
 
@@ -329,6 +366,8 @@ public:
   Long64_t Draw(const char* name);
   Long64_t Draw(const char* name, const S_DrawOption& option);
   Long64_t Draw(const S_plane_def& name, const S_DrawOption& option);
+  Long64_t Draw(const s_plane_collection& name, const S_DrawOption& option);
+  Long64_t DrawAll(const s_plane_collection& name, const S_DrawOption& option);
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
 private:

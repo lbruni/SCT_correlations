@@ -22,7 +22,9 @@ public:
   virtual const char* getType() const override;
 };
 
-
+#define nearest_distance_pos 0
+#define nearest_plane1_pos 1
+#define nearest_plane2_pos 2
 
 find_nearest::find_nearest(const char* name, bool save2disk, double x_cutOff, double y_cutOff) :plotPlaneVsPlane(name, save2disk), m_x_cutOff(x_cutOff), m_y_cutOff(y_cutOff)
 {
@@ -67,9 +69,9 @@ void find_nearest::processEventEnd()
 {
   if (r < m_c_noHit)
   {
-    pushHit(dist.x, dist.y, 0);
-    pushHit(h1.x, h1.y, 1);
-    pushHit(h2.x, h1.y, 2);
+    pushHit(dist.x, dist.y, nearest_distance_pos);
+    pushHit(h1.x, h1.y, nearest_plane1_pos);
+    pushHit(h2.x, h1.y, nearest_plane2_pos);
   }
   else{
     auto i = "noHIt";
@@ -79,9 +81,9 @@ void find_nearest::processEventEnd()
 s_plane_collection find_nearest::getOutputcollection()
 {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane_def(getOutputName(), 0)));
-  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane_def(getOutputName(), 1)));
-  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane_def(getOutputName(), 2)));
+  ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane_def(getOutputName(), nearest_distance_pos)));
+  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane_def(getOutputName(), nearest_plane1_pos)));
+  ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane_def(getOutputName(), nearest_plane2_pos)));
   return ret;
 }
 

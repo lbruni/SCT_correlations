@@ -1,6 +1,45 @@
 #include "sct_plots.h"
 #include <iostream>
 
+// class output_streamer;
+// 
+// class output_lock{
+// public:
+//   output_lock(output_streamer& out_streamer_collection, std::ostream* local_outstreamer);
+//   ~output_lock();
+//   std::ostream* m_local_outstreamer = nullptr;
+//   output_streamer& m_out_streamer_collection;
+// };
+// 
+// std::ostream* out=nullptr;
+// class output_streamer{
+// public:
+//   output_streamer(){ m_out.push_back(&(std::cout));
+//   out = &(std::cout);
+//   }
+//   
+//   output_lock lock(std::ostream* local_outstreamer);
+//   std::vector<std::ostream*> m_out;
+// } out_collection;
+// 
+// 
+// output_lock::output_lock(output_streamer& out_streamer_collection, std::ostream* local_outstreamer) :m_local_outstreamer(local_outstreamer), m_out_streamer_collection(out_streamer_collection)
+// {
+//   m_out_streamer_collection.m_out.push_back(m_local_outstreamer);
+// }
+// 
+// output_lock::~output_lock()
+// {
+//   if (m_out_streamer_collection.m_out.back() == m_local_outstreamer){
+//     m_out_streamer_collection.m_out.pop_back();
+//   }
+//   else
+//   {
+//     std::cout << "stream collection mixed up" << std::endl;
+// 
+//   }
+// 
+// }
 
 S_plane_def s_plane_collection::get(Int_t i) const
 {
@@ -12,19 +51,66 @@ S_plane_def s_plane_collection::get(Int_t i) const
   return S_plane_def("error",0);
 }
 
-
-S_plane_def s_plane_collection::get(const char* name) const
+s_plane_collection s_plane_collection::getByType(const char* type) const
 {
-  for (auto& e: m_planes)
-  {
-    if (e.first== name) {
-      return e.second;
-    }
-    
-  }
-  std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
-  return S_plane_def("error", 0);
 
+
+  s_plane_collection ret;
+  for (auto& e : m_planes)
+  {
+    if (std::string(e.first) == std::string(type)) {
+      ret.push_back(e.first.c_str(), e.second);
+    }
+
+  }
+  if (ret.m_planes.empty()){
+    std::cout << "[s_plane_collection] unknown type = \"" << type << "\"" << std::endl;
+
+  }
+  return ret;
+
+
+
+
+}
+s_plane_collection s_plane_collection::getByName(const char* name) const
+{
+  s_plane_collection ret;
+  for (auto& e : m_planes)
+  {
+    if (std::string(e.second.getName()) == std::string(name)) {
+      ret.push_back(e.first.c_str(), e.second);
+    }
+
+  }
+  if (ret.m_planes.empty()){
+    std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
+
+  }
+  return ret;
+}
+s_plane_collection s_plane_collection::get(const char* nameOrType) const
+{
+  auto pl = getByName(nameOrType);
+  auto pl_type = getByType(nameOrType);
+ 
+  return pl + pl_type;
+
+}
+
+S_plane_def s_plane_collection::get(const char* name, const char* type) const
+{
+  auto pl=getByName(name).getByType(type);
+  if (pl.m_planes.empty())
+  {
+      std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
+      return S_plane_def("error", 0);
+  }
+  if (pl.m_planes.size()>1)
+  {
+    std::cout << "[s_plane_collection] multiple combinations of type = "<<type<< " and name = "<<name << std::endl;
+  }
+  return pl.get(0);
 }
 S_plane_def s_plane_collection::operator()() const
 {

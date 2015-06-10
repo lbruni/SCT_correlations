@@ -63,10 +63,10 @@ s_plane_collection s_plane_collection::getByType(const char* type) const
     }
 
   }
-  if (ret.m_planes.empty()){
-    std::cout << "[s_plane_collection] unknown type = \"" << type << "\"" << std::endl;
-
-  }
+//   if (ret.m_planes.empty()){
+//     std::cout << "[s_plane_collection] unknown type = \"" << type << "\"" << std::endl;
+// 
+//   }
   return ret;
 
 
@@ -83,10 +83,10 @@ s_plane_collection s_plane_collection::getByName(const char* name) const
     }
 
   }
-  if (ret.m_planes.empty()){
-    std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
-
-  }
+//   if (ret.m_planes.empty()){
+//     std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
+// 
+//   }
   return ret;
 }
 s_plane_collection s_plane_collection::get(const char* nameOrType) const
@@ -114,6 +114,7 @@ S_plane_def s_plane_collection::get(const char* name, const char* type) const
 }
 S_plane_def s_plane_collection::operator()() const
 {
+  
   return get(0);
 }
 s_plane_collection::s_plane_collection(const S_plane_def& plane_)

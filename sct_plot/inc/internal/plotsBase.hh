@@ -15,6 +15,7 @@ public:
   virtual void pushPlane(S_plane* axis)=0;
   virtual void fill() = 0;
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") = 0;
+  virtual Long64_t Draw(const S_DrawOption&) = 0;
   virtual void setParameter(const char* tag, const char * value);
   virtual s_plane_collection getOutputcollection();
 

@@ -15,7 +15,12 @@ plot2d::plot2d(const char* name, bool save2disk) :plot(name,save2disk)
 
 Long64_t plot2d::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "y:x"*/)
 {
-  return m_outTree->Draw(axis, cuts, options);
+  return Draw(S_DrawOption(options, cuts, axis));
+}
+
+Long64_t plot2d::Draw(const S_DrawOption& opt)
+{
+  return m_outTree->Draw(opt.getAxis(), opt.getCut(), opt.getOptions());
 }
 
 void plot2d::fill()

@@ -10,6 +10,7 @@ class plot2d :public plot{
 public:
   plot2d(const char* name, bool save2disk);
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
+  virtual Long64_t Draw(const S_DrawOption& opt) override;
   virtual void ProcessEvent() = 0;
   virtual void fill() override final;
   void pushHit(Double_t x, Double_t y);

@@ -101,7 +101,12 @@ void plotPlaneVsPlane::pushHit(Double_t x, Double_t y, Double_t ID)
 
 Long64_t plotPlaneVsPlane::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "y:x"*/)
 {
-  return m_outTree->Draw(axis, cuts, options);
+  return Draw(S_DrawOption(options, cuts, axis));
+}
+
+Long64_t plotPlaneVsPlane::Draw(const S_DrawOption& opt)
+{
+  return m_outTree->Draw(opt.getAxis(), opt.getCut(), opt.getOptions());
 }
 
 const char* plotPlaneVsPlane::getOutputName() const

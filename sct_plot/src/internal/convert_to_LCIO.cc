@@ -1,3 +1,4 @@
+#include "sct_plots.h"
 #ifdef USE_LCIO
 #include "internal/plotsBase.hh"
 #include <iostream>
@@ -263,7 +264,7 @@ S_plot sct_plot::s_save2LCIO(const char* name, const char* filename, unsigned ru
 
 S_plot sct_plot::s_save2LCIO(const char* name, const char* filename, unsigned runnum)
 {
-  return S_plot();
+  return S_plot(nullptr);
 }
 
 #endif

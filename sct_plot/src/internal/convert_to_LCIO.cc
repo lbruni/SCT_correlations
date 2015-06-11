@@ -23,10 +23,15 @@
 #  include "IMPL/LCGenericObjectImpl.h"
 #  include "UTIL/CellIDEncoder.h"
 #  include "lcio.h"
+#include "IMPL/TrackerHitImpl.h"
+#include "EVENT/LCIO.h"
+#include "UTIL/CellIDDecoder.h"
+#include "CellIDReencoder.h"
 using namespace IMPL;
-using namespace UTIL;
+
 using lcio::TrackerDataImpl;
 using eutelescope::EUTELESCOPE;
+
 
 using eutelescope::EUTelTrackerDataInterfacerImpl;
 using eutelescope::EUTelGenericSparsePixel;
@@ -187,51 +192,71 @@ void convert_to_LCIO::ConvertLCIOSubEvent(lcio::LCEvent & lcEv, S_plane* source)
   lcEv.parameters().setValue(eutelescope::EUTELESCOPE::EVENTTYPE, eutelescope::kDE);
 
 
-  IMPL::LCCollectionVec* zsDataCollection = nullptr;
-  auto zsDataCollectionExists = Collection_createIfNotExist(&zsDataCollection, lcEv, source->getName());
-
-
-
-  // set the proper cell encoder
-  auto  zsDataEncoder = CellIDEncoder<TrackerDataImpl>(eutelescope::EUTELESCOPE::ZSDATADEFAULTENCODING, zsDataCollection);
-  zsDataEncoder["sensorID"] = static_cast<int>(source->getID());
-  zsDataEncoder["sparsePixelType"] = eutelescope::kEUTelGenericSparsePixel;
-
-
-  // prepare a new TrackerData for the ZS data
-  auto zsFrame = std::unique_ptr<lcio::TrackerDataImpl>(new lcio::TrackerDataImpl());
-  zsDataEncoder.setCellID(zsFrame.get());
-
-
-  ConvertPlaneToLCIOGenericPixel(source, *zsFrame);
-
-  // perfect! Now add the TrackerData to the collection
-  zsDataCollection->push_back(zsFrame.release());
-
-  std::cout << zsDataCollection->size() << std::endl;
-  if (!zsDataCollectionExists){
-    if (zsDataCollection->size() != 0)
-      lcEv.addCollection(zsDataCollection, source->getName());
-    else
-      delete zsDataCollection; // clean up if not storing the collection here
+  LCCollectionVec* outputCollection = nullptr;
+  try
+  {
+    outputCollection = static_cast<LCCollectionVec*> (lcEv.getCollection(source->getName()));
+  }
+  catch (...)
+  {
+    outputCollection = new LCCollectionVec(LCIO::TRACKERHIT);
   }
 
 
+
+    std::string encoding = EUTELESCOPE::HITENCODING;
+    lcio::CellIDDecoder<TrackerHitImpl> hitDecoder(encoding);
+    lcio::UTIL::CellIDReencoder<TrackerHitImpl> cellReencoder(encoding, outputCollection);
+
+
+    auto id = source->getID();
+    double outputPos[3];
+    while (source->next())
+    {
+      
+      TrackerHitImpl* outputHit = new IMPL::TrackerHitImpl();
+
+      //Call the local2masterHit/master2localHit function defined int EUTelGeometryTelescopeDescription
+     
+      auto hit = source->get();
+      outputPos[0] = hit.x;
+      outputPos[1] = hit.y;
+      outputPos[2] = 1;
+
+
+
+      //Fill the new outputHit with information
+      outputHit->setPosition(outputPos);
+      float cov[TRKHITNCOVMATRIX] = { 0., 0., 0., 0., 0., 0. };
+      cov[0] = 1;
+      cov[2] = 1;
+      outputHit->setCovMatrix(cov);
+      outputHit->setType(0);
+      outputHit->setTime(0);
+      outputHit->setCellID0(id);
+      outputHit->setCellID1(id);
+      
+      
+
+      cellReencoder.readValues(outputHit);
+   
+   
+      cellReencoder.setCellID(outputHit);
+
+      outputCollection->push_back(outputHit);
+    }
+
+    try
+    {
+      lcEv.addCollection(outputCollection, source->getName());
+    }
+    catch (...)
+    {
+     std::cout << "Problem with pushing collection onto event" << std::endl;
+    }
 }
 
-void convert_to_LCIO::ConvertPlaneToLCIOGenericPixel(S_plane* source, lcio::TrackerDataImpl& zsFrame)
-{
-  // helper object to fill the TrakerDater object 
-  auto sparseFrame = eutelescope::EUTelTrackerDataInterfacerImpl<eutelescope::EUTelGenericSparsePixel>(&zsFrame);
 
-  while (source->next()){
-
-    auto hit = source->get();
-    eutelescope::EUTelGenericSparsePixel thisHit1(hit.x*100, hit.y*100, 1, 0);
-    sparseFrame.addSparsePixel(&thisHit1);
-  }
-
-}
 
 const char* convert_to_LCIO::getOutputName() const
 {

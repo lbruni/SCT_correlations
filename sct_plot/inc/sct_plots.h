@@ -156,7 +156,7 @@ class DllExport SCT_helpers{
 public:
   static void CutTH2(TH2* h2, const S_Cut& cut_);
   static void CutTH1(TH1* h1, const S_Cut& cut_);
-
+  static TH1* HistogrammSilhouette(TH2* h2, axis_def ax);
 };
 class S_plane_def;
 class DllExport sct_coll{

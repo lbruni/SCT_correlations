@@ -234,6 +234,63 @@ void SCT_helpers::CutTH1(TH1* h1, const S_Cut& cut_)
 
 }
 
+TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
+{
+
+  if (ax==x_axis_def)
+  {
+
+    std::string title = std::string(h2->GetTitle()) + std::string("_sil_x");
+    std::string name = std::string(h2->GetName()) + std::string("_sil_x");
+    TH1* ret = new TH1D(name.c_str(), title.c_str(), h2->GetNbinsX(), h2->GetXaxis()->GetBinCenter(0), h2->GetXaxis()->GetBinCenter(h2->GetNbinsX()));
+
+
+      for (Int_t x_bin = 0; x_bin <= h2->GetNbinsX(); ++x_bin)
+      {
+        Double_t max_binContent = 0;
+        for (Int_t y_bin = 0; y_bin <= h2->GetNbinsY(); ++y_bin)
+        {
+          
+         
+        auto bin = h2->GetBin(x_bin, y_bin);
+         max_binContent =std::max( h2->GetBinContent(bin) ,max_binContent);
+
+        }
+
+        ret->SetBinContent(x_bin, max_binContent);
+      }
+
+      return ret;
+  }
+  else if(ax==y_axis_def){
+
+    std::string title = std::string(h2->GetTitle()) + std::string("_sil_y");
+    std::string name = std::string(h2->GetName()) + std::string("_sil_y");
+    TH1* ret = new TH1D(name.c_str(), title.c_str(), h2->GetNbinsY(), h2->GetYaxis()->GetBinCenter(0), h2->GetYaxis()->GetBinCenter(h2->GetNbinsY()));
+
+    for (Int_t y_bin = 0; y_bin <= h2->GetNbinsY(); ++y_bin)
+    {
+      Double_t max_binContent = 0;
+    for (Int_t x_bin = 0; x_bin <= h2->GetNbinsX(); ++x_bin)
+    {
+    
+
+
+
+        auto bin = h2->GetBin(x_bin, y_bin);
+        max_binContent = std::max(h2->GetBinContent(bin), max_binContent);
+
+      }
+
+      ret->SetBinContent(y_bin, max_binContent);
+    }
+
+    return ret;
+  }
+  std::cout << "[SCT_helpers::HistogrammSilhouette] Unknown axis \n";
+  return 0;
+}
+
 S_XCut::S_XCut(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
 {
 

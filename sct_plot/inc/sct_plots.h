@@ -40,14 +40,18 @@ enum  axis_def
 };
 class S_plane;
 class S_DrawOption;
-class treeCollection;
+ class S_Axis;
+  class S_treeCollection;
 
-class axis_ref;
-class plot;
-class plane;
-class S_treeCollection;
-class S_Axis;
+namespace sct_corr{
+  class treeCollection;
 
+  class axis_ref;
+  class plot;
+  class plane;
+  class sct_event_buffer;
+
+}
 class DllExport S_Cut
 {
 public:
@@ -265,8 +269,8 @@ public:
   S_plane();
 #ifndef __CINT__
 
-  S_plane(const S_plane_def& plane_def, treeCollection* hits);
-  void setTreeCollection(treeCollection* hits);
+  S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits);
+  void setTreeCollection(sct_corr::treeCollection* hits);
 #endif
 
   S_plane(const S_plane_def& plane_def, S_treeCollection* hits);
@@ -280,11 +284,11 @@ public:
   S_Axis getX_def() const;
   S_Axis getY_def() const;
 
-  axis_ref* getX() const;
-  axis_ref* getY() const;
+  sct_corr::axis_ref* getX() const;
+  sct_corr::axis_ref* getY() const;
 #ifndef __CINT__
   S_plane_def m_plane_def;
-  std::shared_ptr<plane> m_plane;
+  std::shared_ptr<sct_corr::plane> m_plane;
 #endif
   ClassDef(S_plane, 0);
 };
@@ -326,7 +330,7 @@ public:
   std::string getParameter(const std::string &  tag, const std::string &  default_value);
 
   std::vector<S_plane*> m_planes;
-  std::vector<axis_ref*> m_axis;
+  std::vector<sct_corr::axis_ref*> m_axis;
   std::map<std::string, std::string> m_tags;
   std::string m_name, m_type;
   bool m_save2disk;
@@ -349,9 +353,9 @@ public:
   const char* getName() const;
   const char* getType() const;
 #ifndef __CINT__
-  S_plot(plot* plot_);
+  S_plot(sct_corr::plot* plot_);
   
-  std::shared_ptr<plot> m_plot;
+  std::shared_ptr<sct_corr::plot> m_plot;
 #endif
   ClassDef(S_plot, 0);
 };
@@ -413,13 +417,11 @@ public:
   virtual Int_t    GetEntry(Long64_t entry);
   virtual Int_t    GetEntries() const;
 #ifndef __CINT__
-  std::shared_ptr<treeCollection> m_tree;
+  std::shared_ptr<sct_corr::treeCollection> m_tree;
 #endif // !__CINT__
   ClassDef(S_treeCollection, 0);
 };
-#ifndef __CINT__
-class sct_event_buffer;
-#endif // !__CINT__
+
 
 
 
@@ -443,18 +445,18 @@ public:
 #ifndef __CINT__
 private:
   s_plane_collection addPlot_internal(S_plot plot_def);
-  axis_ref* getAxis_ref(const S_Axis & axis);
-  treeCollection* getCollection(const char* name);
+  sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
+  sct_corr::treeCollection* getCollection(const char* name);
 
-  S_plane* getPlane(double ID, treeCollection* coll);
+  S_plane* getPlane(double ID, sct_corr::treeCollection* coll);
   S_plane* pushPlane(const S_plane_def& pl);
 
-  std::shared_ptr<sct_event_buffer> m_eventBuffer;
+  std::shared_ptr<sct_corr::sct_event_buffer> m_eventBuffer;
 
   std::vector<std::shared_ptr<S_plane>> m_planes;
   std::vector<std::pair<std::string, S_plot>> m_plots;
   std::map<std::string, S_DrawOption> m_drawOption;
- std::vector< std::pair<std::string, treeCollection*>> m_trees;
+  std::vector< std::pair<std::string, sct_corr::treeCollection*>> m_trees;
   std::vector<TFile*> m_file;
 #endif
   ClassDef(S_plot_collection, 0);

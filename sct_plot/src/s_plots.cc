@@ -63,7 +63,7 @@ Long64_t S_plot::Draw(const char* options, const TCut& cuts /*= ""*/, const char
   return Draw(S_DrawOption(options, cuts, axis));
 }
 
-S_plot::S_plot(plot* plot_)
+S_plot::S_plot(sct_corr::plot* plot_)
 {
-  m_plot = std::shared_ptr<plot>(plot_);
+  m_plot = std::shared_ptr<sct_corr::plot>(plot_);
 }

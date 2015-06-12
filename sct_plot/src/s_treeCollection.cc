@@ -9,7 +9,7 @@
 
 
 
-S_treeCollection::S_treeCollection(TTree *tree) :m_tree(new treeCollection(tree))
+S_treeCollection::S_treeCollection(TTree *tree) :m_tree(new sct_corr::treeCollection(tree))
 {
 
 }

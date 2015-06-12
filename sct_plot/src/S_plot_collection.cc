@@ -9,7 +9,7 @@
 #include "sct_global.h"
 #include "internal/plotsBase.hh"
 
-S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_event_buffer>())
+S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>())
 {
 
   addFile(file);
@@ -33,7 +33,7 @@ void S_plot_collection::reset()
 
 s_plane_collection S_plot_collection::addPlot( S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis)
 {
-  Buffer_accessor buffer(m_eventBuffer.get());
+  sct_corr::Buffer_accessor buffer(m_eventBuffer.get());
   plot_def.m_plot->pushAxis(getAxis_ref(x_axis));
   plot_def.m_plot->pushAxis(getAxis_ref(y_axis));
   return addPlot_internal(std::move(plot_def));
@@ -62,7 +62,7 @@ s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const S_plane_def
 }
 s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const s_plane_collection& p1)
 {
-  Buffer_accessor buffer(m_eventBuffer.get());
+  sct_corr::Buffer_accessor buffer(m_eventBuffer.get());
   for (auto &e : p1.m_planes)
   {
     auto p1_pointer = pushPlane(e.second);
@@ -184,7 +184,7 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
   }
 }
 
-axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
+sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
 {
   if (axis.m_axis == x_axis_def)
   {
@@ -199,7 +199,7 @@ axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
   return nullptr;
 }
 
-treeCollection* S_plot_collection::getCollection(const char* name)
+sct_corr::treeCollection* S_plot_collection::getCollection(const char* name)
 {
   for (auto&e : m_trees)
   {
@@ -211,7 +211,7 @@ treeCollection* S_plot_collection::getCollection(const char* name)
 
   if (m_eventBuffer->IsCollection(name))
   {
-    treeCollection* tree_pointer = new treeCollection(name);
+    sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(name);
 
     m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
     return tree_pointer;
@@ -242,14 +242,14 @@ treeCollection* S_plot_collection::getCollection(const char* name)
   }
 
 
-  treeCollection* tree_pointer = new treeCollection(collection);
+  sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(collection);
 
   m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
   return tree_pointer;
 
 }
 
-S_plane* S_plot_collection::getPlane(double ID, treeCollection* coll)
+S_plane* S_plot_collection::getPlane(double ID, sct_corr::treeCollection* coll)
 {
   if (!coll)
   {

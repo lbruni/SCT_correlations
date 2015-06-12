@@ -343,6 +343,7 @@ bool S_Cut_min_max::isOutOfRange_intern(Double_t val) const
   {
     return true;
   }
+  return false;
 }
 
 S_CutCoollection::S_CutCoollection()
@@ -393,7 +394,7 @@ void S_CutCoollection::add_Cut(const S_Cut& cut_)
   {
    return add_Cut(*coll);
   }
-  m_cuts.push_back(std::make_shared<S_Cut>(cut_));
+  m_cuts.push_back(cut_.copy());
 }
 
 void S_CutCoollection::add_Cut(const S_CutCoollection& cut_)

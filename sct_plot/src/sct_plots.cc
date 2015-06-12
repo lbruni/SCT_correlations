@@ -10,6 +10,7 @@
 #include "TH2.h"
 #include "TH2D.h"
 #include "TAxis.h"
+#include "TH1.h"
 
 
 
@@ -86,7 +87,7 @@ S_DrawOption& S_DrawOption::cut_x(Double_t min_, Double_t max_)
 {
   cut_x_min(min_);
   return cut_x_max(max_);
-  
+
 }
 
 S_DrawOption& S_DrawOption::cut_x_min(Double_t min_)
@@ -135,7 +136,7 @@ S_DrawOption& S_DrawOption::draw_axis(const char* axis_)
 
 S_DrawOption& S_DrawOption::draw_x()
 {
-  
+
   return draw_axis("x");
 }
 
@@ -172,7 +173,7 @@ const char* S_DrawOption::getAxis() const
   m_axis_dummy = m_axis;
   if (m_output_object)
   {
-    m_axis_dummy += ">>"+std::string(m_output_object->GetName());
+    m_axis_dummy += ">>" + std::string(m_output_object->GetName());
   }
   return m_axis_dummy.c_str();
 }
@@ -182,44 +183,27 @@ TCut S_DrawOption::getCut() const
   return m_cut;
 }
 
-void SCT_helpers::CutTH2(TH2* h, S_XCut x_cut, S_YCut y_cut, S_ZCut z_cut)
-{
-  bool set2zero_x =false,set2zero_y =false, set2zero_z = false;
-  Double_t x = 0, y = 0,z=0;
 
-  for (Int_t x_bin = 0; x_bin <= h->GetNbinsX(); ++x_bin)
+
+
+
+
+void SCT_helpers::CutTH2(TH2* h, const S_Cut& cut_)
+{
+
+  Double_t x = 0, y = 0, binContent = 0;
+
+  for (Int_t y_bin = 0; y_bin <= h->GetNbinsY(); ++y_bin)
   {
-    set2zero_x= false;
-    x = h->GetXaxis()->GetBinCenter(x_bin);
-    if (x_cut.isOutOfRange(x))
+    for (Int_t x_bin = 0; x_bin <= h->GetNbinsX(); ++x_bin)
     {
-      set2zero_x = true;
-    }
-    
-    for (Int_t y_bin = 0; y_bin <= h->GetNbinsY(); ++y_bin)
-    {
+      x = h->GetXaxis()->GetBinCenter(x_bin);
       auto bin = h->GetBin(x_bin, y_bin);
-      if (set2zero_x)
-      {
-        h->SetBinContent(bin, 0);
-        continue;
-      }
-      set2zero_y = false;
-      set2zero_z = false;
       y = h->GetYaxis()->GetBinCenter(y_bin);
-      if (y_cut.isOutOfRange(y))
-      {
-        set2zero_y = true;
-      }
+      binContent = h->GetBinContent(bin);
 
 
-      z = h->GetBinContent(bin);
-      if (z_cut.isOutOfRange(z))
-      {
-        set2zero_z= true;
-      }
-
-      if (set2zero_y || set2zero_z)
+      if (cut_.isOutOfRange(binContent, x, y))
       {
         h->SetBinContent(bin, 0);
       }
@@ -228,92 +212,207 @@ void SCT_helpers::CutTH2(TH2* h, S_XCut x_cut, S_YCut y_cut, S_ZCut z_cut)
   }
 }
 
-void SCT_helpers::CutTH2(TH2* h2, S_ZCut z)
+void SCT_helpers::CutTH1(TH1* h1, const S_Cut& cut_)
 {
-  CutTH2(h2, S_XCut(), S_YCut(), z);
+  Double_t x = 0,binContent = 0;
+
+
+    for (Int_t x_bin = 0; x_bin <= h1->GetNbinsX(); ++x_bin)
+    {
+      x = h1->GetXaxis()->GetBinCenter(x_bin);
+      auto bin = h1->GetBin(x_bin);
+ 
+      binContent = h1->GetBinContent(bin);
+
+
+      if (cut_.isOutOfRange(binContent, x))
+      {
+        h1->SetBinContent(bin, 0);
+      }
+    }
+
+
 }
 
-S_Cut::S_Cut(Double_t min_, Double_t max_) :m_min(min_), m_max(max_), m_cut_min(true), m_cut_max(true)
+S_XCut::S_XCut(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
 {
 
 }
 
-S_Cut::S_Cut(Double_t min_) : m_min(min_), m_max(0), m_cut_min(true), m_cut_max(false)
+S_XCut::S_XCut(Double_t min_) : S_Cut_min_max(min_)
 {
 
 }
 
-S_Cut::S_Cut() : m_min(0), m_max(0), m_cut_min(false), m_cut_max(false)
+
+
+bool S_XCut::isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const
+{
+  return isOutOfRange_intern(x);
+}
+
+bool S_XCut::isOutOfRange(Double_t BinContent) const
+{
+  return false;
+}
+
+bool S_XCut::isOutOfRange(Double_t BinContent, Double_t x) const
+{
+  return isOutOfRange_intern(x);
+}
+
+S_YCut::S_YCut(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
 {
 
 }
 
-bool S_Cut::isOutOfRange(Double_t x)
+S_YCut::S_YCut(Double_t min_) : S_Cut_min_max(min_)
 {
-  if (m_cut_min && m_min > x)
+
+}
+
+
+bool S_YCut::isOutOfRange(Double_t BinContent, Double_t x) const
+{
+  return false;
+}
+
+bool S_YCut::isOutOfRange(Double_t BinContent) const
+{
+  return false;
+}
+
+bool S_YCut::isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const
+{
+  return isOutOfRange_intern(y);
+}
+
+S_Cut_BinContent::S_Cut_BinContent(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
+{
+
+}
+
+S_Cut_BinContent::S_Cut_BinContent(Double_t min_) : S_Cut_min_max(min_)
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+bool S_Cut_BinContent::isOutOfRange(Double_t BinContent, Double_t y, Double_t z) const
+{
+  return isOutOfRange_intern(BinContent);
+}
+
+bool S_Cut_BinContent::isOutOfRange(Double_t BinContent, Double_t y) const
+{
+  return isOutOfRange_intern(BinContent);
+}
+
+bool S_Cut_BinContent::isOutOfRange(Double_t BinContent) const
+{
+  return isOutOfRange_intern(BinContent);
+}
+
+S_Cut_min_max::S_Cut_min_max(Double_t min_, Double_t max_) :m_min(min_), m_max(max_), m_cut_min(true), m_cut_max(true)
+{
+
+}
+
+S_Cut_min_max::S_Cut_min_max(Double_t min_) : m_min(min_), m_max(0), m_cut_min(true), m_cut_max(false)
+{
+
+}
+
+bool S_Cut_min_max::isOutOfRange_intern(Double_t val) const
+{
+  if (m_cut_min && m_min >val)
   {
     return true;
   }
 
-  if (m_cut_max && m_max < x)
+  if (m_cut_max && m_max <val)
   {
     return true;
+  }
+}
+
+S_CutCoollection::S_CutCoollection()
+{
+
+}
+
+bool S_CutCoollection::isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const
+{
+  for (auto&e : m_cuts)
+  {
+    if (e->isOutOfRange(BinContent, x, y))
+    {
+      return true;
+    }
   }
   return false;
 }
 
-S_XCut::S_XCut(Double_t min_, Double_t max_) : S_Cut(min_, max_)
+bool S_CutCoollection::isOutOfRange(Double_t BinContent, Double_t x) const
 {
+  for (auto&e : m_cuts)
+  {
+    if (e->isOutOfRange(BinContent, x))
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool S_CutCoollection::isOutOfRange(Double_t BinContent) const
+{
+  for (auto&e : m_cuts)
+  {
+    if (e->isOutOfRange(BinContent))
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+void S_CutCoollection::add_Cut(const S_Cut& cut_)
+{
+  auto coll = dynamic_cast<const S_CutCoollection*>(&cut_);
+  if (coll)
+  {
+   return add_Cut(*coll);
+  }
+  m_cuts.push_back(std::make_shared<S_Cut>(cut_));
+}
+
+void S_CutCoollection::add_Cut(const S_CutCoollection& cut_)
+{
+
+
+  m_cuts.insert(m_cuts.end(), cut_.m_cuts.begin(), cut_.m_cuts.end());
+
 
 }
 
-S_XCut::S_XCut(Double_t min_) : S_Cut(min_)
+S_CutCoollection operator+(const S_Cut& cut_a, const S_Cut& cut_b)
 {
 
+
+
+  S_CutCoollection ret;
+
+  ret.add_Cut(cut_a);
+  ret.add_Cut(cut_b);
+  return ret;
 }
-
-S_XCut::S_XCut()
-{
-
-}
-
-S_YCut::S_YCut(Double_t min_, Double_t max_) : S_Cut(min_, max_)
-{
-
-}
-
-S_YCut::S_YCut(Double_t min_) : S_Cut(min_)
-{
-
-}
-
-S_YCut::S_YCut()
-{
-
-}
-
-S_ZCut::S_ZCut(Double_t min_, Double_t max_) : S_Cut(min_, max_)
-{
-
-}
-
-S_ZCut::S_ZCut(Double_t min_) : S_Cut(min_)
-{
-
-}
-
-S_ZCut::S_ZCut()
-{
-
-}
-
-
- 
-
-
-
-
-
-
-
-

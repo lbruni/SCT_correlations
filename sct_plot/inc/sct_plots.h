@@ -18,6 +18,7 @@
 
 #ifndef __CINT__
 #include <memory>
+#include <vector>
 #endif
 
 #include "TTree.h"
@@ -50,45 +51,87 @@ class S_Axis;
 class DllExport S_Cut
 {
 public:
-  S_Cut(Double_t min_, Double_t max_);
-  S_Cut(Double_t min_);
-  S_Cut();
+
+
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const { return false; }
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x)  const { return false; }
+  virtual bool isOutOfRange(Double_t BinContent)  const { return false; }
+  ClassDef(S_Cut, 0);
+};
+class DllExport S_Cut_min_max: public S_Cut
+{
+public:
+
+  S_Cut_min_max(Double_t min_, Double_t max_);
+  S_Cut_min_max(Double_t min_);
+
+protected:
+#ifndef __CINT__
   Double_t m_min, m_max;
   Bool_t m_cut_min, m_cut_max;
-
-  bool isOutOfRange(Double_t x);
+  bool isOutOfRange_intern(Double_t val)  const;
+#endif // !__CINT__
 
   ClassDef(S_Cut, 0);
 };
-class DllExport  S_XCut :public S_Cut
+
+class DllExport  S_XCut :public S_Cut_min_max
 {
 public:
   S_XCut(Double_t min_, Double_t max_);
   S_XCut(Double_t min_);
-  S_XCut();
+
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const;
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
+  virtual bool isOutOfRange(Double_t BinContent)  const;
+
   ClassDef(S_XCut, 0);
 };
-class DllExport S_YCut :public S_Cut
+class DllExport S_YCut :public S_Cut_min_max
 {
 public:
   S_YCut(Double_t min_, Double_t max_);
   S_YCut(Double_t min_);
-  S_YCut();
+
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const;
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
+  virtual bool isOutOfRange(Double_t BinContent) const;
   ClassDef(S_YCut, 0);
 };
-class  DllExport S_ZCut :public S_Cut
+class  DllExport S_Cut_BinContent :public S_Cut_min_max
 {
 public:
-  S_ZCut(Double_t min_, Double_t max_);
-  S_ZCut(Double_t min_);
-  S_ZCut();
-  ClassDef(S_ZCut, 0);
+  S_Cut_BinContent(Double_t min_, Double_t max_);
+  S_Cut_BinContent(Double_t min_);
+
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const;
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
+  virtual bool isOutOfRange(Double_t BinContent) const;
+
+  ClassDef(S_Cut_BinContent, 0);
 };
+
+class  DllExport S_CutCoollection :public S_Cut
+{
+public:
+  S_CutCoollection();
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const;
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
+  virtual bool isOutOfRange(Double_t BinContent) const;
+  void add_Cut(const S_Cut& cut_);
+  void add_Cut(const S_CutCoollection& cut_);
+#ifndef __CINT__
+  std::vector<std::shared_ptr<S_Cut> > m_cuts;
+#endif // !__CINT__
+  ClassDef(S_CutCoollection, 0);
+};
+DllExport S_CutCoollection operator+(const S_Cut& cut_a, const S_Cut& cut_b);
+
 class TH2;
 class DllExport SCT_helpers{
 public:
-  static void CutTH2(TH2* h2, S_XCut x, S_YCut y, S_ZCut z);
-  static void CutTH2(TH2* h2, S_ZCut z);
+  static void CutTH2(TH2* h2, const S_Cut& cut_);
+  static void CutTH1(TH1* h1, const S_Cut& cut_);
 
 };
 class S_plane_def;

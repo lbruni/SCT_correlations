@@ -11,6 +11,7 @@
 #include "TH2D.h"
 #include "TAxis.h"
 #include "TH1.h"
+#include "TTree.h"
 
 
 
@@ -159,6 +160,11 @@ S_DrawOption& S_DrawOption::output_object(TObject* out_)
 {
   m_output_object = out_;
   return *this;
+}
+
+Long64_t S_DrawOption::Draw(TTree * tree) const
+{
+  return tree->Draw(getAxis(), getCut(), getOptions());
 }
 
 const char* S_DrawOption::getOptions() const

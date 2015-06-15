@@ -263,6 +263,12 @@ namespace sct_corr{
     }
     return m_tree->Draw(axis, cuts, options);
   }
+
+  TTree * treeCollection_ouput::getTTree()
+  {
+    return m_tree->getTTree();
+  }
+
 }
 #else 
 
@@ -315,6 +321,9 @@ namespace sct_corr{
     }
     return m_tree->Draw(axis, cuts, options);
   }
-
+  TTree * treeCollection_ouput::getTTree()
+  {
+    return m_tree;
+  }
 }
 #endif // _DEBUG

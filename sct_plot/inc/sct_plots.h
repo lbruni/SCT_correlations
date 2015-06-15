@@ -42,7 +42,7 @@ class S_plane;
 class S_DrawOption;
  class S_Axis;
   class S_treeCollection;
-
+  class S_Cut;
 namespace sct_corr{
   class treeCollection;
 
@@ -233,7 +233,7 @@ static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin
 static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
 static  S_plot s_hitMultiplizity(const char* name, bool save2disk = true);
 
-static  S_plot s_cut_x_y(const char* name, const  S_XCut& x_cut, const  S_YCut& y_cut, bool save2disk = true);
+static  S_plot s_cut_x_y(const char* name, const  S_Cut& cut_, bool save2disk = true);
 
 
 static  S_plot s_save2LCIO(const char* name,const char* filename,unsigned runnum );
@@ -395,7 +395,7 @@ public:
   S_DrawOption& draw_x_VS_y();
   S_DrawOption& draw_y_VS_x();
   S_DrawOption& output_object(TObject* out_);
-
+  Long64_t Draw(TTree * tree) const;
   const char* getOptions() const;
   const char* getAxis() const;
   TCut getCut() const;

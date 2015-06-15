@@ -106,7 +106,8 @@ namespace sct_corr{
 
   Long64_t plotPlaneVsPlane::Draw(const S_DrawOption& opt)
   {
-    return m_outTree->Draw(opt.getAxis(), opt.getCut(), opt.getOptions());
+    return opt.Draw(m_outTree->getTTree());
+   
   }
 
   const char* plotPlaneVsPlane::getOutputName() const

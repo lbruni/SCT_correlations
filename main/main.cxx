@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
  
 
  //SCT_helpers::CutTH2(h,S_XCut(-0.1,0.1),S_YCut(0,2),  S_ZCut());
- SCT_helpers::CutTH2(h, S_ZCut(30));
+ //SCT_helpers::CutTH2(h, (30));
  TCanvas c1;
 
  

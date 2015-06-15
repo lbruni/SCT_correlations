@@ -1,5 +1,4 @@
 #include "sct_plots.h"
-
 #include "treeCollection.h"
 #include <iostream>
 #include "cluster.h"
@@ -11,17 +10,6 @@
 #include "TH2D.h"
 #include "TAxis.h"
 #include "TH1.h"
-
-
-
-
-
-
-
-
-
-
-
 
 
 S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis)
@@ -353,16 +341,6 @@ S_Cut_BinContent::S_Cut_BinContent(Double_t min_) : S_Cut_min_max(min_)
 {
 
 }
-
-
-
-
-
-
-
-
-
-
 
 bool S_Cut_BinContent::isOutOfRange(Double_t BinContent, Double_t y, Double_t z) const
 {

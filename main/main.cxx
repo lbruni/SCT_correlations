@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
  //pl.addPlot(sct::plot_find_nearest_strip(), strip, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 8));
 // pl.addPlot(sct::plot_find_nearest_strip(), strip, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 8));
  auto strip_nearest = pl.addPlot(sct_plot::s_find_nearest_strip(strip, y_axis_def, 1000, true), sct_coll::DUT_hit(), sct_coll::DUT_fitted());
- auto hitmap__= pl.addPlot(sct::plot_hitmap(), name4, strip_nearest.get(0).getY_def(), strip_nearest.get(2).getX_def() );
+// auto hitmap__= pl.addPlot(sct::plot_hitmap(), name4, strip_nearest.get(0).getY_def(), strip_nearest.get(2).getX_def() );
  
 
  s_plane_collection plane2 = pl.addPlot(sct_plot::s_find_nearest("fe", 100, 100), sct_coll::tel_hit(3), sct_coll::tel_fitted(3));
@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
 //  std::cout << "!FEI4 && DUT = " << pl.Draw(strip_distance, S_DrawOption("", "ID==10", "y:x")) << std::endl;
 //  std::cout << "!FEI4 && DUT = " << pl.Draw(strip_distance, S_DrawOption("", "ID==11", "y:x")) << std::endl;
  TH2D* h = new TH2D("h2", "h2", 100, -0.2, 0.2, 100, -5, 5);
- std::cout << "FEI4 && DUT = " << pl.Draw(hitmap__(), S_DrawOption("colz", "x<0.2&&x>-0.2", "y:x>>h2")) << std::endl;
+ //std::cout << "FEI4 && DUT = " << pl.Draw(hitmap__(), S_DrawOption("colz", "x<0.2&&x>-0.2", "y:x>>h2")) << std::endl;
 
 
  TCanvas c;

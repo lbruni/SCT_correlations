@@ -1,34 +1,34 @@
 #include "internal/plotsBase.hh"
-#include "factoryDef.hh"
+#include <string>
+namespace sct_corr{
+  int g_plot_count_intern = 0;
+  plot::plot(const char* name, bool save2disk) :m_name(name), m_save2disk(save2disk)
+  {
+  }
 
-plot::plot(Parameter_ref plot_def) :m_plot_def(plot_def)
-{
+  void plot::setParameter(const char* tag, const char * value)
+  {
+
+  }
+
+  s_plane_collection plot::getOutputcollection()
+  {
+    s_plane_collection ret;
+    return ret;
+  }
+
+  const char* plot::getName() const
+  {
+    if (m_name.empty())
+    {
+      m_name = getType() + std::to_string(g_plot_count_intern++);
+    }
+    return m_name.c_str();
+  }
+
+  bool plot::getSave2disk() const
+  {
+    return m_save2disk;
+  }
 
 }
-
-void plot::setParameter(const char* tag, const char * value)
-{
-
-}
-
-s_plane_collection plot::getOutputcollection()
-{
-  s_plane_collection ret;
-  return ret;
-}
-
-
-
-
-std::unique_ptr < plot > plot::create(MainType name, Parameter_ref para)
-{
-return  Class_factory_Utilities::Factory<plot>::Create(name, para);
-
-}
-
-std::unique_ptr < plot > plot::create(Parameter_ref para)
-{
-  return  Class_factory_Utilities::Factory<plot>::Create(para.m_type, para);
-}
-
-registerBaseClassDef(plot);

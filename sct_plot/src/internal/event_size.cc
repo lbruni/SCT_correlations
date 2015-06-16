@@ -39,7 +39,7 @@ namespace sct_corr{
   }
 }
 
-S_plot sct_plot::s_Event_size(const char* name, bool save2disk)
+S_plot sct_plot::Event_size(const char* name, bool save2disk)
 {
   return S_plot(new sct_corr::plot_Event_size(name, save2disk));
 }

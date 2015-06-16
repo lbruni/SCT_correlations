@@ -94,7 +94,7 @@ namespace sct_corr{
     return sct::plot_find_nearest();
   }
 }
-S_plot sct_plot::s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk /*=true*/)
+S_plot sct_plot::find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk /*=true*/)
 {
       return S_plot(new sct_corr::find_nearest(name, save2disk, x_cutoff, y_cutoff));
 }

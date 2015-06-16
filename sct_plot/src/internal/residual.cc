@@ -6,7 +6,7 @@ namespace sct_corr{
   public:
     residual(const char* name, bool save2disk);
     virtual void processHit(double x, double y) override;
-    virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "x") override;
+
 
     virtual s_plane_collection getOutputcollection();
 
@@ -26,10 +26,6 @@ namespace sct_corr{
     pushHit(x - y, ++m_index);
   }
 
-  Long64_t residual::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "x"*/)
-  {
-    return  m_outTree->Draw(axis, cuts, options);
-  }
 
   s_plane_collection residual::getOutputcollection()
   {
@@ -43,7 +39,7 @@ namespace sct_corr{
     return sct::plot_residual();
   }
 }
-S_plot sct_plot::s_residual(const char* name, bool save2disk)
+S_plot sct_plot::residual(const char* name, bool save2disk)
 {
   return S_plot(new sct_corr::residual(name, save2disk));
 }

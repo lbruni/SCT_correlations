@@ -50,7 +50,7 @@ namespace sct_corr{
     return sct::plot_hitMultiplizity();
   }
 }
-S_plot sct_plot::s_hitMultiplizity(const char* name, bool save2disk /*= true*/)
+S_plot sct_plot::hitMultiplizity(const char* name, bool save2disk /*= true*/)
 {
   return S_plot(new sct_corr::hitMultiplizity(name, save2disk));
 }

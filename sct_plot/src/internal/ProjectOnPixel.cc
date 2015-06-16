@@ -36,7 +36,7 @@ namespace sct_corr{
     return sct::plot_projectOnPixel();
   }
 }
-S_plot sct_plot::s_projectOnPixel(const char* name, bool save2disk)
+S_plot sct_plot::projectOnPixel(const char* name, bool save2disk)
 {
   return S_plot(new sct_corr::ProjectOnPixel(name, save2disk));
 }

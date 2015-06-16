@@ -213,30 +213,30 @@ class S_plot_def;
 class S_plot;
 class DllExport sct_plot{
 public:
-  static  S_plot s_hitmap(const char* name, bool save2disk = true);
-  static  S_plot s_correlation(const char* name, bool save2disk = true);
-static  S_plot s_residual(const char* name, bool save2disk = true);
-static  S_plot s_clustering(const char* name, Double_t Pixel_distance = 2, bool save2disk = true);
-static  S_plot s_projectOnPixel(const char* name, bool save2disk = true);
-static  S_plot s_find_correspondingX(const char* name, bool save2disk = true);
-static  S_plot s_find_correspondingXY(const char* name, bool save2disk = true);
-static  S_plot s_Event_size(const char* name, bool save2disk = true);
-static  S_plot s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk = true);
-static  S_plot s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff = 100000, bool save2disk = true);
-static  S_plot s_plane_distance(const char* name, bool save2disk = true);
-static  S_plot s_A_if_B(const char* name, bool save2disk = true);
-static  S_plot s_rotated(const char* name, Double_t angle, bool save2disk = true);
-static  S_plot s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
-static  S_plot s_coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, bool save2disk = true);
+  static  S_plot hitmap(const char* name, bool save2disk = true);
+  static  S_plot correlation(const char* name, bool save2disk = true);
+static  S_plot residual(const char* name, bool save2disk = true);
+static  S_plot clustering(const char* name, Double_t Pixel_distance = 2, bool save2disk = true);
+static  S_plot projectOnPixel(const char* name, bool save2disk = true);
+static  S_plot find_correspondingX(const char* name, bool save2disk = true);
+static  S_plot find_correspondingXY(const char* name, bool save2disk = true);
+static  S_plot Event_size(const char* name, bool save2disk = true);
+static  S_plot find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk = true);
+static  S_plot find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff = 100000, bool save2disk = true);
+static  S_plot plane_distance(const char* name, bool save2disk = true);
+static  S_plot A_if_B(const char* name, bool save2disk = true);
+static  S_plot rotated(const char* name, Double_t angle, bool save2disk = true);
+static  S_plot coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
+static  S_plot coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, bool save2disk = true);
 
-static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, bool save2disk = true);
-static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
-static  S_plot s_hitMultiplizity(const char* name, bool save2disk = true);
+static  S_plot efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, bool save2disk = true);
+static  S_plot efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
+static  S_plot hitMultiplizity(const char* name, bool save2disk = true);
 
-static  S_plot s_cut_x_y(const char* name, const  S_Cut& cut_, bool save2disk = true);
+static  S_plot cut_x_y(const char* name, const  S_Cut& cut_, bool save2disk = true);
 
 
-static  S_plot s_save2LCIO(const char* name,const char* filename,unsigned runnum );
+static  S_plot save2LCIO(const char* name,const char* filename,unsigned runnum );
 
 };
 

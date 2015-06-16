@@ -280,14 +280,14 @@ namespace sct_corr{
   }
 }
 
-S_plot sct_plot::s_save2LCIO(const char* name, const char* filename, unsigned runnum)
+S_plot sct_plot::save2LCIO(const char* name, const char* filename, unsigned runnum)
 {
   return S_plot(new sct_corr::convert_to_LCIO(name, filename, runnum));
 
 }
 #else
 
-S_plot sct_plot::s_save2LCIO(const char* name, const char* filename, unsigned runnum)
+S_plot sct_plot::save2LCIO(const char* name, const char* filename, unsigned runnum)
 {
   return S_plot(nullptr);
 }

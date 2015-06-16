@@ -39,7 +39,7 @@ namespace sct_corr{
     return sct::plot_rotated();
   }
 }
-S_plot sct_plot::s_rotated(const char* name, Double_t angle, bool save2disk)
+S_plot sct_plot::rotated(const char* name, Double_t angle, bool save2disk)
 {
 
   return S_plot(new sct_corr::rotated_plane(name,save2disk,angle));

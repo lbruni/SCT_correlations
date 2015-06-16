@@ -32,7 +32,7 @@ namespace sct_corr{
     return sct::plot_hitmap();
   }
 }
-S_plot sct_plot::s_hitmap(const char* name, bool save2disk)
+S_plot sct_plot::hitmap(const char* name, bool save2disk)
 {
   return S_plot(new sct_corr::hitmap(name, save2disk));
 }

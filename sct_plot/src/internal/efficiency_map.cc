@@ -110,15 +110,15 @@ namespace sct_corr{
     return sct::plot_efficieny_map();
   }
 }
-  S_plot sct_plot::s_efficiency_map(const char* name, Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, bool save2disk /*= true*/)
+  S_plot sct_plot::efficiency_map(const char* name, Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, bool save2disk /*= true*/)
   {
     return S_plot(new sct_corr::efficieny_map(name, save2disk, x_bin_, y_bin_, x_cut, y_cut));
   }
 
-S_plot sct_plot::s_efficiency_map(const char* name, Double_t x_bin_, Double_t y_bin_, bool save2disk /*= true*/)
+S_plot sct_plot::efficiency_map(const char* name, Double_t x_bin_, Double_t y_bin_, bool save2disk /*= true*/)
 {
 
-  return s_efficiency_map(name, x_bin_, y_bin_, x_bin_, y_bin_, save2disk);
+  return efficiency_map(name, x_bin_, y_bin_, x_bin_, y_bin_, save2disk);
 }
 
 

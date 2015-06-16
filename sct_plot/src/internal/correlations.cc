@@ -37,7 +37,7 @@ namespace sct_corr{
   }
 
 }
-S_plot sct_plot::s_correlation(const char* name, bool save2disk)
+S_plot sct_plot::correlation(const char* name, bool save2disk)
 {
   return S_plot(new sct_corr::correlations(name, save2disk));
 }

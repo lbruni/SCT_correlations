@@ -20,7 +20,8 @@ namespace sct_corr{
 
   Long64_t plot2d::Draw(const S_DrawOption& opt)
   {
-    return m_outTree->Draw(opt.getAxis(), opt.getCut(), opt.getOptions());
+    return opt.Draw(m_outTree->getTTree());
+    
   }
 
   void plot2d::fill()

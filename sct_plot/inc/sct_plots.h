@@ -38,11 +38,20 @@ enum  axis_def
   x_axis_def,
   y_axis_def
 };
+enum  plot_save_option_def
+#ifndef __CINT__
+  :int
+#endif // !__CINT__
+{
+  save_to_disk,
+  do_not_save_to_disk
+};
 class S_plane;
 class S_DrawOption;
  class S_Axis;
   class S_treeCollection;
   class S_Cut;
+  class S_plot_collection;
 namespace sct_corr{
   class treeCollection;
 
@@ -238,6 +247,12 @@ static  S_plot cut_x_y(const char* name, const  S_Cut& cut_, plot_save_option_de
 
 static  S_plot save2LCIO(const char* name,const char* filename,unsigned runnum );
 
+};
+class DllExport sct_analyis{
+  
+public:
+ static TH2* misalignment(S_plot_collection& treeColl);
+ static TF1* Draw_misalignment(TFile& __file0);
 };
 
 struct plane_hit

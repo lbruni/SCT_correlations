@@ -48,12 +48,14 @@ namespace sct_corr{
     return sct::plot_coordinate_transform();
   }
 }
-S_plot sct_plot::coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk /*= true*/)
+S_plot sct_plot::coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, plot_save_option_def save_option)
 {
-  return S_plot(new sct_corr::coordinate_transform(name, save2disk, x_slope, x_offset, y_slope, y_offset));
+
+  return S_plot(new sct_corr::coordinate_transform(name, save_option == save_to_disk, x_slope, x_offset, y_slope, y_offset));
 }
 
-S_plot sct_plot::coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, bool save2disk /*= true*/)
+S_plot sct_plot::coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, plot_save_option_def save_option )
 {
-  return   sct_plot::coordinate_transform(name, 1, x_offset, 1, y_offset, save2disk);
+
+  return   sct_plot::coordinate_transform(name, 1, x_offset, 1, y_offset, save_option);
 }

@@ -61,12 +61,12 @@ namespace sct_corr{
     return sct::plot_find_correspondingXY();
   }
 }
- S_plot sct_plot::find_correspondingX(const char* name, bool save2disk)
+ S_plot sct_plot::find_correspondingX(const char* name, plot_save_option_def save_option )
  {
-   return S_plot(new sct_corr::plot_find_correspondingX(name, save2disk));
+   return S_plot(new sct_corr::plot_find_correspondingX(name, save_option == save_to_disk));
  }
 
- S_plot sct_plot::find_correspondingXY(const char* name, bool save2disk)
+ S_plot sct_plot::find_correspondingXY(const char* name, plot_save_option_def save_option )
  {  
-   return S_plot(new sct_corr::plot_find_correspondingXY(name, save2disk));
+   return S_plot(new sct_corr::plot_find_correspondingXY(name, save_option==save_to_disk));
  }

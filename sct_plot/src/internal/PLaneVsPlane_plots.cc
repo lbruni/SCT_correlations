@@ -182,7 +182,7 @@ namespace sct_corr{
 
 }
 
-S_plot sct_plot::plane_distance(const char* name, bool save2disk)
+S_plot sct_plot::plane_distance(const char* name, plot_save_option_def save_option )
   {
-    return S_plot(new sct_corr::plane_distance(name, save2disk));
+    return S_plot(new sct_corr::plane_distance(name, save_option==save_to_disk));
   }

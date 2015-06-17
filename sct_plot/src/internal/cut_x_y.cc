@@ -48,9 +48,10 @@ namespace sct_corr{
     return sct::plot_cut_x_y();
   }
 }
-S_plot sct_plot::cut_x_y(const char* name, const S_Cut& cut_, bool save2disk /*= true*/)
+S_plot sct_plot::cut_x_y(const char* name, const S_Cut& cut_, plot_save_option_def save_option)
 {
-  return S_plot(new sct_corr::cut_x_y(name, save2disk, cut_));
+
+  return S_plot(new sct_corr::cut_x_y(name, save_option == save_to_disk, cut_));
 }
 
 const char* sct::plot_cut_x_y()

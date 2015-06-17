@@ -53,8 +53,10 @@ namespace sct_corr{
     return ret;
   }
 }
-  S_plot sct_plot::clustering(const char* name, Double_t Pixel_distance/*=2*/, bool save2disk /*=true*/)
+  S_plot sct_plot::clustering(const char* name, Double_t Pixel_distance/*=2*/, plot_save_option_def save_option  /*=  save_to_disk*/)
   {
-    return S_plot(new sct_corr::clusterSize(name, save2disk, Pixel_distance));
+
+    
+    return S_plot(new sct_corr::clusterSize(name, save_option == save_to_disk, Pixel_distance));
   }
 

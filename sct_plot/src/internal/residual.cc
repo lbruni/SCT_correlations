@@ -39,7 +39,7 @@ namespace sct_corr{
     return sct::plot_residual();
   }
 }
-S_plot sct_plot::residual(const char* name, bool save2disk)
+S_plot sct_plot::residual(const char* name, plot_save_option_def save_option)
 {
-  return S_plot(new sct_corr::residual(name, save2disk));
+  return S_plot(new sct_corr::residual(name, save_option==save_to_disk));
 }

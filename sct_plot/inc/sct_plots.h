@@ -213,27 +213,27 @@ class S_plot_def;
 class S_plot;
 class DllExport sct_plot{
 public:
-  static  S_plot hitmap(const char* name, bool save2disk = true);
-  static  S_plot correlation(const char* name, bool save2disk = true);
-static  S_plot residual(const char* name, bool save2disk = true);
-static  S_plot clustering(const char* name, Double_t Pixel_distance = 2, bool save2disk = true);
-static  S_plot projectOnPixel(const char* name, bool save2disk = true);
-static  S_plot find_correspondingX(const char* name, bool save2disk = true);
-static  S_plot find_correspondingXY(const char* name, bool save2disk = true);
-static  S_plot Event_size(const char* name, bool save2disk = true);
-static  S_plot find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk = true);
-static  S_plot find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff = 100000, bool save2disk = true);
-static  S_plot plane_distance(const char* name, bool save2disk = true);
-static  S_plot A_if_B(const char* name, bool save2disk = true);
-static  S_plot rotated(const char* name, Double_t angle, bool save2disk = true);
-static  S_plot coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
-static  S_plot coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, bool save2disk = true);
+  static  S_plot hitmap(const char* name, plot_save_option_def save_option =  save_to_disk);
+  static  S_plot correlation(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot residual(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot clustering(const char* name, Double_t Pixel_distance = 2, plot_save_option_def save_option =  save_to_disk);
+static  S_plot projectOnPixel(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot find_correspondingX(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot find_correspondingXY(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot Event_size(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, plot_save_option_def save_option =  save_to_disk);
+static  S_plot find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff = 100000, plot_save_option_def save_option =  save_to_disk);
+static  S_plot plane_distance(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot A_if_B(const char* name, plot_save_option_def save_option =  save_to_disk);
+static  S_plot rotated(const char* name, Double_t angle, plot_save_option_def save_option =  save_to_disk);
+static  S_plot coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, plot_save_option_def save_option =  save_to_disk);
+static  S_plot coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, plot_save_option_def save_option =  save_to_disk);
 
-static  S_plot efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, bool save2disk = true);
-static  S_plot efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
-static  S_plot hitMultiplizity(const char* name, bool save2disk = true);
+static  S_plot efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, plot_save_option_def save_option =  save_to_disk);
+static  S_plot efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, plot_save_option_def save_option =  save_to_disk);
+static  S_plot hitMultiplizity(const char* name, plot_save_option_def save_option =  save_to_disk);
 
-static  S_plot cut_x_y(const char* name, const  S_Cut& cut_, bool save2disk = true);
+static  S_plot cut_x_y(const char* name, const  S_Cut& cut_, plot_save_option_def save_option =  save_to_disk);
 
 
 static  S_plot save2LCIO(const char* name,const char* filename,unsigned runnum );
@@ -318,7 +318,7 @@ DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def
 class DllExport S_plot_def{
 public:
   
-  S_plot_def(const char* type, const char* name,bool save2disk=true);
+  S_plot_def(const char* type, const char* name,plot_save_option_def save_option =save_to_disk);
   void setParameter(const char* tag, const char* value);
   const char * getParameter(const char* tag, const char* default_value);
 

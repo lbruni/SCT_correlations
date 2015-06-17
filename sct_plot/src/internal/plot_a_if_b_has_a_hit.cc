@@ -38,7 +38,7 @@ namespace sct_corr{
   }
 
 }
-  S_plot sct_plot::A_if_B(const char* name, bool save2disk)
+  S_plot sct_plot::A_if_B(const char* name, plot_save_option_def save_option)
   {
-    return S_plot(new sct_corr::plot_a_if_b_has_a_hit(name, save2disk));
+    return S_plot(new sct_corr::plot_a_if_b_has_a_hit(name, save_option==save_to_disk));
   }

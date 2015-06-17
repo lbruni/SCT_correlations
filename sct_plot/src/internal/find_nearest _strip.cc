@@ -90,7 +90,7 @@ namespace sct_corr{
     return sct::plot_find_nearest_strip();
   }
 }
-S_plot sct_plot::find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff /*=100000*/, bool save2disk /*= true*/)
+S_plot sct_plot::find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff /*=100000*/, plot_save_option_def save_option)
 {
-  return S_plot(new sct_corr::find_nearest_strip(name, save2disk, search_axis, cutOfff));
+  return S_plot(new sct_corr::find_nearest_strip(name, save_option==save_to_disk, search_axis, cutOfff));
 }

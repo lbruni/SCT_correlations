@@ -45,8 +45,7 @@ namespace sct_corr{
     auto e = plane_hit((p1.x - p2.x), (p1.y - p2.y));
     auto r1 = TMath::Sqrt((e.x)*(e.x) + (e.y)*(e.y));
 
-    if (r1 > 0
-      &&
+    if (
       r1 < r
       &&
       TMath::Abs(e.x) < m_x_cutOff
@@ -58,10 +57,7 @@ namespace sct_corr{
       h1 = p1;
       h2 = p2;
     }
-    if (r1 == 0)
-    {
-      std::cout << "[find_nearest_strip] error r1== 0" << std::endl;
-    }
+
   }
 
   void find_nearest::processEventEnd()

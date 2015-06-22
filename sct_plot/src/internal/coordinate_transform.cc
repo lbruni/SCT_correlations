@@ -4,7 +4,7 @@
 namespace sct_corr{
   class coordinate_transform : public plot_hit2d {
   public:
-    coordinate_transform(const char* name, bool save2disk, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset);
+    coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& = "");
     virtual void processHit(double x, double y) override;
     double m_x_slope = 0;
     double m_y_slope = 0;
@@ -20,8 +20,8 @@ namespace sct_corr{
 
 
 
-  coordinate_transform::coordinate_transform(const char* name, bool save2disk, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset)
-    :plot_hit2d(name, save2disk),
+  coordinate_transform::coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& plot_prob)
+    :plot_hit2d(plot_prob),
     m_x_slope(x_slope),
     m_y_slope(y_slope),
     m_x_offset(x_offset),
@@ -48,14 +48,14 @@ namespace sct_corr{
     return sct::plot_coordinate_transform();
   }
 }
-S_plot sct_plot::coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, plot_save_option_def save_option)
+S_plot sct_plot::coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::coordinate_transform(name, save_option == save_to_disk, x_slope, x_offset, y_slope, y_offset));
+  return S_plot(new sct_corr::coordinate_transform( x_slope, x_offset, y_slope, y_offset,plot_prob));
 }
 
-S_plot sct_plot::coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, plot_save_option_def save_option )
+S_plot sct_plot::coordinate_transform_move(Double_t x_offset, Double_t y_offset, const s_plot_prob& plot_prob)
 {
 
-  return   sct_plot::coordinate_transform(name, 1, x_offset, 1, y_offset, save_option);
+  return   sct_plot::coordinate_transform(1, x_offset, 1, y_offset, plot_prob);
 }

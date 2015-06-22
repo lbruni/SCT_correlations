@@ -4,7 +4,7 @@
 namespace sct_corr{
   class plot_a_if_b_has_a_hit :public plotPlaneVsPlane{
   public:
-    plot_a_if_b_has_a_hit(const char* name, bool save2disk);
+    plot_a_if_b_has_a_hit(const s_plot_prob& = "");
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) override;
     virtual s_plane_collection getOutputcollection();
     virtual const char* getType() const override;
@@ -12,7 +12,7 @@ namespace sct_corr{
   };
 
 
-  plot_a_if_b_has_a_hit::plot_a_if_b_has_a_hit(const char* name, bool save2disk) : plotPlaneVsPlane(name, save2disk)
+  plot_a_if_b_has_a_hit::plot_a_if_b_has_a_hit(const s_plot_prob& plot_prob) : plotPlaneVsPlane(plot_prob)
   {
 
   }
@@ -38,7 +38,7 @@ namespace sct_corr{
   }
 
 }
-  S_plot sct_plot::A_if_B(const char* name, plot_save_option_def save_option)
+S_plot sct_plot::A_if_B(const s_plot_prob& plot_prob)
   {
-    return S_plot(new sct_corr::plot_a_if_b_has_a_hit(name, save_option==save_to_disk));
+    return S_plot(new sct_corr::plot_a_if_b_has_a_hit(plot_prob));
   }

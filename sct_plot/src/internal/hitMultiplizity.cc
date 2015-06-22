@@ -3,7 +3,7 @@ namespace sct_corr{
 
   class hitMultiplizity :public plot_hit2d{
   public:
-    hitMultiplizity(const char* name, bool save2disk);
+    hitMultiplizity(const s_plot_prob& = "");
 
     virtual void processEventStart();
     virtual void processHit(double x, double y);;
@@ -18,7 +18,7 @@ namespace sct_corr{
 
 
 
-  hitMultiplizity::hitMultiplizity(const char* name, bool save2disk) : plot_hit2d(name, save2disk)
+  hitMultiplizity::hitMultiplizity(const s_plot_prob& plot_prob) : plot_hit2d(plot_prob)
   {
 
   }
@@ -50,7 +50,7 @@ namespace sct_corr{
     return sct::plot_hitMultiplizity();
   }
 }
-S_plot sct_plot::hitMultiplizity(const char* name, plot_save_option_def save_option  /*= true*/)
+S_plot sct_plot::hitMultiplizity(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::hitMultiplizity(name, save_option==save_to_disk));
+  return S_plot(new sct_corr::hitMultiplizity(plot_prob));
 }

@@ -2,7 +2,7 @@
 namespace sct_corr{
   class plot_Event_size :public plotPlaneVsPlane{
   public:
-    plot_Event_size(const char* name, bool save2disk);
+    plot_Event_size(const s_plot_prob& = "");
     virtual void processEventEnd();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
     virtual const char* getType() const override;
@@ -11,7 +11,7 @@ namespace sct_corr{
 
 
 
-  plot_Event_size::plot_Event_size(const char* name, bool save2disk) : plotPlaneVsPlane(name, save2disk)
+  plot_Event_size::plot_Event_size(const s_plot_prob& plot_prob) : plotPlaneVsPlane(plot_prob)
   {
 
   }
@@ -39,7 +39,7 @@ namespace sct_corr{
   }
 }
 
-S_plot sct_plot::Event_size(const char* name, plot_save_option_def save_option)
+S_plot sct_plot::Event_size(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::plot_Event_size(name, save_option == save_to_disk));
+  return S_plot(new sct_corr::plot_Event_size(plot_prob));
 }

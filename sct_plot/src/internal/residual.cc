@@ -4,7 +4,7 @@
 namespace sct_corr{
   class residual : public plot_corr2d {
   public:
-    residual(const char* name, bool save2disk);
+    residual(const s_plot_prob& = "");
     virtual void processHit(double x, double y) override;
 
 
@@ -16,7 +16,7 @@ namespace sct_corr{
   };
 
 
-  residual::residual(const char* name, bool save2disk) : plot_corr2d(name, save2disk)
+  residual::residual(const s_plot_prob& plot_prob) : plot_corr2d(plot_prob)
   {
 
   }
@@ -39,7 +39,7 @@ namespace sct_corr{
     return sct::plot_residual();
   }
 }
-S_plot sct_plot::residual(const char* name, plot_save_option_def save_option)
+S_plot sct_plot::residual(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::residual(name, save_option==save_to_disk));
+  return S_plot(new sct_corr::residual(plot_prob));
 }

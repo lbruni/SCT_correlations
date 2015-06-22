@@ -7,7 +7,7 @@
 namespace sct_corr{
   class rotated_plane : public plot_hit2d {
   public:
-    rotated_plane(const char* name, bool save2disk, double angle);
+    rotated_plane(double angle,const s_plot_prob& = "");
     virtual void processHit(double x, double y) override;
     double m_angele = 0;
 
@@ -16,7 +16,7 @@ namespace sct_corr{
   };
 
 
-  rotated_plane::rotated_plane(const char* name, bool save2disk, double angle_) :plot_hit2d(name, save2disk), m_angele(angle_)
+  rotated_plane::rotated_plane(double angle_, const s_plot_prob& plot_prob) :plot_hit2d(plot_prob), m_angele(angle_)
   {
 
   }
@@ -39,8 +39,8 @@ namespace sct_corr{
     return sct::plot_rotated();
   }
 }
-S_plot sct_plot::rotated(const char* name, Double_t angle, plot_save_option_def save_option )
+S_plot sct_plot::rotated(Double_t angle, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::rotated_plane(name,save_option==save_to_disk,angle));
+  return S_plot(new sct_corr::rotated_plane(angle,plot_prob));
 }

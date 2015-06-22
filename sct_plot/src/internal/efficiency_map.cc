@@ -7,7 +7,7 @@
 namespace sct_corr{
   class efficieny_map :public plotPlaneVsPlane{
   public:
-    efficieny_map(const char* name, bool save2disk, Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut);
+    efficieny_map(Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, const s_plot_prob& = "");
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) override;
     virtual s_plane_collection getOutputcollection() override;
     virtual Long64_t Draw(const char* options, const char* cuts /* = "" */, const char* axis /* = "y:x" */) override;
@@ -25,8 +25,8 @@ namespace sct_corr{
   };
 
 
-  efficieny_map::efficieny_map(const char* name, bool save2disk, Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut) :
-    plotPlaneVsPlane(name, save2disk), m_xbin_size(x_bin_), m_ybin_size(y_bin_), m_xCut(x_cut), m_yCut(y_cut)
+  efficieny_map::efficieny_map(Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, const s_plot_prob& plot_prob) :
+    plotPlaneVsPlane(plot_prob), m_xbin_size(x_bin_), m_ybin_size(y_bin_), m_xCut(x_cut), m_yCut(y_cut)
   {
 
   }
@@ -110,21 +110,16 @@ namespace sct_corr{
     return sct::plot_efficieny_map();
   }
 }
-S_plot sct_plot::efficiency_map(const char* name, Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, plot_save_option_def save_option)
+S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, const s_plot_prob& plot_prob)
 {
 
-  bool save2disk = false;
-  if (save_option == save_to_disk)
-  {
-    save2disk = true;
-  }
-  return S_plot(new sct_corr::efficieny_map(name, save2disk, x_bin_, y_bin_, x_cut, y_cut));
+  return S_plot(new sct_corr::efficieny_map( x_bin_, y_bin_, x_cut, y_cut,plot_prob));
 }
 
-S_plot sct_plot::efficiency_map(const char* name, Double_t x_bin_, Double_t y_bin_, plot_save_option_def save_option)
+S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, const s_plot_prob& plot_prob)
 {
 
-  return efficiency_map(name, x_bin_, y_bin_, x_bin_, y_bin_, save_option);
+  return efficiency_map( x_bin_, y_bin_, x_bin_, y_bin_, plot_prob);
 }
 
 

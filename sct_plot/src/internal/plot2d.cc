@@ -8,7 +8,7 @@
 
 namespace sct_corr{
 
-  plot2d::plot2d(const char* name, bool save2disk) :plot(name, save2disk)
+  plot2d::plot2d(const s_plot_prob& plot_prob) :plot(plot_prob)
   {
 
   }

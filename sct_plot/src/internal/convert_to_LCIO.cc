@@ -39,7 +39,7 @@ namespace sct_corr{
 
   class convert_to_LCIO :public plot{
   public:
-    convert_to_LCIO(const char* name, const char *file_name, unsigned runNum);
+    convert_to_LCIO(const char *file_name, unsigned runNum, const s_plot_prob& = "");
     virtual const char* getType() const;
     virtual bool isReady();
     virtual void pushAxis(axis_ref* axis);
@@ -65,8 +65,8 @@ namespace sct_corr{
     bool Collection_createIfNotExist(lcio::LCCollectionVec** zsDataCollection, const lcio::LCEvent & lcioEvent, const char * name);
   };
 
-  convert_to_LCIO::convert_to_LCIO(const char* name, const char *file_name, unsigned runNum) :
-    plot(name, true),
+  convert_to_LCIO::convert_to_LCIO(const char *file_name, unsigned runNum, const s_plot_prob& plot_prob) :
+    plot(s_plot_prob(plot_prob).SaveToDisk()),
     m_filename(file_name),
     m_runNum(runNum)
   {
@@ -280,14 +280,14 @@ namespace sct_corr{
   }
 }
 
-S_plot sct_plot::save2LCIO(const char* name, const char* filename, unsigned runnum)
+S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::convert_to_LCIO(name, filename, runnum));
+  return S_plot(new sct_corr::convert_to_LCIO(filename, runnum, plot_prob));
 
 }
 #else
 
-S_plot sct_plot::save2LCIO(const char* name, const char* filename, unsigned runnum)
+S_plot sct_plot::s_save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
   return S_plot(nullptr);
 }

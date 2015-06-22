@@ -4,7 +4,7 @@
 namespace sct_corr{
   class ProjectOnPixel :public plot_hit2d{
   public:
-    ProjectOnPixel(const char* name, bool save2disk);
+    ProjectOnPixel(const s_plot_prob& = "");
 
     virtual void processHit(double x, double y) override;
 
@@ -14,7 +14,7 @@ namespace sct_corr{
   };
 
 
-  ProjectOnPixel::ProjectOnPixel(const char* name, bool save2disk) : plot_hit2d(name, save2disk)
+  ProjectOnPixel::ProjectOnPixel(const s_plot_prob& plot_prob) : plot_hit2d(plot_prob)
   {
 
   }
@@ -36,7 +36,7 @@ namespace sct_corr{
     return sct::plot_projectOnPixel();
   }
 }
-S_plot sct_plot::projectOnPixel(const char* name, plot_save_option_def save_option)
+S_plot sct_plot::projectOnPixel(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::ProjectOnPixel(name, save_option==save_to_disk));
+  return S_plot(new sct_corr::ProjectOnPixel(plot_prob));
 }

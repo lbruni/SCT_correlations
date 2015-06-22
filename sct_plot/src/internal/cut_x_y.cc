@@ -5,7 +5,7 @@
 namespace sct_corr{
   class cut_x_y :public plot_hit2d{
   public:
-    cut_x_y(const char* name, bool save2disk, const S_Cut& cut_);
+    cut_x_y(const S_Cut& cut_, const s_plot_prob& = "");
     virtual void processHit(double x, double y) override;
     virtual s_plane_collection getOutputcollection();
 
@@ -17,7 +17,7 @@ namespace sct_corr{
 
 
 
-  cut_x_y::cut_x_y(const char* name, bool save2disk, const S_Cut& cut_) :plot_hit2d(name, save2disk), m_cut(cut_.copy())
+  cut_x_y::cut_x_y(const S_Cut& cut_, const s_plot_prob& plot_prob) :plot_hit2d(plot_prob), m_cut(cut_.copy())
   {
 
   }
@@ -48,10 +48,10 @@ namespace sct_corr{
     return sct::plot_cut_x_y();
   }
 }
-S_plot sct_plot::cut_x_y(const char* name, const S_Cut& cut_, plot_save_option_def save_option)
+S_plot sct_plot::cut_x_y(const S_Cut& cut_, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::cut_x_y(name, save_option == save_to_disk, cut_));
+  return S_plot(new sct_corr::cut_x_y(cut_, plot_prob));
 }
 
 const char* sct::plot_cut_x_y()

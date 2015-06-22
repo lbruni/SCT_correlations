@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace sct_corr{
-  plot_hit2d::plot_hit2d(const char* name, bool save2disk) : plot2d(name, save2disk)
+  plot_hit2d::plot_hit2d(const s_plot_prob& plot_prob) : plot2d(plot_prob)
   {
 
   }

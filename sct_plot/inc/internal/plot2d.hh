@@ -9,7 +9,7 @@ namespace sct_corr{
   class plot2d :public plot{
 
   public:
-    plot2d(const char* name, bool save2disk);
+    plot2d(const s_plot_prob& = "");
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
     virtual Long64_t Draw(const S_DrawOption& opt) override;
     virtual void ProcessEvent() = 0;

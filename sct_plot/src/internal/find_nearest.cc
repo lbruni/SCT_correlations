@@ -7,7 +7,7 @@ namespace sct_corr{
   public:
 
 
-    find_nearest(const char* name, bool save2disk, double x_cutOff, double y_cutOff);
+    find_nearest(double x_cutOff, double y_cutOff,const s_plot_prob& = "");
     virtual void processEventStart();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
 
@@ -25,7 +25,7 @@ namespace sct_corr{
 #define nearest_plane1_pos 1
 #define nearest_plane2_pos 2
 
-  find_nearest::find_nearest(const char* name, bool save2disk, double x_cutOff, double y_cutOff) :plotPlaneVsPlane(name, save2disk), m_x_cutOff(x_cutOff), m_y_cutOff(y_cutOff)
+  find_nearest::find_nearest(double x_cutOff, double y_cutOff, const s_plot_prob& plot_prob) :plotPlaneVsPlane(plot_prob), m_x_cutOff(x_cutOff), m_y_cutOff(y_cutOff)
   {
 
   }
@@ -94,7 +94,7 @@ namespace sct_corr{
     return sct::plot_find_nearest();
   }
 }
-S_plot sct_plot::find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, plot_save_option_def save_option  /*=  save_to_disk*/)
+S_plot sct_plot::find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& plot_prob)
 {
-      return S_plot(new sct_corr::find_nearest(name, save_option==save_to_disk, x_cutoff, y_cutoff));
+      return S_plot(new sct_corr::find_nearest(x_cutoff, y_cutoff,plot_prob));
 }

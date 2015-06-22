@@ -22,7 +22,7 @@
 #pragma link C++ class S_Cut_BinContent;
 #pragma link C++ class S_CutCoollection;
 #pragma link C++ class sct_analyis;
-
+#pragma link C++ class s_plot_prob;
 
 #pragma link C++ function  operator+(s_plane_collection , const s_plane_collection& );
 #pragma link C++ function  operator+(s_plane_collection , const S_plane_def& );

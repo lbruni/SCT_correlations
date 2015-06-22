@@ -242,7 +242,6 @@ class S_plot_def;
 class S_plot;
 class DllExport sct_plot{
 public:
-
   static  S_plot hitmap(const s_plot_prob& ="");
   static  S_plot correlation(const s_plot_prob& ="");
   static  S_plot residual(const s_plot_prob& ="");
@@ -272,11 +271,14 @@ public:
   static s_plane_collection misalignment_pixel(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_,const  s_plot_prob& = "");
   static s_plane_collection plane_merger(S_plot_collection& pl, s_plane_collection planes_,  const  s_plot_prob& = "");
 };
-class DllExport sct_analyis{
+
+class DllExport sct_analyis{ // all this function have memory leaks. they are not designed to be called in a loop 
   
 public:
  static TH2* misalignment(S_plot_collection& treeColl);
  static TF1* Draw_misalignment(TFile& __file0);
+ static TF1* Draw_New_aligment(TFile& __file0, TF1 *);
+ static S_Cut* Get_fiducial_area(TFile& __file0);
 };
 
 struct plane_hit

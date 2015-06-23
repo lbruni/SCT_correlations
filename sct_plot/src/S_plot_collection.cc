@@ -1,5 +1,5 @@
 
-#include "sct_plots.h"
+#include "s_plot_collection.h"
 #include "sct_plots_internal.h"
 #include "treeCollection.h"
 #include <iostream>
@@ -8,6 +8,8 @@
 #include "sct_event_buffer.h"
 #include "sct_global.h"
 #include "internal/plotsBase.hh"
+#include "s_DrawOption.h"
+#include "s_plane.h"
 
 S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>())
 {

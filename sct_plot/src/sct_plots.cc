@@ -12,6 +12,10 @@
 #include "TAxis.h"
 #include "TH1.h"
 #include "TTree.h"
+#include "s_cuts.h"
+#include "s_plot_collection.h"
+#include "s_plane.h"
+#include "s_DrawOption.h"
 
 
 
@@ -20,174 +24,6 @@
 
 
 
-
-
-
-
-
-S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis)
-{
-
-}
-
-S_DrawOption::S_DrawOption(const char* options /*= "colz"*/, const char* cuts /*= ""*/, const char * axis /*= "y:x"*/) : m_options(options), m_cut(cuts), m_axis(axis)
-{
-
-}
-
-
-S_DrawOption::S_DrawOption()
-{
-
-}
-
-
-
-
-
-
-
-
-S_DrawOption::S_DrawOption(const char* options, TCut cuts, const char * axis /*= "y:x"*/) : m_options(options), m_cut(cuts), m_axis(axis)
-{
-
-}
-
-S_DrawOption& S_DrawOption::options(const char* option)
-{
-
-  m_options = option;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::opt_colz()
-{
-
-  return options("colz");
-}
-
-
-
-
-
-
-
-S_DrawOption& S_DrawOption::cut(const char* cut_)
-{
-  m_cut = cut_;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::cut_add(const TCut& cut_)
-{
-  m_cut = m_cut&& cut_;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::cut_x(Double_t min_, Double_t max_)
-{
-  cut_x_min(min_);
-  return cut_x_max(max_);
-
-}
-
-S_DrawOption& S_DrawOption::cut_x_min(Double_t min_)
-{
-  std::string dummy_str = "x>" + std::to_string(min_);
-  TCut dummy = dummy_str.c_str();
-  m_cut = m_cut&& dummy;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::cut_x_max(Double_t max_)
-{
-  std::string dummy_str = "x<" + std::to_string(max_);
-  TCut dummy = dummy_str.c_str();
-  m_cut = m_cut&& dummy;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::cut_y(Double_t min_, Double_t max_)
-{
-  cut_y_min(min_);
-  return cut_y_max(max_);
-}
-
-S_DrawOption& S_DrawOption::cut_y_min(Double_t min_)
-{
-  std::string dummy_str = "y>" + std::to_string(min_);
-  TCut dummy = dummy_str.c_str();
-  m_cut = m_cut&& dummy;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::cut_y_max(Double_t max_)
-{
-  std::string dummy_str = "y<" + std::to_string(max_);
-  TCut dummy = dummy_str.c_str();
-  m_cut = m_cut&& dummy;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::draw_axis(const char* axis_)
-{
-  m_axis = axis_;
-  return *this;
-}
-
-S_DrawOption& S_DrawOption::draw_x()
-{
-
-  return draw_axis("x");
-}
-
-S_DrawOption& S_DrawOption::draw_y()
-{
-  return draw_axis("y");
-}
-
-S_DrawOption& S_DrawOption::draw_x_VS_y()
-{
-  return draw_axis("x:y");
-}
-
-S_DrawOption& S_DrawOption::draw_y_VS_x()
-{
-  return draw_axis("y:x");
-}
-
-S_DrawOption& S_DrawOption::output_object(TObject* out_)
-{
-  m_output_object = out_;
-  return *this;
-}
-
-Long64_t S_DrawOption::Draw(TTree * tree) const
-{
-  return tree->Draw(getAxis(), getCut(), getOptions());
-}
-
-const char* S_DrawOption::getOptions() const
-{
-  return m_options.c_str();
-}
-
-const char* S_DrawOption::getAxis() const
-{
-
-
-  m_axis_dummy = m_axis;
-  if (m_output_object)
-  {
-    m_axis_dummy += ">>" + std::string(m_output_object->GetName());
-  }
-  return m_axis_dummy.c_str();
-}
-
-TCut S_DrawOption::getCut() const
-{
-  return m_cut;
-}
 
 
 
@@ -297,198 +133,13 @@ TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
   return 0;
 }
 
-S_XCut::S_XCut(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
-{
-
-}
-
-S_XCut::S_XCut(Double_t min_) : S_Cut_min_max(min_)
-{
-
-}
-
-
-
-bool S_XCut::isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const
-{
-  return isOutOfRange_intern(x);
-}
-
-bool S_XCut::isOutOfRange(Double_t BinContent) const
-{
-  return false;
-}
-
-bool S_XCut::isOutOfRange(Double_t BinContent, Double_t x) const
-{
-  return isOutOfRange_intern(x);
-}
-
-S_YCut::S_YCut(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
-{
-
-}
-
-S_YCut::S_YCut(Double_t min_) : S_Cut_min_max(min_)
-{
-
-}
-
-
-bool S_YCut::isOutOfRange(Double_t BinContent, Double_t x) const
-{
-  return false;
-}
-
-bool S_YCut::isOutOfRange(Double_t BinContent) const
-{
-  return false;
-}
-
-bool S_YCut::isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const
-{
-  return isOutOfRange_intern(y);
-}
-
-S_Cut_BinContent::S_Cut_BinContent(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
-{
-
-}
-
-S_Cut_BinContent::S_Cut_BinContent(Double_t min_) : S_Cut_min_max(min_)
-{
-
-}
-
-
-
-
-
-
-
-
-
-
-
-bool S_Cut_BinContent::isOutOfRange(Double_t BinContent, Double_t y, Double_t z) const
-{
-  return isOutOfRange_intern(BinContent);
-}
-
-bool S_Cut_BinContent::isOutOfRange(Double_t BinContent, Double_t y) const
-{
-  return isOutOfRange_intern(BinContent);
-}
-
-bool S_Cut_BinContent::isOutOfRange(Double_t BinContent) const
-{
-  return isOutOfRange_intern(BinContent);
-}
-
-S_Cut_min_max::S_Cut_min_max(Double_t min_, Double_t max_) :m_min(min_), m_max(max_), m_cut_min(true), m_cut_max(true)
-{
-
-}
-
-S_Cut_min_max::S_Cut_min_max(Double_t min_) : m_min(min_), m_max(0), m_cut_min(true), m_cut_max(false)
-{
-
-}
-
-bool S_Cut_min_max::isOutOfRange_intern(Double_t val) const
-{
-  if (m_cut_min && m_min >val)
-  {
-    return true;
-  }
-
-  if (m_cut_max && m_max <val)
-  {
-    return true;
-  }
-  return false;
-}
-
-S_CutCoollection::S_CutCoollection()
-{
-
-}
-
-bool S_CutCoollection::isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const
-{
-  for (auto&e : m_cuts)
-  {
-    if (e->isOutOfRange(BinContent, x, y))
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool S_CutCoollection::isOutOfRange(Double_t BinContent, Double_t x) const
-{
-  for (auto&e : m_cuts)
-  {
-    if (e->isOutOfRange(BinContent, x))
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool S_CutCoollection::isOutOfRange(Double_t BinContent) const
-{
-  for (auto&e : m_cuts)
-  {
-    if (e->isOutOfRange(BinContent))
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
-void S_CutCoollection::add_Cut(const S_Cut& cut_)
-{
-  auto coll = dynamic_cast<const S_CutCoollection*>(&cut_);
-  if (coll)
-  {
-   return add_Cut(*coll);
-  }
-  m_cuts.push_back(cut_.copy());
-}
-
-void S_CutCoollection::add_Cut(const S_CutCoollection& cut_)
-{
-
-
-  m_cuts.insert(m_cuts.end(), cut_.m_cuts.begin(), cut_.m_cuts.end());
-
-
-}
-
-S_CutCoollection operator+(const S_Cut& cut_a, const S_Cut& cut_b)
-{
-
-
-
-  S_CutCoollection ret;
-
-  ret.add_Cut(cut_a);
-  ret.add_Cut(cut_b);
-  return ret;
-}
-
-
 
 
 s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& plot_prob)
 {
   auto apix_true_hits = pl.addPlot(sct_plot::find_nearest(0.1, 0.2,s_plot_prob().doNotSaveToDisk()), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);
 
-  auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, s_plot_prob().doNotSaveToDisk()), fitted_plane, apix_true_hits);
+  auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, s_plot_prob().doNotSaveToDisk()), fitted_plane, apix_true_hits).get(1);
 
 
 
@@ -502,7 +153,7 @@ s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_d
     search_axis = y_axis_def;
   }
 
-  auto res = pl.addPlot(sct_plot::find_nearest_strip(search_axis, 100, s_plot_prob().doNotSaveToDisk()), plane_hit_, dut_fitted_trackts.get(1));
+  auto res = pl.addPlot(sct_plot::find_nearest_strip(search_axis, 100, s_plot_prob().doNotSaveToDisk()), plane_hit_, dut_fitted_trackts);
 
   if (Unknown_axis == y_axis_def)
   {

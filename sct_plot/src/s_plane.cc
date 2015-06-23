@@ -1,8 +1,12 @@
-#include "sct_plots.h"
+#include "s_plane.h"
 #include <iostream>
 #include "sct_plots_internal.h"
 #include "internal/plane.hh"
-
+#include "S_Axis.h"
+#include "s_treeCollection.h"
+#include "treeCollection.h"
+#include "internal/plane_hit.hh"
+#include "s_DrawOption.h"
 
   S_plane::S_plane() : m_plane(nullptr), m_plane_def("error", 0)
   {

@@ -2,6 +2,12 @@
 #define plotsBase_h__
 #include "sct_plots.h"
 
+#include "plot_save_option_def.h"
+#include "s_plot_prob.h"
+#include "s_plot_collection.h"
+#include "Rtypes.h"
+#include "s_DrawOption.h"
+#include "s_plane.h"
 
 
 namespace sct_corr{

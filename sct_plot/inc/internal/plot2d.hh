@@ -3,6 +3,8 @@
 
 
 #include "internal/plotsBase.hh"
+#include "s_plane.h"
+
 namespace sct_corr{
   class treeCollection_ouput;
   class axis_ref;

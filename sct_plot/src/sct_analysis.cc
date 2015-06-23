@@ -6,7 +6,10 @@
 #include <iostream>
 #include "TProfile.h"
 #include "TCanvas.h"
-
+#include "s_plot_collection.h"
+#include "s_DrawOption.h"
+#include "s_cuts.h"
+#include "s_plane.h"
 TH2* sct_analyis::misalignment(S_plot_collection& treeColl)
 {
 
@@ -74,6 +77,7 @@ TF1* sct_analyis::Draw_New_aligment(TFile& __file0, TF1 *f)
   auto res = pl->addPlot(sct_plot::find_nearest_strip(x_axis_def, 100, s_plot_prob("correlations")), sct_coll::DUT_hit(), dut_rot_moved());
   auto res1 = pl->addPlot(sct_plot::hitmap(), res.get(2).getX_def(), res.get(0).getY_def());
 
+  
   // auto cor2 = treeColl->addPlot(sct_plot::save2LCIO("","file.lcio", 1), cor.get(0));
 
   pl->loop();

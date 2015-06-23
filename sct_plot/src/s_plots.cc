@@ -2,6 +2,8 @@
 #include <iostream>
 #include "sct_plots_internal.h"
 #include "internal/plotsBase.hh"
+#include "s_DrawOption.h"
+#include "s_plane.h"
 
 
 s_plane_collection S_plot::getOutputcollection()

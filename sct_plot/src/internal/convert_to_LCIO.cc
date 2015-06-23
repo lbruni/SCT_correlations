@@ -27,6 +27,8 @@
 #include "EVENT/LCIO.h"
 #include "UTIL/CellIDDecoder.h"
 #include "CellIDReencoder.h"
+#include "s_plot_prob.h"
+#include "internal/plane_hit.hh"
 using namespace IMPL;
 
 using lcio::TrackerDataImpl;
@@ -286,8 +288,8 @@ S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_p
 
 }
 #else
-
-S_plot sct_plot::s_save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
+#include "s_plot_prob.h"
+S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
   return S_plot(nullptr);
 }

@@ -1,6 +1,7 @@
 #include "sct_plots.h"
 #include <iostream>
-
+#include "s_plane.h"
+#include "s_DrawOption.h"
 // class output_streamer;
 // 
 // class output_lock{

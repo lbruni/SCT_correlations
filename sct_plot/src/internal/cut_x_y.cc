@@ -1,7 +1,7 @@
 #include "internal/plot_hit2d.hh"
 #include "internal/plane.hh"
 #include <iostream>
-
+#include "s_cuts.h"
 namespace sct_corr{
   class cut_x_y :public plot_hit2d{
   public:

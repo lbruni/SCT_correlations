@@ -1,8 +1,7 @@
-#include "sct_plots.h"
 #include "internal/plotsBase.hh"
-#include "sct_event_buffer.h"
 #include <iostream>
 #include "treeCollection.h"
+#include <vector>
 
 namespace sct_corr{
   class plane_merger :public plot{

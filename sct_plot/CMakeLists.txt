@@ -15,6 +15,14 @@ INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} )
 # fill list of header files 
 set(Project_HEADERS 
   ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots.h
+  ${PROJECT_SOURCE_DIR}/sct_plot/inc/S_Axis.h
+ ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_cuts.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_DrawOption.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plane.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_collection.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_prob.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_treeCollection.h
   ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots_LinkDef.h
   )
 

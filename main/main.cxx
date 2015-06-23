@@ -13,6 +13,9 @@
 
 
 
+#include "s_plot_collection.h"
+#include "s_plane.h"
+#include "s_DrawOption.h"
 
 
 void residual_plane3(){
@@ -22,15 +25,15 @@ void residual_plane3(){
 
   S_plot_collection* pl =new S_plot_collection(_file0);
 
-  auto tel_rotated_17= pl->addPlot(sct_plot::rotated("", 0.017), sct_coll::DUT_fitted());
-  auto tel_rotated_0 = pl->addPlot(sct_plot::rotated("", 0.0), sct_coll::DUT_fitted());
+  auto tel_rotated_17= pl->addPlot(sct_plot::rotated( 0.017), sct_coll::DUT_fitted());
+  auto tel_rotated_0 = pl->addPlot(sct_plot::rotated( 0.0), sct_coll::DUT_fitted());
 
-  s_plane_collection strip_no_rot = pl->addPlot(sct_plot::find_nearest_strip("",  y_axis_def), sct_coll::DUT_hit(), tel_rotated_0());
+  s_plane_collection strip_no_rot = pl->addPlot(sct_plot::find_nearest_strip(  y_axis_def), sct_coll::DUT_hit(), tel_rotated_0());
   s_plane_collection hitmap__no_rot = pl->addPlot(sct_plot::hitmap(""), strip_no_rot.get(0).getY_def(), strip_no_rot.get(2).getX_def());
 
 
-  s_plane_collection strip_rot = pl->addPlot(sct_plot::find_nearest_strip("", y_axis_def), sct_coll::DUT_hit(), tel_rotated_17());
-  s_plane_collection hitmap__rot = pl->addPlot(sct_plot::hitmap(""), strip_rot.get(0).getY_def(), strip_rot.get(2).getX_def());
+  s_plane_collection strip_rot = pl->addPlot(sct_plot::find_nearest_strip( y_axis_def), sct_coll::DUT_hit(), tel_rotated_17());
+  s_plane_collection hitmap__rot = pl->addPlot(sct_plot::hitmap(), strip_rot.get(0).getY_def(), strip_rot.get(2).getX_def());
 
 
 
@@ -85,18 +88,18 @@ int main(int argc, char **argv) {
  Int_t fei4_Plane_id = 20;
  Int_t Strip_Plane_id = 8;
 
- auto fei4_nearest=pl.addPlot(sct_plot::find_nearest(fei4,100,100) , sct_coll::apix_hit(), sct_coll::apix_fitted());
+ auto fei4_nearest=pl.addPlot(sct_plot::find_nearest(100,100,s_plot_prob(fei4)) , sct_coll::apix_hit(), sct_coll::apix_fitted());
 
  //auto strip_rotated= pl.addPlot(sct_plot::rotated(strip_fit_rot, 0.017, false), sct_coll::DUT_fitted().getX_def(), sct_coll::DUT_fitted().getY_def());
 
 
  //pl.addPlot(sct::plot_find_nearest_strip(), strip, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 8));
 // pl.addPlot(sct::plot_find_nearest_strip(), strip, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 8));
- auto strip_nearest = pl.addPlot(sct_plot::find_nearest_strip(strip, y_axis_def, 1000), sct_coll::DUT_hit(), sct_coll::DUT_fitted());
+ auto strip_nearest = pl.addPlot(sct_plot::find_nearest_strip(y_axis_def, 1000), sct_coll::DUT_hit(), sct_coll::DUT_fitted());
 // auto hitmap__= pl.addPlot(sct::plot_hitmap(), name4, strip_nearest.get(0).getY_def(), strip_nearest.get(2).getX_def() );
  
 
- s_plane_collection plane2 = pl.addPlot(sct_plot::find_nearest("fe", 100, 100), sct_coll::tel_hit(3), sct_coll::tel_fitted(3));
+ s_plane_collection plane2 = pl.addPlot(sct_plot::find_nearest( 100, 100), sct_coll::tel_hit(3), sct_coll::tel_fitted(3));
 
  /*
  //pl.addPlot(sct::plot_find_correspondingX(), name, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 20));

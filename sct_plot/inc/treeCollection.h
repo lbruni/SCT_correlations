@@ -64,7 +64,7 @@ namespace sct_corr{
     virtual ~treeCollection_ouput();
     void fill();
     Int_t Draw(const char* axis, const char* cuts, const char * options);
-
+    TTree * getTTree();
     root_event m_buffer;
 #ifdef _DEBUG
     Hit_output *m_tree = nullptr;

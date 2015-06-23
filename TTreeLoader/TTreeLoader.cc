@@ -106,3 +106,8 @@ Int_t Hit_output::Draw(const char* axis, const char* cuts, const char * options)
 {
  return  m_hits->Draw(axis, cuts, options);
 }
+
+TTree* Hit_output::getTTree()
+{
+  return m_hits->fChain;
+}

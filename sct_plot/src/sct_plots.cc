@@ -10,6 +10,7 @@
 #include "TH2D.h"
 #include "TAxis.h"
 #include "TH1.h"
+#include "TTree.h"
 
 
 S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis)
@@ -147,6 +148,11 @@ S_DrawOption& S_DrawOption::output_object(TObject* out_)
 {
   m_output_object = out_;
   return *this;
+}
+
+Long64_t S_DrawOption::Draw(TTree * tree) const
+{
+  return tree->Draw(getAxis(), getCut(), getOptions());
 }
 
 const char* S_DrawOption::getOptions() const

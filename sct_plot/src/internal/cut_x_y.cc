@@ -5,19 +5,19 @@
 namespace sct_corr{
   class cut_x_y :public plot_hit2d{
   public:
-    cut_x_y(const char* name, bool save2disk, const S_XCut& xcut, const S_YCut& ycut);
+    cut_x_y(const char* name, bool save2disk, const S_Cut& cut_);
     virtual void processHit(double x, double y) override;
     virtual s_plane_collection getOutputcollection();
 
-    S_XCut m_xcut;
-    S_YCut m_ycut;
+    std::shared_ptr<S_Cut> m_cut;
+
 
     virtual const char* getType() const override;
   };
 
 
 
-  cut_x_y::cut_x_y(const char* name, bool save2disk, const S_XCut& xcut, const S_YCut& ycut) :plot_hit2d(name, save2disk), m_xcut(xcut), m_ycut(ycut)
+  cut_x_y::cut_x_y(const char* name, bool save2disk, const S_Cut& cut_) :plot_hit2d(name, save2disk), m_cut(cut_.copy())
   {
 
   }
@@ -25,15 +25,12 @@ namespace sct_corr{
   void cut_x_y::processHit(double x, double y)
   {
 
-    if (m_xcut.isOutOfRange(x))
+    if (m_cut->isOutOfRange(1, x, y))
     {
       return;
     }
 
-    if (m_ycut.isOutOfRange(y))
-    {
-      return;
-    }
+   
     pushHit(x, y);
   }
 
@@ -51,9 +48,9 @@ namespace sct_corr{
     return sct::plot_cut_x_y();
   }
 }
-S_plot sct_plot::s_cut_x_y(const char* name, const S_XCut& x_cut, const S_YCut& y_cut, bool save2disk /*= true*/)
+S_plot sct_plot::s_cut_x_y(const char* name, const S_Cut& cut_, bool save2disk /*= true*/)
 {
-  return S_plot(new sct_corr::cut_x_y(name, save2disk, x_cut, y_cut));
+  return S_plot(new sct_corr::cut_x_y(name, save2disk, cut_));
 }
 
 const char* sct::plot_cut_x_y()

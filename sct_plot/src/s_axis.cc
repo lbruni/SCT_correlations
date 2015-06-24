@@ -19,3 +19,8 @@ const char* axis2String(axis_def ax)
   }
   return "\0";
 }
+
+const char* getIDString()
+{
+  return "ID";
+}

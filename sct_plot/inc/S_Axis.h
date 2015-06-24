@@ -12,6 +12,7 @@ enum  axis_def
   y_axis_def
 };
 const char* axis2String(axis_def ax);
+const char* getIDString();
 class DllExport S_Axis{
 public:
   S_Axis(const char* collctionName, double planeID, axis_def axis);

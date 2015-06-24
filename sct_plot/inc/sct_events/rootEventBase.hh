@@ -44,9 +44,11 @@ namespace sct_corr{
   public:
     rootEventBase(TTree* tree);
     rootEventBase(const char* collectionName,std::vector<std::string> axis_list);
-    rootEventBase(const char* collectionName);
+
     rootEventBase();
+    virtual ~rootEventBase(){}
     void Save2Tree(TTree* outputTree);
+    
     std::vector<double>* getData(const char* name) const;
     std::vector<std::string> getDataNames() const;
     const char* getName() const;
@@ -55,6 +57,7 @@ namespace sct_corr{
     void loadFromVector();
     void PushToVector() const;
 #endif
+    int& get_event_nr();
   private:
     std::string m_name;
     std::vector<TTreeVectorExtractor> m_data;

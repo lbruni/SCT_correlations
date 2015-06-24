@@ -166,19 +166,10 @@ namespace sct_corr{
     m_event_nr = m_event_nr_ownd.get();
   }
 
-  rootEventBase::rootEventBase(const char* collectionName) :m_name(collectionName)
-  {
-    m_data.emplace_back("ID");
-    m_data.emplace_back("x");
-    m_data.emplace_back("y");
-    m_event_nr_ownd = std::make_shared<int>(0);
-    m_event_nr = m_event_nr_ownd.get();
-    
-  }
 
   rootEventBase::rootEventBase()
   {
-    std::cout << "not supported default constructor \n";
+
   }
 
   void rootEventBase::Save2Tree(TTree* outputTree)
@@ -244,6 +235,11 @@ namespace sct_corr{
     {
       e.PushToVector();
     }
+  }
+
+  int& rootEventBase::get_event_nr()
+  {
+    return *m_event_nr;
   }
 
 #endif // _DEBUG

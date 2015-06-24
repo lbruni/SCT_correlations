@@ -18,7 +18,7 @@ namespace sct_corr{
   }
 
 
-  treeCollection::treeCollection(const char *name) :m_name(name), m_rootBuffer(name)
+  treeCollection::treeCollection(const char *name) :m_name(name)
   {
     fChain = NULL;
     auto buffer = Buffer_accessor::getGlobalPlotCollection();

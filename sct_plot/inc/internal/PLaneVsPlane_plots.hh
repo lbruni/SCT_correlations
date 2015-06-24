@@ -5,6 +5,7 @@
 #include "internal/plotsBase.hh"
 #include <memory>
 #include "sct_events/rootEventBase.hh"
+#include "sct_events/rootEvent_X_Y_hits.hh"
 namespace sct_corr{
   class treeCollection_ouput;
 
@@ -28,7 +29,7 @@ namespace sct_corr{
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
     virtual Long64_t Draw(const S_DrawOption& opt) override;
     virtual const char* getOutputName() const;
-    rootEventBase m_outPutEvent;
+    rootEvent_X_Y_hits m_outPutEvent;
 
     std::shared_ptr<treeCollection_ouput> m_outTree;
     Int_t m_current = 0;

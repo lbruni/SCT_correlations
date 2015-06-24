@@ -43,16 +43,14 @@ namespace sct_corr{
 
   void plot2d::pushHit(Double_t x, Double_t y, Double_t ID)
   {
-    m_outputEvent.getData("x")->push_back(x);
-    m_outputEvent.getData("y")->push_back(y);
-    m_outputEvent.getData("ID")->push_back(ID);
+    m_outputEvent.push_Hit(x, y, ID);
   }
 
   bool plot2d::isReady()
   {
     if (m_x &&m_y)
     {
-      m_outputEvent = rootEventBase(getName());
+      m_outputEvent = rootEvent_X_Y_hits(getName());
       m_outTree = std::make_shared<treeCollection_ouput>( m_outputEvent, getSave2disk());
       return true;
     }

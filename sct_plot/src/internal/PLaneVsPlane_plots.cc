@@ -22,7 +22,7 @@ namespace sct_corr{
       return false;
       std::cout << "[plotPlaneVsPlane] second plane not set \n";
     }
-    m_outPutEvent = rootEventBase(getName());
+    m_outPutEvent = rootEvent_X_Y_hits(getName());
     m_outTree = std::make_shared<treeCollection_ouput>( m_outPutEvent, getSave2disk());
     return true;
   }
@@ -91,9 +91,7 @@ namespace sct_corr{
 
   void plotPlaneVsPlane::pushHit(Double_t x, Double_t y, Double_t ID)
   {
-    m_outPutEvent.getData("x")->push_back(x);
-    m_outPutEvent.getData("y")->push_back(y);
-    m_outPutEvent.getData("ID")->push_back(ID);
+    m_outPutEvent.push_Hit(x, y, ID);
   }
 
   Long64_t plotPlaneVsPlane::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "y:x"*/)

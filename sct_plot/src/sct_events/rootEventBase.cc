@@ -11,58 +11,61 @@ namespace sct_corr{
 
 #ifdef _DEBUG   
   TTreeVectorExtractor::TTreeVectorExtractor(const char* name, TTree* tree) :
-    m_vecRel(name),
-    m_name(name),
-    m_classDoesNotOwnVector(true)
+    m_vecRel(std::make_shared<ReleaseVectorDef>(name)),
+    m_name(name)
+   
   {
 
 
-    m_vecRel.load_from_TTree(tree);
-    m_vec = new std::vector<double>();
-
+    m_vecRel->load_from_TTree(tree);
+    m_owend_vector= std::make_shared<std::vector<double> >();
+    m_vec = m_owend_vector.get();
   }
 
 
-  TTreeVectorExtractor::TTreeVectorExtractor(const char* name) : m_vecRel(name), m_name(name), m_classDoesNotOwnVector(false)
+  TTreeVectorExtractor::TTreeVectorExtractor(const char* name) :m_vecRel(std::make_shared<ReleaseVectorDef>(name)), m_name(name)
   {
-    m_vec = new std::vector<double>();
+    m_owend_vector = std::make_shared<std::vector<double> >();
+    m_vec = m_owend_vector.get();
   }
+
+  TTreeVectorExtractor::TTreeVectorExtractor() 
+  {
+
+  }
+
   TTreeVectorExtractor::~TTreeVectorExtractor()
   {
 
-      delete m_vec;
     
   }
   bool TTreeVectorExtractor::push2TTree(TTree* tree)
   {
-    return m_vecRel.push2TTree(tree);
+    return m_vecRel->push2TTree(tree);
   }
 
 
   void TTreeVectorExtractor::loadFromVector()
   {
-    if (!m_classDoesNotOwnVector)
-    {
-      return ;
-    }
+
 
     m_vec->clear();
-    for (size_t i = 0; i < m_vecRel.size();++i)
+    for (size_t i = 0; i < m_vecRel->size();++i)
     {
-      m_vec->push_back(m_vecRel.at(i));
+      m_vec->push_back(m_vecRel->at(i));
     }
   }
 
 
   void TTreeVectorExtractor::PushToVector()
   {
-    m_vecRel.clear();
+    m_vecRel->clear();
     for (auto&e:*m_vec)
     {
-      m_vecRel.push_back(e);
+      m_vecRel->push_back(e);
     }
   }
-  std::vector<double> TTreeVectorExtractor::getVec() const
+  std::vector<double>* TTreeVectorExtractor::getVec() const
   {
     return m_vec;
   }
@@ -128,13 +131,21 @@ namespace sct_corr{
   rootEventBase::rootEventBase(TTree* tree) :m_name(tree->GetName())
   {
     
-    auto entries = tree->GetListOfBranches()->GetEntries();
+    auto entries =  tree->GetListOfBranches()->GetEntries();
+
     for (int i = 0; i < entries; i++)
     {
       auto axisName = tree->GetListOfBranches()->At(i)->GetName();
-      m_data.emplace_back(axisName, tree);
+      if (strcmp("event_nr" ,axisName)==0)
+      {
+        continue;
+      }
+      
+      m_data.push_back(TTreeVectorExtractor( axisName, tree));
     }
-    
+    m_event_nr_ownd = std::make_shared<int>(0);
+   
+    tree->SetBranchAddress("event_nr", m_event_nr_ownd.get());
 
   }
 
@@ -144,6 +155,18 @@ namespace sct_corr{
     {
       m_data.emplace_back(e.c_str());
     }
+    m_event_nr_ownd = std::make_shared<int>(0);
+    m_event_nr = m_event_nr_ownd.get();
+  }
+
+  rootEventBase::rootEventBase(const char* collectionName)
+  {
+    m_data.emplace_back("ID");
+    m_data.emplace_back("x");
+    m_data.emplace_back("y");
+    m_event_nr_ownd = std::make_shared<int>(0);
+    m_event_nr = m_event_nr_ownd.get();
+    
   }
 
   void rootEventBase::Save2Tree(TTree* outputTree)
@@ -152,6 +175,7 @@ namespace sct_corr{
     {
       e.push2TTree(outputTree);
     }
+    outputTree->Branch("event_nr", m_event_nr_ownd.get());
   }
 
 

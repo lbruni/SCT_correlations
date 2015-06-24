@@ -10,6 +10,7 @@ class TTree;
 #include "ReleaseVectorDef.h"
 #endif // _DEBUG
 #include "S_Axis.h"
+#include <memory>
 
 
 namespace sct_corr{
@@ -19,6 +20,7 @@ namespace sct_corr{
   public:
     TTreeVectorExtractor(const char* name, TTree* tree);
     TTreeVectorExtractor(const char* name);
+    TTreeVectorExtractor();
     bool push2TTree(TTree* tree);
     ~TTreeVectorExtractor();
     std::vector<double>* getVec() const;
@@ -26,13 +28,14 @@ namespace sct_corr{
 #ifdef _DEBUG
     void loadFromVector();
     void PushToVector();
-    ReleaseVectorDef m_vecRel;
+    std::shared_ptr<ReleaseVectorDef> m_vecRel;
 #endif // _DEBUG
 
   private:
     std::string m_name;
-    std::vector<double> *m_vec;
-    const bool m_classDoesNotOwnVector;
+    std::shared_ptr<std::vector<double>> m_owend_vector;
+    std::vector<double>* m_vec=NULL;
+    
   };
 
 
@@ -40,6 +43,7 @@ namespace sct_corr{
   public:
     rootEventBase(TTree* tree);
     rootEventBase(const char* collectionName,std::vector<std::string> axis_list);
+    rootEventBase(const char* collectionName);
     void Save2Tree(TTree* outputTree);
     std::vector<double>* getData(const char* name) const;
     std::vector<std::string> getDataNames() const;
@@ -50,6 +54,8 @@ namespace sct_corr{
   private:
     std::string m_name;
     std::vector<TTreeVectorExtractor> m_data;
+    std::shared_ptr<int> m_event_nr_ownd;
+    int* m_event_nr = NULL;
   };
 
   class rootEventBaseAxis :public axis_ref{

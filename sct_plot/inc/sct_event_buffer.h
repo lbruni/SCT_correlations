@@ -4,10 +4,17 @@
 #include <vector>
 #include <map>
 #include "Rtypes.h"
+#include <memory>
+#include "internal/axis_ref.hh"
+#include "sct_plots.h"
+
+#include "sct_events/rootEventBase.hh"
+
 
 namespace sct_corr{
-  class treeCollection;
-  class treeCollection_ouput;
+
+
+
   class root_event{
   public:
     root_event(std::vector<double>  *ID,
@@ -24,12 +31,12 @@ namespace sct_corr{
 
   class sct_event_buffer{
   public:
-    void set(const char * name, root_event* ev);
-    bool get(const char* name, root_event* ev);
+    void set(const char* name, rootEventBase* ev);
+    bool get(const char* name, rootEventBase* ev);
     bool IsCollection(const char* name);
     void reset();
 
-    std::map<std::string, root_event> m_events;
+    std::map<std::string, rootEventBase> m_events;
   };
 }
 #endif // sct_event_buffer_h__

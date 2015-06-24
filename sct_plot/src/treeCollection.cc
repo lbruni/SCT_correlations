@@ -25,7 +25,7 @@ namespace sct_corr{
 
 
 
-  treeCollection::treeCollection(TTree *tree/*=0*/) :m_buffer(new std::vector<double>(), new std::vector<double>(), new std::vector<double>(), &event_nr)
+  treeCollection::treeCollection(TTree *tree/*=0*/) :m_buffer(new std::vector<double>(), new std::vector<double>(), new std::vector<double>(), &event_nr), m_rootBuffer(tree)
   {
     std::cout << tree->GetName() << std::endl;
     m_tree = new Hit_extractor(tree);
@@ -41,7 +41,7 @@ namespace sct_corr{
     buffer->set(tree->GetName(), &m_buffer);
   }
 
-  treeCollection::treeCollection(const char *name) :m_name(name)
+  treeCollection::treeCollection(const char *name) :m_name(name),  m_rootBuffer(name)
   {
     m_tree = NULL;
 
@@ -70,6 +70,7 @@ namespace sct_corr{
       return 0;
     }
     m_tree->GetEvent(entry);
+    m_rootBuffer.loadFromVector();
     m_buffer.m_x->clear();
     m_buffer.m_y->clear();
     m_buffer.m_ID->clear();
@@ -122,7 +123,7 @@ namespace sct_corr{
   }
 
 
-  treeCollection::treeCollection(const char *name):m_name(name)
+  treeCollection::treeCollection(const char *name) :m_name(name), m_rootBuffer(name)
   {
     fChain = NULL;
     auto buffer = Buffer_accessor::getGlobalPlotCollection();
@@ -146,7 +147,7 @@ namespace sct_corr{
 
 
 
-  treeCollection::treeCollection(TTree *tree) : fChain(0)
+  treeCollection::treeCollection(TTree *tree) : fChain(0), m_rootBuffer(tree)
   {
 
     // Set branch addresses and branch pointers
@@ -215,11 +216,12 @@ namespace sct_corr{
 
 
   treeCollection_ouput::treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr, bool save2disk/*=true*/) :
-    m_buffer(ID, x, y, event_nr), m_name(name)
+    m_buffer(ID, x, y, event_nr), m_name(name), m_rootBuffer(name)
   {
     if (save2disk)
     {
       m_tree = new Hit_output(name);
+      m_rootBuffer.Save2Tree(m_tree->getTTree());
     }
     auto buffer = Buffer_accessor::getGlobalPlotCollection();
     if (!buffer)
@@ -241,6 +243,7 @@ namespace sct_corr{
 
   void treeCollection_ouput::fill()
   {
+    
     if (!m_tree)
     {
       return; // nothing to do 
@@ -249,6 +252,7 @@ namespace sct_corr{
     {
       m_tree->set(m_buffer.m_x->at(i), m_buffer.m_y->at(i), m_buffer.m_ID->at(i));
     }
+    m_rootBuffer.PushToVector();
     m_tree->setEventNR(*m_buffer.m_event_nr);
     m_tree->fill();
 

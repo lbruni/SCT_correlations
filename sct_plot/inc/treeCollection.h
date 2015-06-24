@@ -16,6 +16,7 @@
 #include <vector>
 #include "Rtypes.h"
 #include "sct_event_buffer.h"
+#include "sct_events\rootEventBase.hh"
 #ifdef _DEBUG
   class Hit_extractor;
   class Hit_output;
@@ -30,6 +31,7 @@ namespace sct_corr{
   public:
 
     root_event m_buffer;
+    rootEventBase m_rootBuffer;
     // Declaration of leaf types
     Int_t                event_nr = 0;
 
@@ -66,6 +68,7 @@ namespace sct_corr{
     Int_t Draw(const char* axis, const char* cuts, const char * options);
     TTree * getTTree();
     root_event m_buffer;
+    rootEventBase m_rootBuffer;
 #ifdef _DEBUG
     Hit_output *m_tree = nullptr;
 #else //release

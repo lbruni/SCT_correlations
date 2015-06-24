@@ -26,9 +26,7 @@ namespace sct_corr{
 
   void plot2d::fill()
   {
-    m_x_points.clear();
-    m_y_points.clear();
-    m_id.clear();
+    m_outputEvent.reset();
 
 
     ProcessEvent();
@@ -39,23 +37,23 @@ namespace sct_corr{
 
   void plot2d::pushHit(Double_t x, Double_t y)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(0);
+    
+    pushHit(x, y, 0);
   }
 
   void plot2d::pushHit(Double_t x, Double_t y, Double_t ID)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(ID);
+    m_outputEvent.getData("x")->push_back(x);
+    m_outputEvent.getData("y")->push_back(y);
+    m_outputEvent.getData("ID")->push_back(ID);
   }
 
   bool plot2d::isReady()
   {
     if (m_x &&m_y)
     {
-      m_outTree = std::make_shared<treeCollection_ouput>(getName(), &m_x_points, &m_y_points, &m_id, &m_current, getSave2disk());
+      m_outputEvent = rootEventBase(getName());
+      m_outTree = std::make_shared<treeCollection_ouput>( m_outputEvent, getSave2disk());
       return true;
     }
 

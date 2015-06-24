@@ -128,6 +128,16 @@ namespace sct_corr{
     return m_name.c_str();
   }
 
+  void TTreeVectorExtractor::reset()
+  {
+    if (!m_owend_vector)
+    {
+      std::cout << "unable to clear not owned vector \n";
+    }
+    m_vec->clear();
+    
+  }
+
   rootEventBase::rootEventBase(TTree* tree) :m_name(tree->GetName())
   {
     
@@ -169,6 +179,11 @@ namespace sct_corr{
     
   }
 
+  rootEventBase::rootEventBase()
+  {
+    std::cout << "not supported default constructor \n";
+  }
+
   void rootEventBase::Save2Tree(TTree* outputTree)
   {
     for (auto& e:m_data)
@@ -202,6 +217,19 @@ namespace sct_corr{
       ret.push_back(e.getName());
     }
     return ret;
+  }
+
+  const char* rootEventBase::getName() const
+  {
+    return m_name.c_str();
+  }
+
+  void rootEventBase::reset()
+  {
+    for (auto&e : m_data)
+    {
+      e.reset();
+    }
   }
 
 #ifdef _DEBUG

@@ -2,26 +2,30 @@
 
 #include "treeCollection.h"
 #include <iostream>
+#include "internal/plane_hit.hh"
 namespace sct_corr{
-  plane::plane(double ID, treeCollection* hits) :m_hits(hits), m_ID(ID), m_x(hits->m_buffer.m_x, hits->m_buffer.m_ID, ID), m_y(hits->m_buffer.m_y, hits->m_buffer.m_ID, ID)
-  {
 
+
+  plane::plane(double ID, rootEventBase* buffer) : m_axis(*buffer, ID), m_ID(ID)
+  {
+    m_x = m_axis.getAxis(x_axis_def);
+    m_y = m_axis.getAxis(y_axis_def);
   }
 
   axis_ref* plane::getX()
   {
-    return dynamic_cast<axis_ref*>(&m_x);
+    return m_axis.getAxis(x_axis_def);
   }
 
   axis_ref* plane::getY()
   {
-    return dynamic_cast<axis_ref*>(&m_y);
+    return m_axis.getAxis(y_axis_def);
   }
 
   bool plane::next()
   {
-    if (m_x.next()){
-      if (!m_y.next())
+    if (m_x->next()){
+      if (!m_y->next())
       {
         std::cout << "vector have different length" << std::endl;
         return false;
@@ -30,7 +34,7 @@ namespace sct_corr{
       return true;
     }
 
-    if (m_y.next())
+    if (m_y->next())
     {
       std::cout << "vector have different length" << std::endl;
       return false;
@@ -40,30 +44,8 @@ namespace sct_corr{
 
   plane_hit plane::get() const
   {
-    return plane_hit(m_x.get(), m_y.get());
+    return plane_hit(m_x->get(), m_y->get());
   }
 
-  plane::axis_vector::axis_vector(std::vector<double>* axis, std::vector<double>* ID, double planeID) :m_axis(axis), m_ID(ID), m_planeID(planeID)
-  {
 
-  }
-
-  bool plane::axis_vector::next()
-  {
-    do{
-      if (++m_curr >= static_cast<int>(m_ID->size()))
-      {
-        m_curr = -1;
-        return false;
-      }
-
-    } while ((m_ID->at(m_curr) != m_planeID));
-
-    return true;
-  }
-
-  double plane::axis_vector::get() const
-  {
-    return m_axis->at(m_curr);
-  }
 }

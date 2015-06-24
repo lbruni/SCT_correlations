@@ -4,6 +4,7 @@
 
 #include "internal/plotsBase.hh"
 #include "s_plane.h"
+#include "sct_events/rootEventBase.hh"
 
 namespace sct_corr{
   class treeCollection_ouput;
@@ -26,7 +27,8 @@ namespace sct_corr{
   protected:
     axis_ref* m_x = nullptr;
     axis_ref* m_y = nullptr;
-    std::vector<double> m_x_points, m_y_points, m_id;
+
+    rootEventBase m_outputEvent;
 
     std::shared_ptr<treeCollection_ouput> m_outTree;
     Int_t m_current = 0;

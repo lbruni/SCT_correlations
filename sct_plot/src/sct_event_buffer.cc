@@ -6,12 +6,12 @@
 namespace sct_corr{
 
 
-  void sct_event_buffer::set(const char * name, root_event* ev)
+  void sct_event_buffer::set(const char * name, rootEventBase* ev)
   {
     m_events[name] = *ev;
   }
 
-  bool sct_event_buffer::get(const char* name, root_event* ev)
+  bool sct_event_buffer::get(const char* name, rootEventBase* ev)
   {
     if (!IsCollection(name))
     {
@@ -46,4 +46,10 @@ namespace sct_corr{
   {
 
   }
+
+  std::unique_ptr<axis_ref> root_event::getAxis(axis_def ax, double ID) const
+  {
+    return nullptr;
+  }
+
 }

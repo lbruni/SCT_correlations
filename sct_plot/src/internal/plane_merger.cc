@@ -21,8 +21,7 @@ namespace sct_corr{
     void processPlane(S_plane* plane_, double id_);
   private:
     std::vector<S_plane*> m_planes;
-    root_event m_event;
-    std::vector<double> m_x_points, m_y_points, m_id;
+    rootEventBase m_outputEvent;
 
     std::shared_ptr<treeCollection_ouput> m_outTree;
     Int_t m_current = 0;
@@ -45,8 +44,8 @@ namespace sct_corr{
     {
       return false;
     }
-
-    m_outTree = std::make_shared<treeCollection_ouput>(getName(), &m_x_points, &m_y_points, &m_id, &m_current, getSave2disk());
+    m_outputEvent = rootEventBase(getName());
+    m_outTree = std::make_shared<treeCollection_ouput>( m_outputEvent, getSave2disk());
     return true;
   }
 
@@ -67,6 +66,7 @@ namespace sct_corr{
 
   void plane_merger::fill()
   {
+    m_outputEvent.reset();
     double i = 0;
     for (auto& e:m_planes)
     {
@@ -79,9 +79,9 @@ namespace sct_corr{
 
   void plane_merger::processEvent(double x, double y, double id_)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(id_);
+    m_outputEvent.getData("x")->push_back(x);
+    m_outputEvent.getData("y")->push_back(y);
+    m_outputEvent.getData("ID")->push_back(id_);
   }
 
   void plane_merger::processPlane(S_plane* plane_, double id_)

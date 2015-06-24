@@ -23,7 +23,7 @@
   S_plane::S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits) : m_plane_def(plane_def)
   {
 
-    m_plane = std::make_shared<sct_corr::plane>(m_plane_def.getID(), hits);
+    m_plane = std::make_shared<sct_corr::plane>(m_plane_def.getID(), &(hits->m_rootBuffer));
 
 
   }

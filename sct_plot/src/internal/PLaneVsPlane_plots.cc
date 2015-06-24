@@ -22,7 +22,8 @@ namespace sct_corr{
       return false;
       std::cout << "[plotPlaneVsPlane] second plane not set \n";
     }
-    m_outTree = std::make_shared<treeCollection_ouput>(getName(), &m_x_points, &m_y_points, &m_id, &m_current, getSave2disk());
+    m_outPutEvent = rootEventBase(getName());
+    m_outTree = std::make_shared<treeCollection_ouput>( m_outPutEvent, getSave2disk());
     return true;
   }
 
@@ -63,9 +64,7 @@ namespace sct_corr{
   void plotPlaneVsPlane::fill()
   {
     m_size_x = 0, m_size_y = 0;
-    m_x_points.clear();
-    m_y_points.clear();
-    m_id.clear();
+    m_outPutEvent.reset();
 
     bool first = true;
     processEventStart();
@@ -87,16 +86,14 @@ namespace sct_corr{
 
   void plotPlaneVsPlane::pushHit(Double_t x, Double_t y)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(0);
+    pushHit(x, y, 0);
   }
 
   void plotPlaneVsPlane::pushHit(Double_t x, Double_t y, Double_t ID)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(ID);
+    m_outPutEvent.getData("x")->push_back(x);
+    m_outPutEvent.getData("y")->push_back(y);
+    m_outPutEvent.getData("ID")->push_back(ID);
   }
 
   Long64_t plotPlaneVsPlane::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "y:x"*/)

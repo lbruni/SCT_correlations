@@ -6,3 +6,16 @@ S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_coll
 
 }
 
+const char* axis2String(axis_def ax)
+{
+  if (ax==x_axis_def)
+  {
+    return "x";
+  }
+
+  if (ax=y_axis_def)
+  {
+    return "y";
+  }
+  return "\0";
+}

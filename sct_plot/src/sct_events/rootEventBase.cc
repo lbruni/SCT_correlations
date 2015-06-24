@@ -75,9 +75,8 @@ namespace sct_corr{
 #else  //release
 
   TTreeVectorExtractor::TTreeVectorExtractor(const char* name, TTree* tree) :
-    m_name(name),
-    m_classDoesNotOwnVector(true)
-  {
+    m_name(name)
+   {
 
     tree->SetBranchAddress(m_name.c_str(), &m_vec);
 
@@ -85,16 +84,14 @@ namespace sct_corr{
   }
 
 
-  TTreeVectorExtractor::TTreeVectorExtractor(const char* name) : m_name(name), m_classDoesNotOwnVector(false)
+  TTreeVectorExtractor::TTreeVectorExtractor(const char* name) : m_name(name)
   {
-    m_vec = new std::vector<double>();
+    m_owend_vector = std::make_shared<std::vector<double>>();
+    m_vec = m_owend_vector.get();
   }
   TTreeVectorExtractor::~TTreeVectorExtractor()
   {
-    if (!m_classDoesNotOwnVector)
-    {
-      delete m_vec;
-    }
+
 
   }
   bool TTreeVectorExtractor::push2TTree(TTree* tree)
@@ -169,7 +166,7 @@ namespace sct_corr{
     m_event_nr = m_event_nr_ownd.get();
   }
 
-  rootEventBase::rootEventBase(const char* collectionName)
+  rootEventBase::rootEventBase(const char* collectionName) :m_name(collectionName)
   {
     m_data.emplace_back("ID");
     m_data.emplace_back("x");

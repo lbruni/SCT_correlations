@@ -2,7 +2,7 @@
 #include "internal/plane.hh"
 
 namespace sct_corr{
-  plot_corr2d::plot_corr2d(const char*name, bool save2disk) : plot2d(name, save2disk)
+  plot_corr2d::plot_corr2d(const s_plot_prob& prob_plot) : plot2d(prob_plot)
   {
 
   }

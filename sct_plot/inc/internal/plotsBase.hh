@@ -8,7 +8,7 @@ namespace sct_corr{
   class plot{
   public:
 
-    plot(const char* name, bool save2disk);
+    plot(const s_plot_prob& = "");
     virtual const char* getType() const = 0;
     virtual bool isReady() = 0;
     virtual void pushAxis(axis_ref* axis) = 0;
@@ -23,9 +23,8 @@ namespace sct_corr{
     const char* getName() const;
     bool getSave2disk() const;
   private:
-
+    s_plot_prob m_prob;
     mutable std::string m_name;
-    bool m_save2disk = true;
   };
 
 }

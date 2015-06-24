@@ -2,8 +2,9 @@
 #include <string>
 namespace sct_corr{
   int g_plot_count_intern = 0;
-  plot::plot(const char* name, bool save2disk) :m_name(name), m_save2disk(save2disk)
+  plot::plot(const s_plot_prob& plot_proberties) :m_prob(plot_proberties)
   {
+    m_name = m_prob.getName();
   }
 
   void plot::setParameter(const char* tag, const char * value)
@@ -28,7 +29,7 @@ namespace sct_corr{
 
   bool plot::getSave2disk() const
   {
-    return m_save2disk;
+    return m_prob.getPlotSaveOption()==save_to_disk;
   }
 
 }

@@ -5,7 +5,7 @@
 namespace sct_corr{
   class plot_hit2d :public plot2d{
   public:
-    plot_hit2d(const char* name, bool save2disk);
+    plot_hit2d(const s_plot_prob& = "");
     virtual void processEventStart();
     virtual void processHit(double x, double y) = 0;
     virtual void processEventEnd();

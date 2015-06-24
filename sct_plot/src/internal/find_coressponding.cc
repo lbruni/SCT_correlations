@@ -2,7 +2,7 @@
 
 
 namespace sct_corr{
-  plot_find_correspondingX::plot_find_correspondingX(const char* name, bool save2disk) : plotPlaneVsPlane(name, save2disk)
+  plot_find_correspondingX::plot_find_correspondingX(const s_plot_prob& plot_prob) : plotPlaneVsPlane(plot_prob)
   {
 
   }
@@ -30,7 +30,7 @@ namespace sct_corr{
     return sct::plot_find_correspondingX();
   }
 
-  plot_find_correspondingXY::plot_find_correspondingXY(const char* name, bool save2disk) : plotPlaneVsPlane(name, save2disk)
+  plot_find_correspondingXY::plot_find_correspondingXY(const s_plot_prob& plot_prob) : plotPlaneVsPlane(plot_prob)
   {
 
   }
@@ -61,12 +61,12 @@ namespace sct_corr{
     return sct::plot_find_correspondingXY();
   }
 }
- S_plot sct_plot::s_find_correspondingX(const char* name, bool save2disk)
+S_plot sct_plot::find_correspondingX(const s_plot_prob& plot_prob)
  {
-   return S_plot(new sct_corr::plot_find_correspondingX(name, save2disk));
+   return S_plot(new sct_corr::plot_find_correspondingX(plot_prob));
  }
 
- S_plot sct_plot::s_find_correspondingXY(const char* name, bool save2disk)
+S_plot sct_plot::find_correspondingXY(const s_plot_prob& plot_prob)
  {  
-   return S_plot(new sct_corr::plot_find_correspondingXY(name, save2disk));
+   return S_plot(new sct_corr::plot_find_correspondingXY(plot_prob));
  }

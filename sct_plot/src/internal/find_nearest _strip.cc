@@ -7,7 +7,7 @@
 namespace sct_corr{
   class find_nearest_strip :public plotPlaneVsPlane{
   public:
-    find_nearest_strip(const char* name, bool save2disk, axis_def search_axis, Double_t cutOfff);
+    find_nearest_strip(axis_def search_axis, Double_t cutOfff, const s_plot_prob& = "");
     virtual void processEventStart();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
 
@@ -23,7 +23,7 @@ namespace sct_corr{
 
 
 
-  find_nearest_strip::find_nearest_strip(const char* name, bool save2disk, axis_def search_axis, Double_t cutOfff) :plotPlaneVsPlane(name, save2disk), m_axis(search_axis), m_cutOff(cutOfff)
+  find_nearest_strip::find_nearest_strip(axis_def search_axis, Double_t cutOfff, const s_plot_prob& plot_prob) :plotPlaneVsPlane(plot_prob), m_axis(search_axis), m_cutOff(cutOfff)
   {
 
   }
@@ -90,7 +90,7 @@ namespace sct_corr{
     return sct::plot_find_nearest_strip();
   }
 }
-S_plot sct_plot::s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff /*=100000*/, bool save2disk /*= true*/)
+S_plot sct_plot::find_nearest_strip(axis_def search_axis, Double_t cutOfff /*=100000*/, const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::find_nearest_strip(name, save2disk, search_axis, cutOfff));
+  return S_plot(new sct_corr::find_nearest_strip( search_axis, cutOfff,plot_prob));
 }

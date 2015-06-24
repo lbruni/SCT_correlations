@@ -3,7 +3,7 @@
 namespace sct_corr{
   class correlations :public plot_corr2d{
   public:
-    correlations(const char* name, bool save2disk);
+    correlations(const s_plot_prob& = "");
 
 
 
@@ -13,7 +13,7 @@ namespace sct_corr{
   };
 
 
-  correlations::correlations(const char* name, bool save2disk) :plot_corr2d(name, save2disk)
+  correlations::correlations(const s_plot_prob& plot_prob) :plot_corr2d(plot_prob)
   {
 
   }
@@ -37,7 +37,8 @@ namespace sct_corr{
   }
 
 }
-S_plot sct_plot::s_correlation(const char* name, bool save2disk)
+S_plot sct_plot::correlation(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::correlations(name, save2disk));
+
+  return S_plot(new sct_corr::correlations(plot_prob));
 }

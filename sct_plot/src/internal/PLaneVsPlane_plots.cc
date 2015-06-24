@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 namespace sct_corr{
-  plotPlaneVsPlane::plotPlaneVsPlane(const char* name, bool save2disk) :plot(name, save2disk)
+  plotPlaneVsPlane::plotPlaneVsPlane(const s_plot_prob& plot_prob) :plot(plot_prob)
   {
 
   }
@@ -120,7 +120,7 @@ namespace sct_corr{
   }
 
 
-  plane_distance::plane_distance(const char* name, bool save2disk) : plotPlaneVsPlane(name, save2disk)
+  plane_distance::plane_distance(const s_plot_prob& plot_prob) : plotPlaneVsPlane(plot_prob)
   {
 
   }
@@ -182,7 +182,7 @@ namespace sct_corr{
 
 }
 
-S_plot sct_plot::s_plane_distance(const char* name, bool save2disk)
+S_plot sct_plot::plane_distance( const s_plot_prob& plot_prob)
   {
-    return S_plot(new sct_corr::plane_distance(name, save2disk));
+    return S_plot(new sct_corr::plane_distance(plot_prob));
   }

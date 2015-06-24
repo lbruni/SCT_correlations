@@ -4,13 +4,13 @@
 namespace sct_corr{
   class hitmap :public plot_hit2d{
   public:
-    hitmap(const char* name, bool save2disk);
+    hitmap(const s_plot_prob& = "");
     virtual void processHit(double x, double y) override;
     virtual s_plane_collection getOutputcollection();
     virtual const char* getType() const override;
   };
 
-  hitmap::hitmap(const char* name, bool save2disk) :plot_hit2d(name, save2disk)
+  hitmap::hitmap(const s_plot_prob& plot_prob) :plot_hit2d(plot_prob)
   {
 
   }
@@ -32,7 +32,7 @@ namespace sct_corr{
     return sct::plot_hitmap();
   }
 }
-S_plot sct_plot::s_hitmap(const char* name, bool save2disk)
+S_plot sct_plot::hitmap(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::hitmap(name, save2disk));
+  return S_plot(new sct_corr::hitmap(plot_prob));
 }

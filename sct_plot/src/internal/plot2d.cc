@@ -8,7 +8,7 @@
 
 namespace sct_corr{
 
-  plot2d::plot2d(const char* name, bool save2disk) :plot(name, save2disk)
+  plot2d::plot2d(const s_plot_prob& plot_prob) :plot(plot_prob)
   {
 
   }
@@ -20,7 +20,8 @@ namespace sct_corr{
 
   Long64_t plot2d::Draw(const S_DrawOption& opt)
   {
-    return m_outTree->Draw(opt.getAxis(), opt.getCut(), opt.getOptions());
+    return opt.Draw(m_outTree->getTTree());
+    
   }
 
   void plot2d::fill()

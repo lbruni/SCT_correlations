@@ -38,11 +38,21 @@ enum  axis_def
   x_axis_def,
   y_axis_def
 };
+enum  plot_save_option_def
+#ifndef __CINT__
+  :int
+#endif // !__CINT__
+{
+  save_to_disk,
+  do_not_save_to_disk
+};
 class S_plane;
 class S_DrawOption;
  class S_Axis;
   class S_treeCollection;
   class S_Cut;
+  class S_plot_collection;
+  class s_plane_collection;
 namespace sct_corr{
   class treeCollection;
 
@@ -209,35 +219,66 @@ public:
   static const char* plot_efficieny_map();
   static const char* plot_cut_x_y();
 };
+
+class DllExport s_plot_prob{
+public:
+  s_plot_prob();
+  s_plot_prob(const char* name);
+  s_plot_prob& setName(const char* name);
+  s_plot_prob& setSaveOptione(plot_save_option_def save_);
+  s_plot_prob& doNotSaveToDisk();
+  s_plot_prob& SaveToDisk();
+  const char* getName() const;
+  bool getNameSize() const;
+  plot_save_option_def getPlotSaveOption() const;
+
+#ifndef __CINT__
+  std::string m_name;
+  plot_save_option_def m_save = save_to_disk;
+#endif
+  ClassDef(s_plot_prob, 0);
+};
 class S_plot_def;
 class S_plot;
 class DllExport sct_plot{
 public:
-  static  S_plot s_hitmap(const char* name, bool save2disk = true);
-  static  S_plot s_correlation(const char* name, bool save2disk = true);
-static  S_plot s_residual(const char* name, bool save2disk = true);
-static  S_plot s_clustering(const char* name, Double_t Pixel_distance = 2, bool save2disk = true);
-static  S_plot s_projectOnPixel(const char* name, bool save2disk = true);
-static  S_plot s_find_correspondingX(const char* name, bool save2disk = true);
-static  S_plot s_find_correspondingXY(const char* name, bool save2disk = true);
-static  S_plot s_Event_size(const char* name, bool save2disk = true);
-static  S_plot s_find_nearest(const char* name, Double_t x_cutoff, Double_t y_cutoff, bool save2disk = true);
-static  S_plot s_find_nearest_strip(const char* name, axis_def search_axis, Double_t cutOfff = 100000, bool save2disk = true);
-static  S_plot s_plane_distance(const char* name, bool save2disk = true);
-static  S_plot s_A_if_B(const char* name, bool save2disk = true);
-static  S_plot s_rotated(const char* name, Double_t angle, bool save2disk = true);
-static  S_plot s_coordinate_transform(const char* name, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, bool save2disk = true);
-static  S_plot s_coordinate_transform_move(const char* name, Double_t x_offset, Double_t y_offset, bool save2disk = true);
+  static  S_plot hitmap(const s_plot_prob& ="");
+  static  S_plot correlation(const s_plot_prob& ="");
+  static  S_plot residual(const s_plot_prob& ="");
+  static  S_plot clustering(Double_t Pixel_distance = 2, const s_plot_prob& = "");
+  static  S_plot projectOnPixel(const s_plot_prob& ="");
+  static  S_plot find_correspondingX(const s_plot_prob& ="");
+  static  S_plot find_correspondingXY(const s_plot_prob& ="");
+  static  S_plot Event_size(const s_plot_prob& ="");
+  static  S_plot find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& = "");
+  static  S_plot find_nearest_strip(axis_def search_axis, Double_t cutOfff = 100000, const s_plot_prob& = "");
+  static  S_plot plane_distance(const s_plot_prob& ="");
+  static  S_plot A_if_B(const s_plot_prob& ="");
+  static  S_plot rotated(Double_t angle, const s_plot_prob& = "");
+  static  S_plot coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& = "");
+  static  S_plot coordinate_transform_move(Double_t x_offset, Double_t y_offset, const s_plot_prob& = "");
 
-static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, bool save2disk = true);
-static  S_plot s_efficiency_map(const char* name, Double_t x_bin, Double_t y_bin, bool save2disk = true);
-static  S_plot s_hitMultiplizity(const char* name, bool save2disk = true);
+  static  S_plot efficiency_map(Double_t x_bin, Double_t y_bin, Double_t x_cut, Double_t y_cut, const s_plot_prob& = "");
+  static  S_plot efficiency_map(Double_t x_bin, Double_t y_bin, const s_plot_prob& = "");
+  static  S_plot hitMultiplizity(const s_plot_prob& ="");
 
-static  S_plot s_cut_x_y(const char* name, const  S_Cut& cut_, bool save2disk = true);
+  static  S_plot cut_x_y(const  S_Cut& cut_, const s_plot_prob& = "");
 
 
-static  S_plot s_save2LCIO(const char* name,const char* filename,unsigned runnum );
+  static  S_plot save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& = "");
 
+  static s_plane_collection misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis,const s_plot_prob& = "");
+  static s_plane_collection misalignment_pixel(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_,const  s_plot_prob& = "");
+  static s_plane_collection plane_merger(S_plot_collection& pl, s_plane_collection planes_,  const  s_plot_prob& = "");
+};
+
+class DllExport sct_analyis{ // all this function have memory leaks. they are not designed to be called in a loop 
+  
+public:
+ static TH2* misalignment(S_plot_collection& treeColl);
+ static TF1* Draw_misalignment(TFile& __file0);
+ static TF1* Draw_New_aligment(TFile& __file0, TF1 *);
+ static S_Cut* Get_fiducial_area(TFile& __file0);
 };
 
 struct plane_hit
@@ -318,7 +359,7 @@ DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def
 class DllExport S_plot_def{
 public:
   
-  S_plot_def(const char* type, const char* name,bool save2disk=true);
+  S_plot_def(const char* type, const char* name,plot_save_option_def save_option =save_to_disk);
   void setParameter(const char* tag, const char* value);
   const char * getParameter(const char* tag, const char* default_value);
 

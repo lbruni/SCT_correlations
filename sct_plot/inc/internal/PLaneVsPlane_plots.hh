@@ -12,7 +12,7 @@ namespace sct_corr{
   public:
 
 
-    plotPlaneVsPlane(const char* name, bool save2disk);
+    plotPlaneVsPlane(const s_plot_prob& = "");
     virtual bool isReady()override;
     virtual void pushAxis(axis_ref* axis) override;
     virtual void pushPlane(S_plane* axis) override;
@@ -41,7 +41,7 @@ namespace sct_corr{
 
   class plane_distance :public plotPlaneVsPlane {
   public:
-    plane_distance(const char* name, bool save2disk);
+    plane_distance(const s_plot_prob& plot_prob="");
     virtual void processEventStart();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
     static double hit_abs(const plane_hit& h);

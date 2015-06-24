@@ -5,7 +5,7 @@ namespace sct_corr{
 
   class clusterSize :public plot_hit2d{
   public:
-    clusterSize(const char*name, bool save2disk, double clusterSize_);
+    clusterSize(double clusterSize_, const s_plot_prob& = "");
     virtual void processEventStart() override;
     virtual const char* getType() const override;
     virtual void processHit(double x, double y) override;
@@ -16,7 +16,7 @@ namespace sct_corr{
 
 
 
-  clusterSize::clusterSize(const char*name, bool save2disk, double clusterSize_) : plot_hit2d(name, save2disk)
+  clusterSize::clusterSize(double clusterSize_, const s_plot_prob& plot_prob) : plot_hit2d(plot_prob)
   {
     m_cl = clusterMaker<Double_t>(clusterSize_);
   }
@@ -53,8 +53,10 @@ namespace sct_corr{
     return ret;
   }
 }
-  S_plot sct_plot::s_clustering(const char* name, Double_t Pixel_distance/*=2*/, bool save2disk /*=true*/)
+S_plot sct_plot::clustering(Double_t Pixel_distance/*=2*/, const s_plot_prob& plot_prob)
   {
-    return S_plot(new sct_corr::clusterSize(name, save2disk, Pixel_distance));
+
+    
+    return S_plot(new sct_corr::clusterSize(Pixel_distance, plot_prob));
   }
 

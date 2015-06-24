@@ -136,8 +136,13 @@ namespace sct_corr{
 
   void treeCollection_ouput::fill()
   {
+
     if (m_tree)
     {
+#ifdef _DEBUG
+      m_rootBuffer.PushToVector();
+#endif // _DEBUG
+ 
       m_tree->Fill();
     }
   }

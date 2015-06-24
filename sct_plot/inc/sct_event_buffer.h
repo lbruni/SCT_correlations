@@ -15,20 +15,6 @@ namespace sct_corr{
 
 
 
-  class root_event{
-  public:
-    root_event(std::vector<double>  *ID,
-      std::vector<double>  *x,
-      std::vector<double>  *y,
-      Int_t*                event_nr);
-    root_event();
-    std::vector<double>  *m_ID = nullptr;
-    std::vector<double>  *m_x = nullptr;
-    std::vector<double>  *m_y = nullptr;
-    Int_t*                m_event_nr = nullptr;
-  };
-
-
   class sct_event_buffer{
   public:
     void set(const char* name, rootEventBase* ev);

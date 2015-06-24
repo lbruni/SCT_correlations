@@ -37,19 +37,6 @@ namespace sct_corr{
     m_events.clear();
   }
 
-  root_event::root_event(std::vector<double> *ID, std::vector<double> *x, std::vector<double> *y, Int_t* event_nr) :m_ID(ID), m_x(x), m_y(y), m_event_nr(event_nr)
-  {
 
-  }
-
-  root_event::root_event()
-  {
-
-  }
-
-  std::unique_ptr<axis_ref> root_event::getAxis(axis_def ax, double ID) const
-  {
-    return nullptr;
-  }
 
 }

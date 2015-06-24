@@ -28,7 +28,7 @@ namespace sct_corr{
     void reset();
 #ifdef _DEBUG
     void loadFromVector();
-    void PushToVector();
+    void PushToVector() const;
     std::shared_ptr<ReleaseVectorDef> m_vecRel;
 #endif // _DEBUG
 
@@ -53,7 +53,7 @@ namespace sct_corr{
     void reset();
 #ifdef _DEBUG
     void loadFromVector();
-    void PushToVector();
+    void PushToVector() const;
 #endif
   private:
     std::string m_name;

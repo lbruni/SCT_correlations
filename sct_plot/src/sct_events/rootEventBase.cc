@@ -57,7 +57,7 @@ namespace sct_corr{
   }
 
 
-  void TTreeVectorExtractor::PushToVector()
+  void TTreeVectorExtractor::PushToVector() const
   {
     m_vecRel->clear();
     for (auto&e:*m_vec)
@@ -238,7 +238,7 @@ namespace sct_corr{
     }
   }
 
-  void rootEventBase::PushToVector()
+  void rootEventBase::PushToVector() const
   {
     for (auto& e:m_data)
     {

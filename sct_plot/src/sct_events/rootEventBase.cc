@@ -2,6 +2,7 @@
 #include "TTree.h"
 #include <iostream>
 #include "S_Axis.h"
+#include "internal/plane.hh"
 
 
 namespace sct_corr{
@@ -170,6 +171,11 @@ namespace sct_corr{
   rootEventBase::rootEventBase()
   {
 
+  }
+
+  std::shared_ptr<plane> rootEventBase::createPlane(double ID)
+  {
+    return std::make_shared<plane>(ID, this);
   }
 
   void rootEventBase::Save2Tree(TTree* outputTree)

@@ -14,7 +14,7 @@ class TTree;
 
 
 namespace sct_corr{
-
+  class plane;
 
   class TTreeVectorExtractor{
   public:
@@ -47,6 +47,7 @@ namespace sct_corr{
 
     rootEventBase();
     virtual ~rootEventBase(){}
+    virtual std::shared_ptr<plane> createPlane(double ID);
     void Save2Tree(TTree* outputTree);
     
     std::vector<double>* getData(const char* name) const;

@@ -40,6 +40,7 @@ public:
 
   S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits);
   void setTreeCollection(sct_corr::treeCollection* hits);
+  sct_corr::plane* getPlane() const;
 #endif
 
   S_plane(const S_plane_def& plane_def, S_treeCollection* hits);

@@ -32,6 +32,11 @@
 
 
 
+  sct_corr::plane* S_plane::getPlane() const
+  {
+    return m_plane.get();
+  }
+
   const char * S_plane::getName() const
   {
     return m_plane_def.getName();

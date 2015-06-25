@@ -237,14 +237,14 @@ namespace sct_corr{
     }
   }
 
+
+
+#endif // _DEBUG
+
   int& rootEventBase::get_event_nr()
   {
     return *m_event_nr;
   }
-
-#endif // _DEBUG
-
-  
 
   rootEventBaseAxis::rootEventBaseAxis(const rootEventBase& ev, axis_def ax, double id_) :m_planeID(id_), m_name(axis2String(ax))
   {

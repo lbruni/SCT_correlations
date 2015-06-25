@@ -44,7 +44,7 @@ namespace sct_corr{
     convert_to_LCIO(const char *file_name, unsigned runNum, const s_plot_prob& = "");
     virtual const char* getType() const;
     virtual bool isReady();
-    virtual void pushAxis(axis_ref* axis);
+    virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* plane_);
     virtual void fill();
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");

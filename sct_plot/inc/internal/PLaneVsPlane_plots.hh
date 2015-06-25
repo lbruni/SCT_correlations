@@ -16,7 +16,7 @@ namespace sct_corr{
 
     plotPlaneVsPlane(const s_plot_prob& = "");
     virtual bool isReady()override;
-    virtual void pushAxis(axis_ref* axis) override;
+    virtual void pushAxis(const axis_ref* axis) override;
     virtual void pushPlane(S_plane* axis) override;
 
 
@@ -33,9 +33,9 @@ namespace sct_corr{
 
     std::shared_ptr<treeCollection_ouput> m_outTree;
     Int_t m_current = 0;
+    const plane_hit* m_HitA=nullptr, *m_HitB=nullptr;
 
-
-    S_plane *m_x = nullptr, *m_y = nullptr;
+    sct_corr::plane *m_x = nullptr, *m_y = nullptr;
 
     Int_t m_size_x = 0, m_size_y = 0;
   };

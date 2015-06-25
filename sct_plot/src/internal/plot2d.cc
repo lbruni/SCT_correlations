@@ -58,7 +58,7 @@ namespace sct_corr{
     return false;
   }
 
-  void plot2d::pushAxis(axis_ref* axis)
+  void plot2d::pushAxis(const axis_ref* axis)
   {
     if (!m_x)
     {

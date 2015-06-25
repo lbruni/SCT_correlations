@@ -27,7 +27,7 @@ namespace sct_corr{
     return true;
   }
 
-  void plotPlaneVsPlane::pushAxis(axis_ref* axis)
+  void plotPlaneVsPlane::pushAxis(const axis_ref* axis)
   {
     std::cout << "[plotPlaneVsPlane] axis not supported as input " << std::endl;
 

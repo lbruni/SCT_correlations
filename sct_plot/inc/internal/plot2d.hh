@@ -21,12 +21,12 @@ namespace sct_corr{
     void pushHit(Double_t x, Double_t y, Double_t ID);
 
     virtual bool isReady();
-    virtual void pushAxis(axis_ref* axis);
+    virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* axis);
     virtual const char* getOutputName()  const;
   protected:
-    axis_ref* m_x = nullptr;
-    axis_ref* m_y = nullptr;
+    const axis_ref* m_x = nullptr;
+    const axis_ref* m_y = nullptr;
 
     rootEvent_X_Y_hits m_outputEvent;
 

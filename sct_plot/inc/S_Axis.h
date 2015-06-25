@@ -9,7 +9,10 @@ enum  axis_def
 #endif // !__CINT__
 {
   x_axis_def,
-  y_axis_def
+  y_axis_def,
+  chi2_axis_def,
+  phi_axis_def,
+  theta_axis_def
 };
 const char* axis2String(axis_def ax);
 const char* getIDString();

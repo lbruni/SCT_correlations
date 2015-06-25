@@ -17,6 +17,20 @@ const char* axis2String(axis_def ax)
   {
     return "y";
   }
+
+  if (ax == chi2_axis_def )
+  {
+    return "chi2";
+  }
+  if (ax == phi_axis_def)
+  {
+    return "phi";
+  }
+  if (ax == theta_axis_def)
+  {
+    return "theta";
+  }
+
   return "\0";
 }
 

@@ -314,4 +314,25 @@ namespace sct_corr{
     return nullptr;
   }
 
+  bool rootEventBaseAxisCollection::next() const
+  {
+    bool first = true;
+    int num = 0;
+    for (auto&e:m_axis)
+    {
+      if (e.next())
+      {
+        ++num;
+      }
+    }
+
+    if (num==0|| num == m_axis.size())
+    {
+      return num != 0;
+    }
+
+    std::cout << "vector have different length" << std::endl;
+    return false;
+  }
+
 }

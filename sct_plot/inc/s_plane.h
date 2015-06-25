@@ -49,10 +49,7 @@ public:
   const char * getName() const;
   Double_t getID() const;
   bool next();
-  plane_hit get() const;
 
-  S_Axis getX_def() const;
-  S_Axis getY_def() const;
 
 
   const sct_corr::axis_ref* getX() const;

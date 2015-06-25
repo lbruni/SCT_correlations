@@ -23,7 +23,7 @@
   S_plane::S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits) : m_plane_def(plane_def)
   {
 
-    m_plane = std::make_shared<sct_corr::plane>(m_plane_def.getID(), &(hits->m_rootBuffer));
+    m_plane = hits->m_rootBuffer.createPlane(m_plane_def.getID());
 
 
   }
@@ -52,39 +52,27 @@
     return m_plane->next();
   }
 
-  plane_hit S_plane::get() const
-  {
-    return m_plane->get();
-  }
+ 
 
-  S_Axis S_plane::getX_def() const
-  {
-    return m_plane_def.getX_def();
-  }
 
-  S_Axis S_plane::getY_def() const
-  {
-    return m_plane_def.getY_def();
-  }
-
-  sct_corr::axis_ref* S_plane::getX() const
+ const sct_corr::axis_ref* S_plane::getX() const
   {
     if (!m_plane)
     {
       std::cout << "[s_plane] plane not set " << std::endl;
       return nullptr;
     }
-    return m_plane->getX();
+    return m_plane->getAxis(x_axis_def);
   }
 
-  sct_corr::axis_ref* S_plane::getY() const
+  const sct_corr::axis_ref* S_plane::getY() const
   {
     if (!m_plane)
     {
       std::cout << "[s_plane] plane not set " << std::endl;
       return nullptr;
     }
-    return m_plane->getY();
+    return m_plane->getAxis(y_axis_def);
   }
 
 

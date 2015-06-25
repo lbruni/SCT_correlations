@@ -50,7 +50,7 @@ namespace sct_corr{
     return true;
   }
 
-  void plane_merger::pushAxis(axis_ref* axis)
+  void plane_merger::pushAxis(const axis_ref* axis)
   {
     std::cout << "[plane_merger] axis are not supported " << std::endl; 
   }

@@ -186,7 +186,7 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
   }
 }
 
-sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
+const sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
 {
   if (axis.m_axis == x_axis_def)
   {

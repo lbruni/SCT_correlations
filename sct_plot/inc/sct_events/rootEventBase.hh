@@ -70,14 +70,14 @@ namespace sct_corr{
   public:
     rootEventBaseAxis(const rootEventBase& ev, axis_def ax,double id_);
     rootEventBaseAxis(const rootEventBase& ev, const char* ax_name, double id_);
-    virtual bool next() override;
+    virtual bool next() const override;
     virtual double get() const override;
 
     const char* getName() const;
     std::vector<double>* m_axis;
     std::vector<double>* m_ID;
     const double m_planeID = 0;
-    int m_curr = -1;
+    mutable int m_curr = -1;
     std::string m_name;
   };
 
@@ -86,8 +86,9 @@ namespace sct_corr{
   public:
 
     rootEventBaseAxisCollection(const rootEventBase& ev, double id_);
-    axis_ref* getAxis(axis_def ax);
-    axis_ref* getAxis(const char* axisName);
+    const axis_ref* getAxis(axis_def ax) const;
+    const axis_ref* getAxis(const char* axisName) const;
+    bool next() const;
   private:
     std::vector<rootEventBaseAxis> m_axis;
   };

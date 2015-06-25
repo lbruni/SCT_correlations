@@ -54,8 +54,9 @@ public:
   S_Axis getX_def() const;
   S_Axis getY_def() const;
 
-  sct_corr::axis_ref* getX() const;
-  sct_corr::axis_ref* getY() const;
+
+  const sct_corr::axis_ref* getX() const;
+  const sct_corr::axis_ref* getY() const;
 #ifndef __CINT__
   S_plane_def m_plane_def;
   std::shared_ptr<sct_corr::plane> m_plane;

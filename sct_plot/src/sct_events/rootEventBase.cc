@@ -264,7 +264,7 @@ namespace sct_corr{
     m_ID = ev.getData("ID");
   }
 
-  bool rootEventBaseAxis::next()
+  bool rootEventBaseAxis::next() const
   {
     do{
       if (++m_curr >= static_cast<int>(m_ID->size()))
@@ -296,18 +296,18 @@ namespace sct_corr{
     }
   }
 
-  axis_ref* rootEventBaseAxisCollection::getAxis(axis_def ax) 
+  const axis_ref* rootEventBaseAxisCollection::getAxis(axis_def ax) const
   {
     return getAxis(axis2String(ax));
   }
 
-  axis_ref* rootEventBaseAxisCollection::getAxis(const char* axisName) 
+  const axis_ref* rootEventBaseAxisCollection::getAxis(const char* axisName) const
   {
     for (auto& e:m_axis)
     {
       if (strcmp(axisName, e.getName()) == 0)
       {
-        return dynamic_cast<axis_ref*>(&e);
+        return dynamic_cast<const axis_ref*>(&e);
       }
     }
 

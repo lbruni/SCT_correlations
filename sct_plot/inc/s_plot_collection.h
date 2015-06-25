@@ -37,7 +37,7 @@ public:
 #ifndef __CINT__
 private:
   s_plane_collection addPlot_internal(S_plot plot_def);
-  sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
+  const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
   sct_corr::treeCollection* getCollection(const char* name);
 
   S_plane* getPlane(double ID, sct_corr::treeCollection* coll);

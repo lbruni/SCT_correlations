@@ -3,6 +3,7 @@
 #include <iostream>
 #include "S_Axis.h"
 #include "internal/plane.hh"
+#include "internal/planeX_Y_hits.hh"
 
 
 namespace sct_corr{
@@ -175,7 +176,7 @@ namespace sct_corr{
 
   std::shared_ptr<plane> rootEventBase::createPlane(double ID)
   {
-    return std::make_shared<plane>(ID, this);
+    return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>(ID, this));
   }
 
   void rootEventBase::Save2Tree(TTree* outputTree)
@@ -201,6 +202,11 @@ namespace sct_corr{
        
     }
     return nullptr;
+  }
+
+  std::vector<double>* rootEventBase::getData(axis_def ax) const
+  {
+    return getData(axis2String(ax));
   }
 
   std::vector<std::string> rootEventBase::getDataNames() const

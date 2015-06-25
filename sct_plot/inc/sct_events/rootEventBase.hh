@@ -51,6 +51,7 @@ namespace sct_corr{
     void Save2Tree(TTree* outputTree);
     
     std::vector<double>* getData(const char* name) const;
+    std::vector<double>* getData(axis_def ax) const;
     std::vector<std::string> getDataNames() const;
     const char* getName() const;
     void reset();

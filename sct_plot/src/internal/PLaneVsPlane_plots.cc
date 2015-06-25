@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <iostream>
+#include "internal/plane.hh"
 namespace sct_corr{
   plotPlaneVsPlane::plotPlaneVsPlane(const s_plot_prob& plot_prob) :plot(plot_prob)
   {
@@ -24,6 +25,8 @@ namespace sct_corr{
     }
     m_outPutEvent = rootEvent_X_Y_hits(getName());
     m_outTree = std::make_shared<treeCollection_ouput>( m_outPutEvent, getSave2disk());
+    m_HitA = m_x->getHit();
+    m_HitB = m_y->getHit();
     return true;
   }
 
@@ -37,13 +40,13 @@ namespace sct_corr{
   {
     if (!m_x)
     {
-      m_x = plane_;
+      m_x = plane_->getPlane();
       return;
     }
 
     if (!m_y)
     {
-      m_y = plane_;
+      m_y = plane_->getPlane();
       return;
     }
 
@@ -75,7 +78,7 @@ namespace sct_corr{
         {
           ++m_size_y;
         }
-        processHit(m_x->get(), m_y->get());
+        processHit(*m_HitA, *m_HitB);
       }
       first = false;
     }

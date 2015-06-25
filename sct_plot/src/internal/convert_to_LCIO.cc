@@ -29,6 +29,7 @@
 #include "CellIDReencoder.h"
 #include "s_plot_prob.h"
 #include "internal/plane_hit.hh"
+#include "internal/plane.hh"
 using namespace IMPL;
 
 using lcio::TrackerDataImpl;
@@ -106,7 +107,7 @@ namespace sct_corr{
     return m_fileopened;
   }
 
-  void convert_to_LCIO::pushAxis(axis_ref* axis)
+  void convert_to_LCIO::pushAxis(const axis_ref* axis)
   {
     std::cout << "[convert_to_LCIO] axis are not supported \n";
   }
@@ -220,9 +221,9 @@ namespace sct_corr{
 
       //Call the local2masterHit/master2localHit function defined int EUTelGeometryTelescopeDescription
 
-      auto hit = source->get();
-      outputPos[0] = hit.x;
-      outputPos[1] = hit.y;
+      auto hit = source->getPlane()->getHit();
+      outputPos[0] = hit->x;
+      outputPos[1] = hit->y;
       outputPos[2] = 1;
 
 

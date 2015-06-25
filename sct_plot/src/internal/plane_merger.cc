@@ -3,6 +3,7 @@
 #include "treeCollection.h"
 #include <vector>
 #include "sct_events/rootEvent_X_Y_hits.hh"
+#include "internal/plane.hh"
 
 namespace sct_corr{
   class plane_merger :public plot{
@@ -19,7 +20,7 @@ namespace sct_corr{
 
     virtual const char* getOutputName()  const ;
     void processEvent(double x, double y, double id_);
-    void processPlane(S_plane* plane_, double id_);
+    void processPlane(sct_corr::plane* plane_, double id_);
   private:
     std::vector<S_plane*> m_planes;
     rootEvent_X_Y_hits m_outputEvent;
@@ -71,7 +72,7 @@ namespace sct_corr{
     double i = 0;
     for (auto& e:m_planes)
     {
-      processPlane(e, i++);
+      processPlane(e->getPlane(), i++);
 
     }
 
@@ -83,12 +84,12 @@ namespace sct_corr{
     m_outputEvent.push_Hit(x, y, id_);
   }
 
-  void plane_merger::processPlane(S_plane* plane_, double id_)
+  void plane_merger::processPlane(sct_corr::plane* plane_, double id_)
   {
     while (plane_->next())
     {
-      auto h = plane_->get();
-      processEvent(h.x, h.y, id_);
+      auto h = plane_->getHit();
+      processEvent(h->x, h->y, id_);
     }
   }
 

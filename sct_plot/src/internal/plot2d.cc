@@ -80,8 +80,8 @@ namespace sct_corr{
   {
     if (!m_x&&!m_y)
     {
-      m_x = plane_->getX();
-      m_y = plane_->getY();
+      m_x = plane_->getPlane()->getAxis(x_axis_def);
+      m_y = plane_->getPlane()->getAxis(y_axis_def);
       return;
     }
     std::cout << "[plot2d::pushPlane(S_plane* plane)] only one plane is supported \n";

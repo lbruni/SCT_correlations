@@ -10,23 +10,26 @@
 
 
 namespace sct_corr{
-  class treeCollection;
-  class root_event;
+
   class plane{
   public:
 
     plane(double ID, rootEventBase* buffer);
 
-    axis_ref* getX();
-    axis_ref* getY();
-    bool next();
-    plane_hit get() const;
-
+   
+    virtual bool next() const =0;
+    
+    virtual const plane_hit * getHit() const =0;
+    
+    
+   const axis_ref* getAxis(const char* name) const;
+   const axis_ref* getAxis(axis_def ax) const;
+  protected:
+    rootEventBaseAxisCollection m_axis;
   private:
 
-    rootEventBaseAxisCollection m_axis;
-    axis_ref* m_x;
-    axis_ref* m_y;
+    
+
     const double m_ID = 0;
 
 

@@ -36,6 +36,10 @@ const char* sct::col_local_hit()
 {
   return "local_hit";
 }
+const char* sct::col_DUT_TTC()
+{
+  return "zsdata_strip_TTC";
+}
 
 const char* sct::plot_hitmap()
 {
@@ -186,6 +190,28 @@ S_plane_def sct_coll::DUT_fitted_local()
 {
   return S_plane_def(sct::col_fitpoints_local(), 8);
 }
+
+S_plane_def sct_coll::DUT_TTC_data()
+{
+  return S_plane_def(sct::col_DUT_TTC(), 9);
+}
+S_plane_def sct_coll::DUT_Timestamp()
+{
+  return S_plane_def(sct::col_DUT_TTC(), 10);
+}
+S_plane_def sct_coll::DUT_Timestamp_L0ID()
+{
+  return S_plane_def(sct::col_DUT_TTC(), 11);
+}
+S_plane_def sct_coll::DUT_TDC_L0ID()
+{
+  return S_plane_def(sct::col_DUT_TTC(), 12);
+}
+S_plane_def sct_coll::DUT_TLU_TLUID()
+{
+  return S_plane_def(sct::col_DUT_TTC(), 13);
+}
+
 
 S_plane_def sct_coll::tel_hit_local(double ID)
 {

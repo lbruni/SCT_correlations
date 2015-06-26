@@ -45,7 +45,7 @@ s_plane_collection S_plot_collection::addPlot( S_plot plot_def, const S_Axis& x_
 s_plane_collection S_plot_collection::addPlot_internal(S_plot plot_def)
 {
   m_plots.push_back(std::make_pair(plot_def.getName(), std::move(plot_def)));
-  if (!m_plots.back().second.m_plot->isReady())
+  if (!m_plots.back().second.m_plot->MakeReadyForData(m_eventBuffer.get()))
   {
     std::cout << "[S_plot_collection]  unable to create plot " << plot_def.getType() << ":"<< plot_def.getName()<< "\n";
    return s_plane_collection();

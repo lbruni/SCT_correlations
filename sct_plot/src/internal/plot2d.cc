@@ -47,7 +47,7 @@ namespace sct_corr{
     m_outputEvent.push_Hit(x, y, ID);
   }
 
-  bool plot2d::isReady()
+  bool plot2d::MakeReadyForData(sct_event_buffer* outputBuffer)
   {
     if (m_x &&m_y)
     {

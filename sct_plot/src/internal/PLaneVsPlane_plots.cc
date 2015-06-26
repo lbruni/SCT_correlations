@@ -10,7 +10,7 @@ namespace sct_corr{
 
   }
 
-  bool plotPlaneVsPlane::isReady()
+  bool plotPlaneVsPlane::MakeReadyForData(sct_event_buffer* outputBuffer)
   {
     if (!m_x)
     {

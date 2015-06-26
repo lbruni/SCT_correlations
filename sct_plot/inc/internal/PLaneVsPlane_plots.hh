@@ -15,7 +15,7 @@ namespace sct_corr{
 
 
     plotPlaneVsPlane(const s_plot_prob& = "");
-    virtual bool isReady()override;
+    virtual bool MakeReadyForData(sct_event_buffer* outputBuffer)override;
     virtual void pushAxis(const axis_ref* axis) override;
     virtual void pushPlane(S_plane* axis) override;
 

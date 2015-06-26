@@ -10,7 +10,7 @@ namespace sct_corr{
   public:
     plane_merger( const s_plot_prob& = "");
     virtual const char* getType() const;
-    virtual bool isReady();
+    virtual bool MakeReadyForData(sct_event_buffer* outputBuffer);
     virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* axis) ;
     virtual bool fill();
@@ -39,7 +39,7 @@ namespace sct_corr{
     return "plane_merger";
   }
 
-  bool plane_merger::isReady()
+  bool plane_merger::MakeReadyForData(sct_event_buffer* outputBuffer)
   {
     m_current = 0;
     if (m_planes.empty())

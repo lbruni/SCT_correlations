@@ -16,7 +16,7 @@ namespace sct_corr{
 
     plot(const s_plot_prob& = "");
     virtual const char* getType() const = 0;
-    virtual bool isReady() = 0;
+    virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) = 0;
     virtual void pushAxis(const axis_ref* axis) = 0;
     virtual void pushPlane(S_plane* axis) = 0;
     virtual bool fill() = 0;

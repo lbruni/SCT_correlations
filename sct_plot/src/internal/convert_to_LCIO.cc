@@ -44,7 +44,7 @@ namespace sct_corr{
   public:
     convert_to_LCIO(const char *file_name, unsigned runNum, const s_plot_prob& = "");
     virtual const char* getType() const;
-    virtual bool isReady();
+    virtual bool MakeReadyForData(sct_event_buffer* outputBuffer);
     virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* plane_);
     virtual bool fill();
@@ -81,7 +81,7 @@ namespace sct_corr{
     return "conveter_to_LCIO";
   }
 
-  bool convert_to_LCIO::isReady()
+  bool convert_to_LCIO::MakeReadyForData(sct_event_buffer* outputBuffer)
   {
     m_event_nr = 0;
     if (m_fileopened) {

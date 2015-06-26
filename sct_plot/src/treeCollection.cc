@@ -18,10 +18,10 @@ namespace sct_corr{
   }
 
 
-  treeCollection::treeCollection(const char *name) :m_name(name)
+  treeCollection::treeCollection(const char *name, sct_event_buffer* outputBuffer) :m_name(name)
   {
     fChain = NULL;
-    auto buffer = Buffer_accessor::getGlobalPlotCollection();
+    auto buffer = outputBuffer;
     if (!buffer)
     {
       std::cout << "global buffer not set" << std::endl;
@@ -51,13 +51,7 @@ namespace sct_corr{
     fChain->SetMakeClass(1);
 
 
-    auto buffer = Buffer_accessor::getGlobalPlotCollection();
-    if (!buffer)
-    {
-      std::cout << "global buffer not set" << std::endl;
-      return;
-
-    }
+   
 
     //buffer->set(tree->GetName(), &m_buffer);
   }
@@ -98,30 +92,28 @@ namespace sct_corr{
 
 
 
-
-
-
-
-
-
-
 namespace sct_corr{
-  treeCollection_ouput::treeCollection_ouput(const rootEventBase& ev,bool save2disk) :m_rootBuffer(ev),m_name(ev.getName())
+  treeCollection_ouput::treeCollection_ouput(const rootEventBase& ev, sct_event_buffer* outputBuffer,bool save2disk) :m_rootBuffer(ev), m_name(ev.getName())
   {
 
 
-    auto buffer = Buffer_accessor::getGlobalPlotCollection();
-    if (!buffer)
+  
+    if (!outputBuffer)
     {
       std::cout << "global buffer not set" << std::endl;
       return;
 
     }
 
-    buffer->set(m_rootBuffer.getName(), &m_rootBuffer);
+    outputBuffer->set(m_rootBuffer.getName(), &m_rootBuffer);
     if (save2disk)
     {
+
       m_tree = new TTree(m_name.c_str(), m_name.c_str());
+      if (outputBuffer->getOutputFile())
+      {
+        m_tree->SetDirectory(outputBuffer->getOutputFile()->GetDirectory("/"));
+      }
       m_rootBuffer.Save2Tree(m_tree);
     }
 

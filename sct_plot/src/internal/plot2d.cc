@@ -52,7 +52,7 @@ namespace sct_corr{
     if (m_x &&m_y)
     {
       m_outputEvent = rootEvent_X_Y_hits(getName());
-      m_outTree = std::make_shared<treeCollection_ouput>( m_outputEvent, getSave2disk());
+      m_outTree = std::make_shared<treeCollection_ouput>(m_outputEvent, outputBuffer, getSave2disk());
       return true;
     }
 

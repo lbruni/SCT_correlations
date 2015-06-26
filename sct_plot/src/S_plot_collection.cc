@@ -24,6 +24,16 @@ void S_plot_collection::addFile(TFile* file)
   m_file.push_back(file);
 }
 
+void S_plot_collection::setOutputFile(TFile* file)
+{
+  if (file)
+  {
+    addFile(file);
+  
+  }
+  m_eventBuffer->setOutputFile(file);
+}
+
 void S_plot_collection::reset()
 {
   m_eventBuffer->reset();

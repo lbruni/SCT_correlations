@@ -24,7 +24,7 @@ namespace sct_corr{
       std::cout << "[plotPlaneVsPlane] second plane not set \n";
     }
     m_outPutEvent = rootEvent_X_Y_hits(getName());
-    m_outTree = std::make_shared<treeCollection_ouput>( m_outPutEvent, getSave2disk());
+    m_outTree = std::make_shared<treeCollection_ouput>(m_outPutEvent, outputBuffer,getSave2disk());
     m_HitA = m_x->getHit();
     m_HitB = m_y->getHit();
     return true;

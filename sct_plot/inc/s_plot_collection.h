@@ -21,6 +21,7 @@ class  DllExport S_plot_collection{
 public:
   S_plot_collection(TFile* file);
   void addFile(TFile* file);
+  void setOutputFile(TFile* file);
   void reset();
   s_plane_collection addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis);
 

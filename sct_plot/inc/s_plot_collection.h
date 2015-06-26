@@ -36,6 +36,7 @@ public:
   void loop(Int_t last = -1, Int_t start = 0);
 #ifndef __CINT__
 private:
+  Int_t getMaxEntriesFromTree(Int_t last);
   s_plane_collection addPlot_internal(S_plot plot_def);
   const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
   sct_corr::treeCollection* getCollection(const char* name);

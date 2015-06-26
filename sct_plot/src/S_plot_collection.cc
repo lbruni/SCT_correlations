@@ -41,6 +41,7 @@ s_plane_collection S_plot_collection::addPlot( S_plot plot_def, const S_Axis& x_
   return addPlot_internal(std::move(plot_def));
 }
 
+
 s_plane_collection S_plot_collection::addPlot_internal(S_plot plot_def)
 {
   m_plots.push_back(std::make_pair(plot_def.getName(), std::move(plot_def)));
@@ -147,12 +148,12 @@ Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& op
   return Draw(name.getName(), local);
 
 }
-
-void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
+Int_t S_plot_collection::getMaxEntriesFromTree(Int_t last)
 {
   if (last == -1)
   {
     last = kMaxInt;
+  }
     for (auto & e : m_trees)
     {
       auto l = e.second->GetEntries();
@@ -170,8 +171,14 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
         last = l;
       }
     }
-  }
+  
+  return last;
+}
 
+void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
+{
+
+  last=getMaxEntriesFromTree(last);
   for (Int_t i = start; i < last; ++i)
   {
     for (auto& e : m_trees)

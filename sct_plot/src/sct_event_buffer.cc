@@ -22,6 +22,16 @@ namespace sct_corr{
     return true;
   }
 
+  TFile* sct_event_buffer::getOutputFile()
+  {
+    return m_outputFile;
+  }
+
+  void sct_event_buffer::setOutputFile(TFile* file)
+  {
+    m_outputFile = file;
+  }
+
   bool sct_event_buffer::IsCollection(const char* name)
   {
     auto it = m_events.find(name);

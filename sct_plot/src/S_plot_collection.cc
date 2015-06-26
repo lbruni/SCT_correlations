@@ -35,7 +35,6 @@ void S_plot_collection::reset()
 
 s_plane_collection S_plot_collection::addPlot( S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis)
 {
-  sct_corr::Buffer_accessor buffer(m_eventBuffer.get());
   plot_def.m_plot->pushAxis(getAxis_ref(x_axis));
   plot_def.m_plot->pushAxis(getAxis_ref(y_axis));
   return addPlot_internal(std::move(plot_def));
@@ -65,7 +64,6 @@ s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const S_plane_def
 }
 s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const s_plane_collection& p1)
 {
-  sct_corr::Buffer_accessor buffer(m_eventBuffer.get());
   for (auto &e : p1.m_planes)
   {
     auto p1_pointer = pushPlane(e.second);
@@ -225,7 +223,7 @@ sct_corr::treeCollection* S_plot_collection::getCollection(const char* name)
 
   if (m_eventBuffer->IsCollection(name))
   {
-    sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(name);
+    sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(name,m_eventBuffer.get());
 
     m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
     return tree_pointer;

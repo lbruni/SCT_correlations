@@ -36,7 +36,7 @@ namespace sct_corr{
    
 
     treeCollection(TTree *tree);
-    treeCollection(const char *name);
+    treeCollection(const char *name,sct_event_buffer* outputBuffer);
     virtual ~treeCollection();
     virtual Int_t    GetEntry(Long64_t entry);
     virtual Int_t    GetEntries() const;
@@ -54,7 +54,7 @@ namespace sct_corr{
   class treeCollection_ouput {
   public:
 
-    treeCollection_ouput(const rootEventBase& ev, bool save2disk);
+    treeCollection_ouput(const rootEventBase& ev, sct_event_buffer* outputBuffer, bool save2disk);
     virtual ~treeCollection_ouput();
     void fill();
     Int_t Draw(const char* axis, const char* cuts, const char * options);

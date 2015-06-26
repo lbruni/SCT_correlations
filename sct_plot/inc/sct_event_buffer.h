@@ -11,6 +11,7 @@
 #include "sct_events/rootEventBase.hh"
 
 
+class TFile;
 namespace sct_corr{
 
 
@@ -19,10 +20,13 @@ namespace sct_corr{
   public:
     void set(const char* name, rootEventBase* ev);
     bool get(const char* name, rootEventBase* ev);
+    TFile* getOutputFile();
+    void setOutputFile(TFile* file);
     bool IsCollection(const char* name);
     void reset();
 
     std::map<std::string, rootEventBase> m_events;
+    TFile* m_outputFile = nullptr;
   };
 }
 #endif // sct_event_buffer_h__

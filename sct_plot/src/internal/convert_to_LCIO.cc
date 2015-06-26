@@ -47,7 +47,7 @@ namespace sct_corr{
     virtual bool isReady();
     virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* plane_);
-    virtual void fill();
+    virtual bool fill();
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
     virtual Long64_t Draw(const S_DrawOption&);
 
@@ -117,8 +117,8 @@ namespace sct_corr{
     m_planes.push_back(plane_);
   }
 
-  void convert_to_LCIO::fill()
-  {
+  bool convert_to_LCIO::fill()
+{
     //  std::cout << "EUDAQ_DEBUG: FileWriterLCIO::WriteEvent() processing event "
     //    <<  devent.GetRunNumber () <<"." << devent.GetEventNumber () << std::endl;
 
@@ -131,6 +131,7 @@ namespace sct_corr{
       m_lcwriter->writeEvent(lcevent.get());
       //  std::cout << " done" <<std::endl;
     }
+    return true;
   }
 
 

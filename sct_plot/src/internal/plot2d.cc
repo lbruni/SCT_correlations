@@ -24,7 +24,7 @@ namespace sct_corr{
     
   }
 
-  void plot2d::fill()
+  bool plot2d::fill()
   {
     m_outputEvent.reset();
 
@@ -33,6 +33,7 @@ namespace sct_corr{
 
     m_outTree->fill();
     ++m_current;
+    return true;
   }
 
   void plot2d::pushHit(Double_t x, Double_t y)

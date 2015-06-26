@@ -23,7 +23,7 @@ namespace sct_corr{
     virtual void processEventStart();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) = 0;
     virtual void processEventEnd();
-    virtual void fill() override final;
+    virtual bool fill() override final;
     void pushHit(Double_t x, Double_t y);
     void pushHit(Double_t x, Double_t y, Double_t ID);
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;

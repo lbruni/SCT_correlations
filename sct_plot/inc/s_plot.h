@@ -27,7 +27,7 @@ class DllExport S_plot{
 public:
   S_plot();
   S_plot(const S_plot&);
-  void fill();
+  bool fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
   Long64_t Draw(const char* options, const TCut& cuts, const char* axis = "y:x");
   Long64_t Draw(const S_DrawOption& opt);

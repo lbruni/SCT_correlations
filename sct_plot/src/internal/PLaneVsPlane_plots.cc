@@ -64,7 +64,7 @@ namespace sct_corr{
 
   }
 
-  void plotPlaneVsPlane::fill()
+  bool plotPlaneVsPlane::fill()
   {
     m_size_x = 0, m_size_y = 0;
     m_outPutEvent.reset();
@@ -85,6 +85,7 @@ namespace sct_corr{
     processEventEnd();
     m_outTree->fill();
     ++m_current;
+    return true;
   }
 
   void plotPlaneVsPlane::pushHit(Double_t x, Double_t y)

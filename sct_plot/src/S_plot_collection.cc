@@ -180,7 +180,12 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
     }
 
     for (auto& current_plot : m_plots){
-      current_plot.second.fill();
+      if (!current_plot.second.fill())
+      {
+        std::cout << "run terminated by plot: " << current_plot.first << std::endl;
+        return;
+      }
+      
 
     }
   }

@@ -182,6 +182,15 @@ s_plane_collection sct_plot::misalignment_pixel(S_plot_collection& pl, S_plane_d
 
 
 
+S_plane_def sct_plot::Crate_True_FItted_DUT_Hits(S_plot_collection& pl, const s_plot_prob& plot_p/*= ""*/)
+{
+  auto apix_true_hits = pl.addPlot(sct_plot::find_nearest(0.1, 0.2, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);
+
+  auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, plot_p), sct_coll::DUT_fitted(), apix_true_hits).get(1);
+
+  return dut_fitted_trackts;
+}
+
 s_plot_prob::s_plot_prob()
 {
 

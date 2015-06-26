@@ -10,7 +10,7 @@ namespace sct_corr{
     rootEvent_Track_hits();
 
     ~rootEvent_Track_hits();
-    virtual std::shared_ptr<plane> createPlane(double ID) const; 
+    virtual std::shared_ptr<plane> createPlane(double ID) ; 
     void push_Hit(const plane_hit& h);
     void push_Hit(const plane_hit& h, double ID);
 

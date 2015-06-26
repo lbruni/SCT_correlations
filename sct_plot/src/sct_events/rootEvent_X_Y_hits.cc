@@ -1,6 +1,8 @@
 #include "sct_events/rootEvent_X_Y_hits.hh"
 #include "S_Axis.h"
 #include "internal/planeX_Y_hits.hh"
+#include "internal/plane_hit.hh"
+
 
 namespace sct_corr{
   std::vector<std::string> get_rootEvent_X_Y_hitsList(){
@@ -30,7 +32,7 @@ namespace sct_corr{
 
   }
 
-  std::shared_ptr<plane> rootEvent_X_Y_hits::createPlane(double ID) const
+  std::shared_ptr<plane> rootEvent_X_Y_hits::createPlane(double ID) 
   {
     return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>(ID, this));
   }

@@ -1,7 +1,8 @@
 #ifndef rootEvent_X_Y_hits_h__
 #define rootEvent_X_Y_hits_h__
 #include "sct_events/rootEventBase.hh"
-
+#include <vector>
+#include "internal/plane_hit.hh"
 namespace sct_corr{
   class rootEvent_X_Y_hits :public rootEventBase{
   public:
@@ -9,7 +10,7 @@ namespace sct_corr{
     rootEvent_X_Y_hits();
 
     ~rootEvent_X_Y_hits();
-    virtual std::shared_ptr<plane> createPlane(double ID) const;
+    virtual std::shared_ptr<plane> createPlane(double ID) ;
     void push_Hit(double x, double y);
     void push_Hit(double x, double y,double ID);
     void push_Hit(const plane_hit& h, double ID=0);

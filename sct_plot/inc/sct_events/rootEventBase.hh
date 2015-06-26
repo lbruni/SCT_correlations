@@ -47,7 +47,7 @@ namespace sct_corr{
 
     rootEventBase();
     virtual ~rootEventBase(){}
-    virtual std::shared_ptr<plane> createPlane(double ID) const;
+    virtual std::shared_ptr<plane> createPlane(double ID) ;
     void Save2Tree(TTree* outputTree);
     
     std::vector<double>* getData(const char* name) const;

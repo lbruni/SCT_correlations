@@ -174,7 +174,7 @@ namespace sct_corr{
 
   }
 
-  std::shared_ptr<plane> rootEventBase::createPlane(double ID) const
+  std::shared_ptr<plane> rootEventBase::createPlane(double ID) 
   {
     return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>(ID, this));
   }

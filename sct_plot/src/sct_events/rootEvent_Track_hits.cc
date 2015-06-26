@@ -37,7 +37,7 @@ namespace sct_corr{
 
   }
 
-  std::shared_ptr<plane> rootEvent_Track_hits::createPlane(double ID) const
+  std::shared_ptr<plane> rootEvent_Track_hits::createPlane(double ID) 
   {
     return std::dynamic_pointer_cast<plane>(std::make_shared<planeTrack_hits>(ID, this));
   }

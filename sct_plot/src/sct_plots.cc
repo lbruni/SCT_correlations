@@ -182,13 +182,24 @@ s_plane_collection sct_plot::misalignment_pixel(S_plot_collection& pl, S_plane_d
 
 
 
-S_plane_def sct_plot::Crate_True_FItted_DUT_Hits(S_plot_collection& pl, const s_plot_prob& plot_p/*= ""*/)
+S_plane_def sct_plot::Crate_True_Fitted_DUT_Hits(S_plot_collection& pl, const s_plot_prob& plot_p/*= ""*/)
 {
   auto apix_true_hits = pl.addPlot(sct_plot::find_nearest(0.1, 0.2, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);
 
   auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, plot_p), sct_coll::DUT_fitted(), apix_true_hits).get(1);
 
   return dut_fitted_trackts;
+}
+
+S_plane_def sct_plot::Crate_True_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const s_plot_prob& plot_p/*= ""*/)
+{
+  auto trueHits = Crate_True_Fitted_DUT_Hits(pl, s_plot_prob().doNotSaveToDisk());
+  auto dut_rotated_17 = pl.addPlot(sct_plot::rotated(rotate, s_plot_prob().doNotSaveToDisk()), trueHits);
+  auto dut_rot_moved = pl.addPlot(sct_plot::coordinate_transform_move(move_x, move_y, s_plot_prob().doNotSaveToDisk()), dut_rotated_17());
+  auto projected_strip_rotated = pl.addPlot(sct_plot::rotated(-TMath::Pi() / 2),dut_rot_moved());
+
+  auto fitted_in_channels = pl.addPlot(sct_plot::coordinate_transform(1 / pitchSize, 317.046  -8.07124e-001, 1, 0, plot_p), projected_strip_rotated());
+  return fitted_in_channels();
 }
 
 s_plot_prob::s_plot_prob()

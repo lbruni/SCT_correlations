@@ -1,6 +1,9 @@
 #include "s_DrawOption.h"
 #include "TTree.h"
-
+#include "TH1.h"
+#include "TGraph.h"
+#include <iostream>
+#include "TVirtualPad.h"
 
 S_DrawOption::S_DrawOption(const char* options /*= "colz"*/, const char* cuts /*= ""*/, const char * axis /*= "y:x"*/) : m_options(options), m_cut(cuts), m_axis(axis)
 {
@@ -109,22 +112,25 @@ S_DrawOption& S_DrawOption::draw_axis(const char* axis_)
 
 S_DrawOption& S_DrawOption::draw_x()
 {
-
+  m_numOfAxis = 1;
   return draw_axis("x");
 }
 
 S_DrawOption& S_DrawOption::draw_y()
 {
+  m_numOfAxis = 1;
   return draw_axis("y");
 }
 
 S_DrawOption& S_DrawOption::draw_x_VS_y()
 {
+  m_numOfAxis = 2;
   return draw_axis("x:y");
 }
 
 S_DrawOption& S_DrawOption::draw_y_VS_x()
 {
+  m_numOfAxis = 2;
   return draw_axis("y:x");
 }
 
@@ -133,10 +139,45 @@ S_DrawOption& S_DrawOption::output_object(TObject* out_)
   m_output_object = out_;
   return *this;
 }
-
+void S_DrawOption::push_output_to_TGraph(Long64_t numberOfPoints,TTree * tree) const
+{
+  if (m_output_object)
+  {
+    auto graph_ = dynamic_cast<TGraph*>(m_output_object);
+    if (graph_)
+    {
+      if (m_numOfAxis == 1)
+      {
+        graph_->Set(0);
+        TH1* h = dynamic_cast<TH1*>(gPad->GetPrimitive("htemp"));
+        if (h)
+        {
+          graph_->Set(0);
+          for (Int_t i = 0; i < h->GetNbinsX(); ++i)
+          {
+            graph_->SetPoint(i, h->GetBinCenter(i), h->GetBinContent(i));
+          }
+          graph_->SetEditable(false);
+        }
+      }
+      else if (m_numOfAxis == 2)
+      {
+        graph_->Set(0);
+        for (Int_t i = 0; i < numberOfPoints; ++i)
+        {
+          graph_->SetPoint(i, tree->GetV2()[i], tree->GetV1()[i]);
+        }
+        graph_->SetEditable(false);
+      }
+    }
+  }
+}
 Long64_t S_DrawOption::Draw(TTree * tree) const
 {
-  return tree->Draw(getAxis(), getCut(), getOptions());
+  auto n = tree->Draw(getAxis(), getCut(), getOptions());
+
+  push_output_to_TGraph(n, tree);
+  return n;
 }
 
 const char* S_DrawOption::getOptions() const
@@ -151,7 +192,11 @@ const char* S_DrawOption::getAxis() const
   m_axis_dummy = m_axis;
   if (m_output_object)
   {
-    m_axis_dummy += ">>" + std::string(m_output_object->GetName());
+
+    if ( dynamic_cast<TH1*>(m_output_object) )
+    {
+      m_axis_dummy += ">>" + std::string(m_output_object->GetName());
+    }
   }
   return m_axis_dummy.c_str();
 }
@@ -160,5 +205,6 @@ TCut S_DrawOption::getCut() const
 {
   return m_cut;
 }
+
 
 

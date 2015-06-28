@@ -36,11 +36,12 @@ public:
   TCut getCut() const;
 private:
 #ifndef __CINT__
-
+  void push_output_to_TGraph(Long64_t numberOfPoints,TTree* output_tree)const;
   std::string m_options = "colz", m_axis = "x:y";
   TCut m_cut;
   TObject* m_output_object = nullptr;
   mutable std::string m_axis_dummy;
+  mutable int m_numOfAxis = 2;
 #endif // !__CINT__
 
   ClassDef(S_DrawOption, 0);

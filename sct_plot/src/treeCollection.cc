@@ -93,7 +93,7 @@ namespace sct_corr{
 
 
 namespace sct_corr{
-  treeCollection_ouput::treeCollection_ouput(const rootEventBase& ev, sct_event_buffer* outputBuffer,bool save2disk) :m_rootBuffer(ev), m_name(ev.getName())
+  treeCollection_ouput::treeCollection_ouput(rootEventBase& ev, sct_event_buffer* outputBuffer,bool save2disk) :m_rootBuffer(ev), m_name(ev.getName())
   {
 
 
@@ -114,7 +114,7 @@ namespace sct_corr{
       {
         m_tree->SetDirectory(outputBuffer->getOutputFile()->GetDirectory("/"));
       }
-      m_rootBuffer.Save2Tree(m_tree);
+      ev.Save2Tree(m_tree);
     }
 
 

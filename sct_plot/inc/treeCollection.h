@@ -54,7 +54,7 @@ namespace sct_corr{
   class treeCollection_ouput {
   public:
 
-    treeCollection_ouput(const rootEventBase& ev, sct_event_buffer* outputBuffer, bool save2disk);
+    treeCollection_ouput(rootEventBase& ev, sct_event_buffer* outputBuffer, bool save2disk);
     virtual ~treeCollection_ouput();
     void fill();
     Int_t Draw(const char* axis, const char* cuts, const char * options);

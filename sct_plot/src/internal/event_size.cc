@@ -1,4 +1,5 @@
 #include "internal/PLaneVsPlane_plots.hh"
+#include "s_plane.h"
 namespace sct_corr{
   class plot_Event_size :public plotPlaneVsPlane{
   public:

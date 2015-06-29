@@ -11,8 +11,13 @@
 #include "TAxis.h"
 #include "TH1.h"
 #include "TTree.h"
+#include "s_cuts.h"
+#include "s_plot_collection.h"
+#include "s_plane.h"
+#include "s_DrawOption.h"
 
 
+<<<<<<< HEAD
 S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis)
 {
 
@@ -176,6 +181,14 @@ TCut S_DrawOption::getCut() const
 {
   return m_cut;
 }
+=======
+
+
+
+
+
+
+>>>>>>> 249f42e387ec843498070c1064c01e73cf7fb734
 
 
 
@@ -285,6 +298,7 @@ TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
   return 0;
 }
 
+<<<<<<< HEAD
 S_XCut::S_XCut(Double_t min_, Double_t max_) :S_Cut_min_max(min_, max_)
 {
 
@@ -460,13 +474,15 @@ S_CutCoollection operator+(const S_Cut& cut_a, const S_Cut& cut_b)
 }
 
 
+=======
+>>>>>>> 249f42e387ec843498070c1064c01e73cf7fb734
 
 
 s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& plot_prob)
 {
   auto apix_true_hits = pl.addPlot(sct_plot::find_nearest(0.1, 0.2,s_plot_prob().doNotSaveToDisk()), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);
 
-  auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, s_plot_prob().doNotSaveToDisk()), fitted_plane, apix_true_hits);
+  auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, s_plot_prob().doNotSaveToDisk()), fitted_plane, apix_true_hits).get(1);
 
 
 
@@ -480,7 +496,7 @@ s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_d
     search_axis = y_axis_def;
   }
 
-  auto res = pl.addPlot(sct_plot::find_nearest_strip(search_axis, 100, s_plot_prob().doNotSaveToDisk()), plane_hit_, dut_fitted_trackts.get(1));
+  auto res = pl.addPlot(sct_plot::find_nearest_strip(search_axis, 100, s_plot_prob().doNotSaveToDisk()), plane_hit_, dut_fitted_trackts);
 
   if (Unknown_axis == y_axis_def)
   {
@@ -508,6 +524,15 @@ s_plane_collection sct_plot::misalignment_pixel(S_plot_collection& pl, S_plane_d
 }
 
 
+
+S_plane_def sct_plot::Crate_True_FItted_DUT_Hits(S_plot_collection& pl, const s_plot_prob& plot_p/*= ""*/)
+{
+  auto apix_true_hits = pl.addPlot(sct_plot::find_nearest(0.1, 0.2, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);
+
+  auto dut_fitted_trackts = pl.addPlot(sct_plot::find_nearest(1, 1, plot_p), sct_coll::DUT_fitted(), apix_true_hits).get(1);
+
+  return dut_fitted_trackts;
+}
 
 s_plot_prob::s_plot_prob()
 {

@@ -6,12 +6,12 @@
 namespace sct_corr{
 
 
-  void sct_event_buffer::set(const char * name, root_event* ev)
+  void sct_event_buffer::set(const char * name, rootEventBase* ev)
   {
     m_events[name] = *ev;
   }
 
-  bool sct_event_buffer::get(const char* name, root_event* ev)
+  bool sct_event_buffer::get(const char* name, rootEventBase* ev)
   {
     if (!IsCollection(name))
     {
@@ -37,13 +37,6 @@ namespace sct_corr{
     m_events.clear();
   }
 
-  root_event::root_event(std::vector<double> *ID, std::vector<double> *x, std::vector<double> *y, Int_t* event_nr) :m_ID(ID), m_x(x), m_y(y), m_event_nr(event_nr)
-  {
 
-  }
 
-  root_event::root_event()
-  {
-
-  }
 }

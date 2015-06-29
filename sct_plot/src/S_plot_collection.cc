@@ -1,5 +1,5 @@
 
-#include "sct_plots.h"
+#include "s_plot_collection.h"
 #include "sct_plots_internal.h"
 #include "treeCollection.h"
 #include <iostream>
@@ -8,6 +8,8 @@
 #include "sct_event_buffer.h"
 #include "sct_global.h"
 #include "internal/plotsBase.hh"
+#include "s_DrawOption.h"
+#include "s_plane.h"
 
 S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>())
 {
@@ -38,6 +40,7 @@ s_plane_collection S_plot_collection::addPlot( S_plot plot_def, const S_Axis& x_
   plot_def.m_plot->pushAxis(getAxis_ref(y_axis));
   return addPlot_internal(std::move(plot_def));
 }
+
 
 s_plane_collection S_plot_collection::addPlot_internal(S_plot plot_def)
 {
@@ -145,12 +148,12 @@ Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& op
   return Draw(name.getName(), local);
 
 }
-
-void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
+Int_t S_plot_collection::getMaxEntriesFromTree(Int_t last)
 {
   if (last == -1)
   {
     last = kMaxInt;
+  }
     for (auto & e : m_trees)
     {
       auto l = e.second->GetEntries();
@@ -168,8 +171,14 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
         last = l;
       }
     }
-  }
+  
+  return last;
+}
 
+void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
+{
+
+  last=getMaxEntriesFromTree(last);
   for (Int_t i = start; i < last; ++i)
   {
     for (auto& e : m_trees)
@@ -178,13 +187,18 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
     }
 
     for (auto& current_plot : m_plots){
-      current_plot.second.fill();
+      if (!current_plot.second.fill())
+      {
+        std::cout << "run terminated by plot: " << current_plot.first << std::endl;
+        return;
+      }
+      
 
     }
   }
 }
 
-sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
+const sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
 {
   if (axis.m_axis == x_axis_def)
   {

@@ -1,0 +1,791 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		71245B371B1F021D005EC031 /* s_plane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B2C1B1F021D005EC031 /* s_plane.cc */; };
+		71245B381B1F021D005EC031 /* s_plane_collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B2D1B1F021D005EC031 /* s_plane_collection.cc */; };
+		71245B391B1F021D005EC031 /* S_plot_collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B2E1B1F021D005EC031 /* S_plot_collection.cc */; };
+		71245B3A1B1F021D005EC031 /* s_plot_defs.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B2F1B1F021D005EC031 /* s_plot_defs.cc */; };
+		71245B3B1B1F021D005EC031 /* s_plots.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B301B1F021D005EC031 /* s_plots.cc */; };
+		71245B3C1B1F021D005EC031 /* s_static_defs.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B311B1F021D005EC031 /* s_static_defs.cc */; };
+		71245B3D1B1F021D005EC031 /* s_treeCollection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B321B1F021D005EC031 /* s_treeCollection.cc */; };
+		71245B3E1B1F021D005EC031 /* sct_event_buffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B331B1F021D005EC031 /* sct_event_buffer.cc */; };
+		71245B3F1B1F021D005EC031 /* sct_global.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B341B1F021D005EC031 /* sct_global.cc */; };
+		71245B401B1F021D005EC031 /* sct_plots.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B351B1F021D005EC031 /* sct_plots.cc */; };
+		71245B411B1F021D005EC031 /* treeCollection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71245B361B1F021D005EC031 /* treeCollection.cc */; };
+		71245B451B1F0552005EC031 /* SCT_dict.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 71245B441B1F0552005EC031 /* SCT_dict.cxx */; };
+		71247CDA1B1F0890005EC031 /* libHist.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 71247CD81B1F086F005EC031 /* libHist.so */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		71245B241B1F01FC005EC031 /* libSCT_plots.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libSCT_plots.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		71245B2C1B1F021D005EC031 /* s_plane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = s_plane.cc; sourceTree = "<group>"; };
+		71245B2D1B1F021D005EC031 /* s_plane_collection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = s_plane_collection.cc; sourceTree = "<group>"; };
+		71245B2E1B1F021D005EC031 /* S_plot_collection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S_plot_collection.cc; sourceTree = "<group>"; };
+		71245B2F1B1F021D005EC031 /* s_plot_defs.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = s_plot_defs.cc; sourceTree = "<group>"; };
+		71245B301B1F021D005EC031 /* s_plots.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = s_plots.cc; sourceTree = "<group>"; };
+		71245B311B1F021D005EC031 /* s_static_defs.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = s_static_defs.cc; sourceTree = "<group>"; };
+		71245B321B1F021D005EC031 /* s_treeCollection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = s_treeCollection.cc; sourceTree = "<group>"; };
+		71245B331B1F021D005EC031 /* sct_event_buffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sct_event_buffer.cc; sourceTree = "<group>"; };
+		71245B341B1F021D005EC031 /* sct_global.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sct_global.cc; sourceTree = "<group>"; };
+		71245B351B1F021D005EC031 /* sct_plots.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sct_plots.cc; sourceTree = "<group>"; };
+		71245B361B1F021D005EC031 /* treeCollection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = treeCollection.cc; sourceTree = "<group>"; };
+		71245B441B1F0552005EC031 /* SCT_dict.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCT_dict.cxx; sourceTree = "<group>"; };
+		71245B471B1F0678005EC031 /* cppyy.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = cppyy.py; sourceTree = "<group>"; };
+		71245B481B1F0678005EC031 /* cppyy.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = cppyy.pyc; sourceTree = "<group>"; };
+		71245B491B1F0678005EC031 /* cppyy.pyo */ = {isa = PBXFileReference; lastKnownFileType = file; path = cppyy.pyo; sourceTree = "<group>"; };
+		71245B4A1B1F0678005EC031 /* libAfterImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAfterImage.a; sourceTree = "<group>"; };
+		71245B4B1B1F0678005EC031 /* libASImage.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libASImage.rootmap; sourceTree = "<group>"; };
+		71245B4C1B1F0678005EC031 /* libASImage.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libASImage.so; sourceTree = "<group>"; };
+		71245B4D1B1F0678005EC031 /* libASImage_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libASImage_rdict.pcm; sourceTree = "<group>"; };
+		71245B4E1B1F0678005EC031 /* libASImageGui.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libASImageGui.rootmap; sourceTree = "<group>"; };
+		71245B4F1B1F0678005EC031 /* libASImageGui.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libASImageGui.so; sourceTree = "<group>"; };
+		71245B501B1F0678005EC031 /* libASImageGui_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libASImageGui_rdict.pcm; sourceTree = "<group>"; };
+		71245B511B1F0678005EC031 /* libBonjour.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libBonjour.rootmap; sourceTree = "<group>"; };
+		71245B521B1F0678005EC031 /* libBonjour.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libBonjour.so; sourceTree = "<group>"; };
+		71245B531B1F0678005EC031 /* libBonjour_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libBonjour_rdict.pcm; sourceTree = "<group>"; };
+		71245B541B1F0678005EC031 /* libCling.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libCling.so; sourceTree = "<group>"; };
+		71245B551B1F0678005EC031 /* libcomplexDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libcomplexDict.rootmap; sourceTree = "<group>"; };
+		71245B561B1F0678005EC031 /* libcomplexDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcomplexDict.so; sourceTree = "<group>"; };
+		71245B571B1F0678005EC031 /* libCore.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libCore.so; sourceTree = "<group>"; };
+		71245B581B1F0678005EC031 /* libCore_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = text; path = libCore_rdict.pcm; sourceTree = "<group>"; };
+		71245B591B1F0678005EC031 /* libdequeDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libdequeDict.rootmap; sourceTree = "<group>"; };
+		71245B5A1B1F0678005EC031 /* libdequeDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdequeDict.so; sourceTree = "<group>"; };
+		71245B5B1B1F0678005EC031 /* libEG.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libEG.rootmap; sourceTree = "<group>"; };
+		71245B5C1B1F0678005EC031 /* libEG.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libEG.so; sourceTree = "<group>"; };
+		71245B5D1B1F0678005EC031 /* libEG_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libEG_rdict.pcm; sourceTree = "<group>"; };
+		71245B5E1B1F0678005EC031 /* libEve.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libEve.rootmap; sourceTree = "<group>"; };
+		71245B5F1B1F0678005EC031 /* libEve.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libEve.so; sourceTree = "<group>"; };
+		71245B601B1F0678005EC031 /* libEve_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libEve_rdict.pcm; sourceTree = "<group>"; };
+		71245B611B1F0678005EC031 /* libFitPanel.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libFitPanel.rootmap; sourceTree = "<group>"; };
+		71245B621B1F0678005EC031 /* libFitPanel.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libFitPanel.so; sourceTree = "<group>"; };
+		71245B631B1F0678005EC031 /* libFitPanel_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libFitPanel_rdict.pcm; sourceTree = "<group>"; };
+		71245B641B1F0678005EC031 /* libFoam.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libFoam.rootmap; sourceTree = "<group>"; };
+		71245B651B1F0678005EC031 /* libFoam.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libFoam.so; sourceTree = "<group>"; };
+		71245B661B1F0678005EC031 /* libFoam_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libFoam_rdict.pcm; sourceTree = "<group>"; };
+		71245B671B1F0678005EC031 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfreetype.a; sourceTree = "<group>"; };
+		71245B681B1F0678005EC031 /* libFTGL.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libFTGL.so; sourceTree = "<group>"; };
+		71245B691B1F0678005EC031 /* libFumili.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libFumili.rootmap; sourceTree = "<group>"; };
+		71245B6A1B1F0678005EC031 /* libFumili.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libFumili.so; sourceTree = "<group>"; };
+		71245B6B1B1F0678005EC031 /* libFumili_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libFumili_rdict.pcm; sourceTree = "<group>"; };
+		71245B6C1B1F0678005EC031 /* libGCocoa.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGCocoa.rootmap; sourceTree = "<group>"; };
+		71245B6D1B1F0678005EC031 /* libGCocoa.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGCocoa.so; sourceTree = "<group>"; };
+		71245B6E1B1F0678005EC031 /* libGCocoa_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGCocoa_rdict.pcm; sourceTree = "<group>"; };
+		71245B6F1B1F0678005EC031 /* libGed.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGed.rootmap; sourceTree = "<group>"; };
+		71245B701B1F0678005EC031 /* libGed.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGed.so; sourceTree = "<group>"; };
+		71245B711B1F0678005EC031 /* libGed_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGed_rdict.pcm; sourceTree = "<group>"; };
+		71245B721B1F0678005EC031 /* libGenetic.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGenetic.rootmap; sourceTree = "<group>"; };
+		71245B731B1F0678005EC031 /* libGenetic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGenetic.so; sourceTree = "<group>"; };
+		71245B741B1F0678005EC031 /* libGenetic_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGenetic_rdict.pcm; sourceTree = "<group>"; };
+		71245B751B1F0678005EC031 /* libGenVector.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGenVector.rootmap; sourceTree = "<group>"; };
+		71245B761B1F0678005EC031 /* libGenVector.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGenVector.so; sourceTree = "<group>"; };
+		71245B771B1F0678005EC031 /* libGenVector32.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGenVector32.rootmap; sourceTree = "<group>"; };
+		71245B781B1F0678005EC031 /* libGenVector_G__GenVector32_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGenVector_G__GenVector32_rdict.pcm; sourceTree = "<group>"; };
+		71245B791B1F0678005EC031 /* libGenVector_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGenVector_rdict.pcm; sourceTree = "<group>"; };
+		71245B7A1B1F0678005EC031 /* libGeom.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGeom.rootmap; sourceTree = "<group>"; };
+		71245B7B1B1F0678005EC031 /* libGeom.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGeom.so; sourceTree = "<group>"; };
+		71245B7C1B1F0678005EC031 /* libGeom_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGeom_rdict.pcm; sourceTree = "<group>"; };
+		71245B7D1B1F0678005EC031 /* libGeomBuilder.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGeomBuilder.rootmap; sourceTree = "<group>"; };
+		71245B7E1B1F0678005EC031 /* libGeomBuilder.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGeomBuilder.so; sourceTree = "<group>"; };
+		71245B7F1B1F0678005EC031 /* libGeomBuilder_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGeomBuilder_rdict.pcm; sourceTree = "<group>"; };
+		71245B801B1F0678005EC031 /* libGeomPainter.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGeomPainter.rootmap; sourceTree = "<group>"; };
+		71245B811B1F0678005EC031 /* libGeomPainter.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGeomPainter.so; sourceTree = "<group>"; };
+		71245B821B1F0678005EC031 /* libGeomPainter_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGeomPainter_rdict.pcm; sourceTree = "<group>"; };
+		71245B831B1F0678005EC031 /* libGLEW.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGLEW.so; sourceTree = "<group>"; };
+		71245B841B1F0678005EC031 /* libGpad.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGpad.rootmap; sourceTree = "<group>"; };
+		71245B851B1F0678005EC031 /* libGpad.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGpad.so; sourceTree = "<group>"; };
+		71245B861B1F0678005EC031 /* libGpad_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGpad_rdict.pcm; sourceTree = "<group>"; };
+		71245B871B1F0678005EC031 /* libGQuartz.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGQuartz.rootmap; sourceTree = "<group>"; };
+		71245B881B1F0678005EC031 /* libGQuartz.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGQuartz.so; sourceTree = "<group>"; };
+		71245B891B1F0678005EC031 /* libGQuartz_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGQuartz_rdict.pcm; sourceTree = "<group>"; };
+		71245B8A1B1F0678005EC031 /* libGraf.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGraf.rootmap; sourceTree = "<group>"; };
+		71245B8B1B1F0678005EC031 /* libGraf.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGraf.so; sourceTree = "<group>"; };
+		71245B8C1B1F0678005EC031 /* libGraf3d.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGraf3d.rootmap; sourceTree = "<group>"; };
+		71245B8D1B1F0678005EC031 /* libGraf3d.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGraf3d.so; sourceTree = "<group>"; };
+		71245B8E1B1F0678005EC031 /* libGraf3d_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGraf3d_rdict.pcm; sourceTree = "<group>"; };
+		71245B8F1B1F0678005EC031 /* libGraf_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGraf_rdict.pcm; sourceTree = "<group>"; };
+		71245B901B1F0678005EC031 /* libGui.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGui.rootmap; sourceTree = "<group>"; };
+		71245B911B1F0678005EC031 /* libGui.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGui.so; sourceTree = "<group>"; };
+		71245B921B1F0678005EC031 /* libGui_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGui_rdict.pcm; sourceTree = "<group>"; };
+		71245B931B1F0678005EC031 /* libGuiBld.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGuiBld.rootmap; sourceTree = "<group>"; };
+		71245B941B1F0678005EC031 /* libGuiBld.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGuiBld.so; sourceTree = "<group>"; };
+		71245B951B1F0678005EC031 /* libGuiBld_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGuiBld_rdict.pcm; sourceTree = "<group>"; };
+		71245B961B1F0678005EC031 /* libGuiHtml.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGuiHtml.rootmap; sourceTree = "<group>"; };
+		71245B971B1F0678005EC031 /* libGuiHtml.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGuiHtml.so; sourceTree = "<group>"; };
+		71245B981B1F0678005EC031 /* libGuiHtml_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGuiHtml_rdict.pcm; sourceTree = "<group>"; };
+		71245B991B1F0678005EC031 /* libGviz3d.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libGviz3d.rootmap; sourceTree = "<group>"; };
+		71245B9A1B1F0678005EC031 /* libGviz3d.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGviz3d.so; sourceTree = "<group>"; };
+		71245B9B1B1F0678005EC031 /* libGviz3d_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libGviz3d_rdict.pcm; sourceTree = "<group>"; };
+		71245B9C1B1F0678005EC031 /* libHbook.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libHbook.rootmap; sourceTree = "<group>"; };
+		71245B9D1B1F0678005EC031 /* libHbook.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libHbook.so; sourceTree = "<group>"; };
+		71245B9E1B1F0678005EC031 /* libHbook_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libHbook_rdict.pcm; sourceTree = "<group>"; };
+		71245B9F1B1F0678005EC031 /* libHist.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libHist.rootmap; sourceTree = "<group>"; };
+		71245BA01B1F0678005EC031 /* libHist.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libHist.so; sourceTree = "<group>"; };
+		71245BA11B1F0678005EC031 /* libHist_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libHist_rdict.pcm; sourceTree = "<group>"; };
+		71245BA21B1F0678005EC031 /* libHistPainter.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libHistPainter.rootmap; sourceTree = "<group>"; };
+		71245BA31B1F0678005EC031 /* libHistPainter.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libHistPainter.so; sourceTree = "<group>"; };
+		71245BA41B1F0678005EC031 /* libHistPainter_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libHistPainter_rdict.pcm; sourceTree = "<group>"; };
+		71245BA51B1F0678005EC031 /* libHtml.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libHtml.rootmap; sourceTree = "<group>"; };
+		71245BA61B1F0678005EC031 /* libHtml.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libHtml.so; sourceTree = "<group>"; };
+		71245BA71B1F0678005EC031 /* libHtml_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libHtml_rdict.pcm; sourceTree = "<group>"; };
+		71245BA81B1F0678005EC031 /* libKrb5Auth.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libKrb5Auth.rootmap; sourceTree = "<group>"; };
+		71245BA91B1F0678005EC031 /* libKrb5Auth.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libKrb5Auth.so; sourceTree = "<group>"; };
+		71245BAA1B1F0678005EC031 /* libKrb5Auth_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libKrb5Auth_rdict.pcm; sourceTree = "<group>"; };
+		71245BAB1B1F0678005EC031 /* liblistDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = liblistDict.rootmap; sourceTree = "<group>"; };
+		71245BAC1B1F0678005EC031 /* liblistDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblistDict.so; sourceTree = "<group>"; };
+		71245BAD1B1F0678005EC031 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblzma.a; sourceTree = "<group>"; };
+		71245BAE1B1F0678005EC031 /* libmap2Dict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libmap2Dict.rootmap; sourceTree = "<group>"; };
+		71245BAF1B1F0678005EC031 /* libmap2Dict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmap2Dict.so; sourceTree = "<group>"; };
+		71245BB01B1F0678005EC031 /* libmapDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libmapDict.rootmap; sourceTree = "<group>"; };
+		71245BB11B1F0678005EC031 /* libmapDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmapDict.so; sourceTree = "<group>"; };
+		71245BB21B1F0678005EC031 /* libMathCore.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libMathCore.rootmap; sourceTree = "<group>"; };
+		71245BB31B1F0678005EC031 /* libMathCore.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libMathCore.so; sourceTree = "<group>"; };
+		71245BB41B1F0678005EC031 /* libMathCore_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libMathCore_rdict.pcm; sourceTree = "<group>"; };
+		71245BB51B1F0678005EC031 /* libmathtext.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmathtext.a; sourceTree = "<group>"; };
+		71245BB61B1F0678005EC031 /* libMatrix.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libMatrix.rootmap; sourceTree = "<group>"; };
+		71245BB71B1F0678005EC031 /* libMatrix.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libMatrix.so; sourceTree = "<group>"; };
+		71245BB81B1F0678005EC031 /* libMatrix_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libMatrix_rdict.pcm; sourceTree = "<group>"; };
+		71245BB91B1F0678005EC031 /* libMemStat.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libMemStat.rootmap; sourceTree = "<group>"; };
+		71245BBA1B1F0678005EC031 /* libMemStat.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libMemStat.so; sourceTree = "<group>"; };
+		71245BBB1B1F0678005EC031 /* libMemStat_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libMemStat_rdict.pcm; sourceTree = "<group>"; };
+		71245BBC1B1F0678005EC031 /* libminicern.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libminicern.so; sourceTree = "<group>"; };
+		71245BBD1B1F0678005EC031 /* libMinuit.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libMinuit.rootmap; sourceTree = "<group>"; };
+		71245BBE1B1F0679005EC031 /* libMinuit.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libMinuit.so; sourceTree = "<group>"; };
+		71245BBF1B1F0679005EC031 /* libMinuit_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libMinuit_rdict.pcm; sourceTree = "<group>"; };
+		71245BC01B1F0679005EC031 /* libMLP.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libMLP.rootmap; sourceTree = "<group>"; };
+		71245BC11B1F0679005EC031 /* libMLP.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libMLP.so; sourceTree = "<group>"; };
+		71245BC21B1F0679005EC031 /* libMLP_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libMLP_rdict.pcm; sourceTree = "<group>"; };
+		71245BC31B1F0679005EC031 /* libmultimap2Dict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libmultimap2Dict.rootmap; sourceTree = "<group>"; };
+		71245BC41B1F0679005EC031 /* libmultimap2Dict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmultimap2Dict.so; sourceTree = "<group>"; };
+		71245BC51B1F0679005EC031 /* libmultimapDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libmultimapDict.rootmap; sourceTree = "<group>"; };
+		71245BC61B1F0679005EC031 /* libmultimapDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmultimapDict.so; sourceTree = "<group>"; };
+		71245BC71B1F0679005EC031 /* libmultisetDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libmultisetDict.rootmap; sourceTree = "<group>"; };
+		71245BC81B1F0679005EC031 /* libmultisetDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmultisetDict.so; sourceTree = "<group>"; };
+		71245BC91B1F0679005EC031 /* libNet.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libNet.rootmap; sourceTree = "<group>"; };
+		71245BCA1B1F0679005EC031 /* libNet.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libNet.so; sourceTree = "<group>"; };
+		71245BCB1B1F0679005EC031 /* libNet_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libNet_rdict.pcm; sourceTree = "<group>"; };
+		71245BCC1B1F0679005EC031 /* libNew.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libNew.so; sourceTree = "<group>"; };
+		71245BCD1B1F0679005EC031 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
+		71245BCE1B1F0679005EC031 /* libPhysics.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libPhysics.rootmap; sourceTree = "<group>"; };
+		71245BCF1B1F0679005EC031 /* libPhysics.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPhysics.so; sourceTree = "<group>"; };
+		71245BD01B1F0679005EC031 /* libPhysics_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libPhysics_rdict.pcm; sourceTree = "<group>"; };
+		71245BD11B1F0679005EC031 /* libPostscript.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libPostscript.rootmap; sourceTree = "<group>"; };
+		71245BD21B1F0679005EC031 /* libPostscript.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPostscript.so; sourceTree = "<group>"; };
+		71245BD31B1F0679005EC031 /* libPostscript_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libPostscript_rdict.pcm; sourceTree = "<group>"; };
+		71245BD41B1F0679005EC031 /* libProof.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libProof.rootmap; sourceTree = "<group>"; };
+		71245BD51B1F0679005EC031 /* libProof.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libProof.so; sourceTree = "<group>"; };
+		71245BD61B1F0679005EC031 /* libProof_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libProof_rdict.pcm; sourceTree = "<group>"; };
+		71245BD71B1F0679005EC031 /* libProofBench.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libProofBench.rootmap; sourceTree = "<group>"; };
+		71245BD81B1F0679005EC031 /* libProofBench.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libProofBench.so; sourceTree = "<group>"; };
+		71245BD91B1F0679005EC031 /* libProofBench_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libProofBench_rdict.pcm; sourceTree = "<group>"; };
+		71245BDA1B1F0679005EC031 /* libProofDraw.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libProofDraw.rootmap; sourceTree = "<group>"; };
+		71245BDB1B1F0679005EC031 /* libProofDraw.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libProofDraw.so; sourceTree = "<group>"; };
+		71245BDC1B1F0679005EC031 /* libProofDraw_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libProofDraw_rdict.pcm; sourceTree = "<group>"; };
+		71245BDD1B1F0679005EC031 /* libProofPlayer.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libProofPlayer.rootmap; sourceTree = "<group>"; };
+		71245BDE1B1F0679005EC031 /* libProofPlayer.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libProofPlayer.so; sourceTree = "<group>"; };
+		71245BDF1B1F0679005EC031 /* libProofPlayer_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libProofPlayer_rdict.pcm; sourceTree = "<group>"; };
+		71245BE01B1F0679005EC031 /* libPyROOT.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libPyROOT.rootmap; sourceTree = "<group>"; };
+		71245BE11B1F0679005EC031 /* libPyROOT.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPyROOT.so; sourceTree = "<group>"; };
+		71245BE21B1F0679005EC031 /* libPyROOT_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libPyROOT_rdict.pcm; sourceTree = "<group>"; };
+		71245BE31B1F0679005EC031 /* libQuadp.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libQuadp.rootmap; sourceTree = "<group>"; };
+		71245BE41B1F0679005EC031 /* libQuadp.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libQuadp.so; sourceTree = "<group>"; };
+		71245BE51B1F0679005EC031 /* libQuadp_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libQuadp_rdict.pcm; sourceTree = "<group>"; };
+		71245BE61B1F0679005EC031 /* libRecorder.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRecorder.rootmap; sourceTree = "<group>"; };
+		71245BE71B1F0679005EC031 /* libRecorder.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRecorder.so; sourceTree = "<group>"; };
+		71245BE81B1F0679005EC031 /* libRecorder_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libRecorder_rdict.pcm; sourceTree = "<group>"; };
+		71245BE91B1F0679005EC031 /* libRGL.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRGL.rootmap; sourceTree = "<group>"; };
+		71245BEA1B1F0679005EC031 /* libRGL.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRGL.so; sourceTree = "<group>"; };
+		71245BEB1B1F0679005EC031 /* libRGL_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libRGL_rdict.pcm; sourceTree = "<group>"; };
+		71245BEC1B1F0679005EC031 /* libRint.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRint.rootmap; sourceTree = "<group>"; };
+		71245BED1B1F0679005EC031 /* libRint.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRint.so; sourceTree = "<group>"; };
+		71245BEE1B1F0679005EC031 /* libRint_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRint_rdict.pcm; sourceTree = "<group>"; };
+		71245BEF1B1F0679005EC031 /* libRIO.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRIO.rootmap; sourceTree = "<group>"; };
+		71245BF01B1F0679005EC031 /* libRIO.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRIO.so; sourceTree = "<group>"; };
+		71245BF11B1F0679005EC031 /* libRIO_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRIO_rdict.pcm; sourceTree = "<group>"; };
+		71245BF21B1F0679005EC031 /* libRLDAP.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRLDAP.rootmap; sourceTree = "<group>"; };
+		71245BF31B1F0679005EC031 /* libRLDAP.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRLDAP.so; sourceTree = "<group>"; };
+		71245BF41B1F0679005EC031 /* libRLDAP_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libRLDAP_rdict.pcm; sourceTree = "<group>"; };
+		71245BF51B1F0679005EC031 /* libRootAuth.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRootAuth.rootmap; sourceTree = "<group>"; };
+		71245BF61B1F0679005EC031 /* libRootAuth.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRootAuth.so; sourceTree = "<group>"; };
+		71245BF71B1F0679005EC031 /* libRootAuth_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libRootAuth_rdict.pcm; sourceTree = "<group>"; };
+		71245BF81B1F0679005EC031 /* libRSQLite.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libRSQLite.rootmap; sourceTree = "<group>"; };
+		71245BF91B1F0679005EC031 /* libRSQLite.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libRSQLite.so; sourceTree = "<group>"; };
+		71245BFA1B1F0679005EC031 /* libRSQLite_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libRSQLite_rdict.pcm; sourceTree = "<group>"; };
+		71245BFB1B1F0679005EC031 /* libSessionViewer.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSessionViewer.rootmap; sourceTree = "<group>"; };
+		71245BFC1B1F0679005EC031 /* libSessionViewer.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSessionViewer.so; sourceTree = "<group>"; };
+		71245BFD1B1F0679005EC031 /* libSessionViewer_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSessionViewer_rdict.pcm; sourceTree = "<group>"; };
+		71245BFE1B1F0679005EC031 /* libsetDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libsetDict.rootmap; sourceTree = "<group>"; };
+		71245BFF1B1F0679005EC031 /* libsetDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libsetDict.so; sourceTree = "<group>"; };
+		71245C001B1F0679005EC031 /* libSmatrix.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSmatrix.rootmap; sourceTree = "<group>"; };
+		71245C011B1F0679005EC031 /* libSmatrix.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSmatrix.so; sourceTree = "<group>"; };
+		71245C021B1F0679005EC031 /* libSmatrix32.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSmatrix32.rootmap; sourceTree = "<group>"; };
+		71245C031B1F0679005EC031 /* libSmatrix_G__Smatrix32_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSmatrix_G__Smatrix32_rdict.pcm; sourceTree = "<group>"; };
+		71245C041B1F0679005EC031 /* libSmatrix_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSmatrix_rdict.pcm; sourceTree = "<group>"; };
+		71245C051B1F0679005EC031 /* libSpectrum.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSpectrum.rootmap; sourceTree = "<group>"; };
+		71245C061B1F0679005EC031 /* libSpectrum.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSpectrum.so; sourceTree = "<group>"; };
+		71245C071B1F0679005EC031 /* libSpectrum_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSpectrum_rdict.pcm; sourceTree = "<group>"; };
+		71245C081B1F0679005EC031 /* libSpectrumPainter.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSpectrumPainter.rootmap; sourceTree = "<group>"; };
+		71245C091B1F0679005EC031 /* libSpectrumPainter.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSpectrumPainter.so; sourceTree = "<group>"; };
+		71245C0A1B1F0679005EC031 /* libSpectrumPainter_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSpectrumPainter_rdict.pcm; sourceTree = "<group>"; };
+		71245C0B1B1F0679005EC031 /* libSPlot.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSPlot.rootmap; sourceTree = "<group>"; };
+		71245C0C1B1F0679005EC031 /* libSPlot.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSPlot.so; sourceTree = "<group>"; };
+		71245C0D1B1F0679005EC031 /* libSPlot_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSPlot_rdict.pcm; sourceTree = "<group>"; };
+		71245C0E1B1F0679005EC031 /* libSQLIO.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libSQLIO.rootmap; sourceTree = "<group>"; };
+		71245C0F1B1F0679005EC031 /* libSQLIO.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSQLIO.so; sourceTree = "<group>"; };
+		71245C101B1F0679005EC031 /* libSQLIO_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libSQLIO_rdict.pcm; sourceTree = "<group>"; };
+		71245C111B1F0679005EC031 /* libSrvAuth.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSrvAuth.so; sourceTree = "<group>"; };
+		71245C121B1F0679005EC031 /* libThread.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libThread.rootmap; sourceTree = "<group>"; };
+		71245C131B1F0679005EC031 /* libThread.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libThread.so; sourceTree = "<group>"; };
+		71245C141B1F0679005EC031 /* libThread_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = text; path = libThread_rdict.pcm; sourceTree = "<group>"; };
+		71245C151B1F0679005EC031 /* libTMVA.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libTMVA.rootmap; sourceTree = "<group>"; };
+		71245C161B1F0679005EC031 /* libTMVA.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libTMVA.so; sourceTree = "<group>"; };
+		71245C171B1F0679005EC031 /* libTMVA_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libTMVA_rdict.pcm; sourceTree = "<group>"; };
+		71245C181B1F0679005EC031 /* libTree.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libTree.rootmap; sourceTree = "<group>"; };
+		71245C191B1F0679005EC031 /* libTree.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libTree.so; sourceTree = "<group>"; };
+		71245C1A1B1F0679005EC031 /* libTree_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libTree_rdict.pcm; sourceTree = "<group>"; };
+		71245C1B1B1F0679005EC031 /* libTreePlayer.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libTreePlayer.rootmap; sourceTree = "<group>"; };
+		71245C1C1B1F0679005EC031 /* libTreePlayer.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libTreePlayer.so; sourceTree = "<group>"; };
+		71245C1D1B1F0679005EC031 /* libTreePlayer_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libTreePlayer_rdict.pcm; sourceTree = "<group>"; };
+		71245C1E1B1F0679005EC031 /* libTreeViewer.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libTreeViewer.rootmap; sourceTree = "<group>"; };
+		71245C1F1B1F0679005EC031 /* libTreeViewer.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libTreeViewer.so; sourceTree = "<group>"; };
+		71245C201B1F0679005EC031 /* libTreeViewer_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libTreeViewer_rdict.pcm; sourceTree = "<group>"; };
+		71245C211B1F0679005EC031 /* libvalarrayDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libvalarrayDict.rootmap; sourceTree = "<group>"; };
+		71245C221B1F0679005EC031 /* libvalarrayDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libvalarrayDict.so; sourceTree = "<group>"; };
+		71245C231B1F0679005EC031 /* libvectorDict.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libvectorDict.rootmap; sourceTree = "<group>"; };
+		71245C241B1F0679005EC031 /* libvectorDict.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libvectorDict.so; sourceTree = "<group>"; };
+		71245C251B1F0679005EC031 /* libVMC.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libVMC.rootmap; sourceTree = "<group>"; };
+		71245C261B1F0679005EC031 /* libVMC.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libVMC.so; sourceTree = "<group>"; };
+		71245C271B1F0679005EC031 /* libVMC_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libVMC_rdict.pcm; sourceTree = "<group>"; };
+		71245C281B1F0679005EC031 /* libXMLIO.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libXMLIO.rootmap; sourceTree = "<group>"; };
+		71245C291B1F0679005EC031 /* libXMLIO.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libXMLIO.so; sourceTree = "<group>"; };
+		71245C2A1B1F0679005EC031 /* libXMLIO_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libXMLIO_rdict.pcm; sourceTree = "<group>"; };
+		71245C2B1B1F0679005EC031 /* libXMLParser.rootmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = libXMLParser.rootmap; sourceTree = "<group>"; };
+		71245C2C1B1F0679005EC031 /* libXMLParser.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libXMLParser.so; sourceTree = "<group>"; };
+		71245C2D1B1F0679005EC031 /* libXMLParser_rdict.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = libXMLParser_rdict.pcm; sourceTree = "<group>"; };
+		71245C2E1B1F0679005EC031 /* ROOT.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ROOT.py; sourceTree = "<group>"; };
+		71245C2F1B1F0679005EC031 /* ROOT.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = ROOT.pyc; sourceTree = "<group>"; };
+		71245C301B1F0679005EC031 /* ROOT.pyo */ = {isa = PBXFileReference; lastKnownFileType = file; path = ROOT.pyo; sourceTree = "<group>"; };
+		71247CD81B1F086F005EC031 /* libHist.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libHist.so; path = "../../../../root-6.02.05/lib/libHist.so"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		71245B211B1F01FC005EC031 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71247CDA1B1F0890005EC031 /* libHist.so in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		71245B1B1B1F01FC005EC031 = {
+			isa = PBXGroup;
+			children = (
+				71247CD81B1F086F005EC031 /* libHist.so */,
+				71245B461B1F0678005EC031 /* lib */,
+				71245B2B1B1F021D005EC031 /* src */,
+				71245B251B1F01FC005EC031 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		71245B251B1F01FC005EC031 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				71245B241B1F01FC005EC031 /* libSCT_plots.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		71245B2B1B1F021D005EC031 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				71245B441B1F0552005EC031 /* SCT_dict.cxx */,
+				71245B2C1B1F021D005EC031 /* s_plane.cc */,
+				71245B2D1B1F021D005EC031 /* s_plane_collection.cc */,
+				71245B2E1B1F021D005EC031 /* S_plot_collection.cc */,
+				71245B2F1B1F021D005EC031 /* s_plot_defs.cc */,
+				71245B301B1F021D005EC031 /* s_plots.cc */,
+				71245B311B1F021D005EC031 /* s_static_defs.cc */,
+				71245B321B1F021D005EC031 /* s_treeCollection.cc */,
+				71245B331B1F021D005EC031 /* sct_event_buffer.cc */,
+				71245B341B1F021D005EC031 /* sct_global.cc */,
+				71245B351B1F021D005EC031 /* sct_plots.cc */,
+				71245B361B1F021D005EC031 /* treeCollection.cc */,
+			);
+			name = src;
+			path = ../sct_plot/src;
+			sourceTree = "<group>";
+		};
+		71245B461B1F0678005EC031 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				71245B471B1F0678005EC031 /* cppyy.py */,
+				71245B481B1F0678005EC031 /* cppyy.pyc */,
+				71245B491B1F0678005EC031 /* cppyy.pyo */,
+				71245B4A1B1F0678005EC031 /* libAfterImage.a */,
+				71245B4B1B1F0678005EC031 /* libASImage.rootmap */,
+				71245B4C1B1F0678005EC031 /* libASImage.so */,
+				71245B4D1B1F0678005EC031 /* libASImage_rdict.pcm */,
+				71245B4E1B1F0678005EC031 /* libASImageGui.rootmap */,
+				71245B4F1B1F0678005EC031 /* libASImageGui.so */,
+				71245B501B1F0678005EC031 /* libASImageGui_rdict.pcm */,
+				71245B511B1F0678005EC031 /* libBonjour.rootmap */,
+				71245B521B1F0678005EC031 /* libBonjour.so */,
+				71245B531B1F0678005EC031 /* libBonjour_rdict.pcm */,
+				71245B541B1F0678005EC031 /* libCling.so */,
+				71245B551B1F0678005EC031 /* libcomplexDict.rootmap */,
+				71245B561B1F0678005EC031 /* libcomplexDict.so */,
+				71245B571B1F0678005EC031 /* libCore.so */,
+				71245B581B1F0678005EC031 /* libCore_rdict.pcm */,
+				71245B591B1F0678005EC031 /* libdequeDict.rootmap */,
+				71245B5A1B1F0678005EC031 /* libdequeDict.so */,
+				71245B5B1B1F0678005EC031 /* libEG.rootmap */,
+				71245B5C1B1F0678005EC031 /* libEG.so */,
+				71245B5D1B1F0678005EC031 /* libEG_rdict.pcm */,
+				71245B5E1B1F0678005EC031 /* libEve.rootmap */,
+				71245B5F1B1F0678005EC031 /* libEve.so */,
+				71245B601B1F0678005EC031 /* libEve_rdict.pcm */,
+				71245B611B1F0678005EC031 /* libFitPanel.rootmap */,
+				71245B621B1F0678005EC031 /* libFitPanel.so */,
+				71245B631B1F0678005EC031 /* libFitPanel_rdict.pcm */,
+				71245B641B1F0678005EC031 /* libFoam.rootmap */,
+				71245B651B1F0678005EC031 /* libFoam.so */,
+				71245B661B1F0678005EC031 /* libFoam_rdict.pcm */,
+				71245B671B1F0678005EC031 /* libfreetype.a */,
+				71245B681B1F0678005EC031 /* libFTGL.so */,
+				71245B691B1F0678005EC031 /* libFumili.rootmap */,
+				71245B6A1B1F0678005EC031 /* libFumili.so */,
+				71245B6B1B1F0678005EC031 /* libFumili_rdict.pcm */,
+				71245B6C1B1F0678005EC031 /* libGCocoa.rootmap */,
+				71245B6D1B1F0678005EC031 /* libGCocoa.so */,
+				71245B6E1B1F0678005EC031 /* libGCocoa_rdict.pcm */,
+				71245B6F1B1F0678005EC031 /* libGed.rootmap */,
+				71245B701B1F0678005EC031 /* libGed.so */,
+				71245B711B1F0678005EC031 /* libGed_rdict.pcm */,
+				71245B721B1F0678005EC031 /* libGenetic.rootmap */,
+				71245B731B1F0678005EC031 /* libGenetic.so */,
+				71245B741B1F0678005EC031 /* libGenetic_rdict.pcm */,
+				71245B751B1F0678005EC031 /* libGenVector.rootmap */,
+				71245B761B1F0678005EC031 /* libGenVector.so */,
+				71245B771B1F0678005EC031 /* libGenVector32.rootmap */,
+				71245B781B1F0678005EC031 /* libGenVector_G__GenVector32_rdict.pcm */,
+				71245B791B1F0678005EC031 /* libGenVector_rdict.pcm */,
+				71245B7A1B1F0678005EC031 /* libGeom.rootmap */,
+				71245B7B1B1F0678005EC031 /* libGeom.so */,
+				71245B7C1B1F0678005EC031 /* libGeom_rdict.pcm */,
+				71245B7D1B1F0678005EC031 /* libGeomBuilder.rootmap */,
+				71245B7E1B1F0678005EC031 /* libGeomBuilder.so */,
+				71245B7F1B1F0678005EC031 /* libGeomBuilder_rdict.pcm */,
+				71245B801B1F0678005EC031 /* libGeomPainter.rootmap */,
+				71245B811B1F0678005EC031 /* libGeomPainter.so */,
+				71245B821B1F0678005EC031 /* libGeomPainter_rdict.pcm */,
+				71245B831B1F0678005EC031 /* libGLEW.so */,
+				71245B841B1F0678005EC031 /* libGpad.rootmap */,
+				71245B851B1F0678005EC031 /* libGpad.so */,
+				71245B861B1F0678005EC031 /* libGpad_rdict.pcm */,
+				71245B871B1F0678005EC031 /* libGQuartz.rootmap */,
+				71245B881B1F0678005EC031 /* libGQuartz.so */,
+				71245B891B1F0678005EC031 /* libGQuartz_rdict.pcm */,
+				71245B8A1B1F0678005EC031 /* libGraf.rootmap */,
+				71245B8B1B1F0678005EC031 /* libGraf.so */,
+				71245B8C1B1F0678005EC031 /* libGraf3d.rootmap */,
+				71245B8D1B1F0678005EC031 /* libGraf3d.so */,
+				71245B8E1B1F0678005EC031 /* libGraf3d_rdict.pcm */,
+				71245B8F1B1F0678005EC031 /* libGraf_rdict.pcm */,
+				71245B901B1F0678005EC031 /* libGui.rootmap */,
+				71245B911B1F0678005EC031 /* libGui.so */,
+				71245B921B1F0678005EC031 /* libGui_rdict.pcm */,
+				71245B931B1F0678005EC031 /* libGuiBld.rootmap */,
+				71245B941B1F0678005EC031 /* libGuiBld.so */,
+				71245B951B1F0678005EC031 /* libGuiBld_rdict.pcm */,
+				71245B961B1F0678005EC031 /* libGuiHtml.rootmap */,
+				71245B971B1F0678005EC031 /* libGuiHtml.so */,
+				71245B981B1F0678005EC031 /* libGuiHtml_rdict.pcm */,
+				71245B991B1F0678005EC031 /* libGviz3d.rootmap */,
+				71245B9A1B1F0678005EC031 /* libGviz3d.so */,
+				71245B9B1B1F0678005EC031 /* libGviz3d_rdict.pcm */,
+				71245B9C1B1F0678005EC031 /* libHbook.rootmap */,
+				71245B9D1B1F0678005EC031 /* libHbook.so */,
+				71245B9E1B1F0678005EC031 /* libHbook_rdict.pcm */,
+				71245B9F1B1F0678005EC031 /* libHist.rootmap */,
+				71245BA01B1F0678005EC031 /* libHist.so */,
+				71245BA11B1F0678005EC031 /* libHist_rdict.pcm */,
+				71245BA21B1F0678005EC031 /* libHistPainter.rootmap */,
+				71245BA31B1F0678005EC031 /* libHistPainter.so */,
+				71245BA41B1F0678005EC031 /* libHistPainter_rdict.pcm */,
+				71245BA51B1F0678005EC031 /* libHtml.rootmap */,
+				71245BA61B1F0678005EC031 /* libHtml.so */,
+				71245BA71B1F0678005EC031 /* libHtml_rdict.pcm */,
+				71245BA81B1F0678005EC031 /* libKrb5Auth.rootmap */,
+				71245BA91B1F0678005EC031 /* libKrb5Auth.so */,
+				71245BAA1B1F0678005EC031 /* libKrb5Auth_rdict.pcm */,
+				71245BAB1B1F0678005EC031 /* liblistDict.rootmap */,
+				71245BAC1B1F0678005EC031 /* liblistDict.so */,
+				71245BAD1B1F0678005EC031 /* liblzma.a */,
+				71245BAE1B1F0678005EC031 /* libmap2Dict.rootmap */,
+				71245BAF1B1F0678005EC031 /* libmap2Dict.so */,
+				71245BB01B1F0678005EC031 /* libmapDict.rootmap */,
+				71245BB11B1F0678005EC031 /* libmapDict.so */,
+				71245BB21B1F0678005EC031 /* libMathCore.rootmap */,
+				71245BB31B1F0678005EC031 /* libMathCore.so */,
+				71245BB41B1F0678005EC031 /* libMathCore_rdict.pcm */,
+				71245BB51B1F0678005EC031 /* libmathtext.a */,
+				71245BB61B1F0678005EC031 /* libMatrix.rootmap */,
+				71245BB71B1F0678005EC031 /* libMatrix.so */,
+				71245BB81B1F0678005EC031 /* libMatrix_rdict.pcm */,
+				71245BB91B1F0678005EC031 /* libMemStat.rootmap */,
+				71245BBA1B1F0678005EC031 /* libMemStat.so */,
+				71245BBB1B1F0678005EC031 /* libMemStat_rdict.pcm */,
+				71245BBC1B1F0678005EC031 /* libminicern.so */,
+				71245BBD1B1F0678005EC031 /* libMinuit.rootmap */,
+				71245BBE1B1F0679005EC031 /* libMinuit.so */,
+				71245BBF1B1F0679005EC031 /* libMinuit_rdict.pcm */,
+				71245BC01B1F0679005EC031 /* libMLP.rootmap */,
+				71245BC11B1F0679005EC031 /* libMLP.so */,
+				71245BC21B1F0679005EC031 /* libMLP_rdict.pcm */,
+				71245BC31B1F0679005EC031 /* libmultimap2Dict.rootmap */,
+				71245BC41B1F0679005EC031 /* libmultimap2Dict.so */,
+				71245BC51B1F0679005EC031 /* libmultimapDict.rootmap */,
+				71245BC61B1F0679005EC031 /* libmultimapDict.so */,
+				71245BC71B1F0679005EC031 /* libmultisetDict.rootmap */,
+				71245BC81B1F0679005EC031 /* libmultisetDict.so */,
+				71245BC91B1F0679005EC031 /* libNet.rootmap */,
+				71245BCA1B1F0679005EC031 /* libNet.so */,
+				71245BCB1B1F0679005EC031 /* libNet_rdict.pcm */,
+				71245BCC1B1F0679005EC031 /* libNew.so */,
+				71245BCD1B1F0679005EC031 /* libpcre.a */,
+				71245BCE1B1F0679005EC031 /* libPhysics.rootmap */,
+				71245BCF1B1F0679005EC031 /* libPhysics.so */,
+				71245BD01B1F0679005EC031 /* libPhysics_rdict.pcm */,
+				71245BD11B1F0679005EC031 /* libPostscript.rootmap */,
+				71245BD21B1F0679005EC031 /* libPostscript.so */,
+				71245BD31B1F0679005EC031 /* libPostscript_rdict.pcm */,
+				71245BD41B1F0679005EC031 /* libProof.rootmap */,
+				71245BD51B1F0679005EC031 /* libProof.so */,
+				71245BD61B1F0679005EC031 /* libProof_rdict.pcm */,
+				71245BD71B1F0679005EC031 /* libProofBench.rootmap */,
+				71245BD81B1F0679005EC031 /* libProofBench.so */,
+				71245BD91B1F0679005EC031 /* libProofBench_rdict.pcm */,
+				71245BDA1B1F0679005EC031 /* libProofDraw.rootmap */,
+				71245BDB1B1F0679005EC031 /* libProofDraw.so */,
+				71245BDC1B1F0679005EC031 /* libProofDraw_rdict.pcm */,
+				71245BDD1B1F0679005EC031 /* libProofPlayer.rootmap */,
+				71245BDE1B1F0679005EC031 /* libProofPlayer.so */,
+				71245BDF1B1F0679005EC031 /* libProofPlayer_rdict.pcm */,
+				71245BE01B1F0679005EC031 /* libPyROOT.rootmap */,
+				71245BE11B1F0679005EC031 /* libPyROOT.so */,
+				71245BE21B1F0679005EC031 /* libPyROOT_rdict.pcm */,
+				71245BE31B1F0679005EC031 /* libQuadp.rootmap */,
+				71245BE41B1F0679005EC031 /* libQuadp.so */,
+				71245BE51B1F0679005EC031 /* libQuadp_rdict.pcm */,
+				71245BE61B1F0679005EC031 /* libRecorder.rootmap */,
+				71245BE71B1F0679005EC031 /* libRecorder.so */,
+				71245BE81B1F0679005EC031 /* libRecorder_rdict.pcm */,
+				71245BE91B1F0679005EC031 /* libRGL.rootmap */,
+				71245BEA1B1F0679005EC031 /* libRGL.so */,
+				71245BEB1B1F0679005EC031 /* libRGL_rdict.pcm */,
+				71245BEC1B1F0679005EC031 /* libRint.rootmap */,
+				71245BED1B1F0679005EC031 /* libRint.so */,
+				71245BEE1B1F0679005EC031 /* libRint_rdict.pcm */,
+				71245BEF1B1F0679005EC031 /* libRIO.rootmap */,
+				71245BF01B1F0679005EC031 /* libRIO.so */,
+				71245BF11B1F0679005EC031 /* libRIO_rdict.pcm */,
+				71245BF21B1F0679005EC031 /* libRLDAP.rootmap */,
+				71245BF31B1F0679005EC031 /* libRLDAP.so */,
+				71245BF41B1F0679005EC031 /* libRLDAP_rdict.pcm */,
+				71245BF51B1F0679005EC031 /* libRootAuth.rootmap */,
+				71245BF61B1F0679005EC031 /* libRootAuth.so */,
+				71245BF71B1F0679005EC031 /* libRootAuth_rdict.pcm */,
+				71245BF81B1F0679005EC031 /* libRSQLite.rootmap */,
+				71245BF91B1F0679005EC031 /* libRSQLite.so */,
+				71245BFA1B1F0679005EC031 /* libRSQLite_rdict.pcm */,
+				71245BFB1B1F0679005EC031 /* libSessionViewer.rootmap */,
+				71245BFC1B1F0679005EC031 /* libSessionViewer.so */,
+				71245BFD1B1F0679005EC031 /* libSessionViewer_rdict.pcm */,
+				71245BFE1B1F0679005EC031 /* libsetDict.rootmap */,
+				71245BFF1B1F0679005EC031 /* libsetDict.so */,
+				71245C001B1F0679005EC031 /* libSmatrix.rootmap */,
+				71245C011B1F0679005EC031 /* libSmatrix.so */,
+				71245C021B1F0679005EC031 /* libSmatrix32.rootmap */,
+				71245C031B1F0679005EC031 /* libSmatrix_G__Smatrix32_rdict.pcm */,
+				71245C041B1F0679005EC031 /* libSmatrix_rdict.pcm */,
+				71245C051B1F0679005EC031 /* libSpectrum.rootmap */,
+				71245C061B1F0679005EC031 /* libSpectrum.so */,
+				71245C071B1F0679005EC031 /* libSpectrum_rdict.pcm */,
+				71245C081B1F0679005EC031 /* libSpectrumPainter.rootmap */,
+				71245C091B1F0679005EC031 /* libSpectrumPainter.so */,
+				71245C0A1B1F0679005EC031 /* libSpectrumPainter_rdict.pcm */,
+				71245C0B1B1F0679005EC031 /* libSPlot.rootmap */,
+				71245C0C1B1F0679005EC031 /* libSPlot.so */,
+				71245C0D1B1F0679005EC031 /* libSPlot_rdict.pcm */,
+				71245C0E1B1F0679005EC031 /* libSQLIO.rootmap */,
+				71245C0F1B1F0679005EC031 /* libSQLIO.so */,
+				71245C101B1F0679005EC031 /* libSQLIO_rdict.pcm */,
+				71245C111B1F0679005EC031 /* libSrvAuth.so */,
+				71245C121B1F0679005EC031 /* libThread.rootmap */,
+				71245C131B1F0679005EC031 /* libThread.so */,
+				71245C141B1F0679005EC031 /* libThread_rdict.pcm */,
+				71245C151B1F0679005EC031 /* libTMVA.rootmap */,
+				71245C161B1F0679005EC031 /* libTMVA.so */,
+				71245C171B1F0679005EC031 /* libTMVA_rdict.pcm */,
+				71245C181B1F0679005EC031 /* libTree.rootmap */,
+				71245C191B1F0679005EC031 /* libTree.so */,
+				71245C1A1B1F0679005EC031 /* libTree_rdict.pcm */,
+				71245C1B1B1F0679005EC031 /* libTreePlayer.rootmap */,
+				71245C1C1B1F0679005EC031 /* libTreePlayer.so */,
+				71245C1D1B1F0679005EC031 /* libTreePlayer_rdict.pcm */,
+				71245C1E1B1F0679005EC031 /* libTreeViewer.rootmap */,
+				71245C1F1B1F0679005EC031 /* libTreeViewer.so */,
+				71245C201B1F0679005EC031 /* libTreeViewer_rdict.pcm */,
+				71245C211B1F0679005EC031 /* libvalarrayDict.rootmap */,
+				71245C221B1F0679005EC031 /* libvalarrayDict.so */,
+				71245C231B1F0679005EC031 /* libvectorDict.rootmap */,
+				71245C241B1F0679005EC031 /* libvectorDict.so */,
+				71245C251B1F0679005EC031 /* libVMC.rootmap */,
+				71245C261B1F0679005EC031 /* libVMC.so */,
+				71245C271B1F0679005EC031 /* libVMC_rdict.pcm */,
+				71245C281B1F0679005EC031 /* libXMLIO.rootmap */,
+				71245C291B1F0679005EC031 /* libXMLIO.so */,
+				71245C2A1B1F0679005EC031 /* libXMLIO_rdict.pcm */,
+				71245C2B1B1F0679005EC031 /* libXMLParser.rootmap */,
+				71245C2C1B1F0679005EC031 /* libXMLParser.so */,
+				71245C2D1B1F0679005EC031 /* libXMLParser_rdict.pcm */,
+				71245C2E1B1F0679005EC031 /* ROOT.py */,
+				71245C2F1B1F0679005EC031 /* ROOT.pyc */,
+				71245C301B1F0679005EC031 /* ROOT.pyo */,
+			);
+			name = lib;
+			path = "../../../../root-6.02.05/lib";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		71245B221B1F01FC005EC031 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		71245B231B1F01FC005EC031 /* SCT_plots */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71245B281B1F01FC005EC031 /* Build configuration list for PBXNativeTarget "SCT_plots" */;
+			buildPhases = (
+				71245B201B1F01FC005EC031 /* Sources */,
+				71245B211B1F01FC005EC031 /* Frameworks */,
+				71245B221B1F01FC005EC031 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SCT_plots;
+			productName = SCT_plots;
+			productReference = 71245B241B1F01FC005EC031 /* libSCT_plots.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		71245B1C1B1F01FC005EC031 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "Lucrezia Stella Bruni";
+				TargetAttributes = {
+					71245B231B1F01FC005EC031 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+				};
+			};
+			buildConfigurationList = 71245B1F1B1F01FC005EC031 /* Build configuration list for PBXProject "SCT_plots" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				English,
+			);
+			mainGroup = 71245B1B1B1F01FC005EC031;
+			productRefGroup = 71245B251B1F01FC005EC031 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				71245B231B1F01FC005EC031 /* SCT_plots */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		71245B201B1F01FC005EC031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71245B3F1B1F021D005EC031 /* sct_global.cc in Sources */,
+				71245B3A1B1F021D005EC031 /* s_plot_defs.cc in Sources */,
+				71245B451B1F0552005EC031 /* SCT_dict.cxx in Sources */,
+				71245B411B1F021D005EC031 /* treeCollection.cc in Sources */,
+				71245B3D1B1F021D005EC031 /* s_treeCollection.cc in Sources */,
+				71245B3C1B1F021D005EC031 /* s_static_defs.cc in Sources */,
+				71245B3E1B1F021D005EC031 /* sct_event_buffer.cc in Sources */,
+				71245B381B1F021D005EC031 /* s_plane_collection.cc in Sources */,
+				71245B3B1B1F021D005EC031 /* s_plots.cc in Sources */,
+				71245B401B1F021D005EC031 /* sct_plots.cc in Sources */,
+				71245B391B1F021D005EC031 /* S_plot_collection.cc in Sources */,
+				71245B371B1F021D005EC031 /* s_plane.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		71245B261B1F01FC005EC031 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		71245B271B1F01FC005EC031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		71245B291B1F01FC005EC031 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/inc,
+					"/Users/lucreziastellabruni/root-6.02.05/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/lucreziastellabruni/root-6.02.05/lib/",
+					"/Users/lucreziastellabruni/root-6.02.05/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		71245B2A1B1F01FC005EC031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/inc,
+					"/Users/lucreziastellabruni/root-6.02.05/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/lucreziastellabruni/root-6.02.05/lib/",
+					"/Users/lucreziastellabruni/root-6.02.05/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		71245B1F1B1F01FC005EC031 /* Build configuration list for PBXProject "SCT_plots" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71245B261B1F01FC005EC031 /* Debug */,
+				71245B271B1F01FC005EC031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		71245B281B1F01FC005EC031 /* Build configuration list for PBXNativeTarget "SCT_plots" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71245B291B1F01FC005EC031 /* Debug */,
+				71245B2A1B1F01FC005EC031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 71245B1C1B1F01FC005EC031 /* Project object */;
+}

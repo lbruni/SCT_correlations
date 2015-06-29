@@ -24,45 +24,42 @@ namespace sct_corr{
     
   }
 
-  void plot2d::fill()
+  bool plot2d::fill()
   {
-    m_x_points.clear();
-    m_y_points.clear();
-    m_id.clear();
+    m_outputEvent.reset();
 
 
     ProcessEvent();
 
     m_outTree->fill();
     ++m_current;
+    return true;
   }
 
   void plot2d::pushHit(Double_t x, Double_t y)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(0);
+    
+    pushHit(x, y, 0);
   }
 
   void plot2d::pushHit(Double_t x, Double_t y, Double_t ID)
   {
-    m_x_points.push_back(x);
-    m_y_points.push_back(y);
-    m_id.push_back(ID);
+    m_outputEvent.push_Hit(x, y, ID);
   }
 
   bool plot2d::isReady()
   {
     if (m_x &&m_y)
     {
-      m_outTree = std::make_shared<treeCollection_ouput>(getName(), &m_x_points, &m_y_points, &m_id, &m_current, getSave2disk());
+      m_outputEvent = rootEvent_X_Y_hits(getName());
+      m_outTree = std::make_shared<treeCollection_ouput>( m_outputEvent, getSave2disk());
       return true;
     }
 
     return false;
   }
 
-  void plot2d::pushAxis(axis_ref* axis)
+  void plot2d::pushAxis(const axis_ref* axis)
   {
     if (!m_x)
     {
@@ -84,8 +81,8 @@ namespace sct_corr{
   {
     if (!m_x&&!m_y)
     {
-      m_x = plane_->getX();
-      m_y = plane_->getY();
+      m_x = plane_->getPlane()->getAxis(x_axis_def);
+      m_y = plane_->getPlane()->getAxis(y_axis_def);
       return;
     }
     std::cout << "[plot2d::pushPlane(S_plane* plane)] only one plane is supported \n";

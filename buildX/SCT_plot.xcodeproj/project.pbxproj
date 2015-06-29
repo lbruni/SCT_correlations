@@ -1,0 +1,1222 @@
+// !$*UTF8*$!
+{
+       archiveVersion = 1;
+       classes = {
+       };
+       objectVersion = 46;
+       objects = {
+
+/* Begin PBXAggregateTarget section */
+              FFE501D32D3C4B89A1489BDB /* ALL_BUILD */ = {
+                     isa = PBXAggregateTarget;
+                     buildConfigurationList = 651F36090BBE4796ABFE5874 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+                     buildPhases = (
+                            5BA907C180224A0984827A61 /* CMake Rules */,
+                     );
+                     dependencies = (
+                            2FC71FC376A14B25B529A6BA /* PBXTargetDependency */,
+                            478C3E9D257D49229F77E038 /* PBXTargetDependency */,
+                            276B29F20889494F856DBAE3 /* PBXTargetDependency */,
+                     );
+                     name = ALL_BUILD;
+                     productName = ALL_BUILD;
+              };
+              71F96A90C2A841389386DE9E /* ZERO_CHECK */ = {
+                     isa = PBXAggregateTarget;
+                     buildConfigurationList = 84C103D20B394E80A1AA5C82 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+                     buildPhases = (
+                            F47E62AAACF748BC981D336E /* CMake Rules */,
+                     );
+                     dependencies = (
+                     );
+                     name = ZERO_CHECK;
+                     productName = ZERO_CHECK;
+              };
+              650762FD7C0D4E32881ED7AC /* install */ = {
+                     isa = PBXAggregateTarget;
+                     buildConfigurationList = AA221BD50EEF49B789FE0EE5 /* Build configuration list for PBXAggregateTarget "install" */;
+                     buildPhases = (
+                            DC5080B5C26847978849EC01 /* CMake PostBuild Rules */,
+                     );
+                     dependencies = (
+                            65438EC97C8E464AA8331D80 /* PBXTargetDependency */,
+                     );
+                     name = install;
+                     productName = install;
+              };
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+EDE7B0822BF4464483C31F23 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx */ = {isa = PBXBuildFile; fileRef = A50386207B8042F0ACFBD318 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx */; settings = { COMPILER_FLAGS = ""; }; };
+82D5C1196C59466D8627BA23 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx.rule */ = {isa = PBXBuildFile; fileRef = 7F69AF943AB44E5C9FCD591E /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx.rule */; settings = { COMPILER_FLAGS = ""; }; };
+64B38CF99EB3438D8D3AD215 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = E9C6D20CF55D40FD845685E8 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/CMakeLists.txt */; settings = { COMPILER_FLAGS = ""; }; };
+3F3E3000CA3E46888CE46F47 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/S_plot_collection.cc */ = {isa = PBXBuildFile; fileRef = 928F8FD6E4B343C2B3CAADB2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/S_plot_collection.cc */; settings = { COMPILER_FLAGS = ""; }; };
+05D49BD3719B474CBADDE691 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/PLaneVsPlane_plots.cc */ = {isa = PBXBuildFile; fileRef = E17B3FCBC2C44738829F87E5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/PLaneVsPlane_plots.cc */; settings = { COMPILER_FLAGS = ""; }; };
+2C7500AF6CFC42B4BF4A0318 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/ProjectOnPixel.cc */ = {isa = PBXBuildFile; fileRef = 3BCE5F6C928B406095518503 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/ProjectOnPixel.cc */; settings = { COMPILER_FLAGS = ""; }; };
+C20A47B9472C400486C64D7E /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/clusterSize.cc */ = {isa = PBXBuildFile; fileRef = 3774FF0E486B437B8554DAA5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/clusterSize.cc */; settings = { COMPILER_FLAGS = ""; }; };
+364F671F038649ED9F379B97 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/coordinate_transform.cc */ = {isa = PBXBuildFile; fileRef = 1470E96A656C44C1AD920BCA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/coordinate_transform.cc */; settings = { COMPILER_FLAGS = ""; }; };
+F2819043F2AA402891D20078 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/correlations.cc */ = {isa = PBXBuildFile; fileRef = 508444895CAF4AB39C26ADFC /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/correlations.cc */; settings = { COMPILER_FLAGS = ""; }; };
+028E3D588D2245689F9D1940 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/event_size.cc */ = {isa = PBXBuildFile; fileRef = 02F161A2D2954D25A0C36E96 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/event_size.cc */; settings = { COMPILER_FLAGS = ""; }; };
+C81B4D55864C4CB3B2717BB2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_coressponding.cc */ = {isa = PBXBuildFile; fileRef = 2158D675BBA94657B6033DE7 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_coressponding.cc */; settings = { COMPILER_FLAGS = ""; }; };
+312B8B642AD54EDCAD98B14D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest _strip.cc */ = {isa = PBXBuildFile; fileRef = 593CACDEC5C445558A57AE60 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest _strip.cc */; settings = { COMPILER_FLAGS = ""; }; };
+8146B54CA6444023B06FBC88 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest.cc */ = {isa = PBXBuildFile; fileRef = F2CFD66813864A50BF71F654 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest.cc */; settings = { COMPILER_FLAGS = ""; }; };
+696842716A8C481E94FA3CE0 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitMultiplizity.cc */ = {isa = PBXBuildFile; fileRef = C21D4A99AD064FD5A9F68ECE /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitMultiplizity.cc */; settings = { COMPILER_FLAGS = ""; }; };
+37CBF205001A49EFB0C6BC59 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitmap.cc */ = {isa = PBXBuildFile; fileRef = 3BFC1A51A4CC42238BDAE2EA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitmap.cc */; settings = { COMPILER_FLAGS = ""; }; };
+F8333D3B52BB4627A22F1487 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plane.cc */ = {isa = PBXBuildFile; fileRef = 95AA266ED6BD471F94F15FEA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plane.cc */; settings = { COMPILER_FLAGS = ""; }; };
+641D0478E77343A186466D7A /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot2d.cc */ = {isa = PBXBuildFile; fileRef = 9A6B7CFB8072485083116723 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot2d.cc */; settings = { COMPILER_FLAGS = ""; }; };
+EC01D833028A4A1D88A148B3 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_a_if_b_has_a_hit.cc */ = {isa = PBXBuildFile; fileRef = 70F61AA5967D405398A8F118 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_a_if_b_has_a_hit.cc */; settings = { COMPILER_FLAGS = ""; }; };
+FACD422D804540BDA3F48C29 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_corr2d.cc */ = {isa = PBXBuildFile; fileRef = C0C54D71151B4867AA132E49 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_corr2d.cc */; settings = { COMPILER_FLAGS = ""; }; };
+D8127C632EFD436BAC1E680C /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_hit2d.cc */ = {isa = PBXBuildFile; fileRef = EF862903D479471E99FDEA5F /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_hit2d.cc */; settings = { COMPILER_FLAGS = ""; }; };
+B05076F1C6784ABC831D2DA2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plotsBase.cc */ = {isa = PBXBuildFile; fileRef = 72548F95BE5D42B6AA837964 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plotsBase.cc */; settings = { COMPILER_FLAGS = ""; }; };
+E3DF2E9596FA4A358DBD2B50 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/residual.cc */ = {isa = PBXBuildFile; fileRef = A6B0C0A8D9624AACB60B029D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/residual.cc */; settings = { COMPILER_FLAGS = ""; }; };
+C54A599273274D7898A449BB /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/rotated_plane.cc */ = {isa = PBXBuildFile; fileRef = A0ABF05AFABB40A1821C0BAE /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/rotated_plane.cc */; settings = { COMPILER_FLAGS = ""; }; };
+3881E16B8EE44359B2C23438 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane.cc */ = {isa = PBXBuildFile; fileRef = 174DE2726CAA45379C76B6F5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane.cc */; settings = { COMPILER_FLAGS = ""; }; };
+DBE435F12D3148EC89B451FD /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane_collection.cc */ = {isa = PBXBuildFile; fileRef = 0FE7DAA8398E408B868DC0C7 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane_collection.cc */; settings = { COMPILER_FLAGS = ""; }; };
+30EE955B39CB4477A8DAD494 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plot_defs.cc */ = {isa = PBXBuildFile; fileRef = B01E39A8958A401CBD138882 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plot_defs.cc */; settings = { COMPILER_FLAGS = ""; }; };
+84927292ABFD494881770627 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plots.cc */ = {isa = PBXBuildFile; fileRef = 615099709C784F309FB9A4B4 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plots.cc */; settings = { COMPILER_FLAGS = ""; }; };
+F818A98AF35A444DBA66F638 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_static_defs.cc */ = {isa = PBXBuildFile; fileRef = 2B2EF3EA43404E5795EEDD95 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_static_defs.cc */; settings = { COMPILER_FLAGS = ""; }; };
+47A148E22FEB48C0B7A4E202 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_treeCollection.cc */ = {isa = PBXBuildFile; fileRef = 05C51D6698D6430BA0458435 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_treeCollection.cc */; settings = { COMPILER_FLAGS = ""; }; };
+F2B55BEF59BF4A44AAF6CB09 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_event_buffer.cc */ = {isa = PBXBuildFile; fileRef = 2C8C4D9591AA4E569BA04B8A /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_event_buffer.cc */; settings = { COMPILER_FLAGS = ""; }; };
+1A27E30E6DA1491EBBF9F9A8 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_global.cc */ = {isa = PBXBuildFile; fileRef = DEBAF78E10E04FD0A00E0933 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_global.cc */; settings = { COMPILER_FLAGS = ""; }; };
+98D449C3D8D7412F9D4637A6 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_plots.cc */ = {isa = PBXBuildFile; fileRef = 7E437F3795E0446F9EAFB34D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_plots.cc */; settings = { COMPILER_FLAGS = ""; }; };
+A6CC568E954143D09907A450 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/treeCollection.cc */ = {isa = PBXBuildFile; fileRef = 0F64AD2B43B445D2BED56E59 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/treeCollection.cc */; settings = { COMPILER_FLAGS = ""; }; };
+E61D6159ABE24A8B8807B9C8 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = F06A0CD7DB39470AAAEC6D34 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/CMakeLists.txt */; settings = { COMPILER_FLAGS = ""; }; };
+52F2E66B3B2F4E82B3CA68D4 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/main.cxx */ = {isa = PBXBuildFile; fileRef = 1ED5E08C81E84E778F48521C /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/main.cxx */; settings = { COMPILER_FLAGS = ""; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+              25BF2FF2176A4315A9EF371D /*  */ = {
+                     isa = PBXBuildStyle;
+              };
+              66FE13FBB0EE4F38816F51A9 /* Debug */ = {
+                     isa = PBXBuildStyle;
+                     buildSettings = {
+                            COPY_PHASE_STRIP = NO;
+                     };
+                     name = Debug;
+              };
+              95CC6390BBDE497EB246206E /* Release */ = {
+                     isa = PBXBuildStyle;
+                     buildSettings = {
+                            COPY_PHASE_STRIP = NO;
+                     };
+                     name = Release;
+              };
+              FE496FC841F04E9AA7054919 /* MinSizeRel */ = {
+                     isa = PBXBuildStyle;
+                     buildSettings = {
+                            COPY_PHASE_STRIP = NO;
+                     };
+                     name = MinSizeRel;
+              };
+              D8C2E5DC2B57402DB9B95262 /* RelWithDebInfo */ = {
+                     isa = PBXBuildStyle;
+                     buildSettings = {
+                            COPY_PHASE_STRIP = NO;
+                     };
+                     name = RelWithDebInfo;
+              };
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+              CFAC713CD77C4267BAD973E6 /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = 71F96A90C2A841389386DE9E;
+                     remoteInfo = ZERO_CHECK;
+              };
+              8CE356DD4F764B8D86F06E40 /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = 54C07FA3F7614A3FBC050F75;
+                     remoteInfo = SCT_plot;
+              };
+              21EBD1902C554087A565BB66 /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = 688A2EF5C01E4E958676D67E;
+                     remoteInfo = main;
+              };
+              B56576FBCFF547F792B20F6D /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = FFE501D32D3C4B89A1489BDB;
+                     remoteInfo = ALL_BUILD;
+              };
+              D40E9C65546046ABBD2F5C4F /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = 71F96A90C2A841389386DE9E;
+                     remoteInfo = ZERO_CHECK;
+              };
+              AD39C5CD7A39497089A4094D /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = 71F96A90C2A841389386DE9E;
+                     remoteInfo = ZERO_CHECK;
+              };
+              45D9F26239124B23823E657B /* PBXContainerItemProxy */ = {
+                     isa = PBXContainerItemProxy;
+                     containerPortal = 51F31F8CD2684E86A1F1C898 /* Project object */;
+                     proxyType = 1;
+                     remoteGlobalIDString = 54C07FA3F7614A3FBC050F75;
+                     remoteInfo = SCT_plot;
+              };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+7A2CEB9A355941B4B358B325 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = "sourcecode.text"; fileEncoding = 4; name = "CMakeLists.txt"; path = "CMakeLists.txt"; sourceTree = SOURCE_ROOT; };
+C51465C3FBA94297A525B7B9 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = "sourcecode.text"; fileEncoding = 4; name = "CMakeLists.txt"; path = "CMakeLists.txt"; sourceTree = SOURCE_ROOT; };
+A50386207B8042F0ACFBD318 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "SCT_plotsDict.cxx"; path = "buildX/sct_plot/SCT_plotsDict.cxx"; sourceTree = SOURCE_ROOT; };
+7F69AF943AB44E5C9FCD591E /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx.rule */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = "SCT_plotsDict.cxx.rule"; path = "buildX/sct_plot/SCT_plotsDict.cxx.rule"; sourceTree = SOURCE_ROOT; };
+E9C6D20CF55D40FD845685E8 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = "sourcecode.text"; fileEncoding = 4; name = "CMakeLists.txt"; path = "sct_plot/CMakeLists.txt"; sourceTree = SOURCE_ROOT; };
+928F8FD6E4B343C2B3CAADB2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/S_plot_collection.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "S_plot_collection.cc"; path = "sct_plot/src/S_plot_collection.cc"; sourceTree = SOURCE_ROOT; };
+E17B3FCBC2C44738829F87E5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/PLaneVsPlane_plots.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "PLaneVsPlane_plots.cc"; path = "sct_plot/src/internal/PLaneVsPlane_plots.cc"; sourceTree = SOURCE_ROOT; };
+3BCE5F6C928B406095518503 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/ProjectOnPixel.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "ProjectOnPixel.cc"; path = "sct_plot/src/internal/ProjectOnPixel.cc"; sourceTree = SOURCE_ROOT; };
+3774FF0E486B437B8554DAA5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/clusterSize.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "clusterSize.cc"; path = "sct_plot/src/internal/clusterSize.cc"; sourceTree = SOURCE_ROOT; };
+1470E96A656C44C1AD920BCA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/coordinate_transform.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "coordinate_transform.cc"; path = "sct_plot/src/internal/coordinate_transform.cc"; sourceTree = SOURCE_ROOT; };
+508444895CAF4AB39C26ADFC /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/correlations.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "correlations.cc"; path = "sct_plot/src/internal/correlations.cc"; sourceTree = SOURCE_ROOT; };
+02F161A2D2954D25A0C36E96 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/event_size.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "event_size.cc"; path = "sct_plot/src/internal/event_size.cc"; sourceTree = SOURCE_ROOT; };
+2158D675BBA94657B6033DE7 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_coressponding.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "find_coressponding.cc"; path = "sct_plot/src/internal/find_coressponding.cc"; sourceTree = SOURCE_ROOT; };
+593CACDEC5C445558A57AE60 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest _strip.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "find_nearest _strip.cc"; path = "sct_plot/src/internal/find_nearest _strip.cc"; sourceTree = SOURCE_ROOT; };
+F2CFD66813864A50BF71F654 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "find_nearest.cc"; path = "sct_plot/src/internal/find_nearest.cc"; sourceTree = SOURCE_ROOT; };
+C21D4A99AD064FD5A9F68ECE /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitMultiplizity.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "hitMultiplizity.cc"; path = "sct_plot/src/internal/hitMultiplizity.cc"; sourceTree = SOURCE_ROOT; };
+3BFC1A51A4CC42238BDAE2EA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitmap.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "hitmap.cc"; path = "sct_plot/src/internal/hitmap.cc"; sourceTree = SOURCE_ROOT; };
+95AA266ED6BD471F94F15FEA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plane.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "plane.cc"; path = "sct_plot/src/internal/plane.cc"; sourceTree = SOURCE_ROOT; };
+9A6B7CFB8072485083116723 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot2d.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "plot2d.cc"; path = "sct_plot/src/internal/plot2d.cc"; sourceTree = SOURCE_ROOT; };
+70F61AA5967D405398A8F118 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_a_if_b_has_a_hit.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "plot_a_if_b_has_a_hit.cc"; path = "sct_plot/src/internal/plot_a_if_b_has_a_hit.cc"; sourceTree = SOURCE_ROOT; };
+C0C54D71151B4867AA132E49 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_corr2d.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "plot_corr2d.cc"; path = "sct_plot/src/internal/plot_corr2d.cc"; sourceTree = SOURCE_ROOT; };
+EF862903D479471E99FDEA5F /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_hit2d.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "plot_hit2d.cc"; path = "sct_plot/src/internal/plot_hit2d.cc"; sourceTree = SOURCE_ROOT; };
+72548F95BE5D42B6AA837964 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plotsBase.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "plotsBase.cc"; path = "sct_plot/src/internal/plotsBase.cc"; sourceTree = SOURCE_ROOT; };
+A6B0C0A8D9624AACB60B029D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/residual.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "residual.cc"; path = "sct_plot/src/internal/residual.cc"; sourceTree = SOURCE_ROOT; };
+A0ABF05AFABB40A1821C0BAE /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/rotated_plane.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "rotated_plane.cc"; path = "sct_plot/src/internal/rotated_plane.cc"; sourceTree = SOURCE_ROOT; };
+174DE2726CAA45379C76B6F5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "s_plane.cc"; path = "sct_plot/src/s_plane.cc"; sourceTree = SOURCE_ROOT; };
+0FE7DAA8398E408B868DC0C7 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane_collection.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "s_plane_collection.cc"; path = "sct_plot/src/s_plane_collection.cc"; sourceTree = SOURCE_ROOT; };
+B01E39A8958A401CBD138882 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plot_defs.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "s_plot_defs.cc"; path = "sct_plot/src/s_plot_defs.cc"; sourceTree = SOURCE_ROOT; };
+615099709C784F309FB9A4B4 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plots.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "s_plots.cc"; path = "sct_plot/src/s_plots.cc"; sourceTree = SOURCE_ROOT; };
+2B2EF3EA43404E5795EEDD95 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_static_defs.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "s_static_defs.cc"; path = "sct_plot/src/s_static_defs.cc"; sourceTree = SOURCE_ROOT; };
+05C51D6698D6430BA0458435 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_treeCollection.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "s_treeCollection.cc"; path = "sct_plot/src/s_treeCollection.cc"; sourceTree = SOURCE_ROOT; };
+2C8C4D9591AA4E569BA04B8A /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_event_buffer.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "sct_event_buffer.cc"; path = "sct_plot/src/sct_event_buffer.cc"; sourceTree = SOURCE_ROOT; };
+DEBAF78E10E04FD0A00E0933 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_global.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "sct_global.cc"; path = "sct_plot/src/sct_global.cc"; sourceTree = SOURCE_ROOT; };
+7E437F3795E0446F9EAFB34D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_plots.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "sct_plots.cc"; path = "sct_plot/src/sct_plots.cc"; sourceTree = SOURCE_ROOT; };
+0F64AD2B43B445D2BED56E59 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/treeCollection.cc */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "treeCollection.cc"; path = "sct_plot/src/treeCollection.cc"; sourceTree = SOURCE_ROOT; };
+06CCEFC0E9814320B8A74CFC /* SCT_plot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = "libSCT_plot.dylib"; refType = 0; sourceTree = BUILT_PRODUCTS_DIR; };
+F06A0CD7DB39470AAAEC6D34 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = "sourcecode.text"; fileEncoding = 4; name = "CMakeLists.txt"; path = "main/CMakeLists.txt"; sourceTree = SOURCE_ROOT; };
+1ED5E08C81E84E778F48521C /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/main.cxx */ = {isa = PBXFileReference; explicitFileType = "sourcecode.cpp.cpp"; fileEncoding = 4; name = "main.cxx"; path = "main/main.cxx"; sourceTree = SOURCE_ROOT; };
+3A9069E2667441D68949DAC0 /* main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = main; refType = 0; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+              B1718143A0404C0F9AECD641  = {
+                     isa = PBXGroup;
+                     children = (
+                            E19B749581E248F79D048683 /* Sources */,
+                            89D7C7D1B03D4FC0B265BAC1 /* Resources */,
+                            079D9D7BDB2C4E7EA4E625F0 /* Products */,
+                     );
+                     sourceTree = "<group>";
+              };
+              E19B749581E248F79D048683 /* Sources */ = {
+                     isa = PBXGroup;
+                     children = (
+                            546C08E4708F42518B797FCE /* ALL_BUILD */,
+                            5BB02033215B4E25A6402EF7 /* ZERO_CHECK */,
+                            4D74701685444729AFBCAC80 /* SCT_plot */,
+                            ADF0B2895A5748EEAC5DE843 /* main */,
+                     );
+                     name = Sources;
+                     sourceTree = "<group>";
+              };
+              89D7C7D1B03D4FC0B265BAC1 /* Resources */ = {
+                     isa = PBXGroup;
+                     children = (
+                     );
+                     name = Resources;
+                     sourceTree = "<group>";
+              };
+              546C08E4708F42518B797FCE /* ALL_BUILD */ = {
+                     isa = PBXGroup;
+                     children = (
+                            DD0F3E36C4734DBB84519DAE /* CMake Rules */,
+                            7A2CEB9A355941B4B358B325 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/CMakeLists.txt */,
+                     );
+                     name = ALL_BUILD;
+                     sourceTree = "<group>";
+              };
+              DD0F3E36C4734DBB84519DAE /* CMake Rules */ = {
+                     isa = PBXGroup;
+                     children = (
+                     );
+                     name = "CMake Rules";
+                     sourceTree = "<group>";
+              };
+              5BB02033215B4E25A6402EF7 /* ZERO_CHECK */ = {
+                     isa = PBXGroup;
+                     children = (
+                            2DB2E31E81CF4FF9BF726FF9 /* CMake Rules */,
+                            C51465C3FBA94297A525B7B9 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/CMakeLists.txt */,
+                     );
+                     name = ZERO_CHECK;
+                     sourceTree = "<group>";
+              };
+              2DB2E31E81CF4FF9BF726FF9 /* CMake Rules */ = {
+                     isa = PBXGroup;
+                     children = (
+                     );
+                     name = "CMake Rules";
+                     sourceTree = "<group>";
+              };
+              4D74701685444729AFBCAC80 /* SCT_plot */ = {
+                     isa = PBXGroup;
+                     children = (
+                            33B2D25BF4264AFC93B8A732 /* Source Files */,
+                            47E910115E994D7B9A60C3D4 /* internals */,
+                            BE8EE77D93B84483A20672B1 /* CMake Rules */,
+                            E9C6D20CF55D40FD845685E8 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/CMakeLists.txt */,
+                     );
+                     name = SCT_plot;
+                     sourceTree = "<group>";
+              };
+              33B2D25BF4264AFC93B8A732 /* Source Files */ = {
+                     isa = PBXGroup;
+                     children = (
+                            A50386207B8042F0ACFBD318 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx */,
+                            928F8FD6E4B343C2B3CAADB2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/S_plot_collection.cc */,
+                            174DE2726CAA45379C76B6F5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane.cc */,
+                            0FE7DAA8398E408B868DC0C7 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane_collection.cc */,
+                            B01E39A8958A401CBD138882 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plot_defs.cc */,
+                            615099709C784F309FB9A4B4 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plots.cc */,
+                            2B2EF3EA43404E5795EEDD95 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_static_defs.cc */,
+                            05C51D6698D6430BA0458435 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_treeCollection.cc */,
+                            2C8C4D9591AA4E569BA04B8A /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_event_buffer.cc */,
+                            DEBAF78E10E04FD0A00E0933 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_global.cc */,
+                            7E437F3795E0446F9EAFB34D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_plots.cc */,
+                            0F64AD2B43B445D2BED56E59 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/treeCollection.cc */,
+                     );
+                     name = "Source Files";
+                     sourceTree = "<group>";
+              };
+              47E910115E994D7B9A60C3D4 /* internals */ = {
+                     isa = PBXGroup;
+                     children = (
+                            E17B3FCBC2C44738829F87E5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/PLaneVsPlane_plots.cc */,
+                            3BCE5F6C928B406095518503 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/ProjectOnPixel.cc */,
+                            3774FF0E486B437B8554DAA5 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/clusterSize.cc */,
+                            1470E96A656C44C1AD920BCA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/coordinate_transform.cc */,
+                            508444895CAF4AB39C26ADFC /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/correlations.cc */,
+                            02F161A2D2954D25A0C36E96 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/event_size.cc */,
+                            2158D675BBA94657B6033DE7 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_coressponding.cc */,
+                            593CACDEC5C445558A57AE60 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest _strip.cc */,
+                            F2CFD66813864A50BF71F654 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest.cc */,
+                            C21D4A99AD064FD5A9F68ECE /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitMultiplizity.cc */,
+                            3BFC1A51A4CC42238BDAE2EA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitmap.cc */,
+                            95AA266ED6BD471F94F15FEA /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plane.cc */,
+                            9A6B7CFB8072485083116723 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot2d.cc */,
+                            70F61AA5967D405398A8F118 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_a_if_b_has_a_hit.cc */,
+                            C0C54D71151B4867AA132E49 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_corr2d.cc */,
+                            EF862903D479471E99FDEA5F /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_hit2d.cc */,
+                            72548F95BE5D42B6AA837964 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plotsBase.cc */,
+                            A6B0C0A8D9624AACB60B029D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/residual.cc */,
+                            A0ABF05AFABB40A1821C0BAE /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/rotated_plane.cc */,
+                     );
+                     name = internals;
+                     sourceTree = "<group>";
+              };
+              BE8EE77D93B84483A20672B1 /* CMake Rules */ = {
+                     isa = PBXGroup;
+                     children = (
+                            7F69AF943AB44E5C9FCD591E /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx.rule */,
+                     );
+                     name = "CMake Rules";
+                     sourceTree = "<group>";
+              };
+              ADF0B2895A5748EEAC5DE843 /* main */ = {
+                     isa = PBXGroup;
+                     children = (
+                            1BEE37F7F5944FB2AA687F2D /* Source Files */,
+                            F06A0CD7DB39470AAAEC6D34 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/CMakeLists.txt */,
+                     );
+                     name = main;
+                     sourceTree = "<group>";
+              };
+              1BEE37F7F5944FB2AA687F2D /* Source Files */ = {
+                     isa = PBXGroup;
+                     children = (
+                            1ED5E08C81E84E778F48521C /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/main.cxx */,
+                     );
+                     name = "Source Files";
+                     sourceTree = "<group>";
+              };
+              079D9D7BDB2C4E7EA4E625F0 /* Products */ = {
+                     isa = PBXGroup;
+                     children = (
+                            06CCEFC0E9814320B8A74CFC /* SCT_plot */,
+                            3A9069E2667441D68949DAC0 /* main */,
+                     );
+                     name = Products;
+                     sourceTree = "<group>";
+              };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+              54C07FA3F7614A3FBC050F75 /* SCT_plot */ = {
+                     isa = PBXNativeTarget;
+                     buildConfigurationList = E74616E222F64CCF8FCE4E32 /* Build configuration list for PBXNativeTarget "SCT_plot" */;
+                     buildPhases = (
+                            BA74C73E875E489AB2957762 /* CMake Rules */,
+                            71BF7082C55C49928880A964 /* Sources */,
+                            7D2330CB566B4651B731E349 /* CMake PostBuild Rules */,
+                     );
+                     buildRules = (
+                     );
+                     dependencies = (
+                            6354FA9084F54AA68EF5402A /* PBXTargetDependency */,
+                     );
+                     name = SCT_plot;
+                     productName = SCT_plot;
+                     productReference = 06CCEFC0E9814320B8A74CFC /* SCT_plot */;
+                     productType = "com.apple.product-type.library.dynamic";
+              };
+              688A2EF5C01E4E958676D67E /* main */ = {
+                     isa = PBXNativeTarget;
+                     buildConfigurationList = AF2113B049F949918917FDA9 /* Build configuration list for PBXNativeTarget "main" */;
+                     buildPhases = (
+                            F217EF06A595419992C461ED /* Sources */,
+                     );
+                     buildRules = (
+                     );
+                     dependencies = (
+                            C88B43EA55624C0D963FAC41 /* PBXTargetDependency */,
+                            1AD9221E9D1B43C780D8E624 /* PBXTargetDependency */,
+                     );
+                     name = main;
+                     productName = main;
+                     productReference = 3A9069E2667441D68949DAC0 /* main */;
+                     productType = "com.apple.product-type.tool";
+              };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+              51F31F8CD2684E86A1F1C898 /* Project object */ = {
+                     isa = PBXProject;
+                     attributes = {
+                            BuildIndependentTargetsInParallel = YES;
+                     };
+                     buildConfigurationList = CED3E1222130459CBF761CA8 /* Build configuration list for PBXProject  "SCT_plot" */;
+                     buildSettings = {
+                     };
+                     buildStyles = (
+                            66FE13FBB0EE4F38816F51A9 /* Debug */,
+                            95CC6390BBDE497EB246206E /* Release */,
+                            FE496FC841F04E9AA7054919 /* MinSizeRel */,
+                            D8C2E5DC2B57402DB9B95262 /* RelWithDebInfo */,
+                     );
+                     compatibilityVersion = "Xcode 3.2";
+                     hasScannedForEncodings = 0;
+                     mainGroup = B1718143A0404C0F9AECD641;
+                     projectDirPath = "..";
+                     projectRoot = "";
+                     targets = (
+                            FFE501D32D3C4B89A1489BDB /* ALL_BUILD */,
+                            71F96A90C2A841389386DE9E /* ZERO_CHECK */,
+                            650762FD7C0D4E32881ED7AC /* install */,
+                            54C07FA3F7614A3FBC050F75 /* SCT_plot */,
+                            688A2EF5C01E4E958676D67E /* main */,
+                     );
+              };
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+              FCA8D30C9B8A43648A976264 /*  */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     inputPaths = (
+                     );
+                     outputPaths = (
+                     );
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "# shell script goes here
+exit 0";
+                     showEnvVarsInLog = 0;
+              };
+              5BA907C180224A0984827A61 /* CMake Rules */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     name = "CMake Rules";
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "make -C /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX -f /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
+                     showEnvVarsInLog = 0;
+              };
+              311502BC46B84D20A2C8405D /*  */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     inputPaths = (
+                     );
+                     outputPaths = (
+                     );
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "# shell script goes here
+exit 0";
+                     showEnvVarsInLog = 0;
+              };
+              F47E62AAACF748BC981D336E /* CMake Rules */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     name = "CMake Rules";
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "make -C /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX -f /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION all";
+                     showEnvVarsInLog = 0;
+              };
+              B681682BA9714773AFFA3CCC /*  */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     inputPaths = (
+                     );
+                     outputPaths = (
+                     );
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "# shell script goes here
+exit 0";
+                     showEnvVarsInLog = 0;
+              };
+              DC5080B5C26847978849EC01 /* CMake PostBuild Rules */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     name = "CMake PostBuild Rules";
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "make -C /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX -f /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/CMakeScripts/install_postBuildPhase.make$CONFIGURATION all";
+                     showEnvVarsInLog = 0;
+              };
+              BA74C73E875E489AB2957762 /* CMake Rules */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     name = "CMake Rules";
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "make -C /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot -f /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/CMakeScripts/SCT_plot_cmakeRulesBuildPhase.make$CONFIGURATION all";
+                     showEnvVarsInLog = 0;
+              };
+              7D2330CB566B4651B731E349 /* CMake PostBuild Rules */ = {
+                     isa = PBXShellScriptBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                     );
+                     name = "CMake PostBuild Rules";
+                     runOnlyForDeploymentPostprocessing = 0;
+                     shellPath = /bin/sh;
+                     shellScript = "make -C /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot -f /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/CMakeScripts/SCT_plot_postBuildPhase.make$CONFIGURATION all";
+                     showEnvVarsInLog = 0;
+              };
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+              71BF7082C55C49928880A964 /* Sources */ = {
+                     isa = PBXSourcesBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                            EDE7B0822BF4464483C31F23 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/SCT_plotsDict.cxx */,
+                            3F3E3000CA3E46888CE46F47 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/S_plot_collection.cc */,
+                            05D49BD3719B474CBADDE691 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/PLaneVsPlane_plots.cc */,
+                            2C7500AF6CFC42B4BF4A0318 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/ProjectOnPixel.cc */,
+                            C20A47B9472C400486C64D7E /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/clusterSize.cc */,
+                            364F671F038649ED9F379B97 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/coordinate_transform.cc */,
+                            F2819043F2AA402891D20078 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/correlations.cc */,
+                            028E3D588D2245689F9D1940 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/event_size.cc */,
+                            C81B4D55864C4CB3B2717BB2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_coressponding.cc */,
+                            312B8B642AD54EDCAD98B14D /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest _strip.cc */,
+                            8146B54CA6444023B06FBC88 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/find_nearest.cc */,
+                            696842716A8C481E94FA3CE0 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitMultiplizity.cc */,
+                            37CBF205001A49EFB0C6BC59 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/hitmap.cc */,
+                            F8333D3B52BB4627A22F1487 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plane.cc */,
+                            641D0478E77343A186466D7A /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot2d.cc */,
+                            EC01D833028A4A1D88A148B3 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_a_if_b_has_a_hit.cc */,
+                            FACD422D804540BDA3F48C29 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_corr2d.cc */,
+                            D8127C632EFD436BAC1E680C /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plot_hit2d.cc */,
+                            B05076F1C6784ABC831D2DA2 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/plotsBase.cc */,
+                            E3DF2E9596FA4A358DBD2B50 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/residual.cc */,
+                            C54A599273274D7898A449BB /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/internal/rotated_plane.cc */,
+                            3881E16B8EE44359B2C23438 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane.cc */,
+                            DBE435F12D3148EC89B451FD /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plane_collection.cc */,
+                            30EE955B39CB4477A8DAD494 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plot_defs.cc */,
+                            84927292ABFD494881770627 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_plots.cc */,
+                            F818A98AF35A444DBA66F638 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_static_defs.cc */,
+                            47A148E22FEB48C0B7A4E202 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/s_treeCollection.cc */,
+                            F2B55BEF59BF4A44AAF6CB09 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_event_buffer.cc */,
+                            1A27E30E6DA1491EBBF9F9A8 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_global.cc */,
+                            98D449C3D8D7412F9D4637A6 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/sct_plots.cc */,
+                            A6CC568E954143D09907A450 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/sct_plot/src/treeCollection.cc */,
+                     );
+                     runOnlyForDeploymentPostprocessing = 0;
+              };
+              F217EF06A595419992C461ED /* Sources */ = {
+                     isa = PBXSourcesBuildPhase;
+                     buildActionMask = 2147483647;
+                     files = (
+                            52F2E66B3B2F4E82B3CA68D4 /* /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/main/main.cxx */,
+                     );
+                     runOnlyForDeploymentPostprocessing = 0;
+              };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+              2FC71FC376A14B25B529A6BA /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = 71F96A90C2A841389386DE9E /* ZERO_CHECK */;
+                     targetProxy = CFAC713CD77C4267BAD973E6 /* PBXContainerItemProxy */;
+              };
+              478C3E9D257D49229F77E038 /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = 54C07FA3F7614A3FBC050F75 /* SCT_plot */;
+                     targetProxy = 8CE356DD4F764B8D86F06E40 /* PBXContainerItemProxy */;
+              };
+              276B29F20889494F856DBAE3 /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = 688A2EF5C01E4E958676D67E /* main */;
+                     targetProxy = 21EBD1902C554087A565BB66 /* PBXContainerItemProxy */;
+              };
+              65438EC97C8E464AA8331D80 /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = FFE501D32D3C4B89A1489BDB /* ALL_BUILD */;
+                     targetProxy = B56576FBCFF547F792B20F6D /* PBXContainerItemProxy */;
+              };
+              6354FA9084F54AA68EF5402A /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = 71F96A90C2A841389386DE9E /* ZERO_CHECK */;
+                     targetProxy = D40E9C65546046ABBD2F5C4F /* PBXContainerItemProxy */;
+              };
+              C88B43EA55624C0D963FAC41 /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = 71F96A90C2A841389386DE9E /* ZERO_CHECK */;
+                     targetProxy = AD39C5CD7A39497089A4094D /* PBXContainerItemProxy */;
+              };
+              1AD9221E9D1B43C780D8E624 /* PBXTargetDependency */ = {
+                     isa = PBXTargetDependency;
+                     target = 54C07FA3F7614A3FBC050F75 /* SCT_plot */;
+                     targetProxy = 45D9F26239124B23823E657B /* PBXContainerItemProxy */;
+              };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+              F90A9FFF7DF44C4A94BEA97E /* Debug */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+                            ONLY_ACTIVE_ARCH = YES;
+                            SDKROOT = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/build;
+                     };
+                     name = Debug;
+              };
+              11188D90E5EE4063A44C6A6D /* Release */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+                            ONLY_ACTIVE_ARCH = YES;
+                            SDKROOT = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/build;
+                     };
+                     name = Release;
+              };
+              7E37915E1C4A48CB8986DADA /* MinSizeRel */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+                            ONLY_ACTIVE_ARCH = YES;
+                            SDKROOT = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/build;
+                     };
+                     name = MinSizeRel;
+              };
+              B58C43968C8443A1B682B4D4 /* RelWithDebInfo */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+                            ONLY_ACTIVE_ARCH = YES;
+                            SDKROOT = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/build;
+                     };
+                     name = RelWithDebInfo;
+              };
+              26AE23BCAA0443328992BBF8 /* Debug */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ALL_BUILD;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Debug;
+              };
+              5DACB21868244119927C78AC /* Release */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ALL_BUILD;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Release;
+              };
+              B4A1EE32C8E142D3B081A8BE /* MinSizeRel */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ALL_BUILD;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = MinSizeRel;
+              };
+              CA46C10BD73E459BBAE76B2A /* RelWithDebInfo */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ALL_BUILD;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = RelWithDebInfo;
+              };
+              E0A2E7B355C04D1E93DFC163 /* Debug */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ZERO_CHECK;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Debug;
+              };
+              1AC679EB2C1846848FB20617 /* Release */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ZERO_CHECK;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Release;
+              };
+              DDB5765265D94C72BDE12A16 /* MinSizeRel */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ZERO_CHECK;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = MinSizeRel;
+              };
+              BC33E0FFE7EE425D8399C906 /* RelWithDebInfo */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = ZERO_CHECK;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = RelWithDebInfo;
+              };
+              575FB418091B418EA9E50398 /* Debug */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = install;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Debug;
+              };
+              E3B0D39D23654314B7D6FF31 /* Release */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = install;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Release;
+              };
+              4C75FE3C062F4F01999B4CA7 /* MinSizeRel */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = install;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = MinSizeRel;
+              };
+              32EC3293DA1149D2B4D2262E /* RelWithDebInfo */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", );
+                            INSTALL_PATH = "";
+                            OTHER_CFLAGS = "  ";
+                            OTHER_LDFLAGS = " ";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = install;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = RelWithDebInfo;
+              };
+              C317161D6A0548438527A3B2 /* Debug */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            DYLIB_COMPATIBILITY_VERSION = "";
+                            DYLIB_CURRENT_VERSION = "";
+                            EXECUTABLE_PREFIX = lib;
+                            EXECUTABLE_SUFFIX = ".dylib";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", SCT_plot_EXPORTS, "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/Debug;
+                            LIBRARY_SEARCH_PATHS = "";
+                            LIBRARY_STYLE = DYNAMIC;
+                            OTHER_CFLAGS = "   -fPIC  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++    -fPIC  ";
+                            OTHER_LDFLAGS = " -dynamiclib -Wl,-headerpad_max_install_names  -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = SCT_plot;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Debug;
+              };
+              F0F898F8D5E046149C045CC8 /* Release */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            DYLIB_COMPATIBILITY_VERSION = "";
+                            DYLIB_CURRENT_VERSION = "";
+                            EXECUTABLE_PREFIX = lib;
+                            EXECUTABLE_SUFFIX = ".dylib";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 3;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", SCT_plot_EXPORTS, "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/Release;
+                            LIBRARY_SEARCH_PATHS = "";
+                            LIBRARY_STYLE = DYNAMIC;
+                            OTHER_CFLAGS = "    -DNDEBUG -fPIC  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++     -DNDEBUG -fPIC  ";
+                            OTHER_LDFLAGS = " -dynamiclib -Wl,-headerpad_max_install_names  -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = SCT_plot;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Release;
+              };
+              677B359080B84723BF47E20F /* MinSizeRel */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            DYLIB_COMPATIBILITY_VERSION = "";
+                            DYLIB_CURRENT_VERSION = "";
+                            EXECUTABLE_PREFIX = lib;
+                            EXECUTABLE_SUFFIX = ".dylib";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = s;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", SCT_plot_EXPORTS, "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/MinSizeRel;
+                            LIBRARY_SEARCH_PATHS = "";
+                            LIBRARY_STYLE = DYNAMIC;
+                            OTHER_CFLAGS = "    -DNDEBUG -fPIC  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++     -DNDEBUG -fPIC  ";
+                            OTHER_LDFLAGS = " -dynamiclib -Wl,-headerpad_max_install_names  -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = SCT_plot;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = MinSizeRel;
+              };
+              28853D4C158A4CCA8F54571B /* RelWithDebInfo */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            DYLIB_COMPATIBILITY_VERSION = "";
+                            DYLIB_CURRENT_VERSION = "";
+                            EXECUTABLE_PREFIX = lib;
+                            EXECUTABLE_SUFFIX = ".dylib";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 2;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", SCT_plot_EXPORTS, "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/RelWithDebInfo;
+                            LIBRARY_SEARCH_PATHS = "";
+                            LIBRARY_STYLE = DYNAMIC;
+                            OTHER_CFLAGS = "       -DNDEBUG -fPIC  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++        -DNDEBUG -fPIC  ";
+                            OTHER_LDFLAGS = " -dynamiclib -Wl,-headerpad_max_install_names  -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = SCT_plot;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = RelWithDebInfo;
+              };
+              60C82194B054462DB50B6255 /* Debug */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            EXECUTABLE_PREFIX = "";
+                            EXECUTABLE_SUFFIX = "";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 0;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = "";
+                            LIBRARY_SEARCH_PATHS = "";
+                            OTHER_CFLAGS = "    ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++     ";
+                            OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/Debug/libSCT_plot.dylib -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = main;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/main;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Debug;
+              };
+              9174ADEF910848BEB26997FB /* Release */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            EXECUTABLE_PREFIX = "";
+                            EXECUTABLE_SUFFIX = "";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 3;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = "";
+                            LIBRARY_SEARCH_PATHS = "";
+                            OTHER_CFLAGS = "    -DNDEBUG  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++     -DNDEBUG  ";
+                            OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/Release/libSCT_plot.dylib -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = main;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/main;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = Release;
+              };
+              BF4CFEFF9E174DA3B557DC35 /* MinSizeRel */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            EXECUTABLE_PREFIX = "";
+                            EXECUTABLE_SUFFIX = "";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = s;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = "";
+                            LIBRARY_SEARCH_PATHS = "";
+                            OTHER_CFLAGS = "    -DNDEBUG  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++     -DNDEBUG  ";
+                            OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/MinSizeRel/libSCT_plot.dylib -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = main;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/main;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = MinSizeRel;
+              };
+              1EFE6E6EA5304748AA66E65C /* RelWithDebInfo */ = {
+                     isa = XCBuildConfiguration;
+                     buildSettings = {
+                            COMBINE_HIDPI_IMAGES = YES;
+                            EXECUTABLE_PREFIX = "";
+                            EXECUTABLE_SUFFIX = "";
+                            GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+                            GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+                            GCC_OPTIMIZATION_LEVEL = 2;
+                            GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", "'CPP11=1'", "'EUDAQ_PLATFORM=PF_MACOSX'", "'EUDAQ_FUNC=__func__'", );
+                            GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+                            HEADER_SEARCH_PATHS = ("/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/./sct_plot/inc", /Users/lucreziastellabruni/Downloads/root/include, );
+                            INSTALL_PATH = "";
+                            LIBRARY_SEARCH_PATHS = "";
+                            OTHER_CFLAGS = "       -DNDEBUG  ";
+                            OTHER_CPLUSPLUSFLAGS = " -std=c++11 -stdlib=libc++        -DNDEBUG  ";
+                            OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/RelWithDebInfo/libSCT_plot.dylib -L/Users/lucreziastellabruni/Downloads/root/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lMinuit";
+                            OTHER_REZFLAGS = "";
+                            PRODUCT_NAME = main;
+                            SECTORDER_FLAGS = "";
+                            SYMROOT = /Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/main;
+                            USE_HEADERMAP = NO;
+                            WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+                     };
+                     name = RelWithDebInfo;
+              };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+              CED3E1222130459CBF761CA8 /* Build configuration list for PBXProject  "SCT_plot" */ = {
+                     isa = XCConfigurationList;
+                     buildConfigurations = (
+                            F90A9FFF7DF44C4A94BEA97E /* Debug */,
+                            11188D90E5EE4063A44C6A6D /* Release */,
+                            7E37915E1C4A48CB8986DADA /* MinSizeRel */,
+                            B58C43968C8443A1B682B4D4 /* RelWithDebInfo */,
+                     );
+                     defaultConfigurationIsVisible = 0;
+                     defaultConfigurationName = Debug;
+              };
+              651F36090BBE4796ABFE5874 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+                     isa = XCConfigurationList;
+                     buildConfigurations = (
+                            26AE23BCAA0443328992BBF8 /* Debug */,
+                            5DACB21868244119927C78AC /* Release */,
+                            B4A1EE32C8E142D3B081A8BE /* MinSizeRel */,
+                            CA46C10BD73E459BBAE76B2A /* RelWithDebInfo */,
+                     );
+                     defaultConfigurationIsVisible = 0;
+                     defaultConfigurationName = Debug;
+              };
+              84C103D20B394E80A1AA5C82 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+                     isa = XCConfigurationList;
+                     buildConfigurations = (
+                            E0A2E7B355C04D1E93DFC163 /* Debug */,
+                            1AC679EB2C1846848FB20617 /* Release */,
+                            DDB5765265D94C72BDE12A16 /* MinSizeRel */,
+                            BC33E0FFE7EE425D8399C906 /* RelWithDebInfo */,
+                     );
+                     defaultConfigurationIsVisible = 0;
+                     defaultConfigurationName = Debug;
+              };
+              AA221BD50EEF49B789FE0EE5 /* Build configuration list for PBXAggregateTarget "install" */ = {
+                     isa = XCConfigurationList;
+                     buildConfigurations = (
+                            575FB418091B418EA9E50398 /* Debug */,
+                            E3B0D39D23654314B7D6FF31 /* Release */,
+                            4C75FE3C062F4F01999B4CA7 /* MinSizeRel */,
+                            32EC3293DA1149D2B4D2262E /* RelWithDebInfo */,
+                     );
+                     defaultConfigurationIsVisible = 0;
+                     defaultConfigurationName = Debug;
+              };
+              E74616E222F64CCF8FCE4E32 /* Build configuration list for PBXNativeTarget "SCT_plot" */ = {
+                     isa = XCConfigurationList;
+                     buildConfigurations = (
+                            C317161D6A0548438527A3B2 /* Debug */,
+                            F0F898F8D5E046149C045CC8 /* Release */,
+                            677B359080B84723BF47E20F /* MinSizeRel */,
+                            28853D4C158A4CCA8F54571B /* RelWithDebInfo */,
+                     );
+                     defaultConfigurationIsVisible = 0;
+                     defaultConfigurationName = Debug;
+              };
+              AF2113B049F949918917FDA9 /* Build configuration list for PBXNativeTarget "main" */ = {
+                     isa = XCConfigurationList;
+                     buildConfigurations = (
+                            60C82194B054462DB50B6255 /* Debug */,
+                            9174ADEF910848BEB26997FB /* Release */,
+                            BF4CFEFF9E174DA3B557DC35 /* MinSizeRel */,
+                            1EFE6E6EA5304748AA66E65C /* RelWithDebInfo */,
+                     );
+                     defaultConfigurationIsVisible = 0;
+                     defaultConfigurationName = Debug;
+              };
+/* End XCConfigurationList section */
+       };
+       rootObject = 51F31F8CD2684E86A1F1C898;
+}

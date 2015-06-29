@@ -3,6 +3,7 @@
 #include "TMath.h"
 #include "TH2.h"
 #include "TCanvas.h"
+#include "internal/plane_hit.hh"
 
 namespace sct_corr{
   class efficieny_map :public plotPlaneVsPlane{

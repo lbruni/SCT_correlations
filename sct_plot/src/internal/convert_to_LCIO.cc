@@ -27,6 +27,9 @@
 #include "EVENT/LCIO.h"
 #include "UTIL/CellIDDecoder.h"
 #include "CellIDReencoder.h"
+#include "s_plot_prob.h"
+#include "internal/plane_hit.hh"
+#include "internal/plane.hh"
 using namespace IMPL;
 
 using lcio::TrackerDataImpl;
@@ -42,9 +45,9 @@ namespace sct_corr{
     convert_to_LCIO(const char *file_name, unsigned runNum, const s_plot_prob& = "");
     virtual const char* getType() const;
     virtual bool isReady();
-    virtual void pushAxis(axis_ref* axis);
+    virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* plane_);
-    virtual void fill();
+    virtual bool fill();
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
     virtual Long64_t Draw(const S_DrawOption&);
 
@@ -104,7 +107,7 @@ namespace sct_corr{
     return m_fileopened;
   }
 
-  void convert_to_LCIO::pushAxis(axis_ref* axis)
+  void convert_to_LCIO::pushAxis(const axis_ref* axis)
   {
     std::cout << "[convert_to_LCIO] axis are not supported \n";
   }
@@ -114,8 +117,8 @@ namespace sct_corr{
     m_planes.push_back(plane_);
   }
 
-  void convert_to_LCIO::fill()
-  {
+  bool convert_to_LCIO::fill()
+{
     //  std::cout << "EUDAQ_DEBUG: FileWriterLCIO::WriteEvent() processing event "
     //    <<  devent.GetRunNumber () <<"." << devent.GetEventNumber () << std::endl;
 
@@ -128,6 +131,7 @@ namespace sct_corr{
       m_lcwriter->writeEvent(lcevent.get());
       //  std::cout << " done" <<std::endl;
     }
+    return true;
   }
 
 
@@ -218,9 +222,9 @@ namespace sct_corr{
 
       //Call the local2masterHit/master2localHit function defined int EUTelGeometryTelescopeDescription
 
-      auto hit = source->get();
-      outputPos[0] = hit.x;
-      outputPos[1] = hit.y;
+      auto hit = source->getPlane()->getHit();
+      outputPos[0] = hit->x;
+      outputPos[1] = hit->y;
       outputPos[2] = 1;
 
 
@@ -286,7 +290,11 @@ S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_p
 
 }
 #else
+<<<<<<< HEAD
 
+=======
+#include "s_plot_prob.h"
+>>>>>>> 249f42e387ec843498070c1064c01e73cf7fb734
 S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
   return S_plot(nullptr);

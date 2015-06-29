@@ -2,6 +2,8 @@
 #include <iostream>
 #include "sct_plots_internal.h"
 #include "internal/plotsBase.hh"
+#include "s_DrawOption.h"
+#include "s_plane.h"
 
 
 s_plane_collection S_plot::getOutputcollection()
@@ -35,13 +37,13 @@ S_plot::S_plot(const S_plot& pl)
 }
 
 
-void S_plot::fill()
+bool S_plot::fill()
 {
   if (!m_plot) {
     std::cout << "[S_plot] plot not set" << std::endl;
-    return;
+    return false;
   }
-  m_plot->fill();
+ return m_plot->fill();
 }
 
 Long64_t S_plot::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "y:x"*/)

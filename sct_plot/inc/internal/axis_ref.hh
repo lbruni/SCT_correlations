@@ -4,7 +4,7 @@
 namespace sct_corr{
   class axis_ref{
   public:
-    virtual bool next() = 0;
+    virtual bool next() const = 0;
     virtual double get() const = 0;
 
   };

@@ -16,6 +16,7 @@
 #include <vector>
 #include "Rtypes.h"
 #include "sct_event_buffer.h"
+#include "sct_events\rootEventBase.hh"
 #ifdef _DEBUG
   class Hit_extractor;
   class Hit_output;
@@ -29,9 +30,10 @@ namespace sct_corr{
   class treeCollection {
   public:
 
-    root_event m_buffer;
+
+    rootEventBase m_rootBuffer;
     // Declaration of leaf types
-    Int_t                event_nr = 0;
+   
 
     treeCollection(TTree *tree);
     treeCollection(const char *name);
@@ -40,17 +42,9 @@ namespace sct_corr{
     virtual Int_t    GetEntries() const;
     const char* getName() const;
   private:
-#ifdef _DEBUG
-    Hit_extractor *m_tree;
-#else //release
-    // List of branches
-    TBranch        *b_ID;   //!
-    TBranch        *b_x;   //!
-    TBranch        *b_y;   //!
-    TBranch        *b_event_nr;   //!
-    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-    Int_t           fCurrent; //!current Tree number in a TChain
-#endif // _DEBUG
+
+    TTree* fChain = NULL;
+
 
     std::string m_name;
   };
@@ -60,20 +54,19 @@ namespace sct_corr{
   class treeCollection_ouput {
   public:
 
-    treeCollection_ouput(const char * name, std::vector<double>* x, std::vector<double>* y, std::vector<double>* ID, Int_t * event_nr, bool save2disk = true);
+    treeCollection_ouput(const rootEventBase& ev, bool save2disk);
     virtual ~treeCollection_ouput();
     void fill();
     Int_t Draw(const char* axis, const char* cuts, const char * options);
     TTree * getTTree();
-    root_event m_buffer;
-#ifdef _DEBUG
-    Hit_output *m_tree = nullptr;
-#else //release
+
+    rootEventBase m_rootBuffer;
+
 
 
     TTree          *m_tree=nullptr;   //!pointer to the analyzed TTree or TChain
 
-#endif // _DEBUG
+
 
     std::string m_name;
   };

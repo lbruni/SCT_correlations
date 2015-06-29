@@ -1,0 +1,3 @@
+/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/CMakeFiles/ALL_BUILD.dir
+/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/sct_plot/CMakeFiles/SCT_plot.dir
+/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/buildX/CMakeFiles/ZERO_CHECK.dir

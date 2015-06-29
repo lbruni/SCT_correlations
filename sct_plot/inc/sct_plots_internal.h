@@ -2,6 +2,7 @@
 #define sct_plots_internal_h__
 #include "sct_plots.h"
 #include "TMath.h"
+#include "internal/plane_hit.hh"
 
 namespace sct_corr{
   plane_hit rotate(const  plane_hit& h, double Angle);

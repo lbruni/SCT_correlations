@@ -4,6 +4,8 @@
 
 #include "internal/plotsBase.hh"
 #include <memory>
+#include "sct_events/rootEventBase.hh"
+#include "sct_events/rootEvent_X_Y_hits.hh"
 namespace sct_corr{
   class treeCollection_ouput;
 
@@ -14,26 +16,26 @@ namespace sct_corr{
 
     plotPlaneVsPlane(const s_plot_prob& = "");
     virtual bool isReady()override;
-    virtual void pushAxis(axis_ref* axis) override;
+    virtual void pushAxis(const axis_ref* axis) override;
     virtual void pushPlane(S_plane* axis) override;
 
 
     virtual void processEventStart();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) = 0;
     virtual void processEventEnd();
-    virtual void fill() override final;
+    virtual bool fill() override final;
     void pushHit(Double_t x, Double_t y);
     void pushHit(Double_t x, Double_t y, Double_t ID);
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
     virtual Long64_t Draw(const S_DrawOption& opt) override;
     virtual const char* getOutputName() const;
-    std::vector<double> m_x_points, m_y_points, m_id;
+    rootEvent_X_Y_hits m_outPutEvent;
 
     std::shared_ptr<treeCollection_ouput> m_outTree;
     Int_t m_current = 0;
+    const plane_hit* m_HitA=nullptr, *m_HitB=nullptr;
 
-
-    S_plane *m_x = nullptr, *m_y = nullptr;
+    sct_corr::plane *m_x = nullptr, *m_y = nullptr;
 
     Int_t m_size_x = 0, m_size_y = 0;
   };

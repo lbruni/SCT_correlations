@@ -24,6 +24,7 @@
 #include "TCut.h"
 
 
+
 class S_plane;
 class S_DrawOption;
  class S_Axis;
@@ -47,6 +48,7 @@ public:
   static void CutTH2(TH2* h2, const S_Cut& cut_);
   static void CutTH1(TH1* h1, const S_Cut& cut_);
   static TH1* HistogrammSilhouette(TH2* h2, axis_def ax);
+  static Long64_t DrawTTree(TTree * tree, const S_DrawOption& opt);
 };
 class S_plane_def;
 class DllExport sct_coll{

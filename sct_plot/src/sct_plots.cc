@@ -135,6 +135,11 @@ TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
 
 
 
+Long64_t SCT_helpers::DrawTTree(TTree * tree, const S_DrawOption& opt)
+{
+  return opt.Draw(tree);
+}
+
 s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& plot_prob)
 {
   auto apix_true_hits = pl.addPlot(sct_plot::find_nearest(0.1, 0.2, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);

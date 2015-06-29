@@ -4,7 +4,7 @@
 #include <vector>
 #include "internal/plane_hit.hh"
 namespace sct_corr{
-  class rootEvent_X_Y_hits :public rootEventBase{
+  class DllExport rootEvent_X_Y_hits :public rootEventBase{
   public:
     rootEvent_X_Y_hits(const char* name);
     rootEvent_X_Y_hits();

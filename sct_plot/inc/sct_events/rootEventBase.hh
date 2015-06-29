@@ -9,14 +9,16 @@ class TTree;
 #ifdef _DEBUG
 #include "ReleaseVectorDef.h"
 #endif // _DEBUG
+
+
 #include "S_Axis.h"
 #include <memory>
-
-
+#include <vector>
+#include "internal/platform.hh"
 namespace sct_corr{
   class plane;
 
-  class TTreeVectorExtractor{
+  class DllExport  TTreeVectorExtractor{
   public:
     TTreeVectorExtractor(const char* name, TTree* tree);
     TTreeVectorExtractor(const char* name);
@@ -40,7 +42,7 @@ namespace sct_corr{
   };
 
 
-  class rootEventBase{
+  class DllExport rootEventBase{
   public:
     rootEventBase(TTree* tree);
     rootEventBase(const char* collectionName,std::vector<std::string> axis_list);
@@ -48,7 +50,7 @@ namespace sct_corr{
     rootEventBase();
     virtual ~rootEventBase(){}
     virtual std::shared_ptr<plane> createPlane(double ID) ;
-    void Save2Tree(TTree* outputTree);
+    virtual void Save2Tree(TTree* outputTree);
     
     std::vector<double>* getData(const char* name) const;
     std::vector<double>* getData(axis_def ax) const;
@@ -67,7 +69,7 @@ namespace sct_corr{
     int* m_event_nr = NULL;
   };
 
-  class rootEventBaseAxis :public axis_ref{
+  class  rootEventBaseAxis :public axis_ref{
   public:
     rootEventBaseAxis(const rootEventBase& ev, axis_def ax,double id_);
     rootEventBaseAxis(const rootEventBase& ev, const char* ax_name, double id_);
@@ -83,7 +85,7 @@ namespace sct_corr{
   };
 
 
-  class rootEventBaseAxisCollection{
+  class  rootEventBaseAxisCollection{
   public:
 
     rootEventBaseAxisCollection(const rootEventBase& ev, double id_);

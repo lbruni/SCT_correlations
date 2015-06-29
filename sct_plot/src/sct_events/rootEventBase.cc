@@ -144,13 +144,18 @@ namespace sct_corr{
 
     for (int i = 0; i < entries; i++)
     {
-      auto axisName = tree->GetListOfBranches()->At(i)->GetName();
-      if (strcmp("event_nr" ,axisName)==0)
+      auto br = dynamic_cast<TBranch*>( tree->GetListOfBranches()->At(i));
+      if (!br)
+      {
+        continue;
+      }
+      auto className = br->GetClassName();
+      if (strcmp("vector<double>" ,className)!=0)
       {
         continue;
       }
       
-      m_data.push_back(TTreeVectorExtractor( axisName, tree));
+      m_data.push_back(TTreeVectorExtractor( br->GetName(), tree));
     }
     m_event_nr_ownd = std::make_shared<int>(0);
    

@@ -287,7 +287,7 @@ S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_p
 }
 #else
 
-S_plot sct_plot::s_save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
+S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
   return S_plot(nullptr);
 }

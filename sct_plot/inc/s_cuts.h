@@ -12,13 +12,29 @@ public:
   virtual ~S_Cut(){}
 
 #ifndef __CINT__
-  virtual std::shared_ptr<S_Cut> copy()const { return nullptr; }
+  virtual std::shared_ptr<S_Cut> copy()const { 
+    return  std::shared_ptr<S_Cut>(new S_Cut(*this));
+  }
 #endif // __CINT__
 
   virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const { return false; }
   virtual bool isOutOfRange(Double_t BinContent, Double_t x)  const { return false; }
   virtual bool isOutOfRange(Double_t BinContent)  const { return false; }
   ClassDef(S_Cut, 0);
+};
+class DllExport S_NoCut:public S_Cut
+{
+public:
+
+  virtual ~S_NoCut(){}
+
+#ifndef __CINT__
+  virtual std::shared_ptr<S_Cut> copy()const {
+    return  std::shared_ptr<S_Cut>(new S_NoCut(*this));
+  }
+#endif // __CINT__
+
+  ClassDef(S_NoCut, 0);
 };
 class DllExport S_Cut_min_max : public S_Cut
 {
@@ -120,6 +136,7 @@ DllExport S_CutCoollection operator+(const S_Cut& cut_a, const S_Cut& cut_b);
 #pragma link C++ class S_Cut_min_max;
 #pragma link C++ class S_Cut_BinContent;
 #pragma link C++ class S_CutCoollection;
+#pragma link C++ class S_NoCut;
 
 #endif
 #endif // s_cuts_h__

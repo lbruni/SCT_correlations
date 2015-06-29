@@ -156,6 +156,12 @@ bool S_CutCoollection::isOutOfRange(Double_t BinContent) const
 
 void S_CutCoollection::add_Cut(const S_Cut& cut_)
 {
+  auto nocut = dynamic_cast<const S_NoCut*>(&cut_);
+  if (nocut)
+  {
+    return;
+  }
+
   auto coll = dynamic_cast<const S_CutCoollection*>(&cut_);
   if (coll)
   {

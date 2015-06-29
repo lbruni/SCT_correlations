@@ -15,7 +15,7 @@
 
 
 
-void residual_plane3(){
+/*void residual_plane3(){
 
   TFile* _file0 = new TFile("C:/Users/Argg/OneDrive/alibava/new/fitter.root");
   TFile* _file1 = new TFile("test.root", "recreate");
@@ -57,11 +57,11 @@ void plotCorrelations(){
 
   pl->Draw(corr(), S_DrawOption("colz", "", "y:x"));
 }
-
+*/
 int main(int argc, char **argv) {
   TApplication theApp("App", &argc, argv);
 
-  residual_plane3();
+  //LB  residual_plane3();
 
   
 
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 
 
 
-  TFile* _file0 = new TFile("C:/Users/Argg/OneDrive/alibava/new/fitter.root");
+  TFile* _file0 = new TFile("/Users/lucreziastellabruni/fitter703.root");
   TFile* _file1 = new TFile("test.root","recreate");
 
  S_plot_collection pl(_file0);
@@ -85,18 +85,18 @@ int main(int argc, char **argv) {
  Int_t fei4_Plane_id = 20;
  Int_t Strip_Plane_id = 8;
 
- auto fei4_nearest=pl.addPlot(sct_plot::find_nearest(fei4,100,100) , sct_coll::apix_hit(), sct_coll::apix_fitted());
+ //LB auto fei4_nearest=pl.addPlot(sct_plot::find_nearest(fei4,100,100) , sct_coll::apix_hit(), sct_coll::apix_fitted());
 
  //auto strip_rotated= pl.addPlot(sct_plot::rotated(strip_fit_rot, 0.017, false), sct_coll::DUT_fitted().getX_def(), sct_coll::DUT_fitted().getY_def());
 
 
  //pl.addPlot(sct::plot_find_nearest_strip(), strip, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 8));
 // pl.addPlot(sct::plot_find_nearest_strip(), strip, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 8));
- auto strip_nearest = pl.addPlot(sct_plot::find_nearest_strip(strip, y_axis_def, 1000), sct_coll::DUT_hit(), sct_coll::DUT_fitted());
+//LB auto strip_nearest = pl.addPlot(sct_plot::find_nearest_strip(strip, y_axis_def, 1000), sct_coll::DUT_hit(), sct_coll::DUT_fitted());
 // auto hitmap__= pl.addPlot(sct::plot_hitmap(), name4, strip_nearest.get(0).getY_def(), strip_nearest.get(2).getX_def() );
  
 
- s_plane_collection plane2 = pl.addPlot(sct_plot::find_nearest("fe", 100, 100), sct_coll::tel_hit(3), sct_coll::tel_fitted(3));
+//LB s_plane_collection plane2 = pl.addPlot(sct_plot::find_nearest("fe", 100, 100), sct_coll::tel_hit(3), sct_coll::tel_fitted(3));
 
  /*
  //pl.addPlot(sct::plot_find_correspondingX(), name, S_plane(sct::col_hit(), 8), S_plane(sct::col_fitpoints(), 20));
@@ -136,10 +136,10 @@ int main(int argc, char **argv) {
  //pl.addPlot(sct::plot_correlation(), "corr", S_Axis(sct::col_hit(), 20 ,y_axis_def), S_Axis(sct::col_fitpoints(), 20,y_axis_def));
 #ifdef  _DEBUG
 
- pl.loop(1000);
+ //LB pl.loop(1000);
 #else
 
- pl.loop();
+ //LB pl.loop();
 #endif //  _DEBUG
 
  //std::cout << "events = " << pl.Draw(fei4, S_DrawOption("colz", "", "y:x")) << std::endl;
@@ -164,7 +164,7 @@ int main(int argc, char **argv) {
 
  TCanvas c;
 
- h->Draw("colz");
+ //LB h->Draw("colz");
  
 
  //SCT_helpers::CutTH2(h,S_XCut(-0.1,0.1),S_YCut(0,2),  S_ZCut());
@@ -172,8 +172,8 @@ int main(int argc, char **argv) {
  TCanvas c1;
 
  
- h->Draw("colz");
- new TBrowser();
+ //LB h->Draw("colz");
+ //LBnew TBrowser();
    //pl.Draw();
  //TCanvas c;
 // c.Divide(2, 1);

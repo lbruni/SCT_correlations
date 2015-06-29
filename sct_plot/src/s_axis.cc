@@ -13,7 +13,7 @@ const char* axis2String(axis_def ax)
     return "x";
   }
 
-  if (ax=y_axis_def)
+  if (ax==y_axis_def)
   {
     return "y";
   }
@@ -30,7 +30,14 @@ const char* axis2String(axis_def ax)
   {
     return "theta";
   }
-
+  if (ax==Occupancy_axis_def)
+  {
+    return "Occupancy";
+  }
+  if (ax==NumOfEvents_axis_def)
+  {
+    return "NumOfEvents";
+  }
   return "\0";
 }
 

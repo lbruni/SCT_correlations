@@ -12,7 +12,9 @@ enum  axis_def
   y_axis_def,
   chi2_axis_def,
   phi_axis_def,
-  theta_axis_def
+  theta_axis_def,
+  Occupancy_axis_def,
+  NumOfEvents_axis_def
 };
 const char* axis2String(axis_def ax);
 const char* getIDString();

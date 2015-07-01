@@ -5,6 +5,7 @@
 #include "Rtypes.h"
 #include "TCut.h"
 #include <string>
+#include "S_Axis.h"
 
 class TTree;
 class TObject;
@@ -17,6 +18,9 @@ public:
   S_DrawOption& options(const char* option);
   S_DrawOption& opt_colz();
   S_DrawOption& cut(const char* cut_);
+  S_DrawOption& cut_min(axis_def ax,Double_t min_);
+  S_DrawOption& cut_max(axis_def ax, Double_t max_);
+  S_DrawOption& cut(axis_def ax, Double_t min_,Double_t max_);
   S_DrawOption& cut_add(const TCut& cut_);
   S_DrawOption& cut_x(Double_t min_, Double_t max_);
   S_DrawOption& cut_x_min(Double_t min_);

@@ -53,6 +53,28 @@ S_DrawOption& S_DrawOption::cut(const char* cut_)
   return *this;
 }
 
+S_DrawOption& S_DrawOption::cut(axis_def ax, Double_t min_, Double_t max_)
+{
+  cut_min(ax, min_);
+  return cut_max(ax,max_);
+}
+
+S_DrawOption& S_DrawOption::cut_min(axis_def ax, Double_t min_)
+{
+  std::string dummy_str = std::string(axis2String(ax)) + ">" + std::to_string(min_);
+  TCut dummy = dummy_str.c_str();
+  m_cut = m_cut&& dummy;
+  return *this;
+}
+
+S_DrawOption& S_DrawOption::cut_max(axis_def ax, Double_t max_)
+{
+  std::string dummy_str = std::string(axis2String(ax)) + "<" + std::to_string(max_);
+  TCut dummy = dummy_str.c_str();
+  m_cut = m_cut&& dummy;
+  return *this;
+}
+
 S_DrawOption& S_DrawOption::cut_add(const TCut& cut_)
 {
   m_cut = m_cut&& cut_;

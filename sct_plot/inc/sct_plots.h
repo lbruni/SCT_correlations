@@ -25,6 +25,7 @@
 
 
 
+
 class S_plane;
 class S_DrawOption;
  class S_Axis;
@@ -32,6 +33,7 @@ class S_DrawOption;
   class S_Cut;
   class S_plot_collection;
   class s_plane_collection;
+  class s_process_files;
 namespace sct_corr{
   class treeCollection;
 
@@ -74,6 +76,7 @@ static  S_plane_def tel_zs_data(double ID);
 static  S_plane_def tel_fitted(double ID);
 static  S_plane_def tel_fitted_local(double ID);
 };
+
 
 class DllExport sct{
 public:

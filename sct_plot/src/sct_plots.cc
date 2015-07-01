@@ -18,7 +18,8 @@
 #include "s_DrawOption.h"
 
 
-
+#include "s_process_files.h"
+#include "sct_runs.h"
 
 
 
@@ -252,4 +253,142 @@ bool s_plot_prob::getNameSize() const
 plot_save_option_def s_plot_prob::getPlotSaveOption() const
 {
   return m_save;
+}
+
+void sct_runs::DEVICE_1_ASIC_on_Position_7_Jim_150V(s_process_files& p, std::string path__, std::string outputPath)
+{
+  outputPath+="DEVICE_1_ASIC_on_Position_7_Jim_150V.root";
+  p.setOutputName(outputPath.c_str());
+  p.SetNumberOfBins(400);
+  p.AddCut(S_YCut(-4, 2));
+  p.setActiveArea(280, 360);
+  p.SetRotation(0.0171112);
+  p.push_files((path__ + std::string("run000823-fitter.root")).c_str(), 20, 823, 150);
+
+  p.push_files((path__ + std::string("run000824-fitter.root")).c_str(), 35, 824, 150);
+  p.push_files((path__ + std::string("run000704-fitter.root")).c_str(), 50, 704, 150);
+  p.push_files((path__ + std::string("run000705-fitter.root")).c_str(), 65, 705, 150);
+  p.push_files((path__ + std::string("run000706-fitter.root")).c_str(), 80, 706, 150);
+  p.push_files((path__ + std::string("run000707-fitter.root")).c_str(), 95, 707, 150);
+  p.push_files((path__ + std::string("run000708-fitter.root")).c_str(), 110, 708, 150);
+
+  p.push_files((path__ + std::string("run000709-fitter.root")).c_str(), 125, 709, 150);
+
+  p.push_files((path__ + std::string("run000710-fitter.root")).c_str(), 140, 710, 150);
+  p.push_files((path__ + std::string("run000711-fitter.root")).c_str(), 155, 711, 150);
+
+  p.push_files((path__ + std::string("run000712-fitter.root")).c_str(), 170, 712, 150);
+  p.push_files((path__ + std::string("run000713-fitter.root")).c_str(), 185, 713, 150);
+
+  p.push_files((path__ + std::string("run000714-fitter.root")).c_str(), 200, 714, 150);
+
+  p.push_files((path__ + std::string("run000715-fitter.root")).c_str(), 215, 715, 150);
+  p.push_files((path__ + std::string("run000716-fitter.root")).c_str(), 230, 716, 150);
+  p.push_files((path__ + std::string("run000717-fitter.root")).c_str(), 245, 717, 150);
+
+
+
+
+}
+
+void sct_runs::DEVICE_1_ASIC_on_Position_7_Jim_400V(s_process_files& p, std::string path__, std::string outputPath)
+{
+
+  outputPath+="DEVICE_1_ASIC_on_Position_7_Jim_400V.root";
+  p.setOutputName(outputPath.c_str());
+  p.SetNumberOfBins(400);
+  p.AddCut(S_YCut(-4, 2));
+  p.setActiveArea(280, 360);
+  p.SetRotation(0.0171112);
+  p.push_files((path__ + std::string("run000811-fitter.root")).c_str(), 20, 811, 400);
+
+  p.push_files((path__ + std::string("run000812-fitter.root")).c_str(), 35, 812, 400);
+  p.push_files((path__ + std::string("run000797-fitter.root")).c_str(), 50, 797, 400);
+  p.push_files((path__ + std::string("run000798-fitter.root")).c_str(), 65, 798, 400);
+  p.push_files((path__ + std::string("run000799-fitter.root")).c_str(), 80, 799, 400);
+  p.push_files((path__ + std::string("run000800-fitter.root")).c_str(), 95, 800, 400);
+  p.push_files((path__ + std::string("run000801-fitter.root")).c_str(), 110, 801, 400);
+  p.push_files((path__ + std::string("run000813-fitter.root")).c_str(), 110, 813, 400);
+  p.push_files((path__ + std::string("run000802-fitter.root")).c_str(), 125, 802, 400);
+
+  p.push_files((path__ + std::string("run000803-fitter.root")).c_str(), 140, 803, 400);
+  p.push_files((path__ + std::string("run000804-fitter.root")).c_str(), 155, 804, 400);
+  p.push_files((path__ + std::string("run000805-fitter.root")).c_str(), 170, 805, 400);
+  p.push_files((path__ + std::string("run000814-fitter.root")).c_str(), 170, 814, 400);
+  p.push_files((path__ + std::string("run000806-fitter.root")).c_str(), 185, 806, 400);
+
+  p.push_files((path__ + std::string("run000807-fitter.root")).c_str(), 200, 807, 400);
+  p.push_files((path__ + std::string("run000808-fitter.root")).c_str(), 215, 808, 400);
+  p.push_files((path__ + std::string("run000815-fitter.root")).c_str(), 215, 815, 400);
+  p.push_files((path__ + std::string("run000809-fitter.root")).c_str(), 230, 809, 400);
+  p.push_files((path__ + std::string("run000810-fitter.root")).c_str(), 245, 810, 400);
+
+}
+
+void sct_runs::DEVICE_1_ASIC_on_Position_7_Jim_250V(s_process_files& p, std::string path__, std::string outputPath)
+{
+
+  outputPath+="DEVICE_1_ASIC_on_Position_7_Jim_250V.root";
+  p.setOutputName(outputPath.c_str());
+  p.SetNumberOfBins(400);
+  p.AddCut(S_YCut(-4, 2));
+  p.setActiveArea(280, 360);
+  p.SetRotation(0.0171112);
+  p.push_files((path__ + std::string("run000825-fitter.root")).c_str(), 20, 825, 250);
+
+  p.push_files((path__ + std::string("run000826-fitter.root")).c_str(), 35, 826, 250);
+  p.push_files((path__ + std::string("run000718-fitter.root")).c_str(), 50, 718, 250);
+  p.push_files((path__ + std::string("run000719-fitter.root")).c_str(), 65, 719, 250);
+  p.push_files((path__ + std::string("run000720-fitter.root")).c_str(), 80, 720, 250);
+  p.push_files((path__ + std::string("run000721-fitter.root")).c_str(), 95, 721, 250);
+  p.push_files((path__ + std::string("run000722-fitter.root")).c_str(), 110, 722, 250);
+
+  p.push_files((path__ + std::string("run000723-fitter.root")).c_str(), 125, 723, 250);
+  p.push_files((path__ + std::string("run000724-fitter.root")).c_str(), 140, 724, 250);
+  p.push_files((path__ + std::string("run000827-fitter.root")).c_str(), 140, 827, 250);
+  p.push_files((path__ + std::string("run000725-fitter.root")).c_str(), 155, 725, 250);
+
+  p.push_files((path__ + std::string("run000726-fitter.root")).c_str(), 170, 726, 250);
+  p.push_files((path__ + std::string("run000727-fitter.root")).c_str(), 185, 727, 250);
+  p.push_files((path__ + std::string("run000728-fitter.root")).c_str(), 200, 728, 250);
+  p.push_files((path__ + std::string("run000826-fitter.root")).c_str(), 200, 826, 250);
+
+  p.push_files((path__ + std::string("run000729-fitter.root")).c_str(), 215, 729, 250);
+  p.push_files((path__ + std::string("run000730-fitter.root")).c_str(), 230, 730, 250);
+  p.push_files((path__ + std::string("run000731-fitter.root")).c_str(), 245, 731, 250);
+
+
+
+}
+void sct_runs::DEVICE_1_ASIC_on_Position_7_Jim_350V(s_process_files& p, std::string path__, std::string outputPath)
+{
+  outputPath += "/DEVICE_1_ASIC_on_Position_7_Jim_350V.root";
+  p.setOutputName(outputPath.c_str());
+  p.SetNumberOfBins(400);
+  p.AddCut(S_YCut(-4, 2));
+  p.setActiveArea(280, 360);
+  p.SetRotation(0.0171112);
+//  p.push_files((path__ + std::string("run000816-fitter.root")).c_str(), 20, 816, 350); //broken file
+  p.push_files((path__ + std::string("run000818-fitter.root")).c_str(), 20, 818, 350);
+  p.push_files((path__ + std::string("run000817-fitter.root")).c_str(), 35, 817, 350);
+  p.push_files((path__ + std::string("run000703-fitter.root")).c_str(), 50, 703, 350);
+  p.push_files((path__ + std::string("run000688-fitter.root")).c_str(), 65, 688, 350);
+  p.push_files((path__ + std::string("run000689-fitter.root")).c_str(), 80, 689, 350);
+  p.push_files((path__ + std::string("run000690-fitter.root")).c_str(), 95, 690, 350);
+  p.push_files((path__ + std::string("run000691-fitter.root")).c_str(), 110, 691, 350);
+
+  p.push_files((path__ + std::string("run000692-fitter.root")).c_str(), 125, 692, 350);
+
+  p.push_files((path__ + std::string("run000693-fitter.root")).c_str(), 140, 693, 350);
+   p.push_files((path__ + std::string("run000694-fitter.root")).c_str(), 155, 694, 350);
+ 
+   p.push_files((path__ + std::string("run000695-fitter.root")).c_str(), 170, 695, 350);
+   p.push_files((path__ + std::string("run000696-fitter.root")).c_str(), 185, 696, 350);
+ 
+   p.push_files((path__ + std::string("run000702-fitter.root")).c_str(), 200, 702, 350);
+ 
+  // p.push_files((path__ + std::string("run000698-fitter.root")).c_str(), 215, 698, 350);
+   p.push_files((path__ + std::string("run000699-fitter.root")).c_str(), 230, 699, 350);
+   p.push_files((path__ + std::string("run000701-fitter.root")).c_str(), 245, 701, 350);
+
 }

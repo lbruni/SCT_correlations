@@ -22,14 +22,17 @@ namespace sct_corr{
 class DllExport s_process_files{
 public:
   s_process_files();
-  void setOutputTree(TTree* tree);
+  ~s_process_files();
+  void setOutputName(const char* name);
   void push_files(TFile* _file, double Threshold, double runNumber);
+  void push_files(const char* _fileName, double Threshold, double runNumber,double HV);
   void AddCut(const S_Cut& cut);
   void SetPitchSize(Double_t pitchSize);
   void SetRotation(Double_t rotation);
   void SetPosition(Double_t x_pos, Double_t y_pos);
   void setActiveArea(Double_t x_min, Double_t x_max);
   void SetNumberOfBins(Int_t bins);
+
   bool process();
   Int_t DrawResidual(Double_t min_X,Double_t max_X);
   Int_t DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X);
@@ -55,14 +58,20 @@ public:
     TFile* m_file;
     double m_Threshold = 0;
     double m_runNumber = 0;
+    double m_HV = 0;
   };
   std::vector<FileProberties> m_files;
   sct_corr::rootEventRunOutput m_outputl;
   std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
+  std::shared_ptr<TH1D> m_Residual;
   std::shared_ptr<TH1D> m_Hits_total;
   std::shared_ptr<TH1D> m_Hits_with_DUT_Hits;
   std::shared_ptr<TH1D> m_Efficieny_map;
+  std::shared_ptr<TH2D> m_resVSMissing;
   sct_corr::sct_event_buffer m_buffer;
+  TFile* m_dummy = nullptr;
+  TFile* m_outpuFile = nullptr;
+  std::string m_outname;
 #endif
   ClassDef(s_process_files, 0);
 };

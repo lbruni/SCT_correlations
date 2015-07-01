@@ -4,18 +4,27 @@
 #include "s_plane.h"
 
 #include "treeCollection.h"
+#include "TF1.h"
+#include "TCanvas.h"
 
 s_process_files::s_process_files() :m_outputl("out")
 {
  
 
+ m_dummy = new TFile("dummy1.root", "recreate");
 
 
 }
 
-void s_process_files::setOutputTree(TTree* tree)
-{
 
+s_process_files::~s_process_files()
+{
+  
+}
+
+void s_process_files::setOutputName(const char* name)
+{
+  m_outname = name;
 }
 
 void s_process_files::push_files(TFile* _file, double Threshold, double runNumber)
@@ -25,6 +34,17 @@ void s_process_files::push_files(TFile* _file, double Threshold, double runNumbe
   p.m_Threshold = Threshold;
   p.m_runNumber = runNumber;
   m_files.push_back(p);
+}
+
+void s_process_files::push_files(const char* _fileName, double Threshold, double runNumber, double HV)
+{
+  FileProberties p;
+  p.m_file = new TFile(_fileName);
+  p.m_Threshold = Threshold;
+  p.m_runNumber = runNumber;
+  p.m_HV = HV;
+  m_files.push_back(p);
+
 }
 
 void s_process_files::AddCut(const S_Cut& cut)
@@ -75,6 +95,7 @@ bool s_process_files::process(TFile* file)
 
     m_plotCollection.reset();
     m_plotCollection = std::make_shared<S_plot_collection>(file);
+    m_plotCollection->setOutputFile(m_dummy);
 
     m_output_planes = s_plane_collection();
     auto truehits = sct_plot::Crate_True_Fitted_DUT_Hits_in_channels(*m_plotCollection, m_pitchSize, m_rotation, m_pos_x, m_pos_y, s_plot_prob().doNotSaveToDisk());
@@ -85,6 +106,8 @@ bool s_process_files::process(TFile* file)
  
   m_output_planes = hitmap__rot + cor + trueHits_cut;
   m_plotCollection->loop();
+
+  DrawResidualVsMissingCordinate(-3,3);
 
   Draw_Efficinecy_map();
 
@@ -98,23 +121,37 @@ bool s_process_files::process(TFile* file)
 
 
   m_outputl.set_Total_efficiency(DUTHits/ totalHits);
+  DrawResidual(-3, 3);
+  
 
+  TF1 f("f1","gaus");
+
+  m_Residual->Fit(&f);
+
+  m_outputl.set_residual( f.GetParameter("Sigma"));
+  m_outputl.set_offset(f.GetParameter("Mean"));
   m_outputTree->fill();
   return true;
 }
 
 bool s_process_files::process()
 {
-  TFile* _file1 = new TFile("dummy.root", "recreate");
+  TCanvas c;
+  
+  TFile* _file1 = new TFile(m_outname.c_str(), "recreate");
 
   m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(m_outputl, &m_buffer, true);
+  m_outputTree->getTTree()->SetDirectory(_file1->GetDirectory("/"));
   for (auto &e : m_files)
   {
+    m_outputl.reset();
     m_outputl.set_RunNumber(e.m_runNumber);
     m_outputl.set_Threshold(e.m_Threshold);
+    m_outputl.set_HV(e.m_HV);
     process(e.m_file);
 
   }
+  _file1->Write();
   return true;
 }
 
@@ -122,16 +159,16 @@ bool s_process_files::process()
 
 Int_t s_process_files::DrawResidual(Double_t min_X, Double_t max_X)
 {
-  
- return m_plotCollection->Draw(m_output_planes.get("nearest_strip_distance"), S_DrawOption().draw_x().cut_x(min_X,max_X));
+  m_Residual = std::make_shared<TH1D>("residual", "residual", 100, min_X, max_X);
+ return m_plotCollection->Draw(m_output_planes.get("nearest_strip_distance"), S_DrawOption().draw_x().cut_x(min_X,max_X).output_object(m_Residual.get()));
 }
 
 
 
 Int_t s_process_files::DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X)
 {
-  TH2D* h2 = new TH2D("h2", "adsad", 100, min_X, max_X, 100, 0, 0);
-  return m_plotCollection->Draw(m_output_planes.get("hitmap"), S_DrawOption().draw_y_VS_x().cut_x(min_X,max_X).output_object(h2).opt_colz());
+  m_resVSMissing = std::make_shared<TH2D>("h2", "adsad", 100, 0, 0, 100, min_X, max_X);
+  return m_plotCollection->Draw(m_output_planes.get("hitmap"), S_DrawOption().draw_x_VS_y().cut_x(min_X, max_X).output_object(m_resVSMissing.get()).opt_colz());
   
 }
 

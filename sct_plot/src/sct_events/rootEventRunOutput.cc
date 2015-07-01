@@ -91,6 +91,11 @@ namespace sct_corr{
     *m_Threshold = thr;
   }
 
+  void rootEventRunOutput::set_HV(double HV__)
+  {
+    *m_HV = HV__;
+  }
+
   void rootEventRunOutput::set_residual(double res)
   {
     *m_residual = res;
@@ -104,6 +109,19 @@ namespace sct_corr{
   void rootEventRunOutput::set_RunNumber(double RunNum)
   {
     *m_RunNumber = RunNum;
+  }
+
+  void rootEventRunOutput::reset()
+  {
+    rootEventBase::reset();
+    *m_totalNumOfEvents = 0;
+    *m_total_efficiency = 0;
+    *m_residual = 0;
+    *m_offset = 0;
+    *m_Threshold = 0;
+    *m_RunNumber = 0;
+    *m_HV = 0;
+
   }
 
 }

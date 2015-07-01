@@ -56,7 +56,7 @@ namespace sct_corr{
     std::vector<double>* getData(axis_def ax) const;
     std::vector<std::string> getDataNames() const;
     const char* getName() const;
-    void reset();
+    virtual void reset();
 #ifdef _DEBUG
     void loadFromVector();
     void PushToVector() const;

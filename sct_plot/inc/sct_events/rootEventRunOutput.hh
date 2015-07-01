@@ -17,9 +17,11 @@ namespace sct_corr{
     void set_TotalNumOfEvents(double numOfEvents);
     void set_Total_efficiency(double effi);
     void set_Threshold(double thr);
+    void set_HV(double HV__);
     void set_residual(double res);
     void set_offset(double offset);
     void set_RunNumber(double RunNum);
+    virtual void reset();
   private:
 
     std::shared_ptr<double> m_totalNumOfEvents ;

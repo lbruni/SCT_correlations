@@ -20,6 +20,8 @@
 
 #include "s_process_files.h"
 #include "sct_runs.h"
+#include "TF1.h"
+#include "TProfile.h"
 
 
 
@@ -34,6 +36,11 @@
 void SCT_helpers::CutTH2(TH2* h, const S_Cut& cut_)
 {
 
+  if (!h)
+  {
+    std::cout << "Histogram is empty\n";
+    return;
+  }
   Double_t x = 0, y = 0, binContent = 0;
 
   for (Int_t y_bin = 0; y_bin <= h->GetNbinsY(); ++y_bin)
@@ -139,6 +146,15 @@ TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
 Long64_t SCT_helpers::DrawTTree(TTree * tree, const S_DrawOption& opt)
 {
   return opt.Draw(tree);
+}
+
+TF1 SCT_helpers::LinearFit_Of_Profile(TH2D* h2)
+{
+TProfile* p1 = h2->ProfileX();
+TF1 f("f1", "pol1", h2->GetXaxis()->GetBinCenter(0), h2->GetXaxis()->GetBinCenter(h2->GetNbinsX()));
+
+p1->Fit(&f,"Q");
+return f;
 }
 
 s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& plot_prob)

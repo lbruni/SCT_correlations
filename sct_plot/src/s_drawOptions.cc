@@ -47,6 +47,11 @@ S_DrawOption& S_DrawOption::opt_colz()
 
 
 
+S_DrawOption& S_DrawOption::opt_star()
+{
+  return options("*");
+}
+
 S_DrawOption& S_DrawOption::cut(const char* cut_)
 {
   m_cut = cut_;
@@ -130,6 +135,24 @@ S_DrawOption& S_DrawOption::draw_axis(const char* axis_)
 {
   m_axis = axis_;
   return *this;
+}
+
+S_DrawOption& S_DrawOption::draw_axis(axis_def ax)
+{
+  return draw_axis(axis2String(ax));
+}
+
+S_DrawOption& S_DrawOption::draw_axis(axis_def y, axis_def x)
+{
+
+  auto dummy = std::string(axis2String(y)) + std::string(":") + std::string(axis2String(x));
+  return draw_axis( dummy.c_str() );
+}
+
+S_DrawOption& S_DrawOption::draw_axis(axis_def  x1, axis_def x2, axis_def x3)
+{
+  auto dummy = std::string(axis2String(x1)) + std::string(":") + std::string(axis2String(x2)) + std::string(":") + std::string(axis2String(x3));
+  return draw_axis(dummy.c_str());
 }
 
 S_DrawOption& S_DrawOption::draw_x()

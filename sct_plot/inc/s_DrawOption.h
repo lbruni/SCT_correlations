@@ -17,6 +17,7 @@ public:
   S_DrawOption();
   S_DrawOption& options(const char* option);
   S_DrawOption& opt_colz();
+  S_DrawOption& opt_star();
   S_DrawOption& cut(const char* cut_);
   S_DrawOption& cut_min(axis_def ax,Double_t min_);
   S_DrawOption& cut_max(axis_def ax, Double_t max_);
@@ -29,6 +30,9 @@ public:
   S_DrawOption& cut_y_min(Double_t min_);
   S_DrawOption& cut_y_max(Double_t max_);
   S_DrawOption& draw_axis(const char* axis_);
+  S_DrawOption& draw_axis(axis_def);
+  S_DrawOption& draw_axis(axis_def,axis_def);
+  S_DrawOption& draw_axis(axis_def,axis_def,axis_def);
   S_DrawOption& draw_x();
   S_DrawOption& draw_y();
   S_DrawOption& draw_x_VS_y();

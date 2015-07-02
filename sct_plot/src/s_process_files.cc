@@ -144,6 +144,7 @@ bool s_process_files::process()
   m_outputTree->getTTree()->SetDirectory(_file1->GetDirectory("/"));
   for (auto &e : m_files)
   {
+    std::cout << "processing file:  "<<e.m_file->GetName() << std::endl;
     m_outputl.reset();
     m_outputl.set_RunNumber(e.m_runNumber);
     m_outputl.set_Threshold(e.m_Threshold);

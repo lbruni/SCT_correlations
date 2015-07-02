@@ -39,6 +39,7 @@ public:
   Int_t Draw_Efficinecy_map();
   Int_t Draw_Hit_map();
   Int_t Draw_DUT_Hits_map();
+  TH2D* getResidualVsMissingCordinate();
 #ifndef __CINT__
   void extract_hitMap();
   bool process(TFile* file);

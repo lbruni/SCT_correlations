@@ -126,7 +126,7 @@ bool s_process_files::process(TFile* file)
 
   TF1 f("f1","gaus");
 
-  m_Residual->Fit(&f);
+  m_Residual->Fit(&f,"Q");
 
   m_outputl.set_residual( f.GetParameter("Sigma"));
   m_outputl.set_offset(f.GetParameter("Mean"));
@@ -196,6 +196,11 @@ Int_t s_process_files::Draw_DUT_Hits_map()
 {
   m_Hits_with_DUT_Hits = std::make_shared<TH1D>("DUT", "DUT", m_bins, 0 - 0.5, m_bins - 0.5);
   return m_plotCollection->Draw(m_output_planes.get("nearest_strip_plane2"), S_DrawOption().draw_x().output_object(m_Hits_with_DUT_Hits.get()));
+}
+
+TH2D* s_process_files::getResidualVsMissingCordinate()
+{
+  return m_resVSMissing.get();
 }
 
 void s_process_files::pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents)

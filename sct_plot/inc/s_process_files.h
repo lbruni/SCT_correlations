@@ -35,6 +35,7 @@ public:
 
   bool process();
   Int_t DrawResidual(Double_t min_X,Double_t max_X);
+  Int_t DrawResidual();
   Int_t DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X);
   Int_t Draw_Efficinecy_map();
   Int_t Draw_Hit_map();
@@ -56,10 +57,29 @@ public:
   std::shared_ptr<S_plot_collection> m_plotCollection;
   class FileProberties{
   public:
-    TFile* m_file;
+    TFile* getTfile() const{
+      if (m_fileOwnd){
+        return m_fileOwnd.get();
+      }
+
+      if (m_file)
+      {
+        return m_file;
+      }
+      return nullptr;
+    }
+    void setTFile(TFile* file){
+      m_file = file;
+    }
+    void setTFile(std::shared_ptr<TFile> file){
+      m_fileOwnd = file;
+    }
     double m_Threshold = 0;
     double m_runNumber = 0;
     double m_HV = 0;
+  private:
+    std::shared_ptr<TFile> m_fileOwnd;
+    TFile* m_file =nullptr;
   };
   std::vector<FileProberties> m_files;
   sct_corr::rootEventRunOutput m_outputl;

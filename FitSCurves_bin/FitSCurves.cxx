@@ -61,6 +61,14 @@ public:
     f.setStartGaussSigma(m_start_gaus_sigma);
     f.setStartLandauMean(m_start_mean);
     f.setStartLandauSigma(m_start_landau_sigma);
+    f.setLimits_GaussSigma(m_gaus_sigma_lower_boundary, 1000);
+    
+  }
+  void check(){
+    if (f.getLandauSigma() == m_gaus_sigma_lower_boundary)
+    {
+      std::cout << "fit hit boundary \n";
+    }
   }
   void push_to_file(){
     m_out << f.getAmplitude() << ";  " << f.getLandauMostProbable() << ";   " << f.getLandauSigma() << ";   " << f.getGaussSigma() << ";  " << f.getChiSqare() << std::endl;
@@ -122,8 +130,9 @@ public:
   TTree *m_tree = nullptr;
   double m_start_amp = 1,
     m_start_mean = 8.79884,
-    m_start_gaus_sigma = 2.36465,
-    m_start_landau_sigma = 0.386907;
+    m_start_gaus_sigma = 30,
+    m_start_landau_sigma = 0.386907,
+    m_gaus_sigma_lower_boundary = 10;
   bool m_use_total_efficiency_fit_as_start = true;
   TGraph g;
   landgausFit f;

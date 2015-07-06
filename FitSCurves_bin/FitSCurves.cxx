@@ -31,6 +31,7 @@ class process_collection{
 public:
   process_collection(const char* outputFileName) : m_out(outputFileName){
 
+    
     setStartValues();
   }
   void setBeamRuns(TTree* noise){
@@ -56,7 +57,7 @@ public:
       setStartValues();
   }
   void setStartValues(){
-
+    f.setLimits_Amplitude(0.7, 1.0);
     f.setStartAmplitude(m_start_amp);
     f.setStartGaussSigma(m_start_gaus_sigma);
     f.setStartLandauMean(m_start_mean);
@@ -84,17 +85,17 @@ public:
     m_use_total_efficiency_fit_as_start = false;
   }
   void processTotal(const char * total_name){
-    SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis(total_name).opt_star());
+    SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis(total_name).opt_star().cut(m_threshold_Cut.c_str()));
     f(&g);
     f.printResults();
     if (m_use_total_efficiency_fit_as_start)
     {
       m_start_amp = f.getAmplitude();
-      m_start_gaus_sigma = f.getGaussSigma();
-      m_start_landau_sigma = f.getLandauSigma();
+
       m_start_mean = f.getLandauMostProbable();
     }
-
+    m_start_gaus_sigma = f.getGaussSigma();
+    m_start_landau_sigma = f.getLandauSigma();
     saveCanvas(0);
     push_to_file();
     setStartValues();
@@ -113,19 +114,20 @@ public:
         std::cout << "process channel: " << i << " of " << max__ << std::endl;
       }
       setStartValues();
-      SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis("Occupancy:Threshold").opt_star().cut(x, i - 0.5, i + 0.5));
+      SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis("Occupancy:Threshold").opt_star().cut(m_threshold_Cut.c_str()).cut(x, i - 0.5, i + 0.5));
       if (g.GetN() == 0)
       {
         push_to_file_emtpyEvent();
         continue;
       }
-      auto d = std::max_element(g.GetY(), g.GetY() + g.GetN());
+      auto d = std::max_element(g.GetY()+1, g.GetY() + g.GetN());
 
       if (*d < 0.5)
       {
         push_to_file_emtpyEvent();
         continue;
       }
+
       f(&g);
      // f.printResults();
 
@@ -146,6 +148,7 @@ public:
   TCanvas m_c;
   landgausFit f;
   std::ofstream m_out;
+  std::string m_threshold_Cut;
 };
 
 int main(int argc, char **argv) {

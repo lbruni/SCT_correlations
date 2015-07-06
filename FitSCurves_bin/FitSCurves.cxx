@@ -70,6 +70,11 @@ public:
     m_out << 0 << ";  " << 0 << ";   " << 0 << ";   " << 0 << ";   " << 0 << std::endl;
 
   }
+  void setStartMPV(double mpv){
+
+    m_start_mean = mpv;
+    m_use_total_efficiency_fit_as_start = false;
+  }
   void processTotal(const char * total_name){
     SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis(total_name).opt_star());
     f(&g);

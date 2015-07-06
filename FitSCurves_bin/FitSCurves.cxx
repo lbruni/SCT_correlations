@@ -155,15 +155,21 @@ int main(int argc, char **argv) {
 
  // TApplication theApp("App", &argc, argv);
   if (argc!=2)
+  }
+  if (argc!=3)
   {
     std::cout << "wrong input arguments  \n \n ";
-    std::cout << "FitSCurves example.root" << std::endl;
+    std::cout << "FitSCurves example.root  80" << std::endl;
     return -1;
   }
   std::string inFile(argv[1]);
   std::cout << "opening file: " << inFile << std::endl;
   TFile* _file0 = new TFile(argv[1]);
-
+  if (!_file0->IsOpen())
+  {
+    std::cout << "Unable to Open the File    \n ";
+    return -3;
+  }
   auto outfile =inFile.substr(0, inFile.size() - 5);
   outfile += "_scurve.txt";
   std::cout << outfile << std::endl;
@@ -176,14 +182,17 @@ int main(int argc, char **argv) {
     return -2;
     
   }
-
+  gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 
 
   TCanvas c;
   
   process_collection p(outfile.c_str());
-
-
+  
+  std::string mpv(argv[2]);
+  std::cout << mpv << std::endl;
+  double mpv_d= atof(mpv.c_str());
+  p.setStartMPV(mpv_d);
   if (noise)
   {
     p.setNoiseRun(noise);

@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
   }
 
   p.processTotal("total_efficiency:Threshold");
-  p.processStrip("Occupancy:Threshold", x_axis_def, 0, 400);
+  p.processStrip("Occupancy:Threshold", x_axis_def, 1, 400);
 
   return 0;
 }

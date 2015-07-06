@@ -36,19 +36,23 @@ public:
   void setBeamRuns(TTree* noise){
     m_use_total_efficiency_fit_as_start = true;
     m_start_amp = 1;
-    m_start_mean = 80;
-    m_start_gaus_sigma = 2.36465;
-    m_start_landau_sigma = 20;
+    m_start_mean = 110;
+    m_start_gaus_sigma =  30;
+    m_start_landau_sigma = 2.3;
+    m_gaus_sigma_lower_boundary = 10;
     m_tree = noise;
+    m_threshold_Cut = "Threshold>=25";
     setStartValues();
   }
   void setNoiseRun(TTree* hits){
       m_start_amp = 1;
       m_start_mean = 8;
-      m_start_gaus_sigma = 2;
+      m_start_gaus_sigma = 4;
       m_start_landau_sigma = 0.4;
+      m_gaus_sigma_lower_boundary = 1;
       m_use_total_efficiency_fit_as_start = false;
       m_tree = hits;
+      m_threshold_Cut = "Threshold>=0";
       setStartValues();
   }
   void setStartValues(){

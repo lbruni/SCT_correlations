@@ -54,7 +54,8 @@ S_DrawOption& S_DrawOption::opt_star()
 
 S_DrawOption& S_DrawOption::cut(const char* cut_)
 {
-  m_cut = cut_;
+  TCut dummy = cut_;
+  m_cut =m_cut&& dummy;
   return *this;
 }
 

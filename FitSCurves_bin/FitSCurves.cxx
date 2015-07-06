@@ -95,8 +95,14 @@ public:
       m_start_mean = f.getLandauMostProbable();
     }
 
+    saveCanvas(0);
     push_to_file();
     setStartValues();
+  }
+  void saveCanvas(int channel){
+    f.DrawfitFunction();
+    std::string outname = "Scurve_Channel_" + std::to_string(channel) + ".png";
+    m_c.SaveAs(outname.c_str());
   }
   void processStrip(const char* stripName, axis_def x, double min__, double max__){
 
@@ -122,6 +128,8 @@ public:
       }
       f(&g);
      // f.printResults();
+
+      saveCanvas(i);
       push_to_file();
     }
 
@@ -135,6 +143,7 @@ public:
     m_gaus_sigma_lower_boundary = 10;
   bool m_use_total_efficiency_fit_as_start = true;
   TGraph g;
+  TCanvas m_c;
   landgausFit f;
   std::ofstream m_out;
 };

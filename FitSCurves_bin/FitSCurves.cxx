@@ -26,11 +26,13 @@
 #include <fstream>
 
 
+#include "tclap/CmdLine.h"
+#include "tclap/ArgException.h"
+#include <string>
 
 class process_collection{
 public:
   process_collection(const char* outputFileName) : m_out(outputFileName){
-
     
     setStartValues();
   }
@@ -150,60 +152,73 @@ public:
   std::ofstream m_out;
   std::string m_threshold_Cut;
 };
-
+using namespace std;
+using namespace TCLAP;
 int main(int argc, char **argv) {
 
  // TApplication theApp("App", &argc, argv);
-  if (argc!=2)
+
+  try {
+
+    CmdLine cmd("SCurve Fit", ' ', "0.1");
+    ValueArg<std::string> FileNameArg("f", "inFile", "filename", true, "", "string");
+    cmd.add(FileNameArg);
+    ValueArg<std::string> outFilename("o", "outFile", "output filename", false, "", "string");
+    cmd.add(outFilename);
+    ValueArg<double> MPV_arg("m", "mpv", "start value for the landau gauss fit", false, 80, "double");
+    cmd.add(MPV_arg);
+    cmd.parse(argc, argv);
+   
+
+
+    std::string inFile = FileNameArg.getValue();
+
+    std::string outfile;
+    if (!outFilename.isSet()){
+      outfile = inFile.substr(0, inFile.size() - 5);
+      outfile += "_scurve.txt";
+    }
+    else{
+      outfile = outFilename.getValue();
+    }
+    std::cout << outfile << std::endl;
+
+    TFile _file0(inFile.c_str());
+    if (!_file0.IsOpen())
+    {
+      std::cout << "Unable to Open the File    \n ";
+      return -3;
+    }
+
+    TTree* noise = (TTree*)_file0.Get("hitmap");
+    TTree* Hits = (TTree*)_file0.Get("out");
+
+    if (!noise&&!Hits)
+    {
+      std::cout << "TTree not found " << std::endl;
+      return -2;
+
+    }
+    process_collection p(outfile.c_str());
+    p.setStartMPV(MPV_arg.getValue());
+    if (noise)
+    {
+      p.setNoiseRun(noise);
+    }
+    else if (Hits)
+    {
+      p.setBeamRuns(Hits);
+    }
+    gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
+    p.processTotal("total_efficiency:Threshold");
+    p.processStrip("Occupancy:Threshold", x_axis_def, 1, 400);
+    return 0;
   }
-  if (argc!=3)
+  catch (ArgException &e)  // catch any exceptions
   {
-    std::cout << "wrong input arguments  \n \n ";
-    std::cout << "FitSCurves example.root  80" << std::endl;
+    cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     return -1;
   }
-  std::string inFile(argv[1]);
-  std::cout << "opening file: " << inFile << std::endl;
-  TFile* _file0 = new TFile(argv[1]);
-  if (!_file0->IsOpen())
-  {
-    std::cout << "Unable to Open the File    \n ";
-    return -3;
-  }
-  auto outfile =inFile.substr(0, inFile.size() - 5);
-  outfile += "_scurve.txt";
-  std::cout << outfile << std::endl;
-  landgausFit f;
-  TTree* noise = (TTree*)_file0->Get("hitmap");
-  TTree* Hits = (TTree*)_file0->Get("out");
-  if (!noise&&!Hits)
-  {
-    std::cout << "TTree not found " << std::endl;
-    return -2;
-    
-  }
-  gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
-
-
-  TCanvas c;
-  
-  process_collection p(outfile.c_str());
-  
-  std::string mpv(argv[2]);
-  std::cout << mpv << std::endl;
-  double mpv_d= atof(mpv.c_str());
-  p.setStartMPV(mpv_d);
-  if (noise)
-  {
-    p.setNoiseRun(noise);
-  }
-  else if (Hits)
-  {
-    p.setBeamRuns(Hits);
-  }
-
-  p.processTotal("total_efficiency:Threshold");
-  p.processStrip("Occupancy:Threshold", x_axis_def, 1, 400);
 
   return 0;
 }

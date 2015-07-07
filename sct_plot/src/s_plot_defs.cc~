@@ -1,0 +1,50 @@
+
+#include <iostream>
+#include <atomic>
+
+<<<<<<< HEAD
+#include "s_plot.h"
+=======
+>>>>>>> removed atomic
+int g_plot_count =0;
+
+S_plot_def::S_plot_def(const char* type, const char* name, plot_save_option_def save_option) :m_type(type), m_name(name), m_save2disk(save_option==save_to_disk)
+{
+  if (m_name.empty())
+  {
+    m_name = m_type + std::to_string(g_plot_count++);
+  }
+}
+
+
+void S_plot_def::setParameter(const char* tag, const char* value)
+{
+  m_tags[tag] = value;
+}
+
+void S_plot_def::setParameter(const std::string & tag, const std::string& value)
+{
+  m_tags[tag] = value;
+}
+
+const char * S_plot_def::getParameter(const char* tag, const char* default_value)
+{
+  auto it = m_tags.find(tag);
+  if (it == m_tags.end())
+  {
+    return default_value;
+  }
+
+  return it->second.c_str();
+}
+
+std::string S_plot_def::getParameter(const std::string & tag, const std::string & default_value)
+{
+  auto it = m_tags.find(tag);
+  if (it == m_tags.end())
+  {
+    return default_value;
+  }
+
+  return it->second;
+}

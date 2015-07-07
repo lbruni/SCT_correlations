@@ -1,7 +1,7 @@
 #ifndef rootEvent_Track_hits_h__
 #define rootEvent_Track_hits_h__
 #include "rootEventBase.hh"
-#include "internal\plane_hit.hh"
+#include "internal/plane_hit.hh"
 #include <memory>
 namespace sct_corr{
   class rootEvent_Track_hits :public rootEventBase{

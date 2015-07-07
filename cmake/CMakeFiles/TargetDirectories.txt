@@ -1,0 +1,2 @@
+/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/cmake/main/CMakeFiles/main.dir
+/Users/lucreziastellabruni/Dropbox/SCt_correlations/SCT_correlations/cmake/sct_plot/CMakeFiles/SCT_plot.dir

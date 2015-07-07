@@ -16,7 +16,7 @@
 #include <vector>
 #include "Rtypes.h"
 #include "sct_event_buffer.h"
-#include "sct_events\rootEventBase.hh"
+#include "sct_events/rootEventBase.hh"
 #ifdef _DEBUG
   class Hit_extractor;
   class Hit_output;

@@ -1,7 +1,8 @@
 FIND_PACKAGE( ROOT REQUIRED)
+find_package(TCLAP REQUIRED)
 
 
-INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} )
+INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} ${TCLAP_INCLUDE_DIR} )
 
 add_executable(main    main.cxx  )
 set_property(TARGET main   PROPERTY PROJECT_LABEL "bin_main") 

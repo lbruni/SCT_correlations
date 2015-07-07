@@ -12,8 +12,7 @@
 	</globalConfig>
 
 <fileList>
-  <file><name value="run000823-fitter.root"/><threshold value="20"/><runNumber value="823"/><HV value="150"/>	</file>  
-  
+ 
   <file><name value="run000824-fitter.root"/><threshold value="35"/><runNumber value="824"/><HV value="150"/>	</file>  
   <file><name value="run000704-fitter.root"/><threshold value="50"/><runNumber value="704"/><HV value="150"/>	</file>  
   <file><name value="run000705-fitter.root"/><threshold value="65"/><runNumber value="705"/><HV value="150"/>	</file>  

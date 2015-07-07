@@ -8,10 +8,8 @@
 #include "s_plot_prob.h"
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"
-#ifndef __CINT__
-#include <memory>
-#include <vector>
-#endif
+#include "TH2.h"
+
 
 #include "TTree.h"
 #include "TFile.h"
@@ -19,9 +17,14 @@
 
 #include "TH1.h"
 #include "TString.h"
-
+#include "TF1.h"
 #include "Rtypes.h"
 #include "TCut.h"
+
+#ifndef __CINT__
+#include <memory>
+#include <vector>
+#endif
 
 
 class TH2D;

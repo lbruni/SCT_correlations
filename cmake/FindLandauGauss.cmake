@@ -5,8 +5,8 @@
 MESSAGE( STATUS "Searching for LandauGauss:" )
 find_path(LANDAUGAUS_INCLUDE_DIR_dummy landgausFit.h  
           HINTS ${PROJECT_SOURCE_DIR}/extern/LandauGaus/include/ 
-          "${LANDAUGAUS}/include" 
-          "$ENV{LANDAUGAUS}/include"  
+          "${LANDAUGAUS}/main/include" 
+          "$ENV{LANDAUGAUS}/main/include"  
           )
 MESSAGE( STATUS "LANDAUGAUS_INCLUDE_DIR_dummy: ${LANDAUGAUS_INCLUDE_DIR_dummy}" )
 

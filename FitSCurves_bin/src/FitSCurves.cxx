@@ -4,7 +4,7 @@
 
 
 
-#include "../sct_plot/inc/sct_plots.h"
+#include "sct_plots.h"
 #include <iostream>
 #include "TCanvas.h"
 #include "TMath.h"
@@ -14,21 +14,20 @@
 #include "TFitResult.h"
 #include "TF1.h"
 #include "TBenchmark.h"
-#include "../sct_plot/inc/s_plane.h"
-#include "../sct_plot/inc/s_plot_collection.h"
-#include "../sct_plot/inc/s_DrawOption.h"
-#include "../sct_plot/inc/s_cuts.h"
+#include "s_plane.h"
+#include "s_plot_collection.h"
+#include "s_DrawOption.h"
+#include "s_cuts.h"
 #include "TGraph.h"
-#include "../sct_plot/inc/s_process_files.h"
-#include "../sct_plot/inc/sct_runs.h"
+#include "s_process_files.h"
+#include "sct_runs.h"
 #include "landgausFit.h"
 #include <algorithm>
 #include <fstream>
-
-
 #include "tclap/CmdLine.h"
 #include "tclap/ArgException.h"
 #include <string>
+//#include "FitScurveHelper.h"
 
 class process_collection{
 public:

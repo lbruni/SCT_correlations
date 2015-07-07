@@ -15,6 +15,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/CMakeCompatibility.cmake)
 # Determine platform- and compiler-specific settings
 include(${PROJECT_SOURCE_DIR}/cmake/Platform.cmake)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 
 
 
@@ -29,17 +30,20 @@ SET(CMAKE_INSTALL_PREFIX "${INSTALL_PREFIX}" CACHE INTERNAL "Prefix prepended to
 # include directories
 INCLUDE_DIRECTORIES( ./sct_plot/inc )
 
+
+set(SCT_PLOTS_INCLUDES ${PROJECT_SOURCE_DIR}/sct_plot/inc)
+
 # additional packages to be searched for by cmake
 LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
 
 
 
-# build SCOM  library
 add_subdirectory(sct_plot)
 
 add_subdirectory(main)
 
+add_subdirectory(FitSCurves_bin)
 #######################################################
 # Print out system information useful for bug reports #
 ############################################### #######

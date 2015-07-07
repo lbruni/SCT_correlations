@@ -22,7 +22,7 @@ set(LANDAUGAUS_DEFINITIONS "-DUSE_LANDAUGAUS" )
 
 include(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(LCIO  DEFAULT_MSG
-                                  LCIO_LIBRARY LCIO_INCLUDE_DIR)
+find_package_handle_standard_args(LANDAUGAUSS  DEFAULT_MSG
+                                  LANDAUGAUS_LIBRARY LANDAUGAUS_INCLUDE_DIR)
                                   
                                   

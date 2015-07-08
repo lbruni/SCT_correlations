@@ -4,7 +4,7 @@
 
 #include "internal/platform.hh"
 #include "s_plot.h"
-#include "s_axis.h"
+#include "S_Axis.h"
 #include "s_plot_prob.h"
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"

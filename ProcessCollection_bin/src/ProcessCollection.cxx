@@ -1,6 +1,5 @@
 
 #include "s_process_files.h"
-#include "sct_runs.h"
 #include "TError.h"
 
 #include "rapidxml.hpp"

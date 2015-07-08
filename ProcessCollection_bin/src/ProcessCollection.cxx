@@ -1,6 +1,6 @@
 
-#include "../sct_plot/inc/s_process_files.h"
-#include "../sct_plot/inc/sct_runs.h"
+#include "s_process_files.h"
+#include "sct_runs.h"
 #include "TError.h"
 
 #include "rapidxml.hpp"
@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include "rapidxml.hpp"
-#include "../sct_plot/inc/xml_helpers/xml_util.hh"
+#include "xml_helpers/xml_util.hh"
 #include "tclap/CmdLine.h"
 
 using namespace xml_util;

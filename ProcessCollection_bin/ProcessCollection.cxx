@@ -134,9 +134,7 @@ int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__,
     return -1;
   }
   auto collname = xml_imput.globalConfig().CollectionName();
-  outputPath += "/";
-  outputPath += collname;
-  outputPath += ".root";
+  outputPath += "/" + collname + ".root";
 
   p.setOutputName(outputPath.c_str());
 

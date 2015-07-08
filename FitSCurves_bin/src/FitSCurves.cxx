@@ -20,14 +20,14 @@
 #include "s_cuts.h"
 #include "TGraph.h"
 #include "s_process_files.h"
-#include "sct_runs.h"
+
 #include "landgausFit.h"
 #include <algorithm>
 #include <fstream>
 #include "tclap/CmdLine.h"
 #include "tclap/ArgException.h"
 #include <string>
-//#include "FitScurveHelper.h"
+
 
 class process_collection{
 public:

@@ -44,6 +44,7 @@ add_subdirectory(sct_plot)
 add_subdirectory(main)
 
 add_subdirectory(FitSCurves_bin)
+add_subdirectory(ProcessCollection_bin)
 #######################################################
 # Print out system information useful for bug reports #
 ############################################### #######

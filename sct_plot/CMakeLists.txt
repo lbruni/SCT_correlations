@@ -26,7 +26,6 @@ ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_collection.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_prob.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_treeCollection.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_process_files.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_runs.h
   ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots_LinkDef.h
   )
 

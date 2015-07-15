@@ -14,6 +14,7 @@ enum  axis_def
   phi_axis_def,
   theta_axis_def,
   Occupancy_axis_def,
+  Occupancy_error_axis_def,//lb
   NumOfEvents_axis_def
 };
 const char* axis2String(axis_def ax);

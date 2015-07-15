@@ -18,6 +18,7 @@ public:
   S_DrawOption& options(const char* option);
   S_DrawOption& opt_colz();
   S_DrawOption& opt_star();
+  S_DrawOption& opt_bar();
   S_DrawOption& cut(const char* cut_);
   S_DrawOption& cut_min(axis_def ax,Double_t min_);
   S_DrawOption& cut_max(axis_def ax, Double_t max_);
@@ -45,6 +46,7 @@ public:
 private:
 #ifndef __CINT__
   void push_output_to_TGraph(Long64_t numberOfPoints,TTree* output_tree)const;
+     void push_output_to_TGraphErrors(Long64_t numberOfPoints,TTree* output_tree)const;
   std::string m_options = "colz", m_axis = "x:y";
   TCut m_cut;
   TObject* m_output_object = nullptr;

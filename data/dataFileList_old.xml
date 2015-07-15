@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunCollection>
+	<globalConfig>
+		  <CollectionName value="DEVICE_1_ASIC_on_Position_7_Jim_350V"/>
+           <NumberOfBins value="400"/>
+		   <YCut min="-4" max="2"/>
+		   <Device value="1"/>
+		   <AvtiveStrips min="280" max="360"/>
+		   <Rotation value="0.0171112"/>
+		   <Position name="position 7" value="3.16097e+002"/>
+		     
+	</globalConfig>
+
+<fileList>
+ 
+  
+ <file><name value="fitter703.root"/><threshold value="50"/><runNumber value="703"/><HV value="350"/>	</file>  
+ <file><name value="fitter688.root"/><threshold value="65"/><runNumber value="688"/><HV value="350"/>	</file>  
+ <file><name value="fitter689.root"/><threshold value="80"/><runNumber value="689"/><HV value="350"/>	</file>  
+ <file><name value="fitter690.root"/><threshold value="95"/><runNumber value="690"/><HV value="350"/>	</file>  
+ <file><name value="fitter691.root"/><threshold value="110"/><runNumber value="691"/><HV value="350"/>	</file>  
+ <file><name value="fitter692.root"/><threshold value="125"/><runNumber value="692"/><HV value="350"/>	</file>  
+ <file><name value="fitter693.root"/><threshold value="140"/><runNumber value="693"/><HV value="350"/>	</file>  
+ <file><name value="fitter694.root"/><threshold value="155"/><runNumber value="694"/><HV value="350"/>	</file>  
+  
+
+</fileList>
+
+	
+	
+</RunCollection>

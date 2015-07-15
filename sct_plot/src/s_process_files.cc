@@ -2,7 +2,8 @@
 #include "TFile.h"
 #include "sct_plots.h"
 #include "s_plane.h"
-
+#include <string>
+#include <iostream>
 #include "treeCollection.h"
 #include "TF1.h"
 #include "TCanvas.h"
@@ -88,12 +89,16 @@ void s_process_files::SetNumberOfBins(Int_t bins)
 
 void s_process_files::extract_hitMap()
 {
+    
   for (Int_t i = 0; i < m_Efficieny_map->GetNbinsX(); ++i)
   {
     pushChannel(m_Efficieny_map->GetBinCenter(i), 1,
       m_Efficieny_map->GetBinContent(i),
-      m_Hits_total->GetBinContent(i)
+      m_Hits_total->GetBinContent(i), sqrt( (m_Efficieny_map->GetBinContent(i))*(1-m_Efficieny_map->GetBinContent(i))*(1/( m_Hits_total->GetBinContent(i))))
       );
+      std::cout<<" pluto : "<<m_outputl.getData(Occupancy_axis_def)->at(i)<<std::endl;
+      std::cout<<"  paperino: "<<m_outputl.getData(NumOfEvents_axis_def)->at(i)<<std::endl;
+      std::cout<<"N: "<<i<<"x: "<<m_outputl.getData(x_axis_def)->at(i)<<std::endl;
   }
 }
 
@@ -126,9 +131,12 @@ bool s_process_files::process(TFile* file)
   //std::cout << pl->Draw(cor.get("nearest_strip_plane2"), S_DrawOption().cut_x(280, 360)) << std::endl;
   double DUTHits = m_plotCollection->Draw(cor.get("nearest_strip_plane2"), S_DrawOption().cut_x(m_active_area_x_min, m_active_area_x_max));
 
+    m_outputl.set_Total_efficiency(DUTHits/ totalHits);
+    //Sigma = sqrt( p*(1-p)/N)
+    m_outputl.set_Error_efficiency( sqrt( (DUTHits/totalHits)*(1-(DUTHits/totalHits))*(1/totalHits) ) );//LB
+    std::cout<<"Error eff:   "<<sqrt( (DUTHits/totalHits)*(1-(DUTHits/totalHits))*(1/totalHits))<<std::endl;
 
-  m_outputl.set_Total_efficiency(DUTHits/ totalHits);
-  DrawResidual(-3, 3);
+    DrawResidual(-3, 3);
   
 
   TF1 f("f1","gaus");
@@ -220,12 +228,17 @@ TH2D* s_process_files::getResidualVsMissingCordinate()
   return m_resVSMissing.get();
 }
 
-void s_process_files::pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents)
+void s_process_files::pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Error_Effi)
 {
+    
+    //Fill the vectors Occupancy_axis_def and so on
   m_outputl.getData(x_axis_def)->push_back(channel_x);
   m_outputl.getData(y_axis_def)->push_back(channel_y);
   m_outputl.getData(Occupancy_axis_def)->push_back(Effi);
+  m_outputl.getData(Occupancy_error_axis_def)->push_back(Error_Effi);//LB
   m_outputl.getData(NumOfEvents_axis_def)->push_back(NumberOfEvents);
   m_outputl.getData(getIDString())->push_back(0);
+    
+    
 }
 

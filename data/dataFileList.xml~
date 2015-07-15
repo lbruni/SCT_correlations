@@ -25,6 +25,8 @@
   <file><name value="run000694-fitter.root"/><threshold value="155"/><runNumber value="694"/><HV value="350"/></file>  
   <file><name value="run000695-fitter.root"/><threshold value="170"/><runNumber value="695"/><HV value="350"/></file>  
   <file><name value="run000696-fitter.root"/><threshold value="185"/><runNumber value="696"/><HV value="350"/></file>  
+  <file><name value="run000697-fitter.root"/><threshold value="200"/><runNumber value="697"/><HV value="350"/></file>  
+  <file><name value="run000698-fitter.root"/><threshold value="215"/><runNumber value="698"/><HV value="350"/></file>  
   <file><name value="run000699-fitter.root"/><threshold value="230"/><runNumber value="699"/><HV value="350"/></file>  
   <file><name value="run000701-fitter.root"/><threshold value="245"/><runNumber value="701"/><HV value="350"/></file>  
 

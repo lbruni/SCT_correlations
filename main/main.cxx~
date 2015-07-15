@@ -20,7 +20,7 @@
 
 void residual_plane3(){
 
-  TFile* _file0 = new TFile("/Users/lucreziastellabruni/fitter703.root");
+  TFile* _file0 = new TFile("C:/Users/Argg/OneDrive/alibava/new/fitter.root");
   TFile* _file1 = new TFile("test.root", "recreate");
 
   S_plot_collection* pl =new S_plot_collection(_file0);

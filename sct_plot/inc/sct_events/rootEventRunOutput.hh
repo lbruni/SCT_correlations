@@ -16,6 +16,7 @@ namespace sct_corr{
     virtual void Save2Tree(TTree* outputTree) override;
     void set_TotalNumOfEvents(double numOfEvents);
     void set_Total_efficiency(double effi);
+    void set_Error_efficiency(double error_effi);//LB
     void set_Threshold(double thr);
     void set_HV(double HV__);
     void set_residual(double res);
@@ -26,6 +27,7 @@ namespace sct_corr{
 
     std::shared_ptr<double> m_totalNumOfEvents ;
     std::shared_ptr<double> m_total_efficiency ;
+    std::shared_ptr<double> m_error_efficiency ;//LB
     std::shared_ptr<double> m_residual ;
     std::shared_ptr<double> m_offset ;
     std::shared_ptr<double> m_Threshold ;

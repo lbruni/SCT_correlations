@@ -1,12 +1,12 @@
 
 void run(){
-    gSystem->Load("libSCT_plot.dylib");
+    gSystem->Load("../lib/libSCT_plot.dylib");
     gSystem->Load("/Users/lucreziastellabruni/Dropbox/SCt_correlations/landau_gauss/lib/libLandauGaussFit.dylib");
     const char* inFileName="/Users/lucreziastellabruni/fitter694.root";
     TFile* _file0 = new TFile(inFileName);
     TFile* _file1 = new TFile("output694.root","RECREATE");
     
-    S_plot_collection * pl=new  S_plot_collection(_file0);
+    
     const char* name4 = "plot4";
     const char* strip = "strip";
 
@@ -82,6 +82,8 @@ void run(){
     n2 =  pl->Draw(dut_fit_cut(), S_DrawOption().draw_x_VS_y().output_object(h5));
     std::cout << "h5 = " <<n2 << std::endl;
     std::cout<<"eff:  "<<n1/n2<<std::endl;
+    h4->Sumw2();
+    h5->Sumw2();
     c3->cd(3);
     TH2D *h6=(TH2D*)h4->Clone();
     h6->Divide(h5);

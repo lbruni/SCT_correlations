@@ -96,9 +96,6 @@ void s_process_files::extract_hitMap()
       m_Efficieny_map->GetBinContent(i),
       m_Hits_total->GetBinContent(i), sqrt( (m_Efficieny_map->GetBinContent(i))*(1-m_Efficieny_map->GetBinContent(i))*(1/( m_Hits_total->GetBinContent(i))))
       );
-      std::cout<<" pluto : "<<m_outputl.getData(Occupancy_axis_def)->at(i)<<std::endl;
-      std::cout<<"  paperino: "<<m_outputl.getData(NumOfEvents_axis_def)->at(i)<<std::endl;
-      std::cout<<"N: "<<i<<"x: "<<m_outputl.getData(x_axis_def)->at(i)<<std::endl;
   }
 }
 

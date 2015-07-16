@@ -44,7 +44,7 @@ public:
 #ifndef __CINT__
   void extract_hitMap();
   bool process(TFile* file);
-  void pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents);
+    void pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Effi_error);
   Double_t m_rotation = 0,
     m_pitchSize = 0.0742,
     m_pos_x = 0,

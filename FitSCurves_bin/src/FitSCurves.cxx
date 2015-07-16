@@ -19,6 +19,7 @@
 #include "s_DrawOption.h"
 #include "s_cuts.h"
 #include "TGraph.h"
+#include "TGraphErrors.h"
 #include "s_process_files.h"
 
 #include "landgausFit.h"
@@ -31,193 +32,195 @@
 
 class process_collection{
 public:
-  process_collection(const char* outputFileName) : m_out(outputFileName){
+    process_collection(const char* outputFileName) : m_out(outputFileName){
+        
+        setStartValues();
+    }
+    void setBeamRuns(TTree* noise){
+        m_use_total_efficiency_fit_as_start = true;
+        m_start_amp = 1;
+        m_start_mean = 110;
+        m_start_gaus_sigma =  30;
+        m_start_landau_sigma = 2.3;
+        m_gaus_sigma_lower_boundary = 10;
+        m_tree = noise;
+        m_threshold_Cut = "Threshold>=25";
+        setStartValues();
+    }
+    void setNoiseRun(TTree* hits){
+        m_start_amp = 1;
+        m_start_mean = 8;
+        m_start_gaus_sigma = 4;
+        m_start_landau_sigma = 0.4;
+        m_gaus_sigma_lower_boundary = 1;
+        m_use_total_efficiency_fit_as_start = false;
+        m_tree = hits;
+        m_threshold_Cut = "Threshold>=0";
+        setStartValues();
+    }
+    void setStartValues(){
+        f.setLimits_Amplitude(0.7, 1.0);
+        f.setStartAmplitude(m_start_amp);
+        f.setStartGaussSigma(m_start_gaus_sigma);
+        f.setStartLandauMean(m_start_mean);
+        f.setStartLandauSigma(m_start_landau_sigma);
+        f.setLimits_GaussSigma(m_gaus_sigma_lower_boundary, 1000);
+        
+    }
+    void check(){
+        if (f.getLandauSigma() == m_gaus_sigma_lower_boundary)
+        {
+            std::cout << "fit hit boundary \n";
+        }
+    }
+    void push_to_file(){
+        m_out << f.getAmplitude() << ";  " << f.getLandauMostProbable() << ";   " << f.getLandauSigma() << ";   " << f.getGaussSigma() << ";  " << f.getChiSqare() << std::endl;
+        
+    }
+    void push_to_file_emtpyEvent(){
+        m_out << 0 << ";  " << 0 << ";   " << 0 << ";   " << 0 << ";   " << 0 << std::endl;
+        
+    }
+    void setStartMPV(double mpv){
+        
+        m_start_mean = mpv;
+        m_use_total_efficiency_fit_as_start = false;
+    }
     
-    setStartValues();
-  }
-  void setBeamRuns(TTree* noise){
-    m_use_total_efficiency_fit_as_start = true;
-    m_start_amp = 1;
-    m_start_mean = 110;
-    m_start_gaus_sigma =  30;
-    m_start_landau_sigma = 2.3;
-    m_gaus_sigma_lower_boundary = 10;
-    m_tree = noise;
-    m_threshold_Cut = "Threshold>=25";
-    setStartValues();
-  }
-  void setNoiseRun(TTree* hits){
-      m_start_amp = 1;
-      m_start_mean = 8;
-      m_start_gaus_sigma = 4;
-      m_start_landau_sigma = 0.4;
-      m_gaus_sigma_lower_boundary = 1;
-      m_use_total_efficiency_fit_as_start = false;
-      m_tree = hits;
-      m_threshold_Cut = "Threshold>=0";
-      setStartValues();
-  }
-  void setStartValues(){
-    f.setLimits_Amplitude(0.7, 1.0);
-    f.setStartAmplitude(m_start_amp);
-    f.setStartGaussSigma(m_start_gaus_sigma);
-    f.setStartLandauMean(m_start_mean);
-    f.setStartLandauSigma(m_start_landau_sigma);
-    f.setLimits_GaussSigma(m_gaus_sigma_lower_boundary, 1000);
+    ////////////////PROCESS SCURVE EFFICIENCY VS THRESHOLD
+    void processTotal(const char * total_name){
+        TCanvas *canv = new TCanvas("canv","",500,500);
+        setStartValues();
+        SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis(total_name).opt_bar().cut(m_threshold_Cut.c_str()));
+        if (m_use_total_efficiency_fit_as_start)
+        {
+            m_start_amp = f.getAmplitude();
+            
+            m_start_mean = f.getLandauMostProbable();
+        }
+        m_start_gaus_sigma = f.getGaussSigma();
+        m_start_landau_sigma = f.getLandauSigma();
+          
+        f(&g);
+        f.DrawfitFunction(0);
+        push_to_file();
     
-  }
-  void check(){
-    if (f.getLandauSigma() == m_gaus_sigma_lower_boundary)
-    {
-      std::cout << "fit hit boundary \n";
+        
+
     }
-  }
-  void push_to_file(){
-    m_out << f.getAmplitude() << ";  " << f.getLandauMostProbable() << ";   " << f.getLandauSigma() << ";   " << f.getGaussSigma() << ";  " << f.getChiSqare() << std::endl;
-
-  }
-  void push_to_file_emtpyEvent(){
-    m_out << 0 << ";  " << 0 << ";   " << 0 << ";   " << 0 << ";   " << 0 << std::endl;
-
-  }
-  void setStartMPV(double mpv){
-
-    m_start_mean = mpv;
-    m_use_total_efficiency_fit_as_start = false;
-  }
-  void processTotal(const char * total_name){
-    SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis(total_name).opt_star().cut(m_threshold_Cut.c_str()));
-    f(&g);
-    f.printResults();
-    if (m_use_total_efficiency_fit_as_start)
-    {
-      m_start_amp = f.getAmplitude();
-
-      m_start_mean = f.getLandauMostProbable();
+    
+    /////////PROCESS SINGLE STRIP EFF VS THRESHOLD
+    void processStrip(const char* stripName, axis_def x, double min__, double max__){
+        
+        for (double i = min__; i < max__; ++i)
+        {
+            if ((int)i%10==0)
+            {
+                std::cout << "process channel: " << i << " of " << max__ << std::endl;
+            }
+            setStartValues();
+            SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis("Occupancy:Threshold:Occupancy_error").opt_star().cut(m_threshold_Cut.c_str()).cut(x, i - 0.5, i + 0.5));
+            if (g.GetN() == 0)
+            {
+                push_to_file_emtpyEvent();
+                continue;
+            }
+            auto d = std::max_element(g.GetY()+1, g.GetY() + g.GetN());
+            
+            if (*d < 0.5)
+            {
+                push_to_file_emtpyEvent();
+                continue;
+            }
+            
+            f(&g);
+             f.DrawfitFunction(i);
+            push_to_file();
+        }
+        
     }
-    m_start_gaus_sigma = f.getGaussSigma();
-    m_start_landau_sigma = f.getLandauSigma();
-    saveCanvas(0);
-    push_to_file();
-    setStartValues();
-  }
-  void saveCanvas(int channel){
-    f.DrawfitFunction();
-    std::string outname = "Scurve_Channel_" + std::to_string(channel) + ".png";
-    m_c.SaveAs(outname.c_str());
-  }
-  void processStrip(const char* stripName, axis_def x, double min__, double max__){
-
-    for (double i = min__; i < max__; ++i)
-    {
-      if ((int)i%10==0)
-      {
-        std::cout << "process channel: " << i << " of " << max__ << std::endl;
-      }
-      setStartValues();
-      SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis("Occupancy:Threshold").opt_star().cut(m_threshold_Cut.c_str()).cut(x, i - 0.5, i + 0.5));
-      if (g.GetN() == 0)
-      {
-        push_to_file_emtpyEvent();
-        continue;
-      }
-      auto d = std::max_element(g.GetY()+1, g.GetY() + g.GetN());
-
-      if (*d < 0.5)
-      {
-        push_to_file_emtpyEvent();
-        continue;
-      }
-
-      f(&g);
-     // f.printResults();
-
-      saveCanvas(i);
-      push_to_file();
-    }
-
-  }
-
-  TTree *m_tree = nullptr;
-  double m_start_amp = 1,
+    
+    TTree *m_tree = nullptr;
+    double m_start_amp = 1,
     m_start_mean = 8.79884,
     m_start_gaus_sigma = 30,
     m_start_landau_sigma = 0.386907,
     m_gaus_sigma_lower_boundary = 10;
-  bool m_use_total_efficiency_fit_as_start = true;
-  TGraph g;
-  TCanvas m_c;
-  landgausFit f;
-  std::ofstream m_out;
-  std::string m_threshold_Cut;
+    bool m_use_total_efficiency_fit_as_start = true;
+    TGraphErrors g;
+    TGraphErrors pluto;
+    TCanvas m_c;
+    landgausFit f;
+    std::ofstream m_out;
+    std::string m_threshold_Cut;
 };
 using namespace std;
 using namespace TCLAP;
 int main(int argc, char **argv) {
-
- // TApplication theApp("App", &argc, argv);
-
-  try {
-
-    CmdLine cmd("SCurve Fit", ' ', "0.1");
-    ValueArg<std::string> FileNameArg("f", "inFile", "filename", true, "", "string");
-    cmd.add(FileNameArg);
-    ValueArg<std::string> outFilename("o", "outFile", "output filename", false, "", "string");
-    cmd.add(outFilename);
-    ValueArg<double> MPV_arg("m", "mpv", "start value for the landau gauss fit", false, 80, "double");
-    cmd.add(MPV_arg);
-    cmd.parse(argc, argv);
-   
-
-
-    std::string inFile = FileNameArg.getValue();
-
-    std::string outfile;
-    if (!outFilename.isSet()){
-      outfile = inFile.substr(0, inFile.size() - 5);
-      outfile += "_scurve.txt";
+    
+    // TApplication theApp("App", &argc, argv);
+    
+    try {
+        
+        CmdLine cmd("SCurve Fit", ' ', "0.1");
+        ValueArg<std::string> FileNameArg("f", "inFile", "filename", true, "", "string");
+        cmd.add(FileNameArg);
+        ValueArg<std::string> outFilename("o", "outFile", "output filename", false, "", "string");
+        cmd.add(outFilename);
+        ValueArg<double> MPV_arg("m", "mpv", "start value for the landau gauss fit", false, 80, "double");
+        cmd.add(MPV_arg);
+        cmd.parse(argc, argv);
+        
+        
+        
+        std::string inFile = FileNameArg.getValue();
+        
+        std::string outfile;
+        if (!outFilename.isSet()){
+            outfile = inFile.substr(0, inFile.size() - 5);
+            outfile += "_scurve.txt";
+        }
+        else{
+            outfile = outFilename.getValue();
+        }
+        std::cout << outfile << std::endl;
+        
+        TFile _file0(inFile.c_str());
+        if (!_file0.IsOpen())
+        {
+            std::cout << "Unable to Open the File    \n ";
+            return -3;
+        }
+        
+        TTree* noise = (TTree*)_file0.Get("hitmap");
+        TTree* Hits = (TTree*)_file0.Get("out");
+        
+        if (!noise&&!Hits)
+        {
+            std::cout << "TTree not found " << std::endl;
+            return -2;
+            
+        }
+        process_collection p(outfile.c_str());
+        p.setStartMPV(MPV_arg.getValue());
+        if (noise)
+        {
+            p.setNoiseRun(noise);
+        }
+        else if (Hits)
+        {
+            p.setBeamRuns(Hits);
+        }
+        gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
+       p.processTotal("total_efficiency:Threshold:error_efficiency");
+       //p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+        return 0;
     }
-    else{
-      outfile = outFilename.getValue();
-    }
-    std::cout << outfile << std::endl;
-
-    TFile _file0(inFile.c_str());
-    if (!_file0.IsOpen())
+    catch (ArgException &e)  // catch any exceptions
     {
-      std::cout << "Unable to Open the File    \n ";
-      return -3;
+        cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
+        return -1;
     }
-
-    TTree* noise = (TTree*)_file0.Get("hitmap");
-    TTree* Hits = (TTree*)_file0.Get("out");
-
-    if (!noise&&!Hits)
-    {
-      std::cout << "TTree not found " << std::endl;
-      return -2;
-
-    }
-    process_collection p(outfile.c_str());
-    p.setStartMPV(MPV_arg.getValue());
-    if (noise)
-    {
-      p.setNoiseRun(noise);
-    }
-    else if (Hits)
-    {
-      p.setBeamRuns(Hits);
-    }
-    gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
-    p.processTotal("total_efficiency:Threshold");
-    p.processStrip("Occupancy:Threshold", x_axis_def, 1, 400);
+    
     return 0;
-  }
-  catch (ArgException &e)  // catch any exceptions
-  {
-    cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
-    return -1;
-  }
-
-  return 0;
 }

@@ -2,6 +2,7 @@
 #include "TTree.h"
 #include "TH1.h"
 #include "TGraph.h"
+#include "TGraphErrors.h"
 #include <iostream>
 #include "TVirtualPad.h"
 
@@ -51,6 +52,12 @@ S_DrawOption& S_DrawOption::opt_star()
 {
   return options("*");
 }
+
+S_DrawOption& S_DrawOption::opt_bar()
+{
+    return options("AP");
+}
+
 
 S_DrawOption& S_DrawOption::cut(const char* cut_)
 {
@@ -185,66 +192,104 @@ S_DrawOption& S_DrawOption::output_object(TObject* out_)
   m_output_object = out_;
   return *this;
 }
-void S_DrawOption::push_output_to_TGraph(Long64_t numberOfPoints,TTree * tree) const
+////*********Set points to a TGraph
+/*void S_DrawOption::push_output_to_TGraph(Long64_t numberOfPoints,TTree * tree) const
 {
-  if (m_output_object)
-  {
-    auto graph_ = dynamic_cast<TGraph*>(m_output_object);
-    if (graph_)
+    if (m_output_object)
     {
-      if (m_numOfAxis == 1)
-      {
-        graph_->Set(0);
-        TH1* h = dynamic_cast<TH1*>(gPad->GetPrimitive("htemp"));
-        if (h)
+        auto graph_ = dynamic_cast<TGraph*>(m_output_object);
+        if (graph_)
         {
-          graph_->Set(0);
-          for (Int_t i = 0; i < h->GetNbinsX(); ++i)
-          {
-            graph_->SetPoint(i, h->GetBinCenter(i), h->GetBinContent(i));
-          }
-          graph_->SetEditable(false);
+            if (m_numOfAxis == 1)
+            {
+                graph_->Set(0);
+                TH1* h = dynamic_cast<TH1*>(gPad->GetPrimitive("htemp"));
+                if (h)
+                {
+                    graph_->Set(0);
+                    for (Int_t i = 0; i < h->GetNbinsX(); ++i)
+                    {
+                        graph_->SetPoint(i, h->GetBinCenter(i), h->GetBinContent(i));
+                    }
+                    graph_->SetEditable(false);
+                }
+            }
+            else if (m_numOfAxis == 2)
+            {
+                graph_->Set(0);
+                for (Int_t i = 0; i < numberOfPoints; ++i)
+                {
+                    graph_->SetPoint(i, tree->GetV2()[i], tree->GetV1()[i]);
+                }
+                graph_->SetEditable(false);
+            }
         }
-      }
-      else if (m_numOfAxis == 2)
-      {
-        graph_->Set(0);
-        for (Int_t i = 0; i < numberOfPoints; ++i)
-        {
-          graph_->SetPoint(i, tree->GetV2()[i], tree->GetV1()[i]);
-        }
-        graph_->SetEditable(false);
-      }
     }
-  }
+}*/
+////******** Set Points of a TGraphErrors
+void S_DrawOption::push_output_to_TGraphErrors(Long64_t numberOfPoints,TTree * tree) const
+{
+    if (m_output_object)
+    {
+        auto graph_ = dynamic_cast<TGraphErrors*>(m_output_object);
+        if (graph_)
+        {
+            if (m_numOfAxis == 1)
+            {
+                graph_->Set(0);
+                TH1* h = dynamic_cast<TH1*>(gPad->GetPrimitive("htemp"));
+                if (h)
+                {
+                    graph_->Set(0);
+                    for (Int_t i = 0; i < h->GetNbinsX(); ++i)
+                    {
+                        graph_->SetPoint(i, h->GetBinCenter(i), h->GetBinContent(i));
+                    }
+                    graph_->SetEditable(false);
+                }
+            }
+            else if (m_numOfAxis == 2)
+            {
+                graph_->Set(0);
+                for (Int_t i = 0; i < numberOfPoints; ++i)
+                {
+                    graph_->SetPoint(i, tree->GetV2()[i], tree->GetV1()[i]);
+                    graph_->SetPointError(i,0,tree->GetV3()[i]);//<-------------------
+                }
+                graph_->SetEditable(false);
+            }
+        }
+    }
 }
+///////******Draw TGraphErrors / TGraph
 Long64_t S_DrawOption::Draw(TTree * tree) const
 {
-  auto n = tree->Draw(getAxis(), getCut(), getOptions());
-
-  push_output_to_TGraph(n, tree);
-  return n;
+    auto n = tree->Draw(getAxis(), getCut(), getOptions());
+    
+    //push_output_to_TGraph(n, tree);
+    push_output_to_TGraphErrors(n, tree);
+    return n;
 }
 
 const char* S_DrawOption::getOptions() const
 {
-  return m_options.c_str();
+    return m_options.c_str();
 }
 
 const char* S_DrawOption::getAxis() const
 {
-
-
-  m_axis_dummy = m_axis;
-  if (m_output_object)
-  {
-
-    if ( dynamic_cast<TH1*>(m_output_object) )
+    
+    
+    m_axis_dummy = m_axis;
+    if (m_output_object)
     {
-      m_axis_dummy += ">>" + std::string(m_output_object->GetName());
+        
+        if ( dynamic_cast<TH1*>(m_output_object) )
+        {
+            m_axis_dummy += ">>" + std::string(m_output_object->GetName());
+        }
     }
-  }
-  return m_axis_dummy.c_str();
+    return m_axis_dummy.c_str();
 }
 
 TCut S_DrawOption::getCut() const

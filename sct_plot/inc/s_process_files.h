@@ -38,6 +38,7 @@ public:
   Int_t DrawResidual(Double_t min_X,Double_t max_X);
   Int_t DrawResidual();
   Int_t DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X);
+  Int_t DrawResidualVsMissingCordinate();
   Int_t Draw_Efficinecy_map();
   Int_t Draw_Hit_map();
   Int_t Draw_DUT_Hits_map();

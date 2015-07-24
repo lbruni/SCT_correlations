@@ -197,6 +197,8 @@ Int_t s_process_files::DrawResidualVsMissingCordinate(Double_t min_X, Double_t m
   //return m_plotCollection->Draw(m_output_planes.get("hitmap"), S_DrawOption().draw_x_VS_y().opt_colz());
   return m_plotCollection->Draw(m_output_planes.get("hitmap"), S_DrawOption().draw_x_VS_y().cut_x(min_X, max_X).output_object(m_resVSMissing.get()).opt_colz());
   
+Int_t s_process_files::DrawResidualVsMissingCordinate() {
+  return m_plotCollection->Draw(m_output_planes.get("hitmap"), S_DrawOption().draw_x_VS_y().opt_colz());
 }
 
 Int_t s_process_files::Draw_Efficinecy_map()

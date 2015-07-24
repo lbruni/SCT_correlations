@@ -95,8 +95,10 @@ int main(int argc, char **argv) {
   para.argc = argc;
   para.argv = argv;
 
+  std::cout << "press q to quit the program" << std::endl;
   std::thread thr(asyncMain, &para);
   std::string i;
+  
   while (i != "q") {
     std::cin >> i;
 

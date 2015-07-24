@@ -1,6 +1,22 @@
 #ifndef sct_plots_h__
 #define sct_plots_h__
 
+#ifndef __CINT__
+#include <memory>
+#include <vector>
+#endif
+
+
+#include "TH2.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "TH1.h"
+#include "TString.h"
+#include "TF1.h"
+#include "Rtypes.h"
+#include "TCut.h"
+
+
 
 #include "internal/platform.hh"
 #include "s_plot.h"
@@ -8,23 +24,8 @@
 #include "s_plot_prob.h"
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"
-#include "TH2.h"
+#include "s_plane.h"
 
-
-#include "TTree.h"
-#include "TFile.h"
-
-
-#include "TH1.h"
-#include "TString.h"
-#include "TF1.h"
-#include "Rtypes.h"
-#include "TCut.h"
-
-#ifndef __CINT__
-#include <memory>
-#include <vector>
-#endif
 
 
 class TH2D;
@@ -146,6 +147,7 @@ public:
   static s_plane_collection plane_merger(S_plot_collection& pl, s_plane_collection planes_,  const  s_plot_prob& = "");
   static S_plane_def Crate_True_Fitted_DUT_Hits(S_plot_collection& pl, const  s_plot_prob& = "");
   static S_plane_def Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const s_plot_prob& = "");
+  static s_plane_collection_correlations Create_Correlations_of_true_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
 };
 
 class DllExport sct_analyis{ // all this function have memory leaks. they are not designed to be called in a loop 

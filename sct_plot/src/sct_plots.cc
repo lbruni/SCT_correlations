@@ -224,4 +224,18 @@ S_plane_def sct_plot::Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection&
   return fitted_in_channels();
 }
 
+s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& /*= ""*/) {
+
+  auto truehits = sct_plot::Create_True_Fitted_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, s_plot_prob().doNotSaveToDisk());
+
+  auto trueHits_cut = pl.addPlot(sct_plot::cut_x_y(fiducial_cut_), truehits);
+  auto cor = pl.addPlot(sct_plot::find_nearest_strip(x_axis_def, residualCut, s_plot_prob()), sct_coll::DUT_zs_data(), trueHits_cut());
+  s_plane_collection hitmap__rot = pl.addPlot(sct_plot::hitmap(), cor.get("nearest_strip_distance")().getX_def(), cor.get("nearest_strip_plane2")().getY_def());
+  s_plane_collection_correlations ret;
+  ret.setResidual(cor.get("nearest_strip_distance")());
+  ret.setResidualVsMissing(hitmap__rot());
+  ret.setTrueHitsWithDUT(cor.get("nearest_strip_plane2")());
+  ret.setTotalTrueHits(trueHits_cut());
+  return ret;
+}
 

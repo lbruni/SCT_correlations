@@ -100,3 +100,39 @@
   {
     return S_Axis(getName(), getID(), y_axis_def);
   }
+
+  s_plane_collection_correlations::s_plane_collection_correlations():s_plane_collection() {
+
+  }
+
+  void s_plane_collection_correlations::setResidual(const S_plane_def& plane_) {
+    push_back("Residual", plane_);
+  }
+
+  void s_plane_collection_correlations::setResidualVsMissing(const S_plane_def& plane_) {
+    push_back("ResidualVsMissing", plane_);
+  }
+
+  void s_plane_collection_correlations::setTotalTrueHits(const S_plane_def& plane_) {
+    push_back("TotalTrueHits", plane_);
+  }
+
+  void s_plane_collection_correlations::setTrueHitsWithDUT(const S_plane_def& plane_) {
+    push_back("TrueHitsWithDUT", plane_);
+  }
+
+  S_plane_def s_plane_collection_correlations::getResidual() const {
+    return getByType("Residual")();
+  }
+
+  S_plane_def s_plane_collection_correlations::getResidualVSmissing() const {
+    return getByType("ResidualVsMissing")();
+  }
+
+  S_plane_def s_plane_collection_correlations::getTotalTrueHits() const {
+    return getByType("TotalTrueHits")();
+  }
+
+  S_plane_def s_plane_collection_correlations::getTrueHitsWithDUT() const {
+    return getByType("TrueHitsWithDUT")();
+  }

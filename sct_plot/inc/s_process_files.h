@@ -56,7 +56,7 @@ public:
     m_residual_cut= 1000;
   Int_t m_bins;
   S_CutCoollection m_cuts;
-  s_plane_collection m_output_planes;
+  s_plane_collection_correlations m_output_planes;
   std::shared_ptr<S_plot_collection> m_plotCollection;
   class FileProberties{
   public:
@@ -91,6 +91,7 @@ public:
   std::shared_ptr<TH1D> m_Hits_total;
   std::shared_ptr<TH1D> m_Hits_with_DUT_Hits;
   std::shared_ptr<TH1D> m_Efficieny_map;
+  std::shared_ptr<TH1D> m_Efficieny_trueHits;
   std::shared_ptr<TH2D> m_resVSMissing;
   sct_corr::sct_event_buffer m_buffer;
   TFile* m_dummy = nullptr;

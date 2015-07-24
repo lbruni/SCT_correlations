@@ -80,6 +80,22 @@ public:
 #endif
   ClassDef(s_plane_collection, 0);
 };
+
+class DllExport s_plane_collection_correlations :public s_plane_collection {
+public:
+  s_plane_collection_correlations();
+
+  void setResidual(const S_plane_def& plane_);
+  void setResidualVsMissing(const S_plane_def& plane_);
+  void setTotalTrueHits(const S_plane_def& plane_);
+  void setTrueHitsWithDUT(const S_plane_def& plane_);
+  S_plane_def getResidual() const;
+  S_plane_def getResidualVSmissing() const;
+  S_plane_def getTotalTrueHits() const;
+  S_plane_def getTrueHitsWithDUT() const;
+  ClassDef(s_plane_collection_correlations, 0);
+};
+
 DllExport s_plane_collection operator+(s_plane_collection pl1, const s_plane_collection& pl2);
 DllExport s_plane_collection operator+(s_plane_collection pl1, const S_plane_def& pl2);
 DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def& pl2);
@@ -89,6 +105,7 @@ DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def
 #pragma link C++ class S_plane;
 #pragma link C++ class S_plane_def;
 #pragma link C++ class s_plane_collection;
+#pragma link C++ class s_plane_collection_correlations;
 #pragma link C++ function  operator+(s_plane_collection , const s_plane_collection& );
 #pragma link C++ function  operator+(s_plane_collection , const S_plane_def& );
 #pragma link C++ function  operator+(const S_plane_def& , const S_plane_def& );

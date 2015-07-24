@@ -5,7 +5,7 @@
 
 #include "TApplication.h"
 #include "TBrowser.h"
-#include "../sct_plot/inc/s_cuts.h"
+#include "s_cuts.h"
 #include "TF1.h"
 #include "TProfile.h"
 #include "xml_helpers/xml_fileList.hh"
@@ -222,5 +222,6 @@ int main(int argc, char **argv) {
   std::thread thr(asyncMain, &para);
   int i;
   std::cin >> i;
+  
 }
 

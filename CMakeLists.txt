@@ -45,6 +45,7 @@ add_subdirectory(main)
 
 add_subdirectory(FitSCurves_bin)
 add_subdirectory(ProcessCollection_bin)
+add_subdirectory(ProcessFile_bin)
 #######################################################
 # Print out system information useful for bug reports #
 ############################################### #######

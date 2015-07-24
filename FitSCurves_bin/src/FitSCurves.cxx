@@ -102,7 +102,7 @@ public:
         m_start_landau_sigma = f.getLandauSigma();
           
         f(&g);
-        f.DrawfitFunction(0);
+        f.DrawfitFunction();
         push_to_file();
     
         
@@ -134,7 +134,7 @@ public:
             }
             
             f(&g);
-             f.DrawfitFunction(i);
+             f.DrawfitFunction();
             push_to_file();
         }
         

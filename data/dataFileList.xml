@@ -8,7 +8,7 @@
 		   <AvtiveStrips min="280" max="360"/>
 		   <Rotation value="0.0171112"/>
 		   <Position name="position 7" value="3.16097e+002"/>
-		     
+		   <residual_cut value="100"/>
 	</globalConfig>
 
 <fileList>

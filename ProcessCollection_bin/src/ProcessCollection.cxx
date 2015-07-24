@@ -30,7 +30,7 @@ int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__,
   p.setActiveArea(xml_imput.globalConfig().AvtiveStrips().getMin(), xml_imput.globalConfig().AvtiveStrips().getMax());
   p.SetRotation(xml_imput.globalConfig().Rotation());
   p.SetPosition(xml_imput.globalConfig().Position_value(), 0);
-  //p.push_files((path__ + std::string("run000823-fitter.root")).c_str(), 20, 823, 150);
+  p.setResidualCut(xml_imput.globalConfig().residual_cut());
 
   for (auto& e : xml_imput.fileList()){
     p.push_files((path__ + std::string(e.name())).c_str(), e.threshold(), e.runNumber(), e.HV());

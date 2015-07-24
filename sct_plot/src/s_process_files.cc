@@ -92,6 +92,10 @@ void s_process_files::extract_hitMap()
     
   for (Int_t i = 0; i < m_Efficieny_map->GetNbinsX(); ++i)
   {
+void s_process_files::setResidualCut(double residualCut) {
+  m_residual_cut = residualCut;
+}
+
     pushChannel(m_Efficieny_map->GetBinCenter(i), 1,
       m_Efficieny_map->GetBinContent(i),
       m_Hits_total->GetBinContent(i), 
@@ -111,7 +115,7 @@ bool s_process_files::process(TFile* file)
     auto truehits = sct_plot::Crate_True_Fitted_DUT_Hits_in_channels(*m_plotCollection, m_pitchSize, m_rotation, m_pos_x, m_pos_y, s_plot_prob().doNotSaveToDisk());
 
   auto trueHits_cut = m_plotCollection->addPlot(sct_plot::cut_x_y(m_cuts), truehits);
-  auto cor = m_plotCollection->addPlot(sct_plot::find_nearest_strip(x_axis_def, 10000000, s_plot_prob()), sct_coll::DUT_zs_data(), trueHits_cut());
+  auto cor = m_plotCollection->addPlot(sct_plot::find_nearest_strip(x_axis_def, m_residual_cut, s_plot_prob()), sct_coll::DUT_zs_data(), trueHits_cut());
   s_plane_collection hitmap__rot = m_plotCollection->addPlot(sct_plot::hitmap(), cor.get("nearest_strip_distance")().getX_def(), cor.get("nearest_strip_plane2")().getY_def());
  
   m_output_planes = hitmap__rot + cor + trueHits_cut;

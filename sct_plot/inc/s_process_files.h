@@ -32,6 +32,7 @@ public:
   void SetPosition(Double_t x_pos, Double_t y_pos);
   void setActiveArea(Double_t x_min, Double_t x_max);
   void SetNumberOfBins(Int_t bins);
+  void setResidualCut(Double_t residualCut);
 
   bool process();
   Int_t DrawResidual(Double_t min_X,Double_t max_X);
@@ -50,7 +51,8 @@ public:
     m_pos_x = 0,
     m_pos_y = 0,
     m_active_area_x_min=0,
-    m_active_area_x_max=0;
+    m_active_area_x_max=0,
+    m_residual_cut= 1000;
   Int_t m_bins;
   S_CutCoollection m_cuts;
   s_plane_collection m_output_planes;

@@ -2,10 +2,14 @@
 #include "s_process_files.h"
 #include "TError.h"
 
+
 #include <iostream>
 #include <sstream>
+
+
 #include "tclap/CmdLine.h"
 #include "xml_helpers/xml_fileList.hh"
+
 
 using namespace xml_util;
 
@@ -42,11 +46,14 @@ int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__,
 using namespace std;
 using namespace TCLAP;
 
+void remove_root_printouts() {
+  gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
+}
 int main(int argc, char **argv) {
 
-
+  remove_root_printouts();
   
-  gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
+  
 
   try {
 

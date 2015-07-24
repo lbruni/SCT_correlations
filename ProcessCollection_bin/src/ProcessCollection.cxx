@@ -9,6 +9,7 @@
 
 #include "tclap/CmdLine.h"
 #include "xml_helpers/xml_fileList.hh"
+#include <thread>
 
 
 using namespace xml_util;
@@ -49,11 +50,18 @@ using namespace TCLAP;
 void remove_root_printouts() {
   gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 }
-int main(int argc, char **argv) {
 
-  remove_root_printouts();
-  
-  
+struct  inParam {
+  int argc;
+  char **argv;
+};
+
+
+int asyncMain(void *arg) {
+
+  inParam* para = static_cast<inParam *>(arg);
+  int argc = para->argc;
+  char **argv = para->argv;
 
   try {
 
@@ -68,14 +76,34 @@ int main(int argc, char **argv) {
     s_process_files p;
     ADDRun(p, FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
     p.process();
-  }
-  catch (ArgException &e)  // catch any exceptions
+  } catch (ArgException &e)  // catch any exceptions
   {
     cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     return -1;
   }
+}
+int main(int argc, char **argv) {
+
+  remove_root_printouts();
+  
+  
 
 
+
+
+  inParam para;
+  para.argc = argc;
+  para.argv = argv;
+
+  std::thread thr(asyncMain, &para);
+  std::string i;
+  while (i != "q") {
+    std::cin >> i;
+
+  }
+
+
+  return 0;
 
 }
 

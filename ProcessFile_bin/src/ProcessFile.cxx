@@ -15,6 +15,8 @@
 #include "TCanvas.h"
 #include <thread>
 
+#include "TSystem.h"
+
 using namespace xml_util;
 using namespace TCLAP;
 using namespace std;
@@ -209,7 +211,9 @@ int asyncMain(void *arg) {
     Draw_missing_coordinate(p, r.get());
   }
   new TBrowser();
+
   theApp.Run();
+
   return 0;
 }
 int main(int argc, char **argv) {
@@ -218,14 +222,16 @@ int main(int argc, char **argv) {
   inParam para;
   para.argc = argc;
   para.argv = argv;
-
+  std::cout << "press q to quit the program" << std::endl;
   std::thread thr(asyncMain, &para);
-  int i;
-  std::cin >> i;
+  std::string i;
+  while (i!="q") {
+    std::cin >> i;
+
+  }
   
 
-  _exit(0);
+  return 0;
 
 
 }
-

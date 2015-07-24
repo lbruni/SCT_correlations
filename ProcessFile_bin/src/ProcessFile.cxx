@@ -223,5 +223,9 @@ int main(int argc, char **argv) {
   int i;
   std::cin >> i;
   
+
+  _exit(0);
+
+
 }
 

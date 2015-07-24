@@ -103,19 +103,19 @@ void drawResidual(s_process_files& p, const xmlImputFiles::MinMaxRange<double> *
 
 }
 
-void draw_efficiency_map(s_process_files& p) {
-  new TCanvas();
-  p.Draw_Efficinecy_map();
-}
-void Draw_DUT_hits(s_process_files& p) {
-  new TCanvas();
-  p.Draw_Hit_map();
-}
-
 void Draw_Track_hits(s_process_files& p) {
   new TCanvas();
   p.Draw_Hit_map();
 }
+void Draw_DUT_hits(s_process_files& p) {
+  new TCanvas();
+  p.Draw_DUT_Hits_map();
+}
+void draw_efficiency_map(s_process_files& p) {
+  new TCanvas();
+  p.Draw_Efficinecy_map();
+}
+
 void Draw_missing_coordinate(s_process_files& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
   new TCanvas();
   if (range_)
@@ -194,9 +194,6 @@ int asyncMain(void *arg) {
     drawResidual(p, r.get());
   }
 
-  if (efficiency_map.isSet()) {
-    draw_efficiency_map(p);
-  }
   if (DUT_hits.isSet()) {
     Draw_DUT_hits(p);
   }
@@ -205,6 +202,9 @@ int asyncMain(void *arg) {
     Draw_Track_hits(p);
   }
 
+  if (efficiency_map.isSet()) {
+    draw_efficiency_map(p);
+  }
   if (unknownCoordinate.isSet()) {
     Draw_missing_coordinate(p, r.get());
   }

@@ -97,7 +97,7 @@ bool s_process_files::process(TFile* file) {
   m_plotCollection->setOutputFile(m_dummy);
 
   
-  m_output_planes = sct_plot::Create_Correlations_of_true_Fitted_DUT_Hits_in_channels(*m_plotCollection,m_pitchSize,m_rotation,m_pos_x,m_pos_y,m_cuts,m_residual_cut);
+  m_output_planes = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(*m_plotCollection,m_pitchSize,m_rotation,m_pos_x,m_pos_y,m_cuts,m_residual_cut);
   m_plotCollection->loop();
 
 

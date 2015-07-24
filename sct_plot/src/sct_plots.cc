@@ -224,7 +224,7 @@ S_plane_def sct_plot::Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection&
   return fitted_in_channels();
 }
 
-s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& /*= ""*/) {
+s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& /*= ""*/) {
 
   auto truehits = sct_plot::Create_True_Fitted_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, s_plot_prob().doNotSaveToDisk());
 

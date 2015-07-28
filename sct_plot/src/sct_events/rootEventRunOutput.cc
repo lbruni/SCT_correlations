@@ -12,6 +12,14 @@ std::vector<std::string> get_axis_list(){
     ret.emplace_back(axis2String(Occupancy_axis_def));
     ret.emplace_back(axis2String(Occupancy_error_axis_def));
     ret.emplace_back(axis2String(NumOfEvents_axis_def));
+    
+    ret.emplace_back(axis2String(x_axis_def_substrip));
+    ret.emplace_back(axis2String(y_axis_def_substrip));
+    ret.emplace_back(axis2String(Occupancy_axis_def_substrip));
+    ret.emplace_back(axis2String(Occupancy_error_axis_def_substrip));
+    ret.emplace_back(axis2String(NumOfEvents_axis_def_substrip));
+    ret.emplace_back(axis2String(NumOfEventsDUT_axis_def_substrip));
+
     return ret;
     
 }
@@ -26,7 +34,7 @@ namespace sct_corr{
     {
         m_totalNumOfEvents = std::make_shared< double >(0);
         m_total_efficiency = std::make_shared< double >(0);
-        m_error_efficiency = std::make_shared< double >(0);//LB
+        m_error_efficiency = std::make_shared< double >(0);
         m_residual = std::make_shared< double >(0);
         m_offset = std::make_shared< double >(0);
         m_Threshold = std::make_shared< double >(0);
@@ -36,7 +44,7 @@ namespace sct_corr{
         
         tree->SetBranchAddress("totalNumOfEvents", m_totalNumOfEvents.get());
         tree->SetBranchAddress("total_efficiency", m_total_efficiency.get());
-        tree->SetBranchAddress("error_efficiency", m_error_efficiency.get());//LB
+        tree->SetBranchAddress("error_efficiency", m_error_efficiency.get());
         tree->SetBranchAddress("residual", m_residual.get());
         tree->SetBranchAddress("offset", m_offset.get());
         tree->SetBranchAddress("Threshold", m_Threshold.get());
@@ -53,7 +61,7 @@ namespace sct_corr{
     {
         m_totalNumOfEvents = std::make_shared< double >(0);
         m_total_efficiency = std::make_shared< double >(0);
-        m_error_efficiency = std::make_shared< double >(0);//LB
+        m_error_efficiency = std::make_shared< double >(0);
         m_residual = std::make_shared< double >(0);
         m_offset = std::make_shared< double >(0);
         m_Threshold = std::make_shared< double >(0);
@@ -71,7 +79,7 @@ namespace sct_corr{
         rootEventBase::Save2Tree(outputTree);
         outputTree->Branch("totalNumOfEvents", m_totalNumOfEvents.get());
         outputTree->Branch("total_efficiency", m_total_efficiency.get());
-        outputTree->Branch("error_efficiency", m_error_efficiency.get());//LB
+        outputTree->Branch("error_efficiency", m_error_efficiency.get());
         outputTree->Branch("residual", m_residual.get());
         outputTree->Branch("offset", m_offset.get());
         outputTree->Branch("Threshold", m_Threshold.get());
@@ -92,7 +100,7 @@ namespace sct_corr{
     void rootEventRunOutput::set_Error_efficiency(double error_effi)
     {
         *m_error_efficiency = error_effi;
-    }//LB
+    }
     
     void rootEventRunOutput::set_Threshold(double thr)
     {
@@ -124,7 +132,7 @@ namespace sct_corr{
         rootEventBase::reset();
         *m_totalNumOfEvents = 0;
         *m_total_efficiency = 0;
-        *m_error_efficiency = 0;//LB
+        *m_error_efficiency = 0;
         *m_residual = 0;
         *m_offset = 0;
         *m_Threshold = 0;

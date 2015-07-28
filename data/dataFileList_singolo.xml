@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunCollection>
+  <globalConfig>
+      <CollectionName value="DEVICE_1_ASIC_on_Position_7_Jim_350V"/>
+           <NumberOfBins value="400"/>
+	      <YCut min="-4" max="2"/>
+	         <Device value="1"/>
+		    <AvtiveStrips min="280" max="360"/>
+		       <Rotation value="0.0171112"/>
+		          <Position name="position 7" value="3.16097e+002"/>
+			       
+			  </globalConfig>
+
+<fileList>
+ 
+ <file><name value="run000703-fitter.root"/><threshold value="50"/><runNumber value="703"/><HV value="350"/></file>
+ 
+</fileList>
+
+
+
+</RunCollection>

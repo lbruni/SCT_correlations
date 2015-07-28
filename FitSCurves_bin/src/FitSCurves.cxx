@@ -1,6 +1,7 @@
 #include "TFile.h"
 #include "TApplication.h"
 #include "TBrowser.h"
+#include <fstream>
 
 
 
@@ -87,7 +88,7 @@ public:
         m_use_total_efficiency_fit_as_start = false;
     }
     
-    ////////////////PROCESS SCURVE EFFICIENCY VS THRESHOLD
+    //PROCESS SCURVE EFFICIENCY VS THRESHOLD
     void processTotal(const char * total_name){
         TCanvas *canv = new TCanvas("canv","",500,500);
         setStartValues();
@@ -100,17 +101,17 @@ public:
         }
         m_start_gaus_sigma = f.getGaussSigma();
         m_start_landau_sigma = f.getLandauSigma();
-          
+        
         f(&g);
         f.DrawfitFunction(0);
         push_to_file();
-    
         
-
     }
-    
-    /////////PROCESS SINGLE STRIP EFF VS THRESHOLD
+    //PROCESS SINGLE STRIP EFF VS THRESHOLD
     void processStrip(const char* stripName, axis_def x, double min__, double max__){
+        TGraph * amplitude_channel = new TGraph();
+        
+        
         
         for (double i = min__; i < max__; ++i)
         {
@@ -134,9 +135,63 @@ public:
             }
             
             f(&g);
-             f.DrawfitFunction(i);
+            f.DrawfitFunction(i);
+            
+            amplitude_channel->SetPoint((int)i,i,f.getAmplitude());
             push_to_file();
         }
+        
+        TFile *file = new TFile("amplitude.root","RECREATE");
+        TCanvas *canvas_amplitude=new TCanvas();
+        amplitude_channel->Draw("AP");
+        amplitude_channel->Write();
+        canvas_amplitude->SaveAs("Amplitude.png");
+        file->Print();
+        file->Close();
+        
+    }
+    
+    
+    /////////PROCESS SUBSTRIP EFF VS THRESHOLD
+    void processSubStrip(const char* stripName, axis_def x, double min__, double max__){
+        
+        ofstream writefile;
+        writefile.open("data.txt");
+        for (double i = min__; i < max__; i+=0.1)
+        {
+            if ((int)i%100==0)
+            {
+                std::cout << "process channel: " << i << " of " << max__ << std::endl;
+            }
+            setStartValues();
+            SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis("Occupancy_substrip:Threshold:Occupancy_error_substrip").opt_star().cut(m_threshold_Cut.c_str()).cut(x, i - 0.05, i + 0.05));
+            
+            if (g.GetN() == 0)
+            {
+                push_to_file_emtpyEvent();
+                continue;
+            }
+            auto d = std::max_element(g.GetY()+1, g.GetY() + g.GetN());
+            
+            if (*d < 0.05)
+            {
+                push_to_file_emtpyEvent();
+                continue;
+            }
+            
+            f(&g);
+            f.DrawfitFunction(i*100);
+            
+            writefile<<i<<" "<<f.getAmplitude()<<" "<<f.getGaussSigma()<<" "<<f.getLandauSigma()<<std::endl;
+            push_to_file();
+            
+            
+            
+        }
+        
+        
+        
+        writefile.close();
         
     }
     
@@ -149,6 +204,7 @@ public:
     bool m_use_total_efficiency_fit_as_start = true;
     TGraphErrors g;
     TGraphErrors pluto;
+    TGraph paperino;
     TCanvas m_c;
     landgausFit f;
     std::ofstream m_out;
@@ -211,9 +267,11 @@ int main(int argc, char **argv) {
         {
             p.setBeamRuns(Hits);
         }
-        gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
-       p.processTotal("total_efficiency:Threshold:error_efficiency");
-       //p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+        gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms)
+        //p.processTotal("total_efficiency:Threshold:error_efficiency");
+        //p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+        
+        p.processSubStrip("Occupancy_substrip:Threshold:Occupancy_error_substrip", x_axis_def_substrip, 279.95, 399.95);
         return 0;
     }
     catch (ArgException &e)  // catch any exceptions

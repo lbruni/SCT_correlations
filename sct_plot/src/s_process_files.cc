@@ -95,8 +95,21 @@ void s_process_files::extract_hitMap()
     pushChannel(m_Efficieny_map->GetBinCenter(i), 1,
       m_Efficieny_map->GetBinContent(i),
       m_Hits_total->GetBinContent(i), sqrt( (m_Efficieny_map->GetBinContent(i))*(1-m_Efficieny_map->GetBinContent(i))*(1/( m_Hits_total->GetBinContent(i))))
-      );
+                );
+      //std::cout<<"bin "<<i<<" NTot: "<<m_Hits_total->GetBinContent(i)<<" NDUT "<<m_Hits_with_DUT_Hits->GetBinContent(i)<<" bin center "<< m_Efficieny_map->GetBinCenter(i)<< " efficiency: "<<m_Efficieny_map->GetBinContent(i)<<std::endl;
   }
+}
+void s_process_files::extract_hitMap_substrip()
+{
+    
+    for (Int_t i = 0; i < m_Efficieny_map_substrip->GetNbinsX(); ++i)
+    {
+        pushChannel_substrip(m_Efficieny_map_substrip->GetBinCenter(i), 1,
+                    m_Efficieny_map_substrip->GetBinContent(i),
+                    m_Hits_total_substrip->GetBinContent(i), m_Hits_with_DUT_Hits_substrip->GetBinContent(i), sqrt( (m_Efficieny_map_substrip->GetBinContent(i))*(1-m_Efficieny_map_substrip->GetBinContent(i))*(1/( m_Hits_total_substrip->GetBinContent(i))))
+                    );
+    //std::cout<<"bin "<<i<<" NTot: "<<m_Hits_total_substrip->GetBinContent(i)<<" NDUT "<<m_Hits_with_DUT_Hits_substrip->GetBinContent(i)<<" bin center "<< m_Efficieny_map_substrip->GetBinCenter(i)<< " efficiency: "<<m_Efficieny_map_substrip->GetBinContent(i)<<std::endl;
+    }
 }
 
 bool s_process_files::process(TFile* file)
@@ -121,7 +134,7 @@ bool s_process_files::process(TFile* file)
   Draw_Efficinecy_map();
 
   extract_hitMap();
-
+ extract_hitMap_substrip();
   
   double totalHits = m_plotCollection->Draw(trueHits_cut(), S_DrawOption().cut_x(m_active_area_x_min, m_active_area_x_max));
   m_outputl.set_TotalNumOfEvents(totalHits);
@@ -130,8 +143,7 @@ bool s_process_files::process(TFile* file)
 
     m_outputl.set_Total_efficiency(DUTHits/ totalHits);
     //Sigma = sqrt( p*(1-p)/N)
-    m_outputl.set_Error_efficiency( sqrt( (DUTHits/totalHits)*(1-(DUTHits/totalHits))*(1/totalHits) ) );//LB
-    std::cout<<"Error eff:   "<<sqrt( (DUTHits/totalHits)*(1-(DUTHits/totalHits))*(1/totalHits))<<std::endl;
+    m_outputl.set_Error_efficiency( sqrt( (DUTHits/totalHits)*(1-(DUTHits/totalHits))*(1/totalHits) ) );
 
     DrawResidual(-3, 3);
   
@@ -201,23 +213,32 @@ Int_t s_process_files::Draw_Efficinecy_map()
    Int_t n = Draw_DUT_Hits_map();
   
   m_Efficieny_map = std::shared_ptr<TH1D>((TH1D*)m_Hits_with_DUT_Hits->Clone("Efficiency"));
-  m_Efficieny_map->Divide(m_Hits_total.get());
-
+    m_Efficieny_map->Divide(m_Hits_total.get());
   m_Efficieny_map->Draw();
-  return n;
+  
+    m_Efficieny_map_substrip = std::shared_ptr<TH1D>((TH1D*)m_Hits_with_DUT_Hits_substrip->Clone("Efficiency_substrip"));
+    m_Efficieny_map_substrip->Divide(m_Hits_total_substrip.get());
+    m_Efficieny_map_substrip->Draw();
+    
+    return n;
 }
 
 Int_t s_process_files::Draw_Hit_map()
 {
-  m_Hits_total = std::make_shared<TH1D>("total", "total", m_bins, 0 - 0.5, m_bins - 0.5);
+    m_Hits_total = std::make_shared<TH1D>("total", "total", m_bins, 0 - 0.5, m_bins - 0.5);
+    m_Hits_total_substrip = std::make_shared<TH1D>("total_substrip", "total_substrip", 4000, 0 - 0.5, m_bins - 0.5);
 
-  return  m_plotCollection->Draw(m_output_planes.get("cut_x_y"), S_DrawOption().draw_x().output_object(m_Hits_total.get()));
+    m_plotCollection->Draw(m_output_planes.get("cut_x_y"), S_DrawOption().draw_x().output_object(m_Hits_total_substrip.get()));
+    return  m_plotCollection->Draw(m_output_planes.get("cut_x_y"), S_DrawOption().draw_x().output_object(m_Hits_total.get()));
 }
 
 Int_t s_process_files::Draw_DUT_Hits_map()
 {
-  m_Hits_with_DUT_Hits = std::make_shared<TH1D>("DUT", "DUT", m_bins, 0 - 0.5, m_bins - 0.5);
-  return m_plotCollection->Draw(m_output_planes.get("nearest_strip_plane2"), S_DrawOption().draw_x().output_object(m_Hits_with_DUT_Hits.get()));
+    m_Hits_with_DUT_Hits = std::make_shared<TH1D>("DUT", "DUT", m_bins, 0 - 0.5, m_bins - 0.5);
+    m_Hits_with_DUT_Hits_substrip = std::make_shared<TH1D>("DUT_substrip", "DUT_substrip",  4000, 0 - 0.5, m_bins - 0.5);
+    m_plotCollection->Draw(m_output_planes.get("nearest_strip_plane2"), S_DrawOption().draw_x().output_object(m_Hits_with_DUT_Hits_substrip.get()));
+    return m_plotCollection->Draw(m_output_planes.get("nearest_strip_plane2"), S_DrawOption().draw_x().output_object(m_Hits_with_DUT_Hits.get()));
+  
 }
 
 TH2D* s_process_files::getResidualVsMissingCordinate()
@@ -232,10 +253,26 @@ void s_process_files::pushChannel(Double_t channel_x, Double_t channel_y, Double
   m_outputl.getData(x_axis_def)->push_back(channel_x);
   m_outputl.getData(y_axis_def)->push_back(channel_y);
   m_outputl.getData(Occupancy_axis_def)->push_back(Effi);
-  m_outputl.getData(Occupancy_error_axis_def)->push_back(Error_Effi);//LB
+  m_outputl.getData(Occupancy_error_axis_def)->push_back(Error_Effi);
   m_outputl.getData(NumOfEvents_axis_def)->push_back(NumberOfEvents);
   m_outputl.getData(getIDString())->push_back(0);
     
     
 }
+
+void s_process_files::pushChannel_substrip(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents,Double_t NumberOfEventsDUT, Double_t Error_Effi)
+{
+    
+    //Fill the vectors Occupancy_axis_def and so on
+    m_outputl.getData(x_axis_def_substrip)->push_back(channel_x);
+    m_outputl.getData(y_axis_def_substrip)->push_back(channel_y);
+    m_outputl.getData(Occupancy_axis_def_substrip)->push_back(Effi);
+    m_outputl.getData(Occupancy_error_axis_def_substrip)->push_back(Error_Effi);
+    m_outputl.getData(NumOfEvents_axis_def_substrip)->push_back(NumberOfEvents);
+    m_outputl.getData(NumOfEventsDUT_axis_def_substrip)->push_back(NumberOfEventsDUT);
+    m_outputl.getData(getIDString())->push_back(0);
+    
+    
+}
+
 

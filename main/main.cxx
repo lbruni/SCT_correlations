@@ -63,6 +63,7 @@ void plotCorrelations(){
 
 int main(int argc, char **argv) {
   TApplication theApp("App", &argc, argv);
+    
 
   residual_plane3();
 

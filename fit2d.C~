@@ -1,0 +1,20 @@
+void fit2d()
+{
+   //example illustrating how to fit a 2-d histogram of type y=f(x)
+   //Author: Rene Brun
+   
+  TFile *histo = new TFile("test.root");
+
+  TH2F *h2 = (TH2F*)histo->Get("h2");
+  
+   TCanvas *c1 = new TCanvas("c1","show profile",600,900);
+   c1->Divide(1,2);
+   c1->cd(1);
+   h2->Draw("colz");
+   //c1->cd(2);
+   
+   //use a TProfile to convert the 2-d to 1-d problem
+   //   TProfile *prof = h2->ProfileX();
+   //prof->Fit("pol1");
+}
+   

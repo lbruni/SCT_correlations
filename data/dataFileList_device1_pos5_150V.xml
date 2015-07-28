@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunCollection>
+  <globalConfig>
+      <CollectionName value="DEVICE_1_ASIC_on_Position_5_Jim_150V"/>
+           <NumberOfBins value="400"/>
+	      <YCut min="-4" max="2"/>
+	         <Device value="1"/>
+		    <AvtiveStrips min="280" max="360"/>
+		       <Rotation value="0.0171112"/>
+		          <Position name="position 7" value="3.16097e+002"/>
+			       
+			  </globalConfig>
+
+<fileList>
+ 
+  <file><name value="run000889-fitter.root"/><threshold value="20"/><runNumber value="889"/><HV value="150"/></file>  
+  <file><name value="run000890-fitter.root"/><threshold value="35"/><runNumber value="890"/><HV value="150"/></file>  
+  <file><name value="run000891-fitter.root"/><threshold value="50"/><runNumber value="891"/><HV value="150"/></file>  
+  <file><name value="run000892-fitter.root"/><threshold value="65"/><runNumber value="892"/><HV value="150"/></file>  
+  <file><name value="run000893-fitter.root"/><threshold value="80"/><runNumber value="893"/><HV value="150"/></file>  
+  <file><name value="run000894-fitter.root"/><threshold value="95"/><runNumber value="894"/><HV value="150"/></file>  
+  <file><name value="run000895-fitter.root"/><threshold value="110"/><runNumber value="895"/><HV value="150"/></file>  
+  <file><name value="run000896-fitter.root"/><threshold value="125"/><runNumber value="896"/><HV value="150"/></file>  
+  <file><name value="run000897-fitter.root"/><threshold value="140"/><runNumber value="897"/><HV value="150"/></file>  
+  <file><name value="run000898-fitter.root"/><threshold value="155"/><runNumber value="898"/><HV value="150"/></file>  
+  <file><name value="run000899-fitter.root"/><threshold value="170"/><runNumber value="899"/><HV value="150"/></file>  
+  <file><name value="run000900-fitter.root"/><threshold value="185"/><runNumber value="900"/><HV value="150"/></file>  
+  <file><name value="run000901-fitter.root"/><threshold value="200"/><runNumber value="901"/><HV value="150"/></file>  
+  <file><name value="run000902-fitter.root"/><threshold value="215"/><runNumber value="902"/><HV value="150"/></file>  
+  <file><name value="run000903-fitter.root"/><threshold value="230"/><runNumber value="903"/><HV value="150"/></file>  
+  <file><name value="run000904-fitter.root"/><threshold value="245"/><runNumber value="904"/><HV value="150"/></file>  
+
+
+</fileList>
+
+
+
+</RunCollection>

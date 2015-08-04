@@ -72,6 +72,10 @@ int asyncMain(void *arg) {
     cmd.add(inPath);
     ValueArg<std::string>  outpath("o", "outPath", "output path", false, ".", "string");
     cmd.add(outpath);
+#ifdef _DEBUG
+    cmd.setExceptionHandling(false);
+#endif // _DEBUG
+
     cmd.parse(argc, argv);
     s_process_files p;
     ADDRun(p, FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
@@ -81,6 +85,8 @@ int asyncMain(void *arg) {
     cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     return -1;
   }
+  exit(0);
+  return 0;
 }
 int main(int argc, char **argv) {
 

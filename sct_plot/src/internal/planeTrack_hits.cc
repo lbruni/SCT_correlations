@@ -1,10 +1,22 @@
 #include "internal/planeTrack_hits.hh"
 #include <iostream>
+#include "factory.hh"
 namespace sct_corr{
 
+  plane::MainType getPlane_track_names() {
+    plane::MainType ret;
 
+    ret.m_names.push_back("x");
+    ret.m_names.push_back("y");
+    ret.m_names.push_back("ID");
+    ret.m_names.push_back("chi2");
+    ret.m_names.push_back("ndf");
+    ret.m_names.push_back("phi");
+    ret.m_names.push_back("theta");
+    return ret;
+  }
   
-  planeTrack_hits::planeTrack_hits(double ID, rootEventBase* buffer) :plane(ID,buffer)
+  planeTrack_hits::planeTrack_hits(Parameter_ref pl) :plane(pl)
   {
     m_x     = getAxis(x_axis_def);
     m_y     = getAxis(y_axis_def);
@@ -16,6 +28,10 @@ namespace sct_corr{
 
 
 
+
+  std::string planeTrack_hits::getType() const {
+    return "planeTrack_hits";
+  }
 
   bool planeTrack_hits::next() const
   {
@@ -35,5 +51,5 @@ namespace sct_corr{
   {
     return dynamic_cast<const plane_hit *>(m_hit.get());
   }
-
+  registerPlane(planeTrack_hits, getPlane_track_names());
 }

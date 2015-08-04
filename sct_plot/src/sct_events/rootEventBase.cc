@@ -181,7 +181,7 @@ namespace sct_corr{
 
   std::shared_ptr<plane> rootEventBase::createPlane(double ID) 
   {
-    return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>(ID, this));
+    return  std::shared_ptr<plane>(std::move(plane::create(ID, this)));
   }
 
   void rootEventBase::Save2Tree(TTree* outputTree)

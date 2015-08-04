@@ -7,10 +7,10 @@ namespace sct_corr{
 
   class planeX_Y :public plane{
   public:
-    planeX_Y(double ID, rootEventBase* buffer);
+    planeX_Y(Parameter_ref pl);
    const axis_ref* getX() const;
    const axis_ref* getY() const;
-
+   virtual std::string getType() const override;
    virtual bool next() const override;
 
     virtual const plane_hit * getHit() const override;

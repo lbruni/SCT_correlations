@@ -2,11 +2,18 @@
 #include "internal/axis_ref.hh"
 #include <iostream>
 namespace sct_corr{
+  plane::MainType planeX_Y_names() {
+    plane::MainType ret;
+    ret.m_names.push_back("x");
+    ret.m_names.push_back("y");
+    ret.m_names.push_back("ID");
+    return ret;
+  }
 
-  planeX_Y::planeX_Y(double ID, rootEventBase* buffer) :plane(ID,buffer)
-  {
+  planeX_Y::planeX_Y(Parameter_ref pl):plane(pl) {
     m_x = getAxis(x_axis_def);
     m_y = getAxis(y_axis_def);
+
   }
 
   const axis_ref* planeX_Y::getX() const
@@ -21,6 +28,10 @@ namespace sct_corr{
 
 
 
+
+  std::string planeX_Y::getType() const {
+    return "planeX_Y";
+  }
 
   bool planeX_Y::next() const
   {
@@ -37,5 +48,5 @@ namespace sct_corr{
   {
     return m_hit.get();
   }
-
+  registerPlane(planeX_Y, planeX_Y_names());
 }

@@ -6,9 +6,9 @@
 namespace sct_corr{
   class planeTrack_hits :public plane{
   public:
-    planeTrack_hits(double ID, rootEventBase* buffer);
+    planeTrack_hits(Parameter_ref pl);
 
-
+    virtual std::string getType() const override;
     virtual bool next() const override;
 
     virtual const plane_hit * getHit() const override;

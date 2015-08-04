@@ -34,7 +34,7 @@ namespace sct_corr{
 
   std::shared_ptr<plane> rootEvent_X_Y_hits::createPlane(double ID) 
   {
-    return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>(ID, this));
+    return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>( plane_struct(ID, this)));
   }
 
   void rootEvent_X_Y_hits::push_Hit(double x, double y)

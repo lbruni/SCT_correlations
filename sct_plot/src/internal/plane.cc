@@ -58,10 +58,6 @@ namespace sct_corr{
 
 
  bool operator<(const axis_names&  a1, const axis_names& a2) {
-   if (isPermutation(a1.m_names,a2.m_names))
-   {
-     return false;
-   }
    return a1.m_names < a2.m_names;
  }
 

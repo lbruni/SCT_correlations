@@ -31,12 +31,16 @@ namespace Class_factory_Utilities{
   template <typename baseClassType>
   typename Factory<baseClassType>::u_pointer  Factory<baseClassType>::Create(const MainType & name, Parameter_ref params /*= ""*/)
   {
-    auto it = getInstance().find(name);
-    if (it == getInstance().end()) {
-      Class_factory_Utilities_THROW("unknown class: <" + name + ">");
-      return nullptr;
+    
+    for (const auto& e : getInstance()) {
+      if (e.first == name) {
+        return (e.second)(params);
+      }
+    
     }
-    return (it->second)(params);
+    
+    Class_factory_Utilities_THROW("unknown class: <" + name + ">");
+    return nullptr;
 
   }
 

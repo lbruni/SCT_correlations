@@ -1,9 +1,18 @@
 #include "s_axis.h"
+#include <iostream>
 
 
-S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis)
+S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis), m_isValid(true)
 {
     
+}
+
+S_Axis::S_Axis():m_isValid(false) {
+  std::cout << "invalid axis" << std::endl;
+}
+
+bool S_Axis::isValid() const {
+  return m_isValid;
 }
 
 const char* axis2String(axis_def ax)
@@ -17,7 +26,10 @@ const char* axis2String(axis_def ax)
     {
         return "y";
     }
-    
+    if (ax==Ndf_axis_def)
+    {
+      return "ndf";
+    }
     if (ax == chi2_axis_def )
     {
         return "chi2";

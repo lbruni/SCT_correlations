@@ -114,8 +114,13 @@ bool s_process_files::process(TFile* file) {
   m_outputl.set_Total_efficiency(DUTHits / totalHits);
   //Sigma = sqrt( p*(1-p)/N)
 
+  
   m_outputl.set_Error_efficiency(sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits)));//LB
+  
+  
   std::cout << "Error eff:   " << sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits)) << std::endl;
+  std::cout << "total hits " << totalHits << std::endl;
+  std::cout << "DUTHits " << DUTHits << std::endl;
 
   DrawResidual(-3, 3);
 

@@ -10,6 +10,8 @@
 #include "tclap/CmdLine.h"
 #include "xml_helpers/xml_fileList.hh"
 #include <thread>
+#include "TApplication.h"
+#include "TCanvas.h"
 
 
 using namespace xml_util;
@@ -58,33 +60,27 @@ struct  inParam {
 
 
 int asyncMain(void *arg) {
-
   inParam* para = static_cast<inParam *>(arg);
   int argc = para->argc;
   char **argv = para->argv;
-
-  try {
-
-    CmdLine cmd("ProcessCollection", ' ', "0.1");
-    ValueArg<std::string> FileNameArg("i", "inFile", "xml filename", true, "", "string");
-    cmd.add(FileNameArg);
-    ValueArg<std::string>  inPath("p", "inPath", "path to the root files", true, "", "string");
-    cmd.add(inPath);
-    ValueArg<std::string>  outpath("o", "outPath", "output path", false, ".", "string");
-    cmd.add(outpath);
-#ifdef _DEBUG
-    cmd.setExceptionHandling(false);
-#endif // _DEBUG
-
-    cmd.parse(argc, argv);
-    s_process_files p;
-    ADDRun(p, FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
-    p.process();
-  } catch (ArgException &e)  // catch any exceptions
-  {
-    cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
-    return -1;
-  }
+  TApplication theApp("App", &argc, argv);
+  TFile * file_ = new TFile("C:/Users/Argg/OneDrive/alibava/GBL/fitterCHECK.root");
+  TFile * out_file = new TFile("output.root","recreate");
+  S_plot_collection pl(file_);
+  pl.setOutputFile(out_file);
+  auto corr=pl.addPlot(sct_plot::correlation(s_plot_prob("correlation").SaveToDisk()), sct_coll::DUT_fitted_local_GBL().getX_def(), sct_coll::DUT_hit_local().getX_def());
+  auto res = pl.addPlot(sct_plot::residual(s_plot_prob("residual").SaveToDisk()), sct_coll::DUT_fitted_local_GBL().getX_def(), sct_coll::DUT_hit_local().getX_def());
+  auto find_closest = pl.addPlot(sct_plot::find_nearest_strip( x_axis_def, 100,  s_plot_prob("closest").SaveToDisk()), sct_coll::DUT_fitted_local_GBL(), sct_coll::DUT_hit_local());
+  auto res_vs_missing = pl.addPlot(sct_plot::hitmap(s_plot_prob("res_vs_missing").SaveToDisk()), find_closest.get(0).getX_def(), find_closest.get(1).getY_def());
+  pl.loop();
+  
+  pl.Draw(corr, S_DrawOption().draw_y_VS_x().opt_colz());
+  new TCanvas();
+  pl.Draw(res(), S_DrawOption().draw_x().cut_x(-0.1, 0.1));
+  new TCanvas();
+  pl.Draw(res_vs_missing(), S_DrawOption().draw_x_VS_y().cut_x(-0.1, 0.1));
+  theApp.Run();
+  
   exit(0);
   return 0;
 }

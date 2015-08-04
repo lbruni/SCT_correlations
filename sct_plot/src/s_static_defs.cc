@@ -40,6 +40,9 @@ const char* sct::col_DUT_TTC()
 {
   return "zsdata_strip_TTC";
 }
+const char* sct::col_GBL_fitted_points() {
+  return "GBL_tracks";
+}
 
 const char* sct::plot_hitmap()
 {
@@ -238,4 +241,12 @@ S_plane_def sct_coll::tel_fitted(double ID)
 S_plane_def sct_coll::tel_fitted_local(double ID)
 {
   return S_plane_def(sct::col_fitpoints_local(), ID);
+}
+
+
+S_plane_def_GBL sct_coll::DUT_fitted_local_GBL() {
+  return S_plane_def_GBL(sct::col_GBL_fitted_points(), 8);
+}
+S_plane_def_GBL sct_coll::tel_fitted_local_GBL(double ID) {
+  return S_plane_def_GBL(sct::col_GBL_fitted_points(), ID);
 }

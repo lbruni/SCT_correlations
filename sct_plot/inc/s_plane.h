@@ -25,13 +25,26 @@ public:
 
   S_Axis getX_def() const;
   S_Axis getY_def() const;
+  S_Axis get_Axis(axis_def) const;
+  const std::vector<S_Axis>& get_axis_defs() const;
 #ifndef __CINT__
+protected:
+  std::vector<S_Axis> m_axis;
 
 private:
   Double_t m_ID = 0;
   std::string m_name;
-
+  
 #endif
+};
+
+class DllExport S_plane_def_GBL :public S_plane_def {
+public:
+  S_plane_def_GBL(const char* name, Double_t ID);
+  S_Axis getChi2_def() const;
+  S_Axis getNdf_def() const;
+  S_Axis getPhi_def() const;
+  S_Axis getTheta_def() const;
 };
 class DllExport S_plane{
 public:
@@ -101,9 +114,9 @@ DllExport s_plane_collection operator+(s_plane_collection pl1, const S_plane_def
 DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def& pl2);
 
 #ifdef __CINT__
-
 #pragma link C++ class S_plane;
 #pragma link C++ class S_plane_def;
+#pragma link C++ class S_plane_def_GBL;
 #pragma link C++ class s_plane_collection;
 #pragma link C++ class s_plane_collection_correlations;
 #pragma link C++ function  operator+(s_plane_collection , const s_plane_collection& );

@@ -7,6 +7,7 @@
 #include "treeCollection.h"
 #include "internal/plane_hit.hh"
 #include "s_DrawOption.h"
+#include <exception>
 
   S_plane::S_plane() : m_plane(nullptr), m_plane_def("error", 0)
   {
@@ -79,7 +80,8 @@
 
   S_plane_def::S_plane_def(const char* name, Double_t ID) :m_name(name), m_ID(ID)
   {
-
+    m_axis.emplace_back(name, ID, x_axis_def);
+    m_axis.emplace_back(name, ID, y_axis_def);
   }
   Double_t S_plane_def::getID() const
   {
@@ -94,14 +96,52 @@
 
   S_Axis S_plane_def::getX_def() const
   {
-    return S_Axis(getName(), getID(), x_axis_def);
+    return get_Axis(x_axis_def);
   }
   S_Axis S_plane_def::getY_def() const
   {
-    return S_Axis(getName(), getID(), y_axis_def);
+    return get_Axis(y_axis_def);
   }
 
-  s_plane_collection_correlations::s_plane_collection_correlations():s_plane_collection() {
+  S_Axis S_plane_def::get_Axis(axis_def ax) const {
+    for (const auto&e :m_axis)
+    {
+      if (e.m_axis == ax) {
+        return e;
+      }
+    }
+    throw std::exception("unknown type");
+    return S_Axis();
+  }
+
+  const std::vector<S_Axis>& S_plane_def::get_axis_defs() const {
+    return m_axis;
+  }
+
+  S_plane_def_GBL::S_plane_def_GBL(const char* name, Double_t ID):S_plane_def(name,ID) {
+    m_axis.emplace_back(name, ID, chi2_axis_def);
+    m_axis.emplace_back(name, ID, Ndf_axis_def);
+    m_axis.emplace_back(name, ID, phi_axis_def);
+    m_axis.emplace_back(name, ID, theta_axis_def);
+  }
+
+  S_Axis S_plane_def_GBL::getChi2_def() const {
+    return get_Axis(chi2_axis_def);
+  }
+
+  S_Axis S_plane_def_GBL::getNdf_def() const {
+    return get_Axis(Ndf_axis_def);
+  }
+
+  S_Axis S_plane_def_GBL::getPhi_def() const {
+    return get_Axis(phi_axis_def);
+  }
+
+  S_Axis S_plane_def_GBL::getTheta_def() const {
+    return get_Axis(theta_axis_def);
+  }
+
+  s_plane_collection_correlations::s_plane_collection_correlations() :s_plane_collection() {
 
   }
 

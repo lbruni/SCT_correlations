@@ -21,7 +21,8 @@ namespace sct_corr{
                         *m_id    = nullptr,
                         *m_chi2  = nullptr,
                         *m_phi   = nullptr,
-                        *m_theta = nullptr;
+                        *m_theta = nullptr,
+                        *m_ndf = nullptr;
   }; 
 }
 #endif // rootEvent_Track_hits_h__

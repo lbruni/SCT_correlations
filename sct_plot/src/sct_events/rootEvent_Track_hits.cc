@@ -12,6 +12,7 @@ namespace sct_corr{
     ret.emplace_back(axis2String(chi2_axis_def));
     ret.emplace_back(axis2String(phi_axis_def));
     ret.emplace_back(axis2String(theta_axis_def));
+    ret.emplace_back(axis2String(Ndf_axis_def));
     return ret;
   }
 
@@ -22,7 +23,8 @@ namespace sct_corr{
     m_id(getData(getIDString())),
     m_chi2(getData(chi2_axis_def)),
     m_phi(getData(phi_axis_def)),
-    m_theta(getData(theta_axis_def))
+    m_theta(getData(theta_axis_def)),
+    m_ndf(getData(Ndf_axis_def))
   {
 
   }
@@ -50,7 +52,7 @@ namespace sct_corr{
 
   void rootEvent_Track_hits::push_Hit(const plane_hit& h, double ID)
   {
-    track_hits h1(h.x, h.y, 0, 0, 0);
+    track_hits h1(h.x, h.y, 0, 0, 0,0);
     push_Hit(h1, ID);
   }
 
@@ -62,6 +64,7 @@ namespace sct_corr{
     m_chi2->push_back(h.chi2);
     m_phi->push_back(h.phi);
     m_theta->push_back(h.theta);
+    m_ndf->push_back(h.ndf);
     get_event_nr()++;
   }
 

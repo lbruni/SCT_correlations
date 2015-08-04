@@ -23,7 +23,8 @@ namespace sct_corr{
     m_chi2  = getAxis(chi2_axis_def);
     m_phi   = getAxis(phi_axis_def);
     m_theta = getAxis(theta_axis_def);
-    m_hit = std::make_shared<track_hits>(0, 0, 0, 0, 0);
+    m_ndf   = getAxis(Ndf_axis_def);
+    m_hit = std::make_shared<track_hits>(0, 0, 0, 0, 0,0);
   }
 
 
@@ -43,6 +44,7 @@ namespace sct_corr{
       m_hit->chi2 = m_chi2->get();
       m_hit->phi = m_phi->get();
       m_hit->theta = m_theta->get();
+      m_hit->ndf = m_ndf->get();
     }
     return ret;
   }

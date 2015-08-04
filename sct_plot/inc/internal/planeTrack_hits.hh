@@ -20,6 +20,7 @@ namespace sct_corr{
     const axis_ref* m_chi2 = nullptr;
     const axis_ref* m_phi = nullptr;
     const axis_ref* m_theta = nullptr;
+    const axis_ref* m_ndf = nullptr;
     std::shared_ptr<track_hits> m_hit;
     
   };

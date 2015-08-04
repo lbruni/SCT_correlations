@@ -210,12 +210,12 @@ const sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
 {
   if (axis.m_axis == x_axis_def)
   {
-    return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.Data()))->getX();
+    return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.c_str()))->getX();
   }
 
   if (axis.m_axis == y_axis_def)
   {
-    return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.Data()))->getY();
+    return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.c_str()))->getY();
   }
 
   return nullptr;

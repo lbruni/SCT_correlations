@@ -25,7 +25,7 @@ public:
   S_Axis(const char* collctionName, double planeID, axis_def axis);
   S_Axis();
   bool isValid() const;
-  TString m_collectionName;
+  std::string  m_collectionName;
   double m_planeID;
   axis_def m_axis;
 private:

@@ -1,12 +1,7 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Wed May 20 16:34:27 2015 by ROOT version 5.34/18
-// from TTree fitpoints/fitpoints
-// found on file: C:/Users/Argg/OneDrive/alibava/fitter.root
-//////////////////////////////////////////////////////////
+#ifndef treeCollection_h__
+#define treeCollection_h__
 
-#ifndef fitpoints_h
-#define fitpoints_h
+
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -71,7 +66,7 @@ namespace sct_corr{
     std::string m_name;
   };
 }
-#endif
+#endif// treeCollection_h__
 
 
 

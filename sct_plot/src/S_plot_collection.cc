@@ -10,6 +10,7 @@
 #include "internal/plotsBase.hh"
 #include "s_DrawOption.h"
 #include "s_plane.h"
+#include "TTree.h"
 
 S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>())
 {
@@ -115,7 +116,12 @@ Long64_t S_plot_collection::Draw(const char* name, const S_DrawOption& option)
       return  e.second.Draw(option);
     }
   }
-  return 0;
+  auto tree_ = getTTree(name);
+  if (tree_)
+  {
+    return option.Draw(tree_);
+  }
+  return -1;
 }
 Long64_t S_plot_collection::Draw(const s_plane_collection& name, const S_DrawOption& option)
 {
@@ -244,16 +250,7 @@ sct_corr::treeCollection* S_plot_collection::getCollection(const char* name)
     std::cout << "file empty" << std::endl;
     return nullptr;
   }
-  TTree *collection = NULL;
-
-  for (auto& e : m_file)
-  {
-    e->GetObject(name, collection);
-    if (collection)
-    {
-      break;
-    }
-  }
+  TTree *collection = getTTree(name);
 
 
 
@@ -269,6 +266,18 @@ sct_corr::treeCollection* S_plot_collection::getCollection(const char* name)
   m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
   return tree_pointer;
 
+}
+
+TTree* S_plot_collection::getTTree(const char* name) const {
+  TTree *collection = NULL;
+
+  for (auto& e : m_file) {
+    e->GetObject(name, collection);
+    if (collection) {
+      return collection;
+    }
+  }
+  return nullptr;
 }
 
 S_plane* S_plot_collection::getPlane(double ID, sct_corr::treeCollection* coll)

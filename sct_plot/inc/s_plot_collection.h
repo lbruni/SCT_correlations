@@ -6,6 +6,7 @@
 #include <map>
 
 class TFile;
+class TTree;
 class s_plane_collection;
 class S_plot;
 class S_DrawOption;
@@ -41,7 +42,7 @@ private:
   s_plane_collection addPlot_internal(S_plot plot_def);
   const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
   sct_corr::treeCollection* getCollection(const char* name);
-
+  TTree*                    getTTree(const char* name) const;
   S_plane* getPlane(double ID, sct_corr::treeCollection* coll);
   S_plane* pushPlane(const S_plane_def& pl);
 

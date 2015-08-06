@@ -59,6 +59,11 @@ S_DrawOption& S_DrawOption::opt_bar()
 }
 
 
+S_DrawOption& S_DrawOption::opt_same() {
+  m_same = true;
+  return *this;
+}
+
 S_DrawOption& S_DrawOption::cut(const char* cut_)
 {
   TCut dummy = cut_;
@@ -273,7 +278,12 @@ Long64_t S_DrawOption::Draw(TTree * tree) const
 
 const char* S_DrawOption::getOptions() const
 {
-    return m_options.c_str();
+  if (m_same) {
+     m_out_option = m_options + "same";
+     return m_out_option.c_str();
+  }
+
+  return m_options.c_str();
 }
 
 const char* S_DrawOption::getAxis() const

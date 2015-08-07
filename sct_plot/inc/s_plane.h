@@ -108,6 +108,19 @@ public:
   S_plane_def getTrueHitsWithDUT() const;
   ClassDef(s_plane_collection_correlations, 0);
 };
+class DllExport s_plane_collection_find_closest :public s_plane_collection {
+public:
+  s_plane_collection_find_closest();
+
+  void setResidual(const S_plane_def& plane_);
+  void setHitOnPlaneA(const S_plane_def& plane_);
+  void setHitOnPlaneB(const S_plane_def& plane_);
+  S_plane_def getResidual() const;
+  S_plane_def getHitOnPlaneA() const;
+  S_plane_def getHitOnPlaneB() const;
+  ClassDef(s_plane_collection_find_closest, 0);
+};
+
 
 DllExport s_plane_collection operator+(s_plane_collection pl1, const s_plane_collection& pl2);
 DllExport s_plane_collection operator+(s_plane_collection pl1, const S_plane_def& pl2);
@@ -119,6 +132,7 @@ DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def
 #pragma link C++ class S_plane_def_GBL;
 #pragma link C++ class s_plane_collection;
 #pragma link C++ class s_plane_collection_correlations;
+#pragma link C++ class s_plane_collection_find_closest;
 #pragma link C++ function  operator+(s_plane_collection , const s_plane_collection& );
 #pragma link C++ function  operator+(s_plane_collection , const S_plane_def& );
 #pragma link C++ function  operator+(const S_plane_def& , const S_plane_def& );

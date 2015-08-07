@@ -146,12 +146,18 @@ public:
 
   static  S_plot save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& = "");
 
+
+  static s_plane_collection_find_closest find_nearest(S_plot_collection& pl, Double_t x_cutoff, Double_t y_cutoff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& = "");
+  static s_plane_collection_find_closest find_nearest_strip(S_plot_collection& pl, axis_def search_axis, Double_t cutOfff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& plot_prob_= "");
+
+
   static s_plane_collection misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& = "");
   static s_plane_collection misalignment_pixel(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, const  s_plot_prob& = "");
   static s_plane_collection plane_merger(S_plot_collection& pl, s_plane_collection planes_, const  s_plot_prob& = "");
   static S_plane_def Crate_True_Fitted_DUT_Hits(S_plot_collection& pl, const  s_plot_prob& = "");
   static S_plane_def Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const s_plot_prob& = "");
   static s_plane_collection_correlations Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
+  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
 };
 
 class DllExport sct_analyis { // all this function have memory leaks. they are not designed to be called in a loop 

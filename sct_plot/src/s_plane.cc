@@ -176,3 +176,31 @@
   S_plane_def s_plane_collection_correlations::getTrueHitsWithDUT() const {
     return getByType("TrueHitsWithDUT")();
   }
+
+  s_plane_collection_find_closest::s_plane_collection_find_closest() :s_plane_collection() {
+
+  }
+
+  void s_plane_collection_find_closest::setResidual(const S_plane_def& plane_) {
+    push_back("Residual", plane_);
+  }
+
+  void s_plane_collection_find_closest::setHitOnPlaneA(const S_plane_def& plane_) {
+    push_back("HitOnPlaneA", plane_);
+  }
+
+  void s_plane_collection_find_closest::setHitOnPlaneB(const S_plane_def& plane_) {
+    push_back("HitOnPlaneB", plane_);
+  }
+
+  S_plane_def s_plane_collection_find_closest::getResidual() const {
+    return getByType("Residual")();
+  }
+
+  S_plane_def s_plane_collection_find_closest::getHitOnPlaneA() const {
+    return getByType("HitOnPlaneA")();
+  }
+
+  S_plane_def s_plane_collection_find_closest::getHitOnPlaneB() const {
+    return getByType("HitOnPlaneB")();
+  }

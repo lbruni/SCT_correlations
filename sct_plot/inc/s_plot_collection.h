@@ -36,6 +36,7 @@ public:
   Long64_t Draw(const s_plane_collection& name, const S_DrawOption& option);
   Long64_t DrawAll(const s_plane_collection& name, const S_DrawOption& option);
   void loop(Int_t last = -1, Int_t start = 0);
+  bool collectionExist(const char* name);
 #ifndef __CINT__
 private:
   Int_t getMaxEntriesFromTree(Int_t last);

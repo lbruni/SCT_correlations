@@ -15,6 +15,7 @@
 #include "TH1.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TBrowser.h"
 
 using namespace xml_util;
 
@@ -70,72 +71,16 @@ int asyncMain(void *arg) {
   TFile * out_file = new TFile("output.root","recreate");
   S_plot_collection pl(file_);
   pl.setOutputFile(out_file);
-  auto res = pl.addPlot(sct_plot::residual(s_plot_prob("residual").SaveToDisk()), sct_coll::DUT_fitted_local_GBL().getX_def(), sct_coll::DUT_hit_local().getX_def());
 
+  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, 0.0745, 0, 0, 0, S_YCut(-43, -36), 100000, s_plot_prob("GBL").SaveToDisk());
 
-  auto apix_transform = pl.addPlot(sct_plot::coordinate_transform(1 / 3.98148, -156.98 + 118.43, 1 / -19.4048, -34.0894, s_plot_prob().SaveToDisk()), sct_coll::apix_zs_data());
+  auto corr = pl.addPlot(sct_plot::correlation(s_plot_prob().SaveToDisk()), gbl_collection.getTotalTrueHits().getX_def(), gbl_collection.getDUT_Hits().getY_def());
 
-  auto fitted_true= pl.addPlot(sct_plot::find_nearest(1,3, s_plot_prob().SaveToDisk()), sct_coll::DUT_fitted_local_GBL(), apix_transform());
-  auto cor_apix = pl.addPlot(sct_plot::correlation(s_plot_prob("apix").SaveToDisk()), sct_coll::DUT_fitted_local_GBL().getY_def(), apix_transform().getY_def());
-
- // auto trueHits = pl.addPlot(sct_plot::coordinate_transform(13.3934 / 1.00377, 669.918 - 1.75912 + 0.404092+0.01228, 1, 0, s_plot_prob().SaveToDisk()), sct_coll::DUT_fitted_local_GBL());
-
-  auto trueHits_cut = pl.addPlot(sct_plot::cut_x_y(S_YCut(-43,-36), s_plot_prob().SaveToDisk()), fitted_true.get(1));
-  auto trueHits = pl.addPlot(sct_plot::coordinate_transform(1, 0, 1, 0, s_plot_prob().SaveToDisk()), trueHits_cut());
-  auto corr = pl.addPlot(sct_plot::correlation(s_plot_prob("correlation").SaveToDisk()), trueHits().getX_def(), sct_coll::DUT_hit_local().getX_def());
-
-  auto res_channel = pl.addPlot(sct_plot::residual(s_plot_prob("residual_channel").SaveToDisk()), trueHits().getX_def(), sct_coll::DUT_hit_local().getX_def());
-
-  auto find_closest = pl.addPlot(sct_plot::find_nearest_strip( x_axis_def, 100,  s_plot_prob("closest").SaveToDisk()), trueHits(), sct_coll::DUT_hit_local());
-  auto res_vs_missing = pl.addPlot(sct_plot::hitmap(s_plot_prob("res_vs_missing").SaveToDisk()), find_closest.get(0).getX_def(), find_closest.get(1).getY_def());
   pl.loop();
-  TH2D h2("asd", "sad", 100, 0, 0, 100, 0, 0);
-  pl.Draw(corr, S_DrawOption().draw_y_VS_x().opt_colz().output_object(&h2));
-  SCT_helpers::CutTH2(&h2, S_Cut_BinContent(200));
-  h2.Draw("colz");
-  auto p = h2.ProfileX();
-  TF1 f1("f1", "pol1");
-  p->Fit(&f1);
-
-  p->Draw("same");
-  new TCanvas();
-  pl.Draw(res_channel(), S_DrawOption().draw_x().cut_x(-0.05,0.05));
-  new TCanvas();
-  pl.Draw(res_vs_missing(), S_DrawOption().draw_x_VS_y().cut_x(-0.05, 0.05));
 
   new TCanvas();
-  TH1D h("trueHits", "true hits", 401, -50,-10);
-  auto trueHIts_entries=pl.Draw(trueHits(), S_DrawOption().draw_y_VS_x());
-  pl.Draw(trueHits(), S_DrawOption().draw_x().output_object(&h));
-  new TCanvas();
-  TH1D h1("DUT_Hits", "DUT hits", 401, -50, -10);
-  auto DUT_hits_entries=pl.Draw(find_closest.get(1), S_DrawOption().draw_y_VS_x());
-  pl.Draw(find_closest.get(1), S_DrawOption().draw_x().output_object(&h1));
-
-  std::cout << "DUT_hits_entries: "<< DUT_hits_entries << std::endl;
-  std::cout << "trueHIts_entries: "<<trueHIts_entries << std::endl;
-  std::cout << "efficiency: "<<DUT_hits_entries / (Double_t)trueHIts_entries * 100 << std::endl;
-   auto h_eff = (TH1D*)h1.Clone("efficiency");
-   h_eff->Divide(&h);
-   new TCanvas();
-   h_eff->Draw();
-  
-
-  new TCanvas();
-  TH2D h3("asd", "sad", 100, 0, 0, 100, 0, 0);
-  pl.Draw(cor_apix(), S_DrawOption().draw_y_VS_x().output_object(&h3));
-  SCT_helpers::CutTH2(&h3, S_Cut_BinContent(200));
-  h3.Draw("colz");
-  auto p3 = h3.ProfileX();
-  TF1 f2("f2", "pol1");
-  f2.SetParameter("p1", 1);
-  p3->Fit(&f2);
-  p3->Draw("same");
-
-
-  new TCanvas();
-  pl.Draw(fitted_true.get(0), S_DrawOption().draw_y_VS_x());
-
+  pl.Draw(gbl_collection.getDUT_Hits(), S_DrawOption().draw_y_VS_x());
+  new TBrowser();
   theApp.Run();
   
   exit(0);

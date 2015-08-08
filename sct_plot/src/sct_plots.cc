@@ -147,15 +147,19 @@ Long64_t SCT_helpers::DrawTTree(TTree * tree, const S_DrawOption& opt)
 {
   return opt.Draw(tree);
 }
-
-TF1 SCT_helpers::LinearFit_Of_Profile(TH2D* h2)
-{
+TF1 SCT_helpers::LinearFit_Of_Profile(TH2D* h2, Double_t cut_prozent /*= 0*/) {
+  auto max_ = h2->GetMaximum();
+  SCT_helpers::CutTH2(h2, S_Cut_BinContent(max_*cut_prozent));
 TProfile* p1 = h2->ProfileX();
 TF1 f("f1", "pol1", h2->GetXaxis()->GetBinCenter(0), h2->GetXaxis()->GetBinCenter(h2->GetNbinsX()));
 
 p1->Fit(&f,"Q");
 return f;
 }
+
+
+
+
 
 s_plane_collection_find_closest sct_plot::find_nearest(S_plot_collection& pl, Double_t x_cutoff, Double_t y_cutoff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob&  plot_prob_) {
   auto collection_= pl.addPlot(sct_plot::find_nearest(x_cutoff, y_cutoff, plot_prob_), planeA, planeB);
@@ -244,8 +248,21 @@ S_plane_def sct_plot::Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection&
   return fitted_in_channels();
 }
 
-s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& /*= ""*/) {
+s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& plot_prob /*= ""*/) {
+  if (pl.collectionExist(sct::col_GBL_fitted_points())) {
 
+    return GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, fiducial_cut_, residualCut, plot_prob);
+  }
+
+  if (pl.collectionExist(sct::col_fitpoints_local())) {
+
+    return DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, fiducial_cut_, residualCut, plot_prob);
+  }
+  std::cout << "collection not found " << std::endl;
+  return s_plane_collection_correlations();
+}
+
+s_plane_collection_correlations sct_plot::DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& /*= ""*/) {
   auto truehits = sct_plot::Create_True_Fitted_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, s_plot_prob().doNotSaveToDisk());
 
   auto trueHits_cut = pl.addPlot(sct_plot::cut_x_y(fiducial_cut_), truehits);
@@ -276,7 +293,7 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
 
 
   std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
-  auto find_closest = sct_plot::find_nearest_strip(pl, x_axis_def, 100, trueHits(), sct_coll::DUT_zs_data(), s_plot_prob(find_closest_name.c_str()).setSaveOptione(plot_prob_.getPlotSaveOption()));
+  auto find_closest = sct_plot::find_nearest_strip(pl, x_axis_def, residualCut, trueHits(), sct_coll::DUT_zs_data(), s_plot_prob(find_closest_name.c_str()).setSaveOptione(plot_prob_.getPlotSaveOption()));
   
 
   std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";

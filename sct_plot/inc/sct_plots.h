@@ -55,7 +55,7 @@ public:
   static void CutTH1(TH1* h1, const S_Cut& cut_);
   static TH1* HistogrammSilhouette(TH2* h2, axis_def ax);
   static Long64_t DrawTTree(TTree * tree, const S_DrawOption& opt);
-  static TF1 LinearFit_Of_Profile(TH2D* h2);
+  static TF1 LinearFit_Of_Profile(TH2D* h2,Double_t cut_prozent = 0);
 };
 class S_plane_def;
 class DllExport sct_coll {
@@ -157,6 +157,7 @@ public:
   static S_plane_def Crate_True_Fitted_DUT_Hits(S_plot_collection& pl, const  s_plot_prob& = "");
   static S_plane_def Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const s_plot_prob& = "");
   static s_plane_collection_correlations Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
+  static s_plane_collection_correlations DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
   static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
 };
 

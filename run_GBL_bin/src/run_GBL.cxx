@@ -72,14 +72,29 @@ int asyncMain(void *arg) {
   S_plot_collection pl(file_);
   pl.setOutputFile(out_file);
 
-  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, 0.0745, 0, 0, 0, S_YCut(-43, -36), 100000, s_plot_prob("GBL").SaveToDisk());
+  auto gbl_collection = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, 0.0745, 0, 669.366 + 2 - 0.5 - 0.2, 0, S_YCut(-43, -36), 100000, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
 
-  auto corr = pl.addPlot(sct_plot::correlation(s_plot_prob().SaveToDisk()), gbl_collection.getTotalTrueHits().getX_def(), gbl_collection.getDUT_Hits().getY_def());
+  auto corr = pl.addPlot(sct_plot::correlation(s_plot_prob().SaveToDisk()), gbl_collection.getTotalTrueHits().getX_def(), gbl_collection.getDUT_Hits().getX_def());
+  auto res = pl.addPlot(sct_plot::residual(s_plot_prob().SaveToDisk()), gbl_collection.getTotalTrueHits().getX_def(), gbl_collection.getDUT_Hits().getX_def());
+
 
   pl.loop();
 
+
   new TCanvas();
-  pl.Draw(gbl_collection.getDUT_Hits(), S_DrawOption().draw_y_VS_x());
+
+  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_y_VS_x().cut_x(-5,5));
+
+  new TCanvas();
+  TH2D* h2 = new TH2D("asd", "asda", 100, 0, 0, 100, 0, 0);
+  pl.Draw(corr(), S_DrawOption().draw_y_VS_x().output_object(h2));
+  auto f=SCT_helpers::LinearFit_Of_Profile(h2,0.2);
+  f.Print();
+  
+  
+  new TCanvas();
+  pl.Draw(res(), S_DrawOption().draw_x().cut_x(-1,1));
+
   new TBrowser();
   theApp.Run();
   

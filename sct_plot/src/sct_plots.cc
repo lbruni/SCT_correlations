@@ -171,9 +171,9 @@ s_plane_collection_find_closest sct_plot::find_nearest_strip(S_plot_collection& 
   auto collection_ = pl.addPlot(sct_plot::find_nearest_strip(search_axis,cutOfff, plot_prob_), planeA, planeB);
 
   s_plane_collection_find_closest ret;
-  ret.setResidual(collection_.getByType("nearest_distance")());
-  ret.setHitOnPlaneA(collection_.getByType("nearest_plane1")());
-  ret.setHitOnPlaneB(collection_.getByType("nearest_plane2")());
+  ret.setResidual(collection_.getByType("nearest_strip_distance")());
+  ret.setHitOnPlaneA(collection_.getByType("nearest_strip_plane1")());
+  ret.setHitOnPlaneB(collection_.getByType("nearest_strip_plane2")());
   return ret;
 }
 
@@ -256,6 +256,7 @@ s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_hit
   ret.setResidualVsMissing(hitmap__rot());
   ret.setTrueHitsWithDUT(cor.get("nearest_strip_plane2")());
   ret.setTotalTrueHits(trueHits_cut());
+  ret.setDUT_Hits(cor.get("nearest_strip_plane1")());
   return ret;
 }
 
@@ -275,7 +276,7 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
 
 
   std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
-  auto find_closest = sct_plot::find_nearest_strip(pl, x_axis_def, 100, trueHits(), sct_coll::DUT_hit_local(), s_plot_prob(find_closest_name.c_str()).setSaveOptione(plot_prob_.getPlotSaveOption()));
+  auto find_closest = sct_plot::find_nearest_strip(pl, x_axis_def, 100, trueHits(), sct_coll::DUT_zs_data(), s_plot_prob(find_closest_name.c_str()).setSaveOptione(plot_prob_.getPlotSaveOption()));
   
 
   std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
@@ -287,6 +288,7 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
   ret.setResidualVsMissing(res_vs_missing());
   ret.setTotalTrueHits(trueHits());
   ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
+  ret.setDUT_Hits(find_closest.getHitOnPlaneB());
   return ret;
 
 }

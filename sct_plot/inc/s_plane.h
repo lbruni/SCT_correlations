@@ -102,10 +102,12 @@ public:
   void setResidualVsMissing(const S_plane_def& plane_);
   void setTotalTrueHits(const S_plane_def& plane_);
   void setTrueHitsWithDUT(const S_plane_def& plane_);
+  void setDUT_Hits(const S_plane_def& plane_);
   S_plane_def getResidual() const;
   S_plane_def getResidualVSmissing() const;
   S_plane_def getTotalTrueHits() const;
   S_plane_def getTrueHitsWithDUT() const;
+  S_plane_def getDUT_Hits() const;
   ClassDef(s_plane_collection_correlations, 0);
 };
 class DllExport s_plane_collection_find_closest :public s_plane_collection {

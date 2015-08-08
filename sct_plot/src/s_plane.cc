@@ -161,6 +161,10 @@
     push_back("TrueHitsWithDUT", plane_);
   }
 
+  void s_plane_collection_correlations::setDUT_Hits(const S_plane_def& plane_) {
+    push_back("DUT_Hits", plane_);
+  }
+
   S_plane_def s_plane_collection_correlations::getResidual() const {
     return getByType("Residual")();
   }
@@ -175,6 +179,10 @@
 
   S_plane_def s_plane_collection_correlations::getTrueHitsWithDUT() const {
     return getByType("TrueHitsWithDUT")();
+  }
+
+  S_plane_def s_plane_collection_correlations::getDUT_Hits() const {
+    return getByType("DUT_Hits")();
   }
 
   s_plane_collection_find_closest::s_plane_collection_find_closest() :s_plane_collection() {

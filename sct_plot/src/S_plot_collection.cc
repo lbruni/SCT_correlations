@@ -164,16 +164,18 @@ Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& op
 }
 Int_t S_plot_collection::getMaxEntriesFromTree(Int_t last)
 {
+  bool external_last_event = true;
   if (last == -1)
   {
     last = kMaxInt;
+    external_last_event = false;
   }
     for (auto & e : m_trees)
     {
       auto l = e.second->GetEntries();
       if (last < kMaxInt && l != last)
       {
-        if (l < kMaxInt)
+        if (l < kMaxInt && external_last_event==false)
         {
           std::cout << "trees must have the same length" << std::endl;
         }

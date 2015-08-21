@@ -64,6 +64,73 @@ S_DrawOption& S_DrawOption::opt_same() {
   return *this;
 }
 
+S_DrawOption& S_DrawOption::opt_color(Color_t col) {
+
+  m_color = col;
+  return *this;
+}
+
+S_DrawOption& S_DrawOption::color_white() {
+  return opt_color(kWhite);
+}
+
+S_DrawOption& S_DrawOption::color_black() {
+  return opt_color(kBlack);
+}
+
+S_DrawOption& S_DrawOption::color_gray() {
+  return opt_color(kGray);
+}
+
+S_DrawOption& S_DrawOption::color_green() {
+  return opt_color(kGreen);
+}
+
+S_DrawOption& S_DrawOption::color_blue() {
+  return opt_color(kBlue);
+}
+
+S_DrawOption& S_DrawOption::color_yellow() {
+  return opt_color(kYellow);
+}
+
+S_DrawOption& S_DrawOption::color_magenta() {
+  return opt_color(kMagenta);
+}
+
+S_DrawOption& S_DrawOption::color_cyan() {
+  return opt_color(kCyan);
+}
+
+S_DrawOption& S_DrawOption::color_orange() {
+  return opt_color(kOrange);
+}
+
+S_DrawOption& S_DrawOption::color_spring() {
+  return opt_color(kSpring);
+}
+
+S_DrawOption& S_DrawOption::color_teal() {
+  return opt_color(kTeal);
+}
+
+S_DrawOption& S_DrawOption::color_azure() {
+  return opt_color(kAzure);
+
+}
+
+S_DrawOption& S_DrawOption::color_violet() {
+  return opt_color(kViolet);
+}
+
+S_DrawOption& S_DrawOption::color_pink() {
+  return opt_color(kPink);
+}
+
+S_DrawOption& S_DrawOption::color_red() {
+  return opt_color(kRed);
+}
+
 S_DrawOption& S_DrawOption::cut(const char* cut_)
 {
   TCut dummy = cut_;
@@ -269,6 +336,8 @@ void S_DrawOption::push_output_to_TGraphErrors(Long64_t numberOfPoints,TTree * t
 ///////******Draw TGraphErrors / TGraph
 Long64_t S_DrawOption::Draw(TTree * tree) const
 {
+    tree->SetLineColor(m_color);
+    tree->SetMarkerColor(m_color);
     auto n = tree->Draw(getAxis(), getCut(), getOptions());
     
     //push_output_to_TGraph(n, tree);

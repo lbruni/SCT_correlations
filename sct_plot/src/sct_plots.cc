@@ -22,6 +22,7 @@
 
 #include "TF1.h"
 #include "TProfile.h"
+#include "geometry/setup_description.hh"
 
 
 
@@ -161,6 +162,10 @@ return f;
 
 
 
+S_plane_def sct_plot::coordinate_transform(S_plot_collection& pl, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::coordinate_transform(x_slope, x_offset, y_slope, y_offset, plot_prob__),planeA)();
+}
+
 s_plane_collection_find_closest sct_plot::find_nearest(S_plot_collection& pl, Double_t x_cutoff, Double_t y_cutoff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob&  plot_prob_) {
   auto collection_= pl.addPlot(sct_plot::find_nearest(x_cutoff, y_cutoff, plot_prob_), planeA, planeB);
 
@@ -297,7 +302,12 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
   
 
   std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
-  auto res_vs_missing = pl.addPlot(sct_plot::hitmap(s_plot_prob( res_vs_missing_name.c_str()).setSaveOptione(plot_prob_.getPlotSaveOption())), find_closest.getResidual().getX_def(), find_closest.getHitOnPlaneA().getY_def());
+  auto res_vs_missing = pl.addPlot(sct_plot::hitmap(
+                                     s_plot_prob(res_vs_missing_name.c_str())
+                                     .setSaveOptione(plot_prob_.getPlotSaveOption())
+                                   ), 
+                                   find_closest.getResidual().getX_def(), 
+                                   find_closest.getHitOnPlaneA().getY_def());
 
 
   s_plane_collection_correlations ret;
@@ -308,5 +318,46 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
   ret.setDUT_Hits(find_closest.getHitOnPlaneB());
   return ret;
 
+}
+
+s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& plot_prob_/*= ""*/) {
+  //auto apix_transform = pl.addPlot(sct_plot::coordinate_transform(1 / 3.98148, -156.98 + 118.43, 1 / -19.4048, -34.0894, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_zs_data());
+  auto apix_transform = pl.addPlot(sct_plot::coordinate_transform(1 / 3.98148, -55 - 2 - 1, 1 / -19.4048, -35 - 2, s_plot_prob().SaveToDisk()), sct_coll::apix_zs_data());
+
+  auto fitted_true = sct_plot::find_nearest(pl, 1, 3, sct_coll::DUT_fitted_local_GBL(), apix_transform(), s_plot_prob().SaveToDisk());
+  auto dut_rotated_17 = pl.addPlot(sct_plot::rotated(0.0080729, s_plot_prob().doNotSaveToDisk()), fitted_true.getHitOnPlaneA());
+  auto dut_rotated_17_move = pl.addPlot(sct_plot::coordinate_transform_move(-0.36435+0.01266, 0.0, s_plot_prob().doNotSaveToDisk()), dut_rotated_17());
+  auto trueHits_cut = pl.addPlot(sct_plot::cut_x_y(fiducial_cut_, s_plot_prob().SaveToDisk()),dut_rotated_17_move());
+  std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
+  auto find_closest = sct_plot::find_nearest_strip(
+      pl, x_axis_def, residualCut, trueHits_cut(), sct_coll::DUT_hit_local(),
+      s_plot_prob(find_closest_name.c_str())
+          .setSaveOptione(plot_prob_.getPlotSaveOption()));
+  std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
+
+  auto res_vs_missing = pl.addPlot(sct_plot::hitmap(
+    s_plot_prob(res_vs_missing_name.c_str())
+    .setSaveOptione(plot_prob_.getPlotSaveOption())
+    ),
+    find_closest.getResidual().getX_def(),
+    find_closest.getHitOnPlaneA().getY_def()
+    );
+
+  s_plane_collection_correlations ret;
+  ret.setResidual(find_closest.getResidual());
+  ret.setResidualVsMissing(res_vs_missing());
+  ret.setTotalTrueHits(trueHits_cut());
+  ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
+  ret.setDUT_Hits(find_closest.getHitOnPlaneB());
+  return ret;
+
+}
+
+
+
+
+
+S_plane_def sct_plot::convert_zs_data_to_hits(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_/*= ""*/) {
+  return coordinate_transform(pl, layer.sensitive.pitchX, layer.sensitive.positionX, layer.sensitive.pitchY, layer.sensitive.positionY, sz_data, plot_prob_);
 }
 

@@ -79,11 +79,30 @@ namespace sct_corr{
 
   Int_t treeCollection::GetEntries() const
   {
+    Int_t max_entry = kMaxInt;
     if (fChain == NULL)
     {
       return kMaxInt;
     }
-    return fChain->GetEntries();
+
+    auto entries = fChain->GetListOfBranches()->GetEntries();
+
+    for (int i = 0; i < entries; i++) {
+      auto br = dynamic_cast<TBranch*>(fChain->GetListOfBranches()->At(i));
+      if (!br) {
+        continue;
+      }
+      auto className = br->GetClassName();
+      if (strcmp("vector<double>", className) != 0) {
+        continue;
+      }
+      Int_t current_max = br->GetEntries();
+      max_entry = TMath::Min(max_entry, current_max);
+    }
+    Int_t current_max = fChain->GetEntries();
+    max_entry = TMath::Min(max_entry, current_max);
+    return max_entry;
+
   }
 }
 

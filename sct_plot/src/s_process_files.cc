@@ -96,7 +96,8 @@ bool s_process_files::process(TFile* file) {
   m_plotCollection = std::make_shared<S_plot_collection>(file);
   m_plotCollection->setOutputFile(m_dummy);
 
-  
+  //m_output_planes = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(*m_plotCollection, 0.0745, 0, 669.366 + 2 - 0.5 - 0.2, 0, S_YCut(-43000, 3600), 100000, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
+
   m_output_planes = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(*m_plotCollection,m_pitchSize,m_rotation,m_pos_x,m_pos_y,m_cuts,m_residual_cut);
   m_plotCollection->loop();
 
@@ -118,6 +119,7 @@ bool s_process_files::process(TFile* file) {
   m_outputl.set_Error_efficiency(sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits)));//LB
   
   
+  std::cout << "efficiency " << DUTHits / totalHits << std::endl;
   std::cout << "Error eff:   " << sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits)) << std::endl;
   std::cout << "total hits " << totalHits << std::endl;
   std::cout << "DUTHits " << DUTHits << std::endl;
@@ -148,6 +150,7 @@ bool s_process_files::process() {
     m_outputl.reset();
     m_outputl.set_RunNumber(e.m_runNumber);
     m_outputl.set_Threshold(e.m_Threshold);
+    std::cout << "threshold  " << e.m_Threshold << std::endl;
     m_outputl.set_HV(e.m_HV);
     process(e.getTfile());
 

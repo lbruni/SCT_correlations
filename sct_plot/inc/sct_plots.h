@@ -45,7 +45,8 @@ namespace sct_corr {
   class plot;
   class plane;
   class sct_event_buffer;
-
+  class Xgear;
+  class Xlayer;
 }
 
 class TH2;
@@ -147,6 +148,11 @@ public:
   static  S_plot save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& = "");
 
 
+
+
+  static  S_plane_def coordinate_transform(S_plot_collection& pl, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& = "");
+  static  S_plane_def coordinate_transform_move(S_plot_collection& pl, Double_t x_offset, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& = "");
+
   static s_plane_collection_find_closest find_nearest(S_plot_collection& pl, Double_t x_cutoff, Double_t y_cutoff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& = "");
   static s_plane_collection_find_closest find_nearest_strip(S_plot_collection& pl, axis_def search_axis, Double_t cutOfff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& plot_prob_= "");
 
@@ -159,6 +165,9 @@ public:
   static s_plane_collection_correlations Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
   static s_plane_collection_correlations DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
   static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
+  
+  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
+  static S_plane_def convert_zs_data_to_hits(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
 };
 
 class DllExport sct_analyis { // all this function have memory leaks. they are not designed to be called in a loop 

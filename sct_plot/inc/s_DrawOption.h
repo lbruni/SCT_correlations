@@ -20,6 +20,26 @@ public:
   S_DrawOption& opt_star();
   S_DrawOption& opt_bar();
   S_DrawOption& opt_same();
+  S_DrawOption& opt_color(Color_t);
+  S_DrawOption& color_red();
+
+
+  S_DrawOption& color_white();
+  S_DrawOption& color_black();
+  S_DrawOption& color_gray();
+  S_DrawOption& color_green();
+  S_DrawOption& color_blue();
+  S_DrawOption& color_yellow();
+  S_DrawOption& color_magenta();
+  S_DrawOption& color_cyan();
+  S_DrawOption& color_orange();
+  S_DrawOption& color_spring();
+  S_DrawOption& color_teal();
+  S_DrawOption& color_azure();
+  S_DrawOption& color_violet();
+  S_DrawOption& color_pink();
+
+
   S_DrawOption& cut(const char* cut_);
   S_DrawOption& cut_min(axis_def ax,Double_t min_);
   S_DrawOption& cut_max(axis_def ax, Double_t max_);
@@ -54,6 +74,7 @@ private:
   TObject* m_output_object = nullptr;
   mutable std::string m_axis_dummy;
   mutable int m_numOfAxis = 2;
+  mutable Color_t m_color = kBlack;
   bool m_same = false;
 #endif // !__CINT__
 

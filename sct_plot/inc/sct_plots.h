@@ -111,6 +111,7 @@ public:
   static const char* plot_find_nearest_strip();
   static const char* plot_A_if_B();
   static const char* plot_rotated();
+  static const char* plot_linear_trans();
   static const char* plot_coordinate_transform();
   static const char* plot_hitMultiplizity();
   static const char* plot_efficieny_map();
@@ -147,7 +148,7 @@ public:
 
   static  S_plot save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& = "");
 
-
+  static  S_plot linear_trans(Double_t a11, Double_t a21 ,Double_t a12,Double_t a22, const s_plot_prob& = "");
 
 
   static  S_plane_def coordinate_transform(S_plot_collection& pl, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& = "");
@@ -166,8 +167,22 @@ public:
   static s_plane_collection_correlations DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
   static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
   
-  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
+  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const  sct_corr::Xgear&, const s_plot_prob& = "");
   static S_plane_def convert_zs_data_to_hits(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
+  static S_plane_def convert_hits_to_zs_data(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& hits, const s_plot_prob& = "");
+
+  static S_plane_def convert_local_to_global(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& local_hits, const s_plot_prob& = "");
+  static S_plane_def convert_global_to_local(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& local_hits, const s_plot_prob& = "");
+  static  S_plane_def correlation(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
+  static  S_plane_def correlation(S_plot_collection& pl, const S_plane_def& planeA,const s_plot_prob& = "");
+
+  static  S_plane_def rotate(S_plot_collection& pl, Double_t angle, const S_plane_def& planeA, const s_plot_prob& = "");
+
+  static  S_plane_def linear_trans(S_plot_collection& pl, Double_t a11, Double_t a21, Double_t a12, Double_t a22, const S_plane_def& planeA, const s_plot_prob& = "");
+  static  S_plane_def hitmap(S_plot_collection& pl, const S_plane_def& hits, const s_plot_prob& = "");
+  static  S_plane_def hitmap(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
+
+  static  S_plane_def cut_x_y(S_plot_collection& pl, const  S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& = "");
 };
 
 class DllExport sct_analyis { // all this function have memory leaks. they are not designed to be called in a loop 

@@ -162,8 +162,14 @@ return f;
 
 
 
+
+
 S_plane_def sct_plot::coordinate_transform(S_plot_collection& pl, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
   return pl.addPlot(sct_plot::coordinate_transform(x_slope, x_offset, y_slope, y_offset, plot_prob__),planeA)();
+}
+
+S_plane_def sct_plot::coordinate_transform_move(S_plot_collection& pl, Double_t x_offset, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::coordinate_transform_move( x_offset, y_offset, plot_prob__), planeA)();
 }
 
 s_plane_collection_find_closest sct_plot::find_nearest(S_plot_collection& pl, Double_t x_cutoff, Double_t y_cutoff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob&  plot_prob_) {
@@ -320,7 +326,46 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
 
 }
 
-s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& plot_prob_/*= ""*/) {
+s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const  sct_corr::Xgear& gear, const s_plot_prob& plot_prob_/*= ""*/) {
+  
+  
+  auto loc = sct_plot::convert_local_to_global(pl, *gear.detector.layer_by_ID(20), sct_coll::apix_hit_local());
+  auto loc11 = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(8), loc);
+ 
+  
+
+  S_YCut(gear.detector.layer_by_ID(8)->sensitive.sizeX)
+
+  auto trueHits = sct_plot::find_nearest(pl, 1, 1, loc11, sct_coll::DUT_fitted_local_GBL()).getHitOnPlaneB();
+ 
+  auto trueHits_cut = sct_plot::cut_x_y(pl, fiducial_cut_, trueHits, s_plot_prob().SaveToDisk());
+
+  std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
+  auto find_closest = sct_plot::find_nearest_strip(pl, 
+                                                     x_axis_def, 
+                                                     residualCut, 
+                                                     trueHits_cut, 
+                                                     sct_coll::DUT_hit_local(),
+                                                     s_plot_prob(find_closest_name.c_str())
+                                                     .setSaveOptione(plot_prob_.getPlotSaveOption())
+                                                   );
+  
+  std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
+  auto res_vs_missing = sct_plot::hitmap(pl, 
+                                         find_closest.getResidual().getX_def(),
+                                         find_closest.getHitOnPlaneA().getY_def(),
+                                         s_plot_prob(res_vs_missing_name.c_str())
+                                         .setSaveOptione(plot_prob_.getPlotSaveOption())
+                                         );
+  
+  s_plane_collection_correlations ret;
+  ret.setResidual(find_closest.getResidual());
+  ret.setResidualVsMissing(res_vs_missing);
+  ret.setTotalTrueHits(trueHits_cut);
+  ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
+  ret.setDUT_Hits(find_closest.getHitOnPlaneB());
+  return ret; 
+  /*
   //auto apix_transform = pl.addPlot(sct_plot::coordinate_transform(1 / 3.98148, -156.98 + 118.43, 1 / -19.4048, -34.0894, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_zs_data());
   auto apix_transform = pl.addPlot(sct_plot::coordinate_transform(1 / 3.98148, -55 - 2 - 1, 1 / -19.4048, -35 - 2, s_plot_prob().SaveToDisk()), sct_coll::apix_zs_data());
 
@@ -349,7 +394,7 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
   ret.setTotalTrueHits(trueHits_cut());
   ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
   ret.setDUT_Hits(find_closest.getHitOnPlaneB());
-  return ret;
+  return ret;*/
 
 }
 
@@ -358,6 +403,103 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
 
 
 S_plane_def sct_plot::convert_zs_data_to_hits(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_/*= ""*/) {
-  return coordinate_transform(pl, layer.sensitive.pitchX, layer.sensitive.positionX, layer.sensitive.pitchY, layer.sensitive.positionY, sz_data, plot_prob_);
+  return coordinate_transform(pl, layer.sensitive.pitchX, layer.sensitive.positionX-layer.sensitive.sizeX/2, layer.sensitive.pitchY, layer.sensitive.positionY-layer.sensitive.sizeY/2, sz_data, plot_prob_);
 }
 
+S_plane_def sct_plot::convert_hits_to_zs_data(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_ /*= ""*/) {
+  return coordinate_transform(pl, 1 / layer.sensitive.pitchX, -(layer.sensitive.positionX - layer.sensitive.sizeX / 2) / layer.sensitive.pitchX, 1 / layer.sensitive.pitchY, -(layer.sensitive.positionY - layer.sensitive.sizeY / 2) / layer.sensitive.pitchY, sz_data, plot_prob_);
+}
+
+S_plane_def sct_plot::convert_local_to_global(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& local_hits, const s_plot_prob& plot_prob_/*= ""*/) {
+
+  auto rot = rotate(pl, 
+                    layer.ladder.rotationXY/360*TMath::Pi()*2,
+                    local_hits, 
+                    s_plot_prob().doNotSaveToDisk()
+                    );
+  auto a = linear_trans(pl,
+                        layer.sensitive.rotation1,
+                        layer.sensitive.rotation2,
+                        layer.sensitive.rotation3,
+                        layer.sensitive.rotation4,
+                        rot,
+                        s_plot_prob().doNotSaveToDisk());
+  auto b = coordinate_transform_move(pl,
+                                     layer.ladder.positionX,
+                                     layer.ladder.positionY,
+                                     a,
+                                     plot_prob_
+                                     );
+
+
+
+  
+  
+  return b;
+}
+
+S_plane_def sct_plot::convert_global_to_local(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& global_hits, const s_plot_prob& plot_prob_/*= ""*/) {
+
+
+  auto b = coordinate_transform_move(pl,
+                                     -layer.ladder.positionX,
+                                     -layer.ladder.positionY,
+                                     global_hits,
+                                     plot_prob_
+                                     );
+
+  auto det_A = layer.sensitive.rotation1*layer.sensitive.rotation4 - layer.sensitive.rotation2*layer.sensitive.rotation3;
+  if (det_A == 0) {
+    std::cout << "[sct_plot::convert_global_to_local] : Det_A ==0 " << std::endl;
+    return S_plane_def("error",0);
+  }
+
+
+  auto a = linear_trans(pl,
+                        layer.sensitive.rotation4/det_A,
+                        -layer.sensitive.rotation2/det_A,
+                        -layer.sensitive.rotation3/det_A,
+                        layer.sensitive.rotation1/det_A,
+                        b,
+                        s_plot_prob().doNotSaveToDisk());
+
+  auto local_hits = rotate(pl,
+                    -layer.ladder.rotationXY / 360 * TMath::Pi() * 2,
+                    a,
+                    s_plot_prob().doNotSaveToDisk()
+                    );
+
+  return local_hits;
+}
+
+S_plane_def sct_plot::correlation(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& plot_prob__ /*= ""*/) {
+  return pl.addPlot(sct_plot::correlation(plot_prob__), axisA, axisB)();
+}
+
+S_plane_def sct_plot::correlation(S_plot_collection& pl, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::correlation(plot_prob__), planeA.getX_def(), planeA.getY_def())();
+}
+
+S_plane_def sct_plot::rotate(S_plot_collection& pl, Double_t angle, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::rotated(angle,plot_prob__), planeA )();
+}
+
+S_plane_def sct_plot::linear_trans(S_plot_collection& pl, Double_t a11, Double_t a21, Double_t a12, Double_t a22, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::linear_trans(a11,a21,a12,a22, plot_prob__), planeA)();
+}
+
+S_plane_def sct_plot::hitmap(S_plot_collection& pl, const S_plane_def& hits, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::hitmap(plot_prob__), hits.getX_def(), hits.getY_def())();
+}
+
+S_plane_def sct_plot::hitmap(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& plot_prob__/*= ""*/) {
+  return pl.addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
+}
+
+S_plane_def sct_plot::cut_x_y(S_plot_collection& pl, const S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& plot_prob/*= ""*/) {
+  return pl.addPlot(sct_plot::cut_x_y(cut_, plot_prob), planeA)();
+}
+
+const char* sct::plot_linear_trans() {
+  return "linear_trans";
+}

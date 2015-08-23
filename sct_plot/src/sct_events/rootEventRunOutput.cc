@@ -81,6 +81,7 @@ namespace sct_corr{
     
     void rootEventRunOutput::set_TotalNumOfEvents(double numOfEvents)
     {
+ 
         *m_totalNumOfEvents = numOfEvents;
     }
     

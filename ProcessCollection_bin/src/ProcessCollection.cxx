@@ -1,5 +1,5 @@
 
-#include "s_process_files.h"
+#include "s_process_collection.h"
 #include "TError.h"
 
 
@@ -78,7 +78,7 @@ int asyncMain(void *arg) {
 
     cmd.parse(argc, argv);
     s_process_files p;
-    ADDRun(p, FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
+    p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
     p.process();
   } catch (ArgException &e)  // catch any exceptions
   {

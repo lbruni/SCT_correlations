@@ -44,10 +44,14 @@ namespace xmlImputFiles {
     int NumberOfBins() const {
       return xml_util::getAtribute(m_node->first_node("NumberOfBins"), "value", -1);
     }
-    S_Cut cut() const {
+    int NumberOfStrips() const {
+      return xml_util::getAtribute(m_node->first_node("NumberOfStrips"), "value", -1);
+    }
+    const S_Cut& cut() const {
       auto min_ = xml_util::getAtribute(m_node->first_node("YCut"), "min", -1);
       auto max_ = xml_util::getAtribute(m_node->first_node("YCut"), "max", -1);
-      return S_YCut(min_, max_);
+      m_cut = S_YCut(min_, max_);
+      return  m_cut;
     }
     int Device() const {
       return xml_util::getAtribute(m_node->first_node("Device"), "value", -1);
@@ -70,8 +74,12 @@ namespace xmlImputFiles {
     double residual_cut() const {
       return xml_util::getAtribute(m_node->first_node("residual_cut"), "value", 1000);
     }
+    std::string gearFile() const {
+      return xml_util::getAtribute(m_node->first_node("gearFile"), "name", "notSet");
+    }
   private:
     xml_n* m_node = nullptr;
+    mutable  S_YCut m_cut = S_YCut(-10000000, 100000000000);
   };
   class xml_file {
   public:

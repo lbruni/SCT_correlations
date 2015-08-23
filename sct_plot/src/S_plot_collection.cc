@@ -144,12 +144,14 @@ Long64_t S_plot_collection::DrawAll(const s_plane_collection& name, const S_Draw
     std::cout << "[S_plot_collection] no planes defined" << std::endl;
     return -1;
   }
-
+  Long64_t n = 0;
   for (auto&e : name.m_planes){
 
-    Draw(e.second, option);
+    n+=Draw(e.second, option);
   }
+  return n;
 }
+
 
 Long64_t S_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& option)
 {

@@ -88,6 +88,7 @@ public:
   Int_t size() const;
   void push_back(const S_plane_def& pl);
   void push_back(const char* name, const S_plane_def& pl);
+  void clear();
 #ifndef __CINT__
   std::vector<std::pair<std::string, S_plane_def>> m_planes;
 #endif

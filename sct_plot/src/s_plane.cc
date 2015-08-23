@@ -212,3 +212,7 @@
   S_plane_def s_plane_collection_find_closest::getHitOnPlaneB() const {
     return getByType("HitOnPlaneB")();
   }
+
+  void s_plane_collection::clear() {
+    m_planes.clear();
+  }

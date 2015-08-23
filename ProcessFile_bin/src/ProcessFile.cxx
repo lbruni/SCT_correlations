@@ -1,5 +1,5 @@
 
-#include "s_process_files.h"
+#include "s_process_collection.h"
 
 #include "TError.h"
 
@@ -27,7 +27,7 @@ using namespace std;
 
 
 
-int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__, int element, std::string outputPath = ".") {
+int ADDRun(s_process_collection& p, std::string xmlInputFileName, std::string path__, int element, std::string outputPath = ".") {
   path__ += "/";
   xmlImputFiles::XML_imput_file xml_imput(xmlInputFileName.c_str());
 
@@ -40,12 +40,13 @@ int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__,
   p.setOutputName(outputPath.c_str());
 
   p.SetNumberOfBins(xml_imput.globalConfig().NumberOfBins());
+  p.SetNumberOfStrips(xml_imput.globalConfig().NumberOfStrips());
   p.AddCut(xml_imput.globalConfig().cut());
   p.setActiveArea(xml_imput.globalConfig().AvtiveStrips().getMin(), xml_imput.globalConfig().AvtiveStrips().getMax());
   p.SetRotation(xml_imput.globalConfig().Rotation());
   p.SetPosition(xml_imput.globalConfig().Position_value(), 0);
   p.setResidualCut(xml_imput.globalConfig().residual_cut());
-
+  p.setGearFile(xml_imput.globalConfig().gearFile().c_str());
   if (element >= xml_imput.fileList().size()) {
     return -1;
   }
@@ -93,7 +94,7 @@ std::unique_ptr<xmlImputFiles::MinMaxRange<double>> make_range(const std::string
   return   std::unique_ptr<xmlImputFiles::MinMaxRange<double>>(); 
 
 }
-void drawResidual(s_process_files& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
+void drawResidual(s_process_collection& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
   new TCanvas();
   if (range_){
       p.DrawResidual(range_->getMin(), range_->getMax());
@@ -105,26 +106,34 @@ void drawResidual(s_process_files& p, const xmlImputFiles::MinMaxRange<double> *
 
 }
 
-void Draw_Track_hits(s_process_files& p) {
+void Draw_Track_hits(s_process_collection& p) {
   new TCanvas();
   p.Draw_Hit_map();
 }
-void Draw_DUT_hits(s_process_files& p) {
+void Draw_DUT_hits(s_process_collection& p) {
   new TCanvas();
   p.Draw_DUT_Hits_map();
 }
-void draw_efficiency_map(s_process_files& p) {
+void draw_efficiency_map(s_process_collection& p) {
   new TCanvas();
   p.Draw_Efficinecy_map();
 }
 
-void Draw_missing_coordinate(s_process_files& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
+void Draw_missing_coordinate(s_process_collection& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
   new TCanvas();
   if (range_)
   {
     p.DrawResidualVsMissingCordinate(range_->getMin(),range_->getMax());
   } else {
     p.DrawResidualVsMissingCordinate();
+  }
+}
+void Draw_Residual_VS_N(s_process_collection& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
+  new TCanvas();
+  if (range_) {
+    p.DrawResidualVsEvent(range_->getMin(), range_->getMax());
+  } else {
+    p.DrawResidualVsEvent();
   }
 }
 
@@ -156,6 +165,9 @@ int asyncMain(void *arg) {
   TCLAP::SwitchArg efficiency_map("m", "efficiencyMap", "draws the efficiency map");
   cmd.add(efficiency_map);
 
+  TCLAP::SwitchArg ResVsN("n", "ResVsN", "draws the Residual vs Event Number");
+  cmd.add(ResVsN);
+
 
   TCLAP::SwitchArg DUT_hits("d", "DUThitMap", "draws the DUT hitmap");
 
@@ -167,8 +179,10 @@ int asyncMain(void *arg) {
   cmd.add(TrackHits);
 
   TCLAP::SwitchArg unknownCoordinate("u", "res_VS_unknown", "draws the residual VS the unknown coordinate");
-
   cmd.add(unknownCoordinate);
+
+  TCLAP::SwitchArg DrawAll("a", "DrawAll", "DrawAllPlots");
+  cmd.add(DrawAll);
 
   cmd.parse(argc, argv);  //terminates on error
 
@@ -176,14 +190,14 @@ int asyncMain(void *arg) {
 
 
 
-  s_process_files p;
-
+  s_process_collection p;
+  p.setPrintout(true);
 
   gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 
   TFile * __file1 = new TFile("dummy.root", "recreate");
 
-  ADDRun(p, FileNameArg.getValue(), inPath.getValue(), element.getValue());
+  p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".",element.getValue());
   std::unique_ptr<xmlImputFiles::MinMaxRange<double>> r;
 
   if (residualRange.isSet()) {
@@ -191,24 +205,27 @@ int asyncMain(void *arg) {
   }
   TApplication theApp("App", &argc, argv);
   p.process();
-  if (res.isSet()) {
+  if (res.isSet() || DrawAll.isSet()) {
 
     drawResidual(p, r.get());
   }
 
-  if (DUT_hits.isSet()) {
+  if (DUT_hits.isSet() || DrawAll.isSet()) {
     Draw_DUT_hits(p);
   }
 
-  if (TrackHits.isSet()) {
+  if (TrackHits.isSet() || DrawAll.isSet()) {
     Draw_Track_hits(p);
   }
 
-  if (efficiency_map.isSet()) {
+  if (efficiency_map.isSet() || DrawAll.isSet()) {
     draw_efficiency_map(p);
   }
-  if (unknownCoordinate.isSet()) {
+  if (unknownCoordinate.isSet() || DrawAll.isSet()) {
     Draw_missing_coordinate(p, r.get());
+  }
+  if (ResVsN.isSet() || DrawAll.isSet()) {
+    Draw_Residual_VS_N(p, r.get());
   }
   new TBrowser();
 

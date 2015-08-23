@@ -18,7 +18,7 @@
 #include "s_DrawOption.h"
 
 
-#include "s_process_files.h"
+#include "s_process_collection.h"
 
 #include "TF1.h"
 #include "TProfile.h"
@@ -259,22 +259,45 @@ S_plane_def sct_plot::Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection&
   return fitted_in_channels();
 }
 
-s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& plot_prob /*= ""*/) {
+
+
+s_plane_collection_correlations sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
+                                                                                                             S_plot_collection& pl, 
+                                                                                                             const S_Cut& fiducial_cut_, 
+                                                                                                             double residualCut, 
+                                                                                                             const sct_corr::Xgear& gear, 
+                                                                                                             double rotate_angle, 
+                                                                                                             double move_x, 
+                                                                                                             const s_plot_prob& plot_prob_/*= ""*/) 
+{
+
   if (pl.collectionExist(sct::col_GBL_fitted_points())) {
 
-    return GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, fiducial_cut_, residualCut, plot_prob);
+    return GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, fiducial_cut_, residualCut, gear, rotate_angle, move_x, plot_prob_);
   }
 
   if (pl.collectionExist(sct::col_fitpoints_local())) {
 
-    return DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, fiducial_cut_, residualCut, plot_prob);
+    return DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, fiducial_cut_, residualCut, gear, rotate_angle, move_x, plot_prob_);
   }
   std::cout << "collection not found " << std::endl;
   return s_plane_collection_correlations();
+
 }
 
-s_plane_collection_correlations sct_plot::DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& /*= ""*/) {
-  auto truehits = sct_plot::Create_True_Fitted_DUT_Hits_in_channels(pl, pitchSize, rotate, move_x, move_y, s_plot_prob().doNotSaveToDisk());
+s_plane_collection_correlations sct_plot::DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
+                                                                                                                  S_plot_collection& pl,
+                                                                                                                  const S_Cut& fiducial_cut_,
+                                                                                                                  double residualCut,
+                                                                                                                  const  sct_corr::Xgear& gear,
+                                                                                                                  double rotate_angle,
+                                                                                                                  double move_x,
+                                                                                                                  const s_plot_prob& plot_prob_/*= ""*/
+                                                                                                                ) 
+{
+
+
+  auto truehits = sct_plot::Create_True_Fitted_DUT_Hits_in_channels(pl, gear.detector.layer_by_ID(8)->sensitive.pitchX, rotate_angle, move_x, 0, s_plot_prob().doNotSaveToDisk());
 
   auto trueHits_cut = pl.addPlot(sct_plot::cut_x_y(fiducial_cut_), truehits);
   auto cor = pl.addPlot(sct_plot::find_nearest_strip(x_axis_def, residualCut, s_plot_prob()), sct_coll::DUT_zs_data(), trueHits_cut());
@@ -288,8 +311,96 @@ s_plane_collection_correlations sct_plot::DAF_Create_Correlations_of_true_Fitted
   return ret;
 }
 
-s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& plot_prob_ /*= ""*/) {
+s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
+          S_plot_collection& pl, 
+          const S_Cut& fiducial_cut_, 
+          double residualCut, 
+          const  sct_corr::Xgear& gear, 
+          double rotate_angle,
+          double move_x,
+          const s_plot_prob& plot_prob_/*= ""*/
+          ) {
 
+
+
+  auto apix_global = sct_plot::convert_local_to_global(pl, 
+                                                       *gear.detector.layer_by_ID(20), 
+                                                       sct_coll::apix_hit_local(),
+                                                       s_plot_prob().
+                                                       doNotSaveToDisk()
+                                                       );
+
+  auto apix_on_DUT = sct_plot::convert_global_to_local(pl, 
+                                                       *gear.detector.layer_by_ID(8), 
+                                                       apix_global
+                                                       );
+
+
+
+
+  auto trueHits = sct_plot::find_nearest(pl,
+                                         1, // residual cut x
+                                         1,  // residual cut y
+                                         apix_on_DUT, 
+                                         sct_coll::DUT_fitted_local_GBL()
+                                         ).getHitOnPlaneB();
+
+
+
+  auto trueHits_cut = sct_plot::cut_x_y(pl, 
+                                        fiducial_cut_, 
+                                        trueHits,
+                                        s_plot_prob().doNotSaveToDisk()
+                                        );
+
+  std::string trueHitsInStrips_name = std::string(plot_prob_.getName()) + "_true";
+  auto trueHitsInStrips = sct_plot::convert_hits_to_zs_data_GBL(pl,
+                                                            *gear.detector.layer_by_ID(8),
+                                                            trueHits_cut,
+                                                            s_plot_prob().doNotSaveToDisk()
+                                                            );
+  auto dut_rotated_17 = sct_plot::rotate(pl,
+                                         rotate_angle,
+                                         trueHitsInStrips,
+                                         s_plot_prob().doNotSaveToDisk()
+                                         );
+
+  auto dut_rotated_17_move = sct_plot::coordinate_transform_move(pl,
+                                                                 move_x,
+                                                                 0,
+                                                                 dut_rotated_17,
+                                                                 s_plot_prob(trueHitsInStrips_name.c_str())
+                                                                 .setSaveOptione(plot_prob_.getPlotSaveOption())
+                                                                 );
+  std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
+
+
+  auto find_closest = sct_plot::find_nearest_strip(pl,
+                                                   x_axis_def,
+                                                   residualCut,
+                                                   dut_rotated_17_move,
+                                                   sct_coll::DUT_zs_data(),
+                                                   s_plot_prob(find_closest_name.c_str())
+                                                   .setSaveOptione(plot_prob_.getPlotSaveOption())
+                                                   );
+
+  std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
+  auto res_vs_missing = sct_plot::hitmap(pl,
+                                         find_closest.getResidual().getX_def(),
+                                         find_closest.getHitOnPlaneA().getY_def(),
+                                         s_plot_prob(res_vs_missing_name.c_str())
+                                         .setSaveOptione(plot_prob_.getPlotSaveOption())
+                                         );
+
+  s_plane_collection_correlations ret;
+  ret.setResidual(find_closest.getResidual());
+  ret.setResidualVsMissing(res_vs_missing);
+  ret.setTotalTrueHits(dut_rotated_17_move);
+  ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
+  ret.setDUT_Hits(find_closest.getHitOnPlaneB());
+  return ret;
+
+  /*
 
   auto apix_transform = pl.addPlot(sct_plot::coordinate_transform(1 / 3.98148, -156.98 + 118.43, 1 / -19.4048, -34.0894, s_plot_prob().doNotSaveToDisk()), sct_coll::apix_zs_data());
 
@@ -323,22 +434,32 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
   ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
   ret.setDUT_Hits(find_closest.getHitOnPlaneB());
   return ret;
-
+  */
 }
 
-s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const  sct_corr::Xgear& gear, const s_plot_prob& plot_prob_/*= ""*/) {
+s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, 
+                                                                                                    const S_Cut& fiducial_cut_, 
+                                                                                                    double residualCut, 
+                                                                                                    const  sct_corr::Xgear& gear, 
+                                                                                                    double rotate_angle,
+                                                                                                    double move_x,
+                                                                                                    const s_plot_prob& plot_prob_/*= ""*/)
+{
   
   
-  auto loc = sct_plot::convert_local_to_global(pl, *gear.detector.layer_by_ID(20), sct_coll::apix_hit_local());
-  auto loc11 = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(8), loc);
+  auto loc = sct_plot::convert_local_to_global(pl, *gear.detector.layer_by_ID(20), sct_coll::apix_hit_local(), s_plot_prob().doNotSaveToDisk());
+  auto loc11 = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(8), loc, s_plot_prob().doNotSaveToDisk());
  
   
 
-  S_YCut(gear.detector.layer_by_ID(8)->sensitive.sizeX)
-
-  auto trueHits = sct_plot::find_nearest(pl, 1, 1, loc11, sct_coll::DUT_fitted_local_GBL()).getHitOnPlaneB();
  
-  auto trueHits_cut = sct_plot::cut_x_y(pl, fiducial_cut_, trueHits, s_plot_prob().SaveToDisk());
+  auto trueHits = sct_plot::find_nearest(pl, 1, 1, loc11, sct_coll::DUT_fitted_local_GBL(), s_plot_prob().doNotSaveToDisk()).getHitOnPlaneB();
+ 
+  auto dut_rotated_17 = sct_plot::rotate(pl, rotate_angle, trueHits, s_plot_prob().doNotSaveToDisk());
+
+  auto dut_rotated_17_move = sct_plot::coordinate_transform_move(pl, move_x, 0, dut_rotated_17, s_plot_prob().doNotSaveToDisk());
+
+  auto trueHits_cut = sct_plot::cut_x_y(pl, fiducial_cut_, dut_rotated_17_move, s_plot_prob().SaveToDisk());
 
   std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
   auto find_closest = sct_plot::find_nearest_strip(pl, 
@@ -356,7 +477,7 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
                                          find_closest.getHitOnPlaneA().getY_def(),
                                          s_plot_prob(res_vs_missing_name.c_str())
                                          .setSaveOptione(plot_prob_.getPlotSaveOption())
-                                         );
+                                        );
   
   s_plane_collection_correlations ret;
   ret.setResidual(find_closest.getResidual());
@@ -402,12 +523,48 @@ s_plane_collection_correlations sct_plot::GBL_Create_Correlations_of_true_Fitted
 
 
 
-S_plane_def sct_plot::convert_zs_data_to_hits(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_/*= ""*/) {
-  return coordinate_transform(pl, layer.sensitive.pitchX, layer.sensitive.positionX-layer.sensitive.sizeX/2, layer.sensitive.pitchY, layer.sensitive.positionY-layer.sensitive.sizeY/2, sz_data, plot_prob_);
+S_plane_def sct_plot::convert_zs_data_to_hits_GBL(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_/*= ""*/) {
+  return coordinate_transform(pl, 
+                              layer.sensitive.pitchX,                                     // x_slope
+                              layer.sensitive.positionX - layer.sensitive.sizeX / 2,      //x_offset
+                              layer.sensitive.pitchY,                                     //y_slope
+                              layer.sensitive.positionY - layer.sensitive.sizeY / 2,      //y_offset
+                              sz_data, 
+                              plot_prob_
+                             );
 }
 
-S_plane_def sct_plot::convert_hits_to_zs_data(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_ /*= ""*/) {
-  return coordinate_transform(pl, 1 / layer.sensitive.pitchX, -(layer.sensitive.positionX - layer.sensitive.sizeX / 2) / layer.sensitive.pitchX, 1 / layer.sensitive.pitchY, -(layer.sensitive.positionY - layer.sensitive.sizeY / 2) / layer.sensitive.pitchY, sz_data, plot_prob_);
+S_plane_def sct_plot::convert_hits_to_zs_data_GBL(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& hits, const s_plot_prob& plot_prob_ /*= ""*/) {
+  return coordinate_transform(pl, 
+                              1 / layer.sensitive.pitchX,                                                         // x_slope
+                              -(layer.sensitive.positionX - layer.sensitive.sizeX / 2) / layer.sensitive.pitchX,  //x_offset
+                              1 / layer.sensitive.pitchY,                                                         //y_slope
+                              -(layer.sensitive.positionY - layer.sensitive.sizeY / 2) / layer.sensitive.pitchY,  //y_offset
+                              hits, 
+                              plot_prob_
+                             );
+}
+
+S_plane_def sct_plot::convert_zs_data_to_hits_DAF(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& sz_data, const s_plot_prob& plot_prob_/*= ""*/) {
+  return coordinate_transform(pl,
+                              layer.sensitive.pitchX,          // x_slope
+                              -layer.sensitive.sizeX / 2,      //x_offset
+                              layer.sensitive.pitchY,          //y_slope
+                              -layer.sensitive.sizeY / 2,      //y_offset
+                              sz_data,
+                              plot_prob_
+                              );
+}
+
+S_plane_def sct_plot::convert_hits_to_zs_data_DAF(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& hits, const s_plot_prob& plot_prob_/*= ""*/) {
+  return coordinate_transform(pl,
+                              1 / layer.sensitive.pitchX,                            // x_slope
+                              (layer.sensitive.sizeX / 2) / layer.sensitive.pitchX,  //x_offset
+                              1 / layer.sensitive.pitchY,                             //y_slope
+                              (layer.sensitive.sizeY / 2) / layer.sensitive.pitchY,  //y_offset
+                              hits,
+                              plot_prob_
+                              );
 }
 
 S_plane_def sct_plot::convert_local_to_global(S_plot_collection& pl, const sct_corr::Xlayer& layer, const S_plane_def& local_hits, const s_plot_prob& plot_prob_/*= ""*/) {
@@ -498,6 +655,10 @@ S_plane_def sct_plot::hitmap(S_plot_collection& pl, const S_Axis& axisA, const S
 
 S_plane_def sct_plot::cut_x_y(S_plot_collection& pl, const S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& plot_prob/*= ""*/) {
   return pl.addPlot(sct_plot::cut_x_y(cut_, plot_prob), planeA)();
+}
+
+S_plane_def sct_plot::residual(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& plot_prob /*= ""*/) {
+  return pl.addPlot(sct_plot::residual(plot_prob), axisA,axisB)();
 }
 
 const char* sct::plot_linear_trans() {

@@ -37,7 +37,7 @@ class S_treeCollection;
 class S_Cut;
 class S_plot_collection;
 class s_plane_collection;
-class s_process_files;
+class s_process_collection;
 namespace sct_corr {
   class treeCollection;
 
@@ -45,8 +45,8 @@ namespace sct_corr {
   class plot;
   class plane;
   class sct_event_buffer;
-  class Xgear;
-  class Xlayer;
+  struct Xgear;
+  struct Xlayer;
 }
 
 class TH2;
@@ -163,13 +163,49 @@ public:
   static s_plane_collection plane_merger(S_plot_collection& pl, s_plane_collection planes_, const  s_plot_prob& = "");
   static S_plane_def Crate_True_Fitted_DUT_Hits(S_plot_collection& pl, const  s_plot_prob& = "");
   static S_plane_def Create_True_Fitted_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const s_plot_prob& = "");
-  static s_plane_collection_correlations Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
-  static s_plane_collection_correlations DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
-  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, double pitchSize, double rotate, double move_x, double move_y, const S_Cut& fiducial_cut_, double residualCut, const s_plot_prob& = "");
+  static s_plane_collection_correlations Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
+                                                                                                            S_plot_collection& pl,
+                                                                                                            const S_Cut& fiducial_cut_,
+                                                                                                            double residualCut,
+                                                                                                            const  sct_corr::Xgear& gear,
+                                                                                                            double rotate_angle,
+                                                                                                            double move_x,
+                                                                                                            const s_plot_prob& plot_prob_/*= ""*/
+                                                                                                            );
+
+  static s_plane_collection_correlations DAF_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
+                                                                                                                S_plot_collection& pl,
+                                                                                                                const S_Cut& fiducial_cut_,
+                                                                                                                double residualCut,
+                                                                                                                const  sct_corr::Xgear& gear,
+                                                                                                                double rotate_angle,
+                                                                                                                double move_x,
+                                                                                                                const s_plot_prob& plot_prob_/*= ""*/
+                                                                                                                );
   
-  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, const S_Cut& fiducial_cut_, double residualCut, const  sct_corr::Xgear&, const s_plot_prob& = "");
-  static S_plane_def convert_zs_data_to_hits(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
-  static S_plane_def convert_hits_to_zs_data(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& hits, const s_plot_prob& = "");
+  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(S_plot_collection& pl, 
+                                                                                                               const S_Cut& fiducial_cut_, 
+                                                                                                               double residualCut, 
+                                                                                                               const  sct_corr::Xgear& gear, 
+                                                                                                               double rotate_angle,
+                                                                                                               double move_x,
+                                                                                                               const s_plot_prob& plot_prob_ = ""
+                                                                                                               );
+  
+  static s_plane_collection_correlations GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(S_plot_collection& pl, 
+                                                                                                   const S_Cut& fiducial_cut_, 
+                                                                                                   double residualCut, 
+                                                                                                   const  sct_corr::Xgear&, 
+                                                                                                   double rotate_angle,
+                                                                                                   double move_x, 
+                                                                                                   const s_plot_prob& = ""
+                                                                                                   );
+
+  static S_plane_def convert_zs_data_to_hits_GBL(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
+  static S_plane_def convert_hits_to_zs_data_GBL(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& hits, const s_plot_prob& = "");
+
+  static S_plane_def convert_zs_data_to_hits_DAF(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
+  static S_plane_def convert_hits_to_zs_data_DAF(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& hits, const s_plot_prob& = "");
 
   static S_plane_def convert_local_to_global(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& local_hits, const s_plot_prob& = "");
   static S_plane_def convert_global_to_local(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& local_hits, const s_plot_prob& = "");
@@ -183,6 +219,8 @@ public:
   static  S_plane_def hitmap(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
 
   static  S_plane_def cut_x_y(S_plot_collection& pl, const  S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& = "");
+
+  static  S_plane_def residual(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
 };
 
 class DllExport sct_analyis { // all this function have memory leaks. they are not designed to be called in a loop 

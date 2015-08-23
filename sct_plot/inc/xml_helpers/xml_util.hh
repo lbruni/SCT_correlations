@@ -24,7 +24,7 @@ namespace xml_util{
   }
 
   template<typename T>
-  std::vector<T> getVectorOfT(rapidxml::xml_node<char>* node_){
+  inline std::vector<T> getVectorOfT(rapidxml::xml_node<char>* node_) {
     std::vector<T> ret;
     for (auto node = node_->first_node(T::NodeName()); node; node = node->next_sibling(T::NodeName()))
     {
@@ -35,7 +35,7 @@ namespace xml_util{
   }
 
   template <typename T>
-  T getAtribute(rapidxml::xml_node<char>* node_, const char * AtributeName, T default_){
+inline  T getAtribute(rapidxml::xml_node<char>* node_, const char * AtributeName, T default_){
     auto n = node_->first_attribute(AtributeName);
     if (n)
     {
@@ -45,7 +45,7 @@ namespace xml_util{
     return default_;
   }
 
-  std::string getAtribute(rapidxml::xml_node<char>* node_, const char * AtributeName, const char* default_=""){
+inline std::string getAtribute(rapidxml::xml_node<char>* node_, const char * AtributeName, const char* default_ = "") {
     return getAtribute(node_, AtributeName, std::string(default_));
   }
 }

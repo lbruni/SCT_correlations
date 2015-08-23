@@ -1,5 +1,5 @@
 FIND_PACKAGE( ROOT REQUIRED)
-
+find_package(RapidXML REQUIRED)
 
 
 
@@ -12,7 +12,7 @@ SOURCE_GROUP(event FILES ${library_sources_sct_events})
 SET(ProjectDict_name SCT_plotsDict.cxx)
 
 
-INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} )
+INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} ${RapidXML_INCLUDE_DIR} )
 
 # fill list of header files 
 set(Project_HEADERS 
@@ -25,7 +25,7 @@ ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_collection.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_prob.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_treeCollection.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_process_files.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/s_process_collection.h
   ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots_LinkDef.h
   )
 

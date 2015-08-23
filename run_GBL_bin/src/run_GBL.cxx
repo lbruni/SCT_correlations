@@ -1,5 +1,5 @@
 
-#include "s_process_files.h"
+#include "s_process_collection.h"
 #include "TError.h"
 
 
@@ -108,7 +108,7 @@ int asyncMain1(void *arg) {
   auto loc11 = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(8), loc);
 
   auto closest = sct_plot::find_nearest(pl, 1, 1, loc11, sct_coll::DUT_fitted_local_GBL());
-  auto pix = sct_plot::convert_hits_to_zs_data(pl, *gear.detector.layer_by_ID(8), closest.getHitOnPlaneB());
+  auto pix = sct_plot::convert_hits_to_zs_data_GBL(pl, *gear.detector.layer_by_ID(8), closest.getHitOnPlaneB());
   auto corrxx = sct_plot::correlation(pl, pix.getX_def(), sct_coll::DUT_zs_data().getX_def());
   auto corryy = sct_plot::correlation(pl, loc11.getY_def(), sct_coll::DUT_zs_data().getY_def());
 #endif
@@ -145,7 +145,7 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  TFile * file_ = new TFile("D:/GBL/Neuer Ordner/run000703_fitter.root");
+  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000688_fitter.root");
   rapidxml::file<> m_file("D:/GBL/Neuer Ordner/alignedGear-check-iter2-run000703_with_plane20.xml");
   rapidxml::xml_document<> m_doc;
   m_doc.parse<0>(m_file.data());
@@ -157,21 +157,25 @@ int asyncMain(void *arg) {
   S_plot_collection pl(file_);
   pl.setOutputFile(out_file);
 
-  //auto gbl_collection = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, 0.0745, 0, 669.366 + 2 - 0.5 - 0.2, 0, S_YCut(-43000, 3600), 100000, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
-  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(pl, S_YCut(-42, -36), 100000, gear, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
+  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, S_YCut(-42, -36), 100000, gear, 0, -6.36702e-001, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
+ // auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(pl, S_YCut(-42, -36), 100000, gear, 0, -1.35993e-002, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
 
 
-  pl.loop();
+  auto res = sct_plot::residual(pl, sct_coll::DUT_fitted_local_GBL().getX_def(), sct_coll::DUT_hit_local().getX_def() ,s_plot_prob("residualVSEvent"));
 
-
+  pl.loop(40000);
 
 
   gCanvas.push_back(new TCanvas());
-  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_x().cut_x(-0.5,0.5));
+  pl.Draw(res, S_DrawOption().draw_x_VS_y());
+
+
+  gCanvas.push_back(new TCanvas());
+  pl.Draw(gbl_collection.getResidual(), S_DrawOption().draw_x().cut_x(-5,5));
   
   gCanvas.push_back(new TCanvas());
   TH2D* h22 = new TH2D("asd22", "ResidualVSmissing", 100, 0, 0, 100, 0, 0);
-  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_x_VS_y().output_object(h22));
+  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_x_VS_y().output_object(h22).cut_x(-2,2));
 //  auto f222 = SCT_helpers::LinearFit_Of_Profile(h22, 0.2);
 //  f222.Print();
 
@@ -179,17 +183,17 @@ int asyncMain(void *arg) {
 
   gCanvas.push_back(new TCanvas());
 
-  pl.Draw(sct_coll::tel_fitted_local_GBL(8), S_DrawOption().draw_y().color_red());
-  pl.Draw(gbl_collection.getTotalTrueHits(), S_DrawOption().draw_y().opt_same());
+//  pl.Draw(sct_coll::tel_fitted_local_GBL(8), S_DrawOption().draw_y().color_red());
+  pl.Draw(gbl_collection.getTotalTrueHits(), S_DrawOption().draw_y());
 
   pl.Draw(gbl_collection.getTrueHitsWithDUT(), S_DrawOption().draw_y().opt_same().color_blue());
 
 
   gCanvas.push_back(new TCanvas());
-  TH1D DUTHit("dut", "Efficency", 100, -60, 0);
+  TH1D DUTHit("dut", "Efficency", 1600, -100, 400);
   pl.Draw(gbl_collection.getTrueHitsWithDUT(), S_DrawOption().draw_x().color_blue().output_object(&DUTHit));
 
-  TH1D trueHit("true", "TotalTrueHits", 100, -60, 0);
+  TH1D trueHit("true", "TotalTrueHits", 1600, -100, 400);
   //pl.Draw(sct_coll::tel_fitted_local_GBL(8), S_DrawOption().draw_x().color_red());
   pl.Draw(gbl_collection.getTotalTrueHits(), S_DrawOption().draw_x().output_object(&trueHit));
   DUTHit.Divide(&trueHit);

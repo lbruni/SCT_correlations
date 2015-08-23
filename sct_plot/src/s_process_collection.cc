@@ -69,7 +69,7 @@ public:
 private:
 
   std::string m_name;
-  bool end_printed = false, first_element;
+  bool end_printed = false, first_element=true;
   int m_pos;
 };
 double BinNomialSigma(double totalHits, double DUTHits) {
@@ -227,7 +227,7 @@ void s_process_collection::extract_efficiency() {
                                                   );
   xml_print("DUTHits", DUTHits);
 
-  xml_print("TotalNumOfEvents", DUTHits / totalHits);
+  xml_print("Efficiency", DUTHits / totalHits);
   m_outputl.set_Total_efficiency(DUTHits / totalHits);
 
 
@@ -278,7 +278,7 @@ void s_process_collection::extract_rotation() {
   DrawResidualVsMissingCordinate(-10, 10);
   auto h = getResidualVsMissingCordinate();
   auto f1 = SCT_helpers::LinearFit_Of_Profile(h, 0.2);
-  auto rot = f1.GetParameter("p1");
+  auto rot = TMath::ATan(f1.GetParameter("p1"));
   m_outputl.set_rotation(rot);
   xml_print("rotation", rot);
 }
@@ -340,7 +340,7 @@ bool s_process_collection::process(FileProberties* fileP) {
     );
 
   m_res_VS_event.push_back(res);
-  m_plotCollection->loop(4000);
+  m_plotCollection->loop();
 
   Draw_Efficinecy_map();
 
@@ -451,7 +451,7 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate(Double_t min_X, Do
   m_resVSMissing = std::make_shared<TH2D>(
     "ResidualVsMissingCordinate",
     "Residual Vs Missing Coordinate",
-    100, 0, 0,
+    10000, 0, 0,
     100, min_X, max_X
     );
 

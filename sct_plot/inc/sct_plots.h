@@ -56,7 +56,7 @@ public:
   static void CutTH1(TH1* h1, const S_Cut& cut_);
   static TH1* HistogrammSilhouette(TH2* h2, axis_def ax);
   static Long64_t DrawTTree(TTree * tree, const S_DrawOption& opt);
-  static TF1 LinearFit_Of_Profile(TH2D* h2,Double_t cut_prozent = 0);
+  static TF1 LinearFit_Of_Profile(TH2* h2,Double_t cut_prozent = 0);
 };
 class S_plane_def;
 class DllExport sct_coll {

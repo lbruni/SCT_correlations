@@ -25,7 +25,7 @@ using namespace rapidxml;
 
 std::vector<TCanvas*> gCanvas;
 TBrowser* gBrowser = NULL;
-int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__, std::string outputPath = ".") {
+int ADDRun(s_process_collection& p, std::string xmlInputFileName, std::string path__, std::string outputPath = ".") {
   path__ += "/";
   xmlImputFiles::XML_imput_file xml_imput(xmlInputFileName.c_str());
 

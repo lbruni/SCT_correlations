@@ -18,13 +18,14 @@ namespace sct_corr{
     void set_Total_efficiency(double effi);
     void set_Error_efficiency(double error_effi); 
     void set_Threshold(double thr);
+    void set_rotation(double rotation_);
     void set_HV(double HV__);
     void set_residual(double res);
     void set_offset(double offset);
     void set_RunNumber(double RunNum);
     virtual void reset();
   private:
-
+    std::shared_ptr<double> m_rotation;
     std::shared_ptr<double> m_totalNumOfEvents ;
     std::shared_ptr<double> m_total_efficiency ;
     std::shared_ptr<double> m_error_efficiency ; 

@@ -148,7 +148,7 @@ Long64_t SCT_helpers::DrawTTree(TTree * tree, const S_DrawOption& opt)
 {
   return opt.Draw(tree);
 }
-TF1 SCT_helpers::LinearFit_Of_Profile(TH2D* h2, Double_t cut_prozent /*= 0*/) {
+TF1 SCT_helpers::LinearFit_Of_Profile(TH2* h2, Double_t cut_prozent /*= 0*/) {
   auto max_ = h2->GetMaximum();
   SCT_helpers::CutTH2(h2, S_Cut_BinContent(max_*cut_prozent));
 TProfile* p1 = h2->ProfileX();

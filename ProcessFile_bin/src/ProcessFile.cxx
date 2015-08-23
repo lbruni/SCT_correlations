@@ -221,12 +221,14 @@ int asyncMain(void *arg) {
   if (efficiency_map.isSet() || DrawAll.isSet()) {
     draw_efficiency_map(p);
   }
-  if (unknownCoordinate.isSet() || DrawAll.isSet()) {
-    Draw_missing_coordinate(p, r.get());
-  }
   if (ResVsN.isSet() || DrawAll.isSet()) {
     Draw_Residual_VS_N(p, r.get());
   }
+  if (unknownCoordinate.isSet() || DrawAll.isSet()) {
+    Draw_missing_coordinate(p, r.get());
+  }
+
+
   new TBrowser();
 
   theApp.Run();

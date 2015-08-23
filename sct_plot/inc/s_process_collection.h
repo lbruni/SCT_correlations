@@ -52,8 +52,11 @@ public:
   Long64_t Draw_DUT_Hits_map();
   TH2D* getResidualVsMissingCordinate();
 #ifndef __CINT__
+private:
+  void extract_efficiency();
   void extract_hitMap();
- 
+  void extract_residual();
+  void extract_rotation();
     void pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Effi_error);
 
   Double_t m_rotation = 0,

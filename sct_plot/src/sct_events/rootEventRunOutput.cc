@@ -29,6 +29,7 @@ namespace sct_corr{
         m_error_efficiency = std::make_shared< double >(0);
         m_residual = std::make_shared< double >(0);
         m_offset = std::make_shared< double >(0);
+        m_rotation= std::make_shared< double >(0);
         m_Threshold = std::make_shared< double >(0);
         m_RunNumber = std::make_shared< double >(0);
         m_HV = std::make_shared< double >(0);
@@ -39,6 +40,7 @@ namespace sct_corr{
         tree->SetBranchAddress("error_efficiency", m_error_efficiency.get());
         tree->SetBranchAddress("residual", m_residual.get());
         tree->SetBranchAddress("offset", m_offset.get());
+        tree->SetBranchAddress("rotation", m_rotation.get());
         tree->SetBranchAddress("Threshold", m_Threshold.get());
         tree->SetBranchAddress("RunNumber", m_RunNumber.get());
         tree->SetBranchAddress("HV", m_HV.get());
@@ -56,6 +58,7 @@ namespace sct_corr{
         m_error_efficiency = std::make_shared< double >(0);
         m_residual = std::make_shared< double >(0);
         m_offset = std::make_shared< double >(0);
+        m_rotation = std::make_shared< double >(0);
         m_Threshold = std::make_shared< double >(0);
         m_RunNumber = std::make_shared< double >(0);
         m_HV = std::make_shared< double >(0);
@@ -73,6 +76,7 @@ namespace sct_corr{
         outputTree->Branch("total_efficiency", m_total_efficiency.get());
         outputTree->Branch("error_efficiency", m_error_efficiency.get());
         outputTree->Branch("residual", m_residual.get());
+        outputTree->Branch("rotation", m_rotation.get());
         outputTree->Branch("offset", m_offset.get());
         outputTree->Branch("Threshold", m_Threshold.get());
         outputTree->Branch("RunNumber", m_RunNumber.get());
@@ -100,6 +104,10 @@ namespace sct_corr{
         *m_Threshold = thr;
     }
     
+    void rootEventRunOutput::set_rotation(double rotation_) {
+      *m_rotation = rotation_;
+    }
+
     void rootEventRunOutput::set_HV(double HV__)
     {
         *m_HV = HV__;

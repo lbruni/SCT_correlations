@@ -17,33 +17,6 @@ using namespace xml_util;
 using namespace rapidxml;
 
 
-int ADDRun(s_process_files& p, std::string xmlInputFileName, std::string path__, std::string outputPath = "."){
-  path__ += "/";
-  xmlImputFiles::XML_imput_file xml_imput(xmlInputFileName.c_str());
-
-  if (xml_imput.fileList().empty())
-  {
-    return -1;
-  }
-  auto collname = xml_imput.globalConfig().CollectionName();
-  outputPath += "/" + collname + ".root";
-
-  p.setOutputName(outputPath.c_str());
-
-  p.SetNumberOfBins(xml_imput.globalConfig().NumberOfBins());
-  p.AddCut(xml_imput.globalConfig().cut());
-  p.setActiveArea(xml_imput.globalConfig().AvtiveStrips().getMin(), xml_imput.globalConfig().AvtiveStrips().getMax());
-  p.SetRotation(xml_imput.globalConfig().Rotation());
-  p.SetPosition(xml_imput.globalConfig().Position_value(), 0);
-  p.setResidualCut(xml_imput.globalConfig().residual_cut());
-
-  for (auto& e : xml_imput.fileList()){
-    p.push_files((path__ + std::string(e.name())).c_str(), e.threshold(), e.runNumber(), e.HV());
-  }
-
-  return 0;
-}
-
 using namespace std;
 using namespace TCLAP;
 
@@ -66,19 +39,24 @@ int asyncMain(void *arg) {
   try {
 
     CmdLine cmd("ProcessCollection", ' ', "0.1");
+    
     ValueArg<std::string> FileNameArg("i", "inFile", "xml filename", true, "", "string");
     cmd.add(FileNameArg);
+
     ValueArg<std::string>  inPath("p", "inPath", "path to the root files", true, "", "string");
     cmd.add(inPath);
+    
     ValueArg<std::string>  outpath("o", "outPath", "output path", false, ".", "string");
     cmd.add(outpath);
+
 #ifdef _DEBUG
     cmd.setExceptionHandling(false);
 #endif // _DEBUG
 
     cmd.parse(argc, argv);
-    s_process_files p;
+    s_process_collection p;
     p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
+    p.setPrintout(true);
     p.process();
   } catch (ArgException &e)  // catch any exceptions
   {

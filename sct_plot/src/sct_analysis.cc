@@ -20,7 +20,14 @@ TH2* sct_analyis::misalignment(S_plot_collection& treeColl)
   treeColl.loop();
   TH2D *h = new TH2D("asda", "dasdasd", 100, -10, 10, 100, -0.2, 0.2);
   
-  treeColl.Draw(res1(),S_DrawOption().opt_colz().draw_y_VS_x().output_object(h).cut_y(-0.2,0.2));
+  treeColl.Draw(
+    res1(),
+    S_DrawOption()
+    .opt_colz()
+    .draw_y_VS_x()
+    .output_object(h)
+    .cut_y(-0.2,0.2)
+    );
 
   return h;
 }
@@ -63,26 +70,49 @@ TF1* sct_analyis::Draw_New_aligment(TFile& __file0, TF1 *f)
 
 
 
-  auto apix_true_hits = pl->addPlot(sct_plot::find_nearest( 0.1, 0.2), sct_coll::apix_fitted(), sct_coll::apix_hit()).get(1);
+  auto apix_true_hits = sct_plot::find_nearest(
+    *pl, 
+    0.1, 
+    0.2, 
+    sct_coll::apix_fitted(), 
+    sct_coll::apix_hit()
+    ).getHitOnPlaneA();
 
-  auto dut_fitted_trackts = pl->addPlot(sct_plot::find_nearest( 1, 1), sct_coll::DUT_fitted(), apix_true_hits).get(1);
+  auto dut_fitted_trackts = sct_plot::find_nearest(
+    *pl, 
+    1, 
+    1, 
+    sct_coll::DUT_fitted(), 
+    apix_true_hits
+    ).getHitOnPlaneA();
 
 
-  auto dut_rotated_17 = pl->addPlot(sct_plot::rotated( Slope, s_plot_prob().doNotSaveToDisk()), dut_fitted_trackts);
-  auto dut_rot_moved = pl->addPlot(sct_plot::coordinate_transform_move(0, offset, s_plot_prob().doNotSaveToDisk()), dut_rotated_17());
- // auto dut_fitted_trackts_cut = pl->addPlot(sct_plot::cut_x_y("", S_XCut(-2, 5) + S_YCut(-3, 4)), dut_rot_moved);
+  auto dut_rotated_17 = sct_plot::rotate(
+    *pl, 
+    Slope, 
+    dut_fitted_trackts, 
+    s_plot_prob().doNotSaveToDisk()
+    );
 
 
+  auto dut_rot_moved = sct_plot::coordinate_transform_move(
+    *pl, 
+    0, 
+    offset, 
+    dut_rotated_17, 
+    s_plot_prob().doNotSaveToDisk()
+    );
 
-  auto res = pl->addPlot(sct_plot::find_nearest_strip(x_axis_def, 100, s_plot_prob("correlations")), sct_coll::DUT_hit(), dut_rot_moved());
-  auto res1 = pl->addPlot(sct_plot::hitmap(), res.get(2).getX_def(), res.get(0).getY_def());
+
+  auto res = sct_plot::find_nearest_strip(*pl, x_axis_def, 100, sct_coll::DUT_hit(), dut_rot_moved, s_plot_prob("correlations"));
+  auto res1 = sct_plot::hitmap(*pl, res.get(2).getX_def(), res.get(0).getY_def());
 
   
   // auto cor2 = treeColl->addPlot(sct_plot::save2LCIO("","file.lcio", 1), cor.get(0));
 
   pl->loop();
   TH2D *h = new TH2D("asda", "dasdasd", 100, -10, 10, 100, -0.2, 0.2);
-  pl->Draw(res1(), S_DrawOption().opt_colz().draw_y_VS_x().output_object(h).cut_y(-0.2, 0.2));
+  pl->Draw(res1, S_DrawOption().opt_colz().draw_y_VS_x().output_object(h).cut_y(-0.2, 0.2));
 
   auto p = h->ProfileX();
   TF1* f1 = new TF1("f1", "pol1", p->GetXaxis()->GetBinCenter(0), p->GetXaxis()->GetBinCenter(p->GetXaxis()->GetBinCenter(p->GetNbinsX())));
@@ -91,7 +121,7 @@ TF1* sct_analyis::Draw_New_aligment(TFile& __file0, TF1 *f)
 
   
   new TCanvas();
-  pl->Draw(res1(), S_DrawOption().opt_colz().draw_y_VS_x().output_object(h).cut_y(-0.2, 0.2));
+  pl->Draw(res1, S_DrawOption().opt_colz().draw_y_VS_x().output_object(h).cut_y(-0.2, 0.2));
   return f1;
 
 }

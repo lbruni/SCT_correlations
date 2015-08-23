@@ -122,7 +122,7 @@ public:
 class S_plot_def;
 class S_plot;
 class DllExport sct_plot {
-public:
+private:
   static  S_plot hitmap(const s_plot_prob& = "");
   static  S_plot correlation(const s_plot_prob& = "");
   static  S_plot residual(const s_plot_prob& = "");
@@ -150,7 +150,7 @@ public:
 
   static  S_plot linear_trans(Double_t a11, Double_t a21 ,Double_t a12,Double_t a22, const s_plot_prob& = "");
 
-
+public:
   static  S_plane_def coordinate_transform(S_plot_collection& pl, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& = "");
   static  S_plane_def coordinate_transform_move(S_plot_collection& pl, Double_t x_offset, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& = "");
 
@@ -201,10 +201,28 @@ public:
                                                                                                    const s_plot_prob& = ""
                                                                                                    );
 
-  static S_plane_def convert_zs_data_to_hits_GBL(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
-  static S_plane_def convert_hits_to_zs_data_GBL(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& hits, const s_plot_prob& = "");
+  static S_plane_def convert_zs_data_to_hits_GBL(
+    S_plot_collection& pl, 
+    const sct_corr::Xlayer&, 
+    const S_plane_def& sz_data, 
+    const s_plot_prob& = ""
+    );
 
-  static S_plane_def convert_zs_data_to_hits_DAF(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& sz_data, const s_plot_prob& = "");
+
+  static S_plane_def convert_hits_to_zs_data_GBL(
+    S_plot_collection& pl, 
+    const sct_corr::Xlayer&, 
+    const S_plane_def& hits, 
+    const s_plot_prob& = ""
+    );
+
+  static S_plane_def convert_zs_data_to_hits_DAF(
+    S_plot_collection& pl, 
+    const sct_corr::Xlayer&, 
+    const S_plane_def& sz_data, 
+    const s_plot_prob& = ""
+    );
+
   static S_plane_def convert_hits_to_zs_data_DAF(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& hits, const s_plot_prob& = "");
 
   static S_plane_def convert_local_to_global(S_plot_collection& pl, const sct_corr::Xlayer&, const S_plane_def& local_hits, const s_plot_prob& = "");

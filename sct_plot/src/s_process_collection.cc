@@ -286,17 +286,35 @@ void s_process_collection::extract_rotation() {
 void s_process_collection::process_reset() {
   m_plotCollection.reset();
   m_res_VS_event.clear();
+  m_outputl.reset();
+}
+void s_process_collection::process_set_run_prob(const FileProberties& fileP) {
+  xml_print("fileName", fileP.getTfile()->GetName());
+
+
+  xml_print("m_runNumber", fileP.m_runNumber);
+  m_outputl.set_RunNumber(fileP.m_runNumber);
+
+
+  xml_print("threshold", fileP.m_Threshold);
+  m_outputl.set_Threshold(fileP.m_Threshold);
+
+  xml_print("HV", fileP.m_HV);
+  m_outputl.set_HV(fileP.m_HV);
 }
 
 bool s_process_collection::process(FileProberties* fileP) {
+  process_reset();
   auto file_PRINTOUT = xml_print("file");
 
-  xml_print("fileName", fileP->getTfile()->GetName());
-  xml_print("threshold", fileP->m_Threshold);
-  xml_print("HV", fileP->m_HV);
+  process_set_run_prob(*fileP);
 
   
-  process_reset();
+  
+
+  
+
+
   m_plotCollection = std::make_shared<S_plot_collection>(fileP->getTfile());
   m_plotCollection->setOutputFile(m_dummy);
 
@@ -307,7 +325,8 @@ bool s_process_collection::process(FileProberties* fileP) {
     *m_gear,
     m_rotation,
     m_pos_x,
-    s_plot_prob("Hits_in_channels").SaveToDisk()
+    s_plot_prob("Hits_in_channels")
+    .SaveToDisk()
     );
 
 
@@ -317,6 +336,7 @@ bool s_process_collection::process(FileProberties* fileP) {
     sct_coll::DUT_fitted_local_GBL().getX_def(),
     sct_coll::DUT_hit_local().getX_def(),
     s_plot_prob("residualVSEvent")
+    .SaveToDisk()
     );
 
   m_res_VS_event.push_back(res);
@@ -338,23 +358,27 @@ bool s_process_collection::process() {
   TCanvas c;
 
   auto files = xml_print("files");
-  TFile* _file1 = new TFile(m_outname.c_str(), "recreate");
 
-  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(m_outputl, &m_buffer, true);
+  TFile* _file1 = new TFile(
+    m_outname.c_str(), 
+    "recreate"
+    );
+
+  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
+    m_outputl, 
+    &m_buffer, 
+    true
+    );
+
   m_outputTree->getTTree()->SetDirectory(_file1->GetDirectory("/"));
   for (auto &e : m_files) {
-    //   std::cout << "processing file:  " << e.getTfile()->GetName() << std::endl;
-    m_outputl.reset();
-    m_outputl.set_RunNumber(e.m_runNumber);
-    m_outputl.set_Threshold(e.m_Threshold);
-
-    m_outputl.set_HV(e.m_HV);
-    process(&e);
+     process(&e);
 
   }
   _file1->Write();
   return true;
 }
+
 
 
 
@@ -464,12 +488,31 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate() {
 
 Long64_t s_process_collection::Draw_Efficinecy_map() {
 
-  m_Efficieny_trueHits = std::make_shared<TH1D>("total", "total", m_bins, -0.5, m_numOfStrips - 0.5);
+  m_Efficieny_trueHits = std::make_shared<TH1D>(
+    "total", 
+    "total", 
+    m_bins, -0.5, m_numOfStrips - 0.5
+    );
 
-  m_plotCollection->Draw(m_output_planes.getTotalTrueHits(), S_DrawOption().draw_x().output_object(m_Efficieny_trueHits.get()));
+  m_plotCollection->Draw(
+    m_output_planes.getTotalTrueHits(),
+    S_DrawOption()
+    .draw_x()
+    .output_object(m_Efficieny_trueHits.get())
+    );
 
-  m_Efficieny_map = std::make_shared<TH1D>("Efficiency", "Efficiency", m_bins, -0.5, m_numOfStrips - 0.5);
-  auto n = m_plotCollection->Draw(m_output_planes.getTrueHitsWithDUT(), S_DrawOption().draw_x().output_object(m_Efficieny_map.get()));
+  m_Efficieny_map = std::make_shared<TH1D>(
+    "Efficiency", 
+    "Efficiency", 
+    m_bins, -0.5, m_numOfStrips - 0.5
+    );
+  
+  auto n = m_plotCollection->Draw(
+    m_output_planes.getTrueHitsWithDUT(), 
+    S_DrawOption()
+    .draw_x()
+    .output_object(m_Efficieny_map.get())
+    );
 
   m_Efficieny_map->Divide(m_Efficieny_trueHits.get());
 
@@ -478,23 +521,47 @@ Long64_t s_process_collection::Draw_Efficinecy_map() {
 }
 
 Long64_t s_process_collection::Draw_Hit_map() {
-  m_Hits_total = std::make_shared<TH1D>("total", "total", m_bins, -0.5, m_numOfStrips - 0.5);
+  m_Hits_total = std::make_shared<TH1D>(
+    "total", 
+    "total",
+    m_bins, -0.5, m_numOfStrips - 0.5
+    );
 
-  return  m_plotCollection->Draw(m_output_planes.getTotalTrueHits(), S_DrawOption().draw_x().output_object(m_Hits_total.get()));
+  return  m_plotCollection->Draw(
+    m_output_planes.getTotalTrueHits(), 
+    S_DrawOption()
+    .draw_x()
+    .output_object(m_Hits_total.get())
+    );
 }
 
 Long64_t s_process_collection::Draw_DUT_Hits_map() {
-  m_Hits_with_DUT_Hits = std::make_shared<TH1D>("DUT", "DUT", m_bins, -0.5, m_numOfStrips - 0.5);
-  return m_plotCollection->Draw(m_output_planes.getTrueHitsWithDUT(), S_DrawOption().draw_x().output_object(m_Hits_with_DUT_Hits.get()));
+  m_Hits_with_DUT_Hits = std::make_shared<TH1D>(
+    "DUT", 
+    "DUT", 
+    m_bins, -0.5, m_numOfStrips - 0.5
+    );
+
+  return m_plotCollection->Draw(
+    m_output_planes.getTrueHitsWithDUT(), 
+    S_DrawOption()
+    .draw_x()
+    .output_object(m_Hits_with_DUT_Hits.get())
+    );
 }
 
 TH2D* s_process_collection::getResidualVsMissingCordinate() {
   return m_resVSMissing.get();
 }
 
-void s_process_collection::pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Error_Effi) {
+void s_process_collection::pushChannel(
+  Double_t channel_x, 
+  Double_t channel_y, 
+  Double_t Effi, 
+  Double_t NumberOfEvents, 
+  Double_t Error_Effi
+  ) {
 
-  //Fill the vectors Occupancy_axis_def and so on
   m_outputl.getData(x_axis_def)->push_back(channel_x);
   m_outputl.getData(y_axis_def)->push_back(channel_y);
   m_outputl.getData(Occupancy_axis_def)->push_back(Effi);

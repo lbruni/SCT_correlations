@@ -53,10 +53,8 @@ public:
   TH2D* getResidualVsMissingCordinate();
 #ifndef __CINT__
 private:
-  void extract_efficiency();
-  void extract_hitMap();
-  void extract_residual();
-  void extract_rotation();
+
+
     void pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Effi_error);
 
   Double_t m_rotation = 0,
@@ -84,6 +82,12 @@ private:
     TFile* m_file =nullptr;
   };
   bool process(FileProberties* fileP);
+  void process_set_run_prob(const FileProberties& fileP);
+  void extract_efficiency();
+  void extract_hitMap();
+  void extract_residual();
+  void extract_rotation();
+  void process_reset();
   std::vector<FileProberties> m_files;
   sct_corr::rootEventRunOutput m_outputl;
   std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;

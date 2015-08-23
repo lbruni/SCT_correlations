@@ -39,7 +39,9 @@ public:
     void setBeamRuns(TTree* noise){
         m_use_total_efficiency_fit_as_start = true;
         m_start_amp = 1;
-        m_start_mean = 110;
+        if (!m_use_total_efficiency_fit_as_start) {
+          m_start_mean = 110;
+        }
         m_start_gaus_sigma =  30;
         m_start_landau_sigma = 2.3;
         m_gaus_sigma_lower_boundary = 10;
@@ -59,6 +61,7 @@ public:
         setStartValues();
     }
     void setStartValues(){
+        f.setFitRange(0, 600);
         f.setLimits_Amplitude(0.7, 1.0);
         f.setStartAmplitude(m_start_amp);
         f.setStartGaussSigma(m_start_gaus_sigma);
@@ -92,6 +95,10 @@ public:
         TCanvas *canv = new TCanvas("canv","",500,500);
         setStartValues();
         SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis(total_name).opt_bar().cut(m_threshold_Cut.c_str()));
+       
+        f(&g);
+        f.DrawfitFunction();
+        push_to_file();
         if (m_use_total_efficiency_fit_as_start)
         {
             m_start_amp = f.getAmplitude();
@@ -101,9 +108,8 @@ public:
         m_start_gaus_sigma = f.getGaussSigma();
         m_start_landau_sigma = f.getLandauSigma();
           
-        f(&g);
-        f.DrawfitFunction();
-        push_to_file();
+ 
+
     
         
 
@@ -134,6 +140,7 @@ public:
             }
             
             f(&g);
+            f.printResults();
              f.DrawfitFunction();
             push_to_file();
         }
@@ -157,13 +164,14 @@ public:
 using namespace std;
 using namespace TCLAP;
 int main(int argc, char **argv) {
-    
-    // TApplication theApp("App", &argc, argv);
+  int argc_asdasddsa = 2; 
+  char **argv_sadsda = new char*[] {"adad", "sadas"};
+  TApplication theApp("App", &argc_asdasddsa, argv_sadsda);
     
     try {
         
         CmdLine cmd("SCurve Fit", ' ', "0.1");
-        ValueArg<std::string> FileNameArg("f", "inFile", "filename", true, "", "string");
+        ValueArg<std::string> FileNameArg("f", "inFile", "filename", false, "", "string");
         cmd.add(FileNameArg);
         ValueArg<std::string> outFilename("o", "outFile", "output filename", false, "", "string");
         cmd.add(outFilename);
@@ -213,7 +221,8 @@ int main(int argc, char **argv) {
         }
         gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
        p.processTotal("total_efficiency:Threshold:error_efficiency");
-       //p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+       p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+       theApp.Run();
         return 0;
     }
     catch (ArgException &e)  // catch any exceptions
@@ -221,6 +230,6 @@ int main(int argc, char **argv) {
         cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
         return -1;
     }
-    
+
     return 0;
 }

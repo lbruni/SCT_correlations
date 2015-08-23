@@ -235,55 +235,7 @@ int asyncMain(void *arg) {
 
   return 0;
 }
-int asyncMainTest(void *arg) {
-  inParam* para = static_cast<inParam *>(arg);
-  int argc = para->argc;
-  char **argv = para->argv;
 
-  TApplication theApp("App", &argc, argv);
-  TFile * file_ = new TFile("D:/data/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000703-fitter.root");
-  TFile * out_file = new TFile("output.root", "recreate");
-  S_plot_collection pl(file_);
-  pl.setOutputFile(out_file);
-  auto res = pl.addPlot(sct_plot::residual(s_plot_prob("residual").SaveToDisk()), sct_coll::DUT_fitted_local().getX_def(), sct_coll::DUT_hit_local().getX_def());
-  auto trueHits = pl.addPlot(sct_plot::coordinate_transform(1, 0, 1, 0, s_plot_prob().SaveToDisk()), sct_coll::DUT_fitted_local());
-  auto corr = pl.addPlot(sct_plot::correlation(s_plot_prob("correlation").SaveToDisk()), trueHits().getX_def(), sct_coll::DUT_hit_local().getX_def());
-
-  auto res_channel = pl.addPlot(sct_plot::residual(s_plot_prob("residual_channel").SaveToDisk()), trueHits().getX_def(), sct_coll::DUT_hit_local().getX_def());
-
-  auto find_closest = pl.addPlot(sct_plot::find_nearest_strip(x_axis_def, 1, s_plot_prob("closest").SaveToDisk()), trueHits(), sct_coll::DUT_hit_local());
-  auto res_vs_missing = pl.addPlot(sct_plot::hitmap(s_plot_prob("res_vs_missing").SaveToDisk()), find_closest.get(0).getX_def(), find_closest.get(1).getY_def());
-  pl.loop();
-  TH2D h2("asd", "sad", 100, 0, 0, 100, 0, 0);
-  pl.Draw(corr, S_DrawOption().draw_y_VS_x().opt_colz().output_object(&h2));
-  SCT_helpers::CutTH2(&h2, S_Cut_BinContent(200));
-  h2.Draw("colz");
-  auto p = h2.ProfileX();
-  TF1 f1("f1", "pol1");
-  p->Fit(&f1);
-
-  p->Draw("same");
-  new TCanvas();
-  pl.Draw(res_channel(), S_DrawOption().draw_x().cut_x(-0.2, 0.2));
-  new TCanvas();
-  pl.Draw(res_vs_missing(), S_DrawOption().draw_x_VS_y().cut_x(-0.2, 0.2));
-
-  new TCanvas();
-  TH1D h("trueHits", "true hits", 401, 0, 400);
-  //pl.Draw(trueHits(), S_DrawOption().draw_x().output_object(&h));
-  auto trueHIts_entries = pl.Draw(trueHits(), S_DrawOption().draw_y_VS_x());
-    new TCanvas();
-  TH1D h1("DUT_Hits", "DUT hits", 401, 0, 400);
-  // pl.Draw(find_closest.get(1), S_DrawOption().draw_x().output_object(&h1));
-  auto DUT_hits_entries = pl.Draw(find_closest.get(1), S_DrawOption().draw_y_VS_x());
-  std::cout << DUT_hits_entries / (Double_t)trueHIts_entries * 100 << std::endl;
-  //   auto h_eff = (TH1D*)h1.Clone("efficiency");
-  //   h_eff->Divide(&h);
-  //   new TCanvas();
-  //   h_eff->Draw();
-  theApp.Run();
-  return 0;
-}
 int main(int argc, char **argv) {
 
 

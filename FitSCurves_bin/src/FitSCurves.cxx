@@ -42,9 +42,9 @@ public:
         if (!m_use_total_efficiency_fit_as_start) {
           m_start_mean = 110;
         }
-        m_start_gaus_sigma =  30;
-        m_start_landau_sigma = 2.3;
-        m_gaus_sigma_lower_boundary = 10;
+        m_start_gaus_sigma =  52;
+        m_start_landau_sigma = 10;
+        m_gaus_sigma_lower_boundary = 30;
         m_tree = noise;
         m_threshold_Cut = "Threshold>=25";
         setStartValues();
@@ -125,7 +125,16 @@ public:
                 std::cout << "process channel: " << i << " of " << max__ << std::endl;
             }
             setStartValues();
-            SCT_helpers::DrawTTree(m_tree, S_DrawOption().output_object(&g).draw_axis("Occupancy:Threshold:Occupancy_error").opt_star().cut(m_threshold_Cut.c_str()).cut(x, i - 0.5, i + 0.5));
+            SCT_helpers::DrawTTree(
+              m_tree, 
+              S_DrawOption()
+              .output_object(&g)
+              .draw_axis("Occupancy:Threshold:Occupancy_error")
+              .opt_star()
+              .cut(m_threshold_Cut.c_str())
+              .cut(x, i - 0.5, i + 0.5)
+              .cut("NumOfEvents>200")
+              );
             if (g.GetN() == 0)
             {
                 push_to_file_emtpyEvent();

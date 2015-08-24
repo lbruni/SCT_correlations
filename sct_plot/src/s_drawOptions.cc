@@ -338,6 +338,7 @@ Long64_t S_DrawOption::Draw(TTree * tree) const
 {
     tree->SetLineColor(m_color);
     tree->SetMarkerColor(m_color);
+    tree->SetFillColor(m_color);
     auto n = tree->Draw(getAxis(), getCut(), getOptions());
     
     //push_output_to_TGraph(n, tree);

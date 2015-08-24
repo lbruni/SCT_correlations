@@ -1,15 +1,16 @@
 
+#include <iostream>
+#include <sstream>
+#include <thread>
+
 #include "s_process_collection.h"
 #include "TError.h"
 
 
-#include <iostream>
-#include <sstream>
 
 
 #include "tclap/CmdLine.h"
 #include "xml_helpers/xml_fileList.hh"
-#include <thread>
 #include "TApplication.h"
 #include "TCanvas.h"
 #include "TH1.h"
@@ -145,7 +146,7 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000688_fitter.root");
+  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000818_fitter.root");
   rapidxml::file<> m_file("D:/GBL/Neuer Ordner/alignedGear-check-iter2-run000703_with_plane20.xml");
   rapidxml::xml_document<> m_doc;
   m_doc.parse<0>(m_file.data());
@@ -160,12 +161,101 @@ int asyncMain(void *arg) {
   auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, S_YCut(-42, -36), 100000, gear, 0, -6.36702e-001, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
  // auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(pl, S_YCut(-42, -36), 100000, gear, 0, -1.35993e-002, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
 
+  auto cut_true = sct_plot::cut_x_y(
+    pl, 
+    S_XCut(280, 360), 
+    gbl_collection.getTotalTrueHits(), 
+    s_plot_prob().doNotSaveToDisk()
+    );
 
-  auto res = sct_plot::residual(pl, sct_coll::DUT_fitted_local_GBL().getX_def(), sct_coll::DUT_hit_local().getX_def() ,s_plot_prob("residualVSEvent"));
+
+  auto cut_dut = sct_plot::cut_x_y(
+    pl, 
+    S_XCut(280, 360), 
+    gbl_collection.getTrueHitsWithDUT(), 
+    s_plot_prob().doNotSaveToDisk()
+    );
+
+  auto cluster_ = sct_plot::cluster_strip(
+    pl, 
+    x_axis_def, 
+    2, 
+    sct_coll::DUT_zs_data(), 
+    s_plot_prob().doNotSaveToDisk()
+    );
+
+  auto cluster__cut = sct_plot::cut_x_y(
+    pl,
+    S_YCut(0, 15),
+    cluster_,
+    s_plot_prob().doNotSaveToDisk()
+    );
+
+  auto cluster_closest = sct_plot::find_nearest_strip(
+    pl, 
+    x_axis_def, 
+    1000,
+    cluster__cut, 
+    gbl_collection.getTotalTrueHits(), 
+    s_plot_prob().doNotSaveToDisk()
+    );
+
+  auto mod_total_closest = sct_plot::moduloHitMap(
+    pl,
+    3,
+    11111113.0,
+    cluster_closest.getHitOnPlaneB(),
+    s_plot_prob("mod")
+    );
+
+
+  auto hitmap = sct_plot::hitmap(pl, mod_total_closest.getX_def(), cluster_closest.getHitOnPlaneA().getY_def());
+
+
+  auto res = sct_plot::residual(
+    pl, 
+    sct_coll::DUT_fitted_local_GBL().getX_def(), 
+    sct_coll::DUT_hit_local().getX_def(),
+    s_plot_prob("residualVSEvent")
+    );
+  auto mod_total = sct_plot::moduloHitMap(
+    pl, 
+    3, 
+    11111113.0, 
+    cut_true,
+    s_plot_prob("mod")
+    );
+
+  auto mod_DUT = sct_plot::moduloHitMap(
+    pl,
+    3,
+    300000000.0,
+    cut_dut,
+    s_plot_prob("modDUT")
+    );
 
   pl.loop(40000);
+  
+  gCanvas.push_back(new TCanvas());
+  TH2D cl_pos("asda", "cl_pos", 100, 0, 3, 20, 0, 20);
+  pl.Draw(hitmap, S_DrawOption().draw_y_VS_x().opt_colz().output_object(&cl_pos));
+  auto prof = cl_pos.ProfileX();
+  prof->Draw("same");
 
+  gCanvas.push_back(new TCanvas());
+  TH1D trueHitsMod("sadad", "true hits", 300, 0, 3);
+  TH1D DUtHitsMod("sadaasdad", "DUT hits", 300, 0, 3);
 
+  pl.Draw(mod_total, S_DrawOption().draw_x().output_object(&trueHitsMod));
+  pl.Draw(mod_DUT, S_DrawOption().draw_x().output_object(&DUtHitsMod).opt_same().color_green());
+  auto effi = SCT_helpers::calc_efficiency(&trueHitsMod, &DUtHitsMod);
+  effi->SetTitle("efficiency");
+  gCanvas.push_back(new TCanvas());
+
+  effi->Draw();
+
+  gBrowser = new TBrowser();
+  theApp.Run();
   gCanvas.push_back(new TCanvas());
   pl.Draw(res, S_DrawOption().draw_x_VS_y());
 
@@ -200,8 +290,6 @@ int asyncMain(void *arg) {
   gCanvas.push_back(new TCanvas());
   DUTHit.Draw();
 
-  gBrowser = new TBrowser();
-  theApp.Run();
 
   exit(0);
   return 0;

@@ -131,7 +131,7 @@ int s_process_collection::Add_XML_RunList(const std::string& xmlInputFileName, s
   if (element != -1) {
     outputPath += "/" + collname + "_" + std::to_string(element) + ".root";
   } else {
-    outputPath += "/" + collname + "_" + ".root";
+    outputPath += "/" + collname + ".root";
   }
 
 
@@ -277,7 +277,7 @@ void s_process_collection::extract_residual() {
 void s_process_collection::extract_rotation() {
   DrawResidualVsMissingCordinate(-10, 10);
   auto h = getResidualVsMissingCordinate();
-  auto f1 = SCT_helpers::LinearFit_Of_Profile(h, 0.2);
+  auto f1 = SCT_helpers::LinearFit_Of_Profile(h, 0.01);
   auto rot = TMath::ATan(f1.GetParameter("p1"));
   m_outputl.set_rotation(rot);
   xml_print("rotation", rot);
@@ -340,7 +340,14 @@ bool s_process_collection::process(FileProberties* fileP) {
     );
 
   m_res_VS_event.push_back(res);
+
+#ifdef _DEBUG
+  m_plotCollection->loop(40000);
+#else
   m_plotCollection->loop();
+#endif // _DEBUG
+
+  
 
   Draw_Efficinecy_map();
 
@@ -458,7 +465,18 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate(Double_t min_X, Do
 
 
 
-  return m_plotCollection->Draw(
+   auto ret = m_plotCollection->Draw(
+    m_output_planes.getResidualVSmissing(),
+    S_DrawOption()
+    .draw_x_VS_y()
+    .cut_x(min_X, max_X)
+    .output_object(m_resVSMissing.get())
+    .opt_colz()
+    );
+  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(m_resVSMissing.get(), 0));
+//   std::cout << f->GetParameter("p1") << std::endl;
+//   std::cout << f->GetParameter("p0") << std::endl;
+  m_plotCollection->Draw(
     m_output_planes.getResidualVSmissing(),
     S_DrawOption()
     .draw_x_VS_y()
@@ -467,6 +485,9 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate(Double_t min_X, Do
     .opt_colz()
     );
 
+  f->Draw("same");
+
+  return ret;
 }
 
 Long64_t s_process_collection::DrawResidualVsMissingCordinate() {
@@ -480,7 +501,8 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate() {
 
 
   TH2* h = dynamic_cast<TH2*>(gPad->GetPrimitive("htemp"));
-
+  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(h, 0.2));
+  f->Draw("same");
   h->SetTitle("Residual Vs Missing Coordinate");
 
   return ret;

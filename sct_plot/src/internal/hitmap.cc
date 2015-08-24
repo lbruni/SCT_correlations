@@ -17,7 +17,7 @@ namespace sct_corr{
 
   void hitmap::processHit(double x, double y)
   {
-    pushHit(m_x->get(), m_y->get());
+    pushHit(x, y);
   }
 
   s_plane_collection hitmap::getOutputcollection()

@@ -48,7 +48,9 @@ const char* sct::plot_hitmap()
 {
   return "hitmap";
 }
-
+const char* sct::plot_modulo() {
+  return "modulo";
+}
 const char* sct::plot_correlation()
 {
   return "correlation";

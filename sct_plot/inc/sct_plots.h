@@ -57,6 +57,7 @@ public:
   static TH1* HistogrammSilhouette(TH2* h2, axis_def ax);
   static Long64_t DrawTTree(TTree * tree, const S_DrawOption& opt);
   static TF1 LinearFit_Of_Profile(TH2* h2,Double_t cut_prozent = 0);
+  static TH1* calc_efficiency(TH1* trueHits, TH1* dutHits);
 };
 class S_plane_def;
 class DllExport sct_coll {
@@ -99,9 +100,11 @@ public:
   static const char* col_GBL_fitted_points();
 
   static const char* plot_hitmap();
+  static const char* plot_modulo();
   static const char* plot_correlation();
   static const char* plot_residual();
   static const char* plot_clusterSize();
+  static const char* plot_clusterSize_strip();
   static const char* plot_projectOnPixel();
   static const char* plot_find_correspondingX();
   static const char* plot_find_correspondingXY();
@@ -124,15 +127,19 @@ class S_plot;
 class DllExport sct_plot {
 private:
   static  S_plot hitmap(const s_plot_prob& = "");
+  static  S_plot moduloHitMap(double modulo_parameter_x, double modulo_parameter_y, const s_plot_prob& = "");
   static  S_plot correlation(const s_plot_prob& = "");
   static  S_plot residual(const s_plot_prob& = "");
   static  S_plot clustering(Double_t Pixel_distance = 2, const s_plot_prob& = "");
+  static  S_plot clustering_strip(axis_def searchAxis, Double_t Pixel_distance = 2, const s_plot_prob& = "");
   static  S_plot projectOnPixel(const s_plot_prob& = "");
   static  S_plot find_correspondingX(const s_plot_prob& = "");
   static  S_plot find_correspondingXY(const s_plot_prob& = "");
   static  S_plot Event_size(const s_plot_prob& = "");
   static  S_plot find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& = "");
   static  S_plot find_nearest_strip(axis_def search_axis, Double_t cutOfff = 100000, const s_plot_prob& = "");
+  static  S_plot modulo_find_nearest_strip(axis_def search_axis, double modulo_param, Double_t cutOfff = 100000, const s_plot_prob& = "");
+
   static  S_plot plane_distance(const s_plot_prob& = "");
   static  S_plot A_if_B(const s_plot_prob& = "");
   static  S_plot rotated(Double_t angle, const s_plot_prob& = "");
@@ -156,7 +163,17 @@ public:
 
   static s_plane_collection_find_closest find_nearest(S_plot_collection& pl, Double_t x_cutoff, Double_t y_cutoff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& = "");
   static s_plane_collection_find_closest find_nearest_strip(S_plot_collection& pl, axis_def search_axis, Double_t cutOfff, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& plot_prob_= "");
-
+  
+  
+  static s_plane_collection_find_closest modulo_find_nearest_strip(
+    S_plot_collection& pl, 
+    axis_def search_axis, 
+    Double_t cutOfff, 
+    Double_t modulo_parameter,
+    const S_plane_def& planeA, 
+    const S_plane_def& planeB, 
+    const s_plot_prob& plot_prob_ = ""
+    );
 
   static s_plane_collection misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& = "");
   static s_plane_collection misalignment_pixel(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, const  s_plot_prob& = "");
@@ -235,6 +252,12 @@ public:
   static  S_plane_def linear_trans(S_plot_collection& pl, Double_t a11, Double_t a21, Double_t a12, Double_t a22, const S_plane_def& planeA, const s_plot_prob& = "");
   static  S_plane_def hitmap(S_plot_collection& pl, const S_plane_def& hits, const s_plot_prob& = "");
   static  S_plane_def hitmap(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
+  
+  static  S_plane_def moduloHitMap(S_plot_collection& pl, double mod_x, double mod_y , const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
+  static  S_plane_def moduloHitMap(S_plot_collection& pl, double mod_x, double mod_y, const S_plane_def& hits, const s_plot_prob& = "");
+ 
+  static  S_plane_def cluster_strip(S_plot_collection& pl, axis_def search_axis,double cluster_distance, const S_plane_def& hits, const s_plot_prob& = "");
+
 
   static  S_plane_def cut_x_y(S_plot_collection& pl, const  S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& = "");
 

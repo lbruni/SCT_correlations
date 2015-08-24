@@ -22,7 +22,7 @@ namespace sct_corr{
 
 
 
-  class treeCollection {
+  class DllExport treeCollection {
   public:
 
 

@@ -164,6 +164,14 @@ return f;
 
 
 
+TH1* SCT_helpers::calc_efficiency(TH1* trueHits, TH1* dutHits) {
+
+  TH1* effi = (TH1*) dutHits->Clone("efficiency");
+  effi->Divide(trueHits);
+  return effi;
+
+}
+
 S_plane_def sct_plot::coordinate_transform(S_plot_collection& pl, Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const S_plane_def& planeA, const s_plot_prob& plot_prob__/*= ""*/) {
   return pl.addPlot(sct_plot::coordinate_transform(x_slope, x_offset, y_slope, y_offset, plot_prob__),planeA)();
 }
@@ -191,6 +199,19 @@ s_plane_collection_find_closest sct_plot::find_nearest_strip(S_plot_collection& 
   ret.setHitOnPlaneB(collection_.getByType("nearest_strip_plane2")());
   return ret;
 }
+
+s_plane_collection_find_closest sct_plot::modulo_find_nearest_strip(S_plot_collection& pl, axis_def search_axis, Double_t cutOfff, Double_t modulo_parameter, const S_plane_def& planeA, const S_plane_def& planeB, const s_plot_prob& plot_prob_ /*= "" */) {
+
+  auto collection_ = pl.addPlot(sct_plot::modulo_find_nearest_strip(search_axis, modulo_parameter, cutOfff, plot_prob_), planeA, planeB);
+
+  s_plane_collection_find_closest ret;
+  ret.setResidual(collection_.getByType("nearest_strip_distance")());
+  ret.setHitOnPlaneA(collection_.getByType("nearest_strip_plane1")());
+  ret.setHitOnPlaneB(collection_.getByType("nearest_strip_plane2")());
+  return ret;
+}
+
+
 
 s_plane_collection sct_plot::misalignment_strip(S_plot_collection& pl, S_plane_def fitted_plane, S_plane_def plane_hit_, axis_def Unknown_axis, const s_plot_prob& plot_prob)
 {
@@ -653,12 +674,34 @@ S_plane_def sct_plot::hitmap(S_plot_collection& pl, const S_Axis& axisA, const S
   return pl.addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
 }
 
+
+
+S_plane_def sct_plot::moduloHitMap(S_plot_collection& pl, double mod_x, double mod_y, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& plot_prob/*= ""*/) {
+  return pl.addPlot(sct_plot::moduloHitMap(mod_x,mod_y, plot_prob), axisA, axisB)();
+}
+
+S_plane_def sct_plot::moduloHitMap(S_plot_collection& pl, double mod_x, double mod_y, const S_plane_def& hits, const s_plot_prob& plot_prob/*= ""*/) {
+  return pl.addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), hits)();
+}
+
+
+S_plane_def sct_plot::cluster_strip(S_plot_collection& pl, axis_def search_axis, double cluster_distance, const S_plane_def& hits, const s_plot_prob& plot_prob/*= ""*/) {
+  return pl.addPlot( sct_plot::clustering_strip(search_axis, cluster_distance, plot_prob), hits)();
+
+}
+
 S_plane_def sct_plot::cut_x_y(S_plot_collection& pl, const S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& plot_prob/*= ""*/) {
   return pl.addPlot(sct_plot::cut_x_y(cut_, plot_prob), planeA)();
 }
 
 S_plane_def sct_plot::residual(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& plot_prob /*= ""*/) {
   return pl.addPlot(sct_plot::residual(plot_prob), axisA,axisB)();
+}
+
+
+
+const char* sct::plot_clusterSize_strip() {
+  return "cluster_size_strip";
 }
 
 const char* sct::plot_linear_trans() {

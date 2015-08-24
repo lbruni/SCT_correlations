@@ -14,7 +14,7 @@
 #include "TFitResult.h"
 #include "TF1.h"
 #include "TBenchmark.h"
-#include "s_plane.h"
+#include "s_plane_def.h"
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"
 #include "s_cuts.h"

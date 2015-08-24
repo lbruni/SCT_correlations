@@ -1,5 +1,6 @@
 #include "s_axis.h"
 #include <iostream>
+#include "s_plot_collection.h"
 
 
 S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_collectionName(collctionName), m_planeID(planeID), m_axis(axis), m_isValid(true)
@@ -9,6 +10,26 @@ S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis) :m_coll
 
 S_Axis::S_Axis():m_isValid(false) {
   std::cout << "invalid axis" << std::endl;
+}
+
+S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis, std::weak_ptr<S_plot_collection> plot_collection_)
+  : S_Axis(collctionName, planeID, axis) 
+{
+  m_plot_collection = plot_collection_;
+}
+
+std::shared_ptr<S_plot_collection> S_Axis::get_plot() const {
+  if (std::shared_ptr<S_plot_collection> ret = m_plot_collection.lock()) {
+
+    return ret;
+  } else {
+    std::cout << "plot is expired\n";
+  }
+  return nullptr;
+}
+
+void S_Axis::set_plot_collection(std::weak_ptr<S_plot_collection> plot_collection_) {
+  m_plot_collection = plot_collection_;
 }
 
 bool S_Axis::isValid() const {

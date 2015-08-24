@@ -1,7 +1,8 @@
 #include "sct_plots.h"
 #include <iostream>
-#include "s_plane.h"
+#include "s_plane_def.h"
 #include "s_DrawOption.h"
+#include "s_plane_def.h"
 // class output_streamer;
 // 
 // class output_lock{
@@ -122,7 +123,11 @@ s_plane_collection::s_plane_collection(const S_plane_def& plane_)
 {
   push_back(plane_);
 }
-
+void s_plane_collection::set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection) {
+  for (auto & e : m_planes) {
+    e.second.set_s_plot_collection(plot_collection);
+  }
+}
 const char* s_plane_collection::getName(Int_t i) const
 {
   if (i< static_cast<Int_t>(m_planes.size()))

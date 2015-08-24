@@ -9,8 +9,9 @@
 #include "sct_global.h"
 #include "internal/plotsBase.hh"
 #include "s_DrawOption.h"
-#include "s_plane.h"
+#include "s_plane_def.h"
 #include "TTree.h"
+#include "s_plane_def.h"
 
 S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>())
 {
@@ -318,4 +319,80 @@ S_plane* S_plot_collection::pushPlane(const S_plane_def& pl)
   m_planes.push_back(std::make_shared<S_plane>(pl, pl_pointer));
 
   return m_planes.back().get();
+}
+
+r_plot_collection::r_plot_collection(TFile* file) {
+  m_plot = std::make_shared<S_plot_collection>(file);
+}
+
+s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis) {
+  
+  s_plane_collection ret = m_plot->addPlot(plot_def, x_axis, y_axis);
+  ret.set_s_plot_collection(m_plot);
+  return ret;
+}
+
+s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2) {
+  s_plane_collection ret=m_plot->addPlot(plot_def, p1, p2);
+
+  ret.set_s_plot_collection(m_plot);
+  return ret;
+}
+
+s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1) {
+  s_plane_collection ret = m_plot->addPlot(plot_def, p1);
+
+  ret.set_s_plot_collection(m_plot);
+  return ret;
+}
+
+s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const s_plane_collection& p1) {
+  s_plane_collection ret = m_plot->addPlot(plot_def, p1);
+
+  ret.set_s_plot_collection(m_plot);
+  return ret;
+}
+
+Long64_t r_plot_collection::Draw(const char* name) {
+ return m_plot->Draw(name);
+}
+
+Long64_t r_plot_collection::Draw(const char* name, const S_DrawOption& option) {
+return  m_plot->Draw(name,option);
+}
+
+Long64_t r_plot_collection::Draw(const S_plane_def& name, const S_DrawOption& option) {
+return  m_plot->Draw(name, option);
+}
+
+Long64_t r_plot_collection::Draw(const s_plane_collection& name, const S_DrawOption& option) {
+return  m_plot->Draw(name, option);
+}
+
+Long64_t r_plot_collection::DrawAll(const s_plane_collection& name, const S_DrawOption& option) {
+ return m_plot->DrawAll(name, option);
+}
+
+void r_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/) {
+  m_plot->loop(last, start);
+}
+
+S_plot_collection& r_plot_collection::get_plot_collection() {
+  return *m_plot.get();
+}
+
+std::shared_ptr<S_plot_collection> r_plot_collection::get_plot_collection_ptr() {
+  return m_plot;
+}
+
+void r_plot_collection::addFile(TFile* file) {
+  m_plot->addFile(file);
+}
+
+void r_plot_collection::setOutputFile(TFile* file) {
+  m_plot->setOutputFile(file);
+}
+
+void r_plot_collection::reset() {
+  m_plot->reset();
 }

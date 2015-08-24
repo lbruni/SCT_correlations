@@ -1,5 +1,5 @@
 #include "sct_plots.h"
-#include "s_plane.h"
+#include "s_plane_def.h"
 
 
 const char* sct::col_hit()

@@ -24,7 +24,7 @@
 #include "s_plot_prob.h"
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"
-#include "s_plane.h"
+#include "s_plane_def.h"
 
 
 
@@ -125,7 +125,7 @@ public:
 class S_plot_def;
 class S_plot;
 class DllExport sct_plot {
-private:
+public:
   static  S_plot hitmap(const s_plot_prob& = "");
   static  S_plot moduloHitMap(double modulo_parameter_x, double modulo_parameter_y, const s_plot_prob& = "");
   static  S_plot correlation(const s_plot_prob& = "");
@@ -261,7 +261,137 @@ public:
 
   static  S_plane_def cut_x_y(S_plot_collection& pl, const  S_Cut& cut_, const S_plane_def& planeA, const s_plot_prob& = "");
 
+
+
+
+
   static  S_plane_def residual(S_plot_collection& pl, const S_Axis& axisA, const S_Axis& axisB, const s_plot_prob& = "");
+};
+
+class DllExport sct_processor {
+public:
+  static  S_plane_def cut_x_y(
+    const S_plane_def& planeA,
+    const  S_Cut& cut_, 
+    const s_plot_prob& = ""
+    );
+
+
+  static  S_plane_def cluster_strip(
+    const S_plane_def& hits, 
+    axis_def search_axis, 
+    double cluster_distance, 
+    const s_plot_prob& = ""
+    );
+
+
+  static  S_plane_def coordinate_transform(
+    const S_plane_def& planeA, 
+    Double_t x_slope, 
+    Double_t x_offset,
+    Double_t y_slope,
+    Double_t y_offset, 
+    const s_plot_prob& = ""
+    );
+
+
+  static  S_plane_def coordinate_transform_move(
+    const S_plane_def& planeA, 
+    Double_t x_offset, 
+    Double_t y_offset, 
+    const s_plot_prob& = ""
+    );
+
+  static s_plane_collection_find_closest find_nearest(
+    const S_plane_def& planeA, 
+    const S_plane_def& planeB, 
+    Double_t x_cutoff, 
+    Double_t y_cutoff, 
+    const s_plot_prob& = ""
+    );
+
+
+  static s_plane_collection_find_closest find_nearest_strip(
+    const S_plane_def& planeA, 
+    const S_plane_def& planeB, 
+    axis_def search_axis, 
+    Double_t cutOfff, 
+    const s_plot_prob& plot_prob_ = ""
+    );
+
+  static s_plane_collection_find_closest modulo_find_nearest_strip(
+    const S_plane_def& planeA,
+    const S_plane_def& planeB,
+    axis_def search_axis,
+    Double_t cutOfff,
+    Double_t modulo_parameter,
+    const s_plot_prob& plot_prob_ = ""
+    );
+
+
+
+
+  static  S_plane_def correlation(
+    const S_Axis& axisA, 
+    const S_Axis& axisB,
+    const s_plot_prob& = ""
+    );
+
+
+  static  S_plane_def correlation(
+    const S_plane_def& planeA, 
+    const s_plot_prob& = ""
+    );
+
+  static  S_plane_def rotate(
+    const S_plane_def& planeA, 
+    Double_t angle, 
+    const s_plot_prob& = ""
+    );
+
+  static  S_plane_def linear_trans(
+    const S_plane_def& planeA, 
+    Double_t a11, Double_t a21, 
+    Double_t a12, Double_t a22, 
+    const s_plot_prob& = ""
+    );
+
+  static S_plane_def hitmap(
+    const S_plane_def& hits, 
+    const s_plot_prob& = ""
+    );
+
+
+  static  S_plane_def hitmap(
+    const S_Axis& axisA, 
+    const S_Axis& axisB, 
+    const s_plot_prob& = ""
+    );
+
+  static  S_plane_def moduloHitMap(
+    const S_Axis& axisA, 
+    const S_Axis& axisB, 
+    double mod_x, double mod_y, 
+    const s_plot_prob& = ""
+    );
+
+
+  static  S_plane_def moduloHitMap(
+    const S_plane_def& hits, 
+    double mod_x, double mod_y, 
+    const s_plot_prob& = ""
+    );
+
+
+
+
+  static  S_plane_def residual(
+    const S_Axis& axisA, 
+    const S_Axis& axisB, 
+    const s_plot_prob& = ""
+    );
+
+
 };
 
 class DllExport sct_analyis { // all this function have memory leaks. they are not designed to be called in a loop 
@@ -285,7 +415,7 @@ public:
 #pragma link C++ class sct_analyis;
 #pragma link C++ class sct_plot;
 #pragma link C++ class sct_coll;
-
+#pragma link C++ class sct_processor;
 
 #endif
 

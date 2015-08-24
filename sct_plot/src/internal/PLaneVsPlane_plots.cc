@@ -4,6 +4,7 @@
 #include <memory>
 #include <iostream>
 #include "internal/plane.hh"
+#include "s_plane_def.h"
 namespace sct_corr{
   plotPlaneVsPlane::plotPlaneVsPlane(const s_plot_prob& plot_prob) :plot(plot_prob)
   {

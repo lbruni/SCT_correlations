@@ -1,7 +1,7 @@
 #include "s_process_collection.h"
 #include "TFile.h"
 #include "sct_plots.h"
-#include "s_plane.h"
+#include "s_plane_def.h"
 #include <string>
 #include <iostream>
 #include "treeCollection.h"

@@ -4,6 +4,8 @@
 #include "Rtypes.h"
 #include <memory>
 #include <map>
+#include "s_plot.h"
+#include "s_DrawOption.h"
 
 class TFile;
 class TTree;
@@ -56,6 +58,40 @@ private:
   std::vector<TFile*> m_file;
 #endif
   ClassDef(S_plot_collection, 0);
+};
+
+class DllExport r_plot_collection {
+public:
+  r_plot_collection(TFile* file);
+
+
+  void addFile(TFile* file);
+  void setOutputFile(TFile* file);
+  void reset();
+  s_plane_collection addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis);
+
+  s_plane_collection addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2);
+  s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1);
+  s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1);
+  Long64_t Draw(const char* name);
+  Long64_t Draw(const char* name, const S_DrawOption& option);
+  Long64_t Draw(const S_plane_def& name, const S_DrawOption& option);
+  Long64_t Draw(const s_plane_collection& name, const S_DrawOption& option);
+  Long64_t DrawAll(const s_plane_collection& name, const S_DrawOption& option);
+  void loop(Int_t last = -1, Int_t start = 0);
+  S_plot_collection& get_plot_collection();
+  std::shared_ptr<S_plot_collection>  get_plot_collection_ptr();
+private:
+  std::shared_ptr<S_plot_collection> m_plot;
+};
+class r_plane_def {
+public:
+  r_plane_def(const S_plane_def& plane_, S_plot_collection& pl);
+  bool isValid() const; 
+
+private:
+  S_plot_collection* m_plot_collection;
+
 };
 #ifdef __CINT__
 

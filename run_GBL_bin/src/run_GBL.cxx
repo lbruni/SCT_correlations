@@ -155,87 +155,88 @@ int asyncMain(void *arg) {
 
 
   TFile * out_file = new TFile("output.root", "recreate");
-  S_plot_collection pl(file_);
+  r_plot_collection pl(file_);
   pl.setOutputFile(out_file);
 
-  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl, S_YCut(-42, -36), 100000, gear, 0, -6.36702e-001, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
- // auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(pl, S_YCut(-42, -36), 100000, gear, 0, -1.35993e-002, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
+  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl.get_plot_collection(), S_YCut(-42, -36), 100000, gear, 0, -6.36702e-001, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
+  // auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(pl, S_YCut(-42, -36), 100000, gear, 0, -1.35993e-002, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
+  gbl_collection.set_s_plot_collection(pl.get_plot_collection_ptr());
+  auto cut_true = sct_processor::cut_x_y(
+    gbl_collection.getTotalTrueHits(),
+    S_XCut(280, 360),
 
-  auto cut_true = sct_plot::cut_x_y(
-    pl, 
-    S_XCut(280, 360), 
-    gbl_collection.getTotalTrueHits(), 
     s_plot_prob().doNotSaveToDisk()
     );
 
 
-  auto cut_dut = sct_plot::cut_x_y(
-    pl, 
-    S_XCut(280, 360), 
-    gbl_collection.getTrueHitsWithDUT(), 
+  auto cut_dut = sct_processor::cut_x_y(
+    gbl_collection.getTrueHitsWithDUT(),
+    S_XCut(280, 360),
+
+    s_plot_prob().doNotSaveToDisk()
+    );
+  auto sz_data = sct_coll::DUT_zs_data();
+  sz_data.set_s_plot_collection(pl.get_plot_collection_ptr());
+  auto cluster_ = sct_processor::cluster_strip(
+    sz_data,
+    x_axis_def,
+    2,
     s_plot_prob().doNotSaveToDisk()
     );
 
-  auto cluster_ = sct_plot::cluster_strip(
-    pl, 
-    x_axis_def, 
-    2, 
-    sct_coll::DUT_zs_data(), 
-    s_plot_prob().doNotSaveToDisk()
-    );
-
-  auto cluster__cut = sct_plot::cut_x_y(
-    pl,
-    S_YCut(0, 15),
+  auto cluster__cut = sct_processor::cut_x_y(
     cluster_,
+    S_YCut(0, 15),
+
     s_plot_prob().doNotSaveToDisk()
     );
 
-  auto cluster_closest = sct_plot::find_nearest_strip(
-    pl, 
-    x_axis_def, 
+  auto cluster_closest = sct_processor::find_nearest_strip(
+    cluster__cut,
+    gbl_collection.getTotalTrueHits(),
+    x_axis_def,
     1000,
-    cluster__cut, 
-    gbl_collection.getTotalTrueHits(), 
+
     s_plot_prob().doNotSaveToDisk()
     );
 
-  auto mod_total_closest = sct_plot::moduloHitMap(
-    pl,
+  auto mod_total_closest = sct_processor::moduloHitMap(
+    cluster_closest.getHitOnPlaneB(),
     3,
     11111113.0,
-    cluster_closest.getHitOnPlaneB(),
     s_plot_prob("mod")
     );
 
 
-  auto hitmap = sct_plot::hitmap(pl, mod_total_closest.getX_def(), cluster_closest.getHitOnPlaneA().getY_def());
+  auto hitmap = sct_processor::hitmap(
+    mod_total_closest.getX_def(), cluster_closest.getHitOnPlaneA().getY_def()
+    );
 
-
-  auto res = sct_plot::residual(
-    pl, 
-    sct_coll::DUT_fitted_local_GBL().getX_def(), 
-    sct_coll::DUT_hit_local().getX_def(),
+  auto DUT_fitted_local_GBL__ = sct_coll::DUT_fitted_local_GBL();
+  DUT_fitted_local_GBL__.set_s_plot_collection(pl.get_plot_collection_ptr());
+  auto DUT_hit_local___ = sct_coll::DUT_hit_local();
+  DUT_hit_local___.set_s_plot_collection(pl.get_plot_collection_ptr());
+  auto res = sct_processor::residual(
+    DUT_fitted_local_GBL__.getX_def(),
+    DUT_hit_local___.getX_def(),
     s_plot_prob("residualVSEvent")
     );
-  auto mod_total = sct_plot::moduloHitMap(
-    pl, 
-    3, 
-    11111113.0, 
+  auto mod_total = sct_processor::moduloHitMap(
     cut_true,
+    3,
+    11111113.0,
     s_plot_prob("mod")
     );
 
-  auto mod_DUT = sct_plot::moduloHitMap(
-    pl,
+  auto mod_DUT = sct_processor::moduloHitMap(
+    cut_dut,
     3,
     300000000.0,
-    cut_dut,
     s_plot_prob("modDUT")
     );
 
   pl.loop(40000);
-  
+
   gCanvas.push_back(new TCanvas());
   TH2D cl_pos("asda", "cl_pos", 100, 0, 3, 20, 0, 20);
   pl.Draw(hitmap, S_DrawOption().draw_y_VS_x().opt_colz().output_object(&cl_pos));
@@ -261,19 +262,19 @@ int asyncMain(void *arg) {
 
 
   gCanvas.push_back(new TCanvas());
-  pl.Draw(gbl_collection.getResidual(), S_DrawOption().draw_x().cut_x(-5,5));
-  
+  pl.Draw(gbl_collection.getResidual(), S_DrawOption().draw_x().cut_x(-5, 5));
+
   gCanvas.push_back(new TCanvas());
   TH2D* h22 = new TH2D("asd22", "ResidualVSmissing", 100, 0, 0, 100, 0, 0);
-  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_x_VS_y().output_object(h22).cut_x(-2,2));
-//  auto f222 = SCT_helpers::LinearFit_Of_Profile(h22, 0.2);
-//  f222.Print();
+  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_x_VS_y().output_object(h22).cut_x(-2, 2));
+  //  auto f222 = SCT_helpers::LinearFit_Of_Profile(h22, 0.2);
+  //  f222.Print();
 
 
 
   gCanvas.push_back(new TCanvas());
 
-//  pl.Draw(sct_coll::tel_fitted_local_GBL(8), S_DrawOption().draw_y().color_red());
+  //  pl.Draw(sct_coll::tel_fitted_local_GBL(8), S_DrawOption().draw_y().color_red());
   pl.Draw(gbl_collection.getTotalTrueHits(), S_DrawOption().draw_y());
 
   pl.Draw(gbl_collection.getTrueHitsWithDUT(), S_DrawOption().draw_y().opt_same().color_blue());

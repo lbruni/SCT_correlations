@@ -9,7 +9,8 @@
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"
 #include "s_cuts.h"
-#include "s_plane.h"
+#include "s_plane_def.h"
+#include "s_plane_def.h"
 TH2* sct_analyis::misalignment(S_plot_collection& treeColl)
 {
 

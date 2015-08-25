@@ -197,7 +197,8 @@ Int_t S_plot_collection::getMaxEntriesFromTree(Int_t last)
 
 void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
 {
-  std::clock_t    start_time = std::clock();
+
+//  std::clock_t    start_time = std::clock();
   last=getMaxEntriesFromTree(last);
   for (Int_t i = start; i < last; ++i)
   {
@@ -221,9 +222,9 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
     }
   }
 
-  auto end_clock = clock();
-  std::cout << "processed: " << last << " events in  ";
-  std::cout << (std::clock() - start_time) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+//   auto end_clock = clock();
+//   std::cout << "processed: " << last << " events in  ";
+//   std::cout << (std::clock() - start_time) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 }
 
 bool S_plot_collection::collectionExist(const char* name) const{

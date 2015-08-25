@@ -342,7 +342,7 @@ bool s_process_collection::process(FileProberties* fileP) {
   m_res_VS_event.push_back(res);
 
 #ifdef _DEBUG
-  m_plotCollection->loop(400);
+  m_plotCollection->loop(40000);
 #else
   m_plotCollection->loop();
 #endif // _DEBUG
@@ -500,10 +500,10 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate() {
     );
 
 
-  TH2* h = dynamic_cast<TH2*>(gPad->GetPrimitive("htemp"));
-  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(h, 0.2));
-  f->Draw("same");
-  h->SetTitle("Residual Vs Missing Coordinate");
+  //TH2* h = dynamic_cast<TH2*>(gPad->GetPrimitive("htemp"));
+  //auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(h, 0.2));
+  //f->Draw("same");
+ // h->SetTitle("Residual Vs Missing Coordinate");
 
   return ret;
 }
@@ -535,8 +535,11 @@ Long64_t s_process_collection::Draw_Efficinecy_map() {
     .draw_x()
     .output_object(m_Efficieny_map.get())
     );
+  auto e = SCT_helpers::calc_efficiency(m_Efficieny_trueHits.get(), m_Efficieny_map.get());
+  auto eth2d = dynamic_cast<TH1D*>(e);
 
-  m_Efficieny_map->Divide(m_Efficieny_trueHits.get());
+  m_Efficieny_map = std::shared_ptr<TH1D>(  eth2d);
+ // m_Efficieny_map->Divide(m_Efficieny_trueHits.get());
 
   m_Efficieny_map->Draw();
   return n;

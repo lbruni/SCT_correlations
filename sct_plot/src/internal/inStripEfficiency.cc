@@ -1,0 +1,78 @@
+#include "sct_processors.h"
+#include "s_plot_prob.h"
+#include "s_DrawOption.h"
+#include "TH1.h"
+#include "SCT_helpers.h"
+#include "internal/inStripEfficiency.hh"
+
+
+sct_corr::inStripEfficiency::inStripEfficiency(const S_plane_def& trueHits, const S_plane_def& trueHits_with_dut, const S_Cut& cut_, axis_def search_axis, double mod_, const s_plot_prob& plot_prob) :m_mod(mod_), m_search_axis(search_axis) {
+  double mod_x = 10000000000;
+  double mod_y = 10000000000;
+  if (search_axis == x_axis_def) {
+    mod_x = m_mod;
+  }
+  if (search_axis == y_axis_def) {
+    mod_y = m_mod;
+  }
+  auto cut_true = sct_processor::cut_x_y(
+    trueHits,
+    cut_,
+    s_plot_prob().doNotSaveToDisk()
+    );
+
+
+  auto cut_dut = sct_processor::cut_x_y(
+    trueHits_with_dut,
+    cut_,
+    s_plot_prob().doNotSaveToDisk()
+    );
+  std::string true_hits_name = std::string(plot_prob.getName()) + "_true_hits";
+  auto mod_total = sct_processor::moduloHitMap(
+    cut_true,
+    mod_x,
+    mod_y,
+    s_plot_prob(true_hits_name.c_str())
+    .setSaveOptione(plot_prob.getPlotSaveOption())
+    );
+
+  m_trueHits = mod_total.copy();
+  std::string dut_hits_name = std::string(plot_prob.getName()) + "_DUT_hits";
+  auto mod_DUT = sct_processor::moduloHitMap(
+    cut_dut,
+    mod_x,
+    mod_y,
+    s_plot_prob(dut_hits_name.c_str())
+    .setSaveOptione(plot_prob.getPlotSaveOption())
+    );
+  m_DUT_hits = mod_DUT.copy();
+}
+
+Long64_t sct_corr::inStripEfficiency::Draw_true_hits(const S_DrawOption& d_option) {
+  return m_trueHits->Draw(d_option);
+}
+
+Long64_t sct_corr::inStripEfficiency::Draw_DUT_hits(const S_DrawOption& d_option) {
+  return m_DUT_hits->Draw(d_option);
+}
+
+Long64_t sct_corr::inStripEfficiency::Draw() {
+  return Draw(S_DrawOption());
+}
+
+
+
+Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
+  TH1D trueHitsMod("mod_true", "true hits", 300, 0, m_mod);
+  TH1D DUtHitsMod("mod_dut", "DUT hits", 300, 0, m_mod);
+  Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
+  auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
+
+
+  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(&trueHitsMod, &DUtHitsMod)));
+  if (!m_efficiency) {
+    return -1;
+  }
+  m_efficiency->Draw(d_option.getOptions());
+  return ret;
+}

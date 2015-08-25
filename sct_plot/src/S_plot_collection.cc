@@ -12,6 +12,7 @@
 #include "s_plane_def.h"
 #include "TTree.h"
 #include "s_plane_def.h"
+#include <ctime>
 
 S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>())
 {
@@ -196,10 +197,14 @@ Int_t S_plot_collection::getMaxEntriesFromTree(Int_t last)
 
 void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
 {
-
+  std::clock_t    start_time = std::clock();
   last=getMaxEntriesFromTree(last);
   for (Int_t i = start; i < last; ++i)
   {
+    if (i%1000==0)
+    {
+      std::cout << "processing event: " << i << " of " << last <<"\n";
+    }
     for (auto& e : m_trees)
     {
       e.second->GetEntry(i);
@@ -215,6 +220,10 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
 
     }
   }
+
+  auto end_clock = clock();
+  std::cout << "processed: " << last << " events in  ";
+  std::cout << (std::clock() - start_time) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 }
 
 bool S_plot_collection::collectionExist(const char* name) const{

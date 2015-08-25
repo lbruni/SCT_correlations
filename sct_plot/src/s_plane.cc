@@ -107,6 +107,10 @@
 
     }
   }
+  Long64_t S_plane_def::Draw(const S_DrawOption& opt) const {
+    return get_plot()->Draw(*this, opt);
+  }
+
   S_plane_def::S_plane_def(const char* name, Double_t ID,const sct_corr::Xlayer* layer_) :m_name(name), m_ID(ID)
   {
     if (layer_)

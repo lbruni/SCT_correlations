@@ -8,11 +8,12 @@
 #include "Rtypes.h"
 #include <memory>
 #include "S_Axis.h"
+
 class S_Axis;
 class S_treeCollection;
 
 class s_plane_collection;
-
+class S_DrawOption;
 namespace sct_corr {
 class treeCollection;
 class axis_ref;
@@ -24,7 +25,7 @@ class DllExport S_plane_def {
 
 public:
   S_plane_def(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ =nullptr);
-
+  Long64_t Draw(const S_DrawOption& ) const;
   Double_t getID() const;
   const char* getName() const;
 
@@ -49,6 +50,7 @@ private:
 #endif
   ClassDef(S_plane_def, 0);
 };
+
 
 
 

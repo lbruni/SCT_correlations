@@ -1,9 +1,9 @@
 #ifndef s_plot_prob_h__
 #define s_plot_prob_h__
+#include <string>
+#include "Rtypes.h"
 
 #include "internal/platform.hh"
-#include "Rtypes.h"
-#include <string>
 #include "plot_save_option_def.h"
 class DllExport s_plot_prob{
 public:

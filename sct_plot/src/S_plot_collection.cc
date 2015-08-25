@@ -217,7 +217,7 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
   }
 }
 
-bool S_plot_collection::collectionExist(const char* name) {
+bool S_plot_collection::collectionExist(const char* name) const{
 
 
   if (getTTree(name))

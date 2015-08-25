@@ -19,6 +19,8 @@
 #include "TBrowser.h"
 #include "TH2.h"
 #include "geometry/setup_description.hh"
+#include "s_file_base.h"
+#include "sct_processors.h"
 
 using namespace xml_util;
 
@@ -157,10 +159,18 @@ int asyncMain(void *arg) {
   TFile * out_file = new TFile("output.root", "recreate");
   r_plot_collection pl(file_);
   pl.setOutputFile(out_file);
+  s_file_fitter file___(pl.get_plot_collection_ptr(), &gear);
 
-  auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(pl.get_plot_collection(), S_YCut(-42, -36), 100000, gear, 0, -6.36702e-001, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
-  // auto gbl_collection = sct_plot::GBL_Create_Correlations_of_true_Fitted_hits_with_DUT_Hits(pl, S_YCut(-42, -36), 100000, gear, 0, -1.35993e-002, s_plot_prob("GBL").SaveToDisk()); // 1 / 13.4031 / 1.00365 / 0.996267
-  gbl_collection.set_s_plot_collection(pl.get_plot_collection_ptr());
+
+  auto gbl_collection = file___.get_correlations_channel(
+    S_YCut(-42, -36),
+    100000, 
+    0, 
+    -6.36702e-001, 
+    s_plot_prob("GBL").SaveToDisk()
+    );
+    
+  //gbl_collection.set_s_plot_collection(pl.get_plot_collection_ptr());
   auto cut_true = sct_processor::cut_x_y(
     gbl_collection.getTotalTrueHits(),
     S_XCut(280, 360),
@@ -172,7 +182,6 @@ int asyncMain(void *arg) {
   auto cut_dut = sct_processor::cut_x_y(
     gbl_collection.getTrueHitsWithDUT(),
     S_XCut(280, 360),
-
     s_plot_prob().doNotSaveToDisk()
     );
   auto sz_data = sct_coll::DUT_zs_data();

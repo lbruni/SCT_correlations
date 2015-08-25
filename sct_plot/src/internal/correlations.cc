@@ -33,7 +33,7 @@ namespace sct_corr{
 
   const char* correlations::getType() const
   {
-    return sct::plot_correlation();
+    return "correlations__";
   }
 
 }

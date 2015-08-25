@@ -88,7 +88,7 @@ namespace sct_corr{
 
   const char* find_nearest_strip::getType() const
   {
-    return sct::plot_find_nearest_strip();
+    return "find_nearest_strip___";
   }
 }
 S_plot sct_plot::find_nearest_strip(axis_def search_axis, Double_t cutOfff /*=100000*/, const s_plot_prob& plot_prob)

@@ -27,7 +27,7 @@ void Cluster_strip::processEventStart() {
 }
 
 const char* Cluster_strip::getType() const {
-  return sct::plot_clusterSize_strip();
+  return "cluster_size_strip__";
 }
 
 void Cluster_strip::processHit(double x, double y) {
@@ -86,7 +86,7 @@ void clusterSize::processEventStart() {
 }
 
 const char* clusterSize::getType() const {
-  return sct::plot_clusterSize_strip();
+  return "clusterSize__";
 }
 
 void clusterSize::processHit(double x, double y) {

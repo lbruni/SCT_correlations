@@ -47,7 +47,7 @@ namespace sct_corr{
 
   const char* hitMultiplizity::getType() const
   {
-    return sct::plot_hitMultiplizity();
+    return "hitMultiplizity___";
   }
 }
 S_plot sct_plot::hitMultiplizity(const s_plot_prob& plot_prob)

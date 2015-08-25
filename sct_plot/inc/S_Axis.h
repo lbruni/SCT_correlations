@@ -38,8 +38,10 @@ public:
   double m_planeID;
   axis_def m_axis;
 private:
+#ifndef __CINT__
   std::weak_ptr<S_plot_collection> m_plot_collection;
   bool m_isValid;
+#endif
   ClassDef(S_Axis, 0);
 };
 #ifdef __CINT__

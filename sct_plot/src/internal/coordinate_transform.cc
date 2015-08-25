@@ -45,7 +45,7 @@ namespace sct_corr{
 
   const char* coordinate_transform::getType() const
   {
-    return sct::plot_coordinate_transform();
+    return "coordinate_transform____";
   }
 }
 S_plot sct_plot::coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& plot_prob)

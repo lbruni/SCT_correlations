@@ -95,7 +95,7 @@ namespace sct_corr{
 
   const char* modulo_find_nearest_strip::getType() const
   {
-    return sct::plot_find_nearest_strip();
+    return "modulo_find_nearest_strip___";
   }
 
   sct_corr::plane_hit modulo_find_nearest_strip::modulo(const plane_hit& p1) {

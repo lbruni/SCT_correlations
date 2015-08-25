@@ -1,4 +1,4 @@
-#include "sct_plots.h"
+
 #include <iostream>
 #include "s_plane_def.h"
 #include "s_DrawOption.h"

@@ -1,5 +1,6 @@
 #include "internal/plotsBase.hh"
 #include <string>
+
 namespace sct_corr{
   int g_plot_count_intern = 0;
   plot::plot(const s_plot_prob& plot_proberties) :m_prob(plot_proberties)

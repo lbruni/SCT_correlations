@@ -27,7 +27,7 @@ namespace sct_corr{
 
   const char* plot_find_correspondingX::getType() const
   {
-    return sct::plot_find_correspondingX();
+    return  "plot_find_correspondingX___";
   }
 
   plot_find_correspondingXY::plot_find_correspondingXY(const s_plot_prob& plot_prob) : plotPlaneVsPlane(plot_prob)
@@ -58,7 +58,7 @@ namespace sct_corr{
 
   const char* plot_find_correspondingXY::getType() const
   {
-    return sct::plot_find_correspondingXY();
+    return "plot_find_correspondingXY__";
   }
 }
 S_plot sct_plot::find_correspondingX(const s_plot_prob& plot_prob)

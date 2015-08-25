@@ -10,6 +10,7 @@
 #include "s_DrawOption.h"
 #include "s_plane.h"
 #include "s_plane_def.h"
+#include "geometry/setup_description.hh"
 
   S_plane::S_plane() : m_plane(nullptr)
   {
@@ -78,7 +79,14 @@
     return m_plane->getAxis(y_axis_def);
   }
 
+  const sct_corr::Xlayer* S_plane_def::getLayer() const {
+    if (m_layer)
+    {
+      return m_layer.get();
+    }
 
+    return nullptr;
+  }
   std::shared_ptr<S_plot_collection> S_plane_def::get_plot() const {
     if (std::shared_ptr<S_plot_collection> ret = m_plot.lock()) {
 
@@ -99,8 +107,12 @@
 
     }
   }
-  S_plane_def::S_plane_def(const char* name, Double_t ID) :m_name(name), m_ID(ID)
+  S_plane_def::S_plane_def(const char* name, Double_t ID,const sct_corr::Xlayer* layer_) :m_name(name), m_ID(ID)
   {
+    if (layer_)
+    {
+      m_layer = std::unique_ptr<sct_corr::Xlayer>(new sct_corr::Xlayer(*layer_));
+    }
     m_axis.emplace_back(name, ID, x_axis_def);
     m_axis.emplace_back(name, ID, y_axis_def);
   }
@@ -143,7 +155,7 @@
   std::shared_ptr<S_plane_def> S_plane_def_GBL::copy() const {
     return std::shared_ptr<S_plane_def>(new S_plane_def_GBL(*this));
   }
-  S_plane_def_GBL::S_plane_def_GBL(const char* name, Double_t ID):S_plane_def(name,ID) {
+  S_plane_def_GBL::S_plane_def_GBL(const char* name, Double_t ID, const sct_corr::Xlayer* layer_) :S_plane_def(name, ID, layer_) {
     m_axis.emplace_back(name, ID, chi2_axis_def);
     m_axis.emplace_back(name, ID, Ndf_axis_def);
     m_axis.emplace_back(name, ID, phi_axis_def);

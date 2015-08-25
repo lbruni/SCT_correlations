@@ -68,7 +68,7 @@ private:
   S_CutCoollection m_cuts;
   s_plane_collection_correlations m_output_planes;
   s_plane_collection m_res_VS_event;
-  std::shared_ptr<S_plot_collection> m_plotCollection;
+  std::shared_ptr<r_plot_collection> m_plotCollection;
   class FileProberties{
   public:
     TFile* getTfile() const;

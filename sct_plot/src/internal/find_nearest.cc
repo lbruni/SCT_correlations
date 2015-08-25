@@ -87,7 +87,7 @@ namespace sct_corr{
 
   const char* find_nearest::getType() const
   {
-    return sct::plot_find_nearest();
+    return "find_nearest__";
   }
 }
 S_plot sct_plot::find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& plot_prob)

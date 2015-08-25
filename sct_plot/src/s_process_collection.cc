@@ -1,6 +1,6 @@
 #include "s_process_collection.h"
 #include "TFile.h"
-#include "sct_plots.h"
+
 #include "s_plane_def.h"
 #include <string>
 #include <iostream>
@@ -315,11 +315,11 @@ bool s_process_collection::process(FileProberties* fileP) {
   
 
 
-  m_plotCollection = std::make_shared<S_plot_collection>(fileP->getTfile());
+  m_plotCollection = std::make_shared<r_plot_collection>(fileP->getTfile());
   m_plotCollection->setOutputFile(m_dummy);
 
   m_output_planes = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
-    *m_plotCollection,
+    m_plotCollection->get_plot_collection(),
     m_cuts,
     m_residual_cut,
     *m_gear,
@@ -329,10 +329,10 @@ bool s_process_collection::process(FileProberties* fileP) {
     .SaveToDisk()
     );
 
-
+  m_output_planes.set_s_plot_collection(m_plotCollection->get_plot_collection_ptr());
 
   auto res = sct_plot::residual(
-    *m_plotCollection,
+    m_plotCollection->get_plot_collection(),
     sct_coll::DUT_fitted_local_GBL().getX_def(),
     sct_coll::DUT_hit_local().getX_def(),
     s_plot_prob("residualVSEvent")

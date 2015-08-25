@@ -29,7 +29,7 @@ namespace sct_corr{
 
   const char* plot_Event_size::getType() const
   {
-    return sct::plot_Event_size();
+    return "plot_Event_size_____";
   }
 
   s_plane_collection plot_Event_size::getOutputcollection()

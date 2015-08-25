@@ -4,7 +4,7 @@
 
 
 
-#include "sct_plots.h"
+
 #include <iostream>
 #include "TCanvas.h"
 #include "TMath.h"

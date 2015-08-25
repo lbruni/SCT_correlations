@@ -108,7 +108,7 @@ namespace sct_corr{
 
   const char* efficieny_map::getType() const
   {
-    return sct::plot_efficieny_map();
+    return "efficieny_map__";
   }
 }
 S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, const s_plot_prob& plot_prob)
@@ -124,7 +124,4 @@ S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, const s_plot_p
 }
 
 
-const char* sct::plot_efficieny_map()
-{
-  return "efficieny_map__";
-}
+

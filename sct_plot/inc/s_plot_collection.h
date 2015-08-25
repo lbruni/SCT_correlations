@@ -38,7 +38,7 @@ public:
   Long64_t Draw(const s_plane_collection& name, const S_DrawOption& option);
   Long64_t DrawAll(const s_plane_collection& name, const S_DrawOption& option);
   void loop(Int_t last = -1, Int_t start = 0);
-  bool collectionExist(const char* name);
+  bool collectionExist(const char* name)  const;
 #ifndef __CINT__
 private:
   Int_t getMaxEntriesFromTree(Int_t last);
@@ -80,9 +80,13 @@ public:
   Long64_t DrawAll(const s_plane_collection& name, const S_DrawOption& option);
   void loop(Int_t last = -1, Int_t start = 0);
   S_plot_collection& get_plot_collection();
+#ifndef __CINT__
   std::shared_ptr<S_plot_collection>  get_plot_collection_ptr();
 private:
+
   std::shared_ptr<S_plot_collection> m_plot;
+#endif
+  ClassDef(r_plot_collection, 0);
 };
 class r_plane_def {
 public:
@@ -96,6 +100,7 @@ private:
 #ifdef __CINT__
 
 #pragma link C++ class S_plot_collection;
+#pragma link C++ class r_plot_collection;
 #endif // __CINT__
 
 #endif // s_plot_collection_h__

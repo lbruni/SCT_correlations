@@ -17,13 +17,13 @@ namespace sct_corr {
 class treeCollection;
 class axis_ref;
 class plane;
-
+struct Xlayer;
 }
 
 class DllExport S_plane_def {
 
 public:
-  S_plane_def(const char* name, Double_t ID);
+  S_plane_def(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ =nullptr);
 
   Double_t getID() const;
   const char* getName() const;
@@ -32,6 +32,7 @@ public:
   S_Axis getY_def() const;
   S_Axis get_Axis(axis_def) const;
   const std::vector<S_Axis>& get_axis_defs() const;
+  const sct_corr::Xlayer* getLayer() const;
 #ifndef __CINT__
   void set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection);
   virtual std::shared_ptr<S_plane_def> copy() const;
@@ -44,16 +45,18 @@ private:
 
   Double_t m_ID = 0;
   std::string m_name;
-
+  std::shared_ptr<sct_corr::Xlayer> m_layer;
 #endif
+  ClassDef(S_plane_def, 0);
 };
+
 
 
 
 
 class DllExport S_plane_def_GBL :public S_plane_def {
 public:
-  S_plane_def_GBL(const char* name, Double_t ID);
+  S_plane_def_GBL(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ = nullptr);
   S_Axis getChi2_def() const;
   S_Axis getNdf_def() const;
   S_Axis getPhi_def() const;
@@ -61,13 +64,16 @@ public:
 #ifndef __CINT__
   virtual std::shared_ptr<S_plane_def> copy() const override;
 #endif
+  ClassDef(S_plane_def_GBL, 0);
 };
 
 
 
 class DllExport s_plane_collection {
 public:
+#ifndef __CINT__
   void set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection);
+#endif
   s_plane_collection(const S_plane_def& plane_);
   s_plane_collection() {}
   S_plane_def get(Int_t i) const;

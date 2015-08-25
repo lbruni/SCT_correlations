@@ -32,6 +32,7 @@
 #include "sct_events/rootEventRunOutput.hh"
 #include "treeCollection.h"
 #include "TTree.h"
+#include "SCT_helpers.h"
 
 
 double sum(const std::vector<double> & vec) {

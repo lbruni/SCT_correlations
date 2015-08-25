@@ -9,6 +9,9 @@
 #include "TCanvas.h"
 #include "geometry/setup_description.hh"
 #include "xml_helpers/xml_fileList.hh"
+#include "SCT_helpers.h"
+#include "s_file_base.h"
+#include "sct_processors.h"
 
 
 bool gDo_print = false;
@@ -310,19 +313,18 @@ bool s_process_collection::process(FileProberties* fileP) {
   process_set_run_prob(*fileP);
 
   
+  m_file_fitter.reset();
   
-
   
 
 
   m_plotCollection = std::make_shared<r_plot_collection>(fileP->getTfile());
   m_plotCollection->setOutputFile(m_dummy);
+  m_file_fitter = std::make_shared<s_file_fitter>(m_plotCollection->get_plot_collection_ptr(), m_gear.get());
 
-  m_output_planes = sct_plot::Create_Correlations_of_true_Fitted_hits_with_DUT_Hits_in_channels(
-    m_plotCollection->get_plot_collection(),
+  m_output_planes = m_file_fitter->get_correlations_channel(
     m_cuts,
     m_residual_cut,
-    *m_gear,
     m_rotation,
     m_pos_x,
     s_plot_prob("Hits_in_channels")
@@ -331,18 +333,16 @@ bool s_process_collection::process(FileProberties* fileP) {
 
   m_output_planes.set_s_plot_collection(m_plotCollection->get_plot_collection_ptr());
 
-  auto res = sct_plot::residual(
-    m_plotCollection->get_plot_collection(),
-    sct_coll::DUT_fitted_local_GBL().getX_def(),
-    sct_coll::DUT_hit_local().getX_def(),
-    s_plot_prob("residualVSEvent")
-    .SaveToDisk()
+  auto res = sct_processor::residual(
+    m_file_fitter->DUT_fitted_local_GBL().getX_def(),
+    m_file_fitter->DUT_hit_local().getX_def(),
+    s_plot_prob("residualVSEvent").SaveToDisk()
     );
 
   m_res_VS_event.push_back(res);
 
 #ifdef _DEBUG
-  m_plotCollection->loop(40000);
+  m_plotCollection->loop(400);
 #else
   m_plotCollection->loop();
 #endif // _DEBUG

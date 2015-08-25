@@ -33,7 +33,7 @@ namespace sct_corr{
 
   const char* ProjectOnPixel::getType() const
   {
-    return sct::plot_projectOnPixel();
+    return "ProjectOnPixel___";
   }
 }
 S_plot sct_plot::projectOnPixel(const s_plot_prob& plot_prob)

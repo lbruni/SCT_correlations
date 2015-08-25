@@ -170,7 +170,7 @@ namespace sct_corr{
 
   const char* plane_distance::getType() const
   {
-    return sct::plot_plane_distance();
+    return "plane_distance__";
   }
 
   s_plane_collection plane_distance::getOutputcollection()

@@ -35,7 +35,7 @@ namespace sct_corr{
 
   const char* moduloHitMap::getType() const
   {
-    return sct::plot_modulo();
+    return "moduloHitMap__";
   }
 }
 S_plot sct_plot::moduloHitMap(double modulo_parameter_x ,double m_modulo_y, const s_plot_prob& plot_prob/*= ""*/) {

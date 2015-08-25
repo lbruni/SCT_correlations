@@ -36,7 +36,7 @@ namespace sct_corr{
 
   const char* rotated_plane::getType() const
   {
-    return sct::plot_rotated();
+    return "rotated_plane__";
   }
 
 
@@ -63,7 +63,7 @@ namespace sct_corr{
   }
 
   const char* linear_transorm::getType() const {
-    return sct::plot_linear_trans();
+    return "linear_transorm__";
   }
 
 }

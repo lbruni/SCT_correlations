@@ -9,6 +9,8 @@
 #include "s_DrawOption.h"
 #include "s_plane.h"
 #include "s_plane_def.h"
+#include "sct_plots.h"
+
 
 namespace sct_corr{
   class plot{

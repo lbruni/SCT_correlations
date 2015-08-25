@@ -17,6 +17,7 @@
 #include "geometry/setup_description.hh"
 #include "s_plane_def.h"
 #include "sct_processors.h"
+#include "sct_default_names.h"
 
 
 
@@ -199,19 +200,16 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations(
   ) const {
 
 
-  auto loc = sct_plot::convert_local_to_global(
-    *get_plot_collection(), 
-    *get_gear()->detector.layer_by_ID(20), 
+  auto loc = sct_processor::convert_local_to_global(
     apix_hit_local(), 
+    *get_gear()->detector.layer_by_ID(20), 
     s_plot_prob().doNotSaveToDisk()
     );
   
-  loc.set_s_plot_collection(apix_hit_local().get_plot());
 
-  auto loc11 = sct_plot::convert_global_to_local(
-    *get_plot_collection(), 
-    *get_gear()->detector.layer_by_ID(8), 
+  auto loc11 = sct_processor::convert_global_to_local(
     loc, 
+    *get_gear()->detector.layer_by_ID(8), 
     s_plot_prob().doNotSaveToDisk()
     );
 
@@ -220,7 +218,7 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations(
 
   auto trueHits = sct_processor::find_nearest(
     loc11, 
-    sct_coll::DUT_fitted_local_GBL(), 
+    DUT_fitted_local_GBL(), 
     1,  //x cut in mm
     1, //y cut in mm
     s_plot_prob().doNotSaveToDisk()
@@ -312,22 +310,21 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
 
 
 
-  auto apix_loc = apix_hit_local();
 
-  auto apix_global = sct_plot::convert_local_to_global(
-    *apix_loc.get_plot(),
+  auto apix_global = sct_processor::convert_local_to_global(
+    apix_hit_local(),
     *get_gear()->detector.layer_by_ID(20),
-    apix_loc,
     s_plot_prob().doNotSaveToDisk()
     );
-  apix_global.set_s_plot_collection(apix_loc.get_plot());
-  auto apix_on_DUT = sct_plot::convert_global_to_local(
-    *apix_global.get_plot(),
+  
+
+  auto apix_on_DUT = sct_processor::convert_global_to_local(
+    apix_global,
     *get_gear()->detector.layer_by_ID(8),
-    apix_global
+    s_plot_prob().doNotSaveToDisk()
     );
 
-  apix_on_DUT.set_s_plot_collection(apix_global.get_plot());
+
   auto trueHits =sct_processor::find_nearest(
     apix_on_DUT,
    DUT_fitted_local_GBL(),
@@ -344,10 +341,9 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
 
   std::string trueHitsInStrips_name = std::string(plot_prob_.getName()) + "_true";
 
-  auto trueHitsInStrips = sct_plot::convert_hits_to_zs_data_GBL(
-   *trueHits_cut.get_plot(),
-    *get_gear()->detector.layer_by_ID(8),
+  auto trueHitsInStrips = sct_processor::convert_hits_to_zs_data_GBL(
     trueHits_cut,
+    *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
     );
   trueHitsInStrips.set_s_plot_collection(trueHits_cut.get_plot());

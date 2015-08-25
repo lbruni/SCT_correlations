@@ -21,6 +21,7 @@
 #include "geometry/setup_description.hh"
 #include "s_file_base.h"
 #include "sct_processors.h"
+#include "SCT_helpers.h"
 
 using namespace xml_util;
 
@@ -66,82 +67,7 @@ struct  inParam {
   char **argv;
 };
 
-int asyncMain1(void *arg) {
-  inParam* para = static_cast<inParam *>(arg);
-  int argc = para->argc;
-  char **argv = para->argv;
-  TApplication theApp("App", &argc, argv);
-#if 0
-  TFile * file_ = new TFile("D:/DAFF/run000703-fitter.root");
-  rapidxml::file<> m_file("D:/DAFF/gear_desy2012_150mm_fei4000703_pre_aligned.xml");
 
-#else
-  TFile * file_ = new TFile("D:/GBL/Neuer Ordner/run000703_fitter.root");
-  rapidxml::file<> m_file("D:/GBL/Neuer Ordner/alignedGear-check-iter2-run000703_with_plane20.xml");
-
-
-#endif
-
-
-
-
-  rapidxml::xml_document<> m_doc;
-  m_doc.parse<0>(m_file.data());
-
-  auto gear = sct_corr::Xgear(m_doc.first_node("gear"));
-
-
-  TFile * out_file = new TFile("output.root", "recreate");
-  S_plot_collection pl(file_);
-  pl.setOutputFile(out_file);
-#if 0
-  double ID = 1;
-  //auto loc = sct_plot::convert_local_to_global(pl, *gear.detector.layer_by_ID(ID), sct_coll::tel_hit_local(ID));
-  auto loc = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(ID), sct_coll::tel_hit(ID));
-  auto corrxx = sct_plot::correlation(pl, sct_coll::tel_hit_local(ID).getX_def(), loc.getX_def());
-  auto corryy = sct_plot::correlation(pl, sct_coll::tel_hit_local(ID).getY_def(), loc.getY_def());
-#else
-#if 0
-
-  auto loc = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(8), sct_coll::DUT_hit());
-  auto corrxx = sct_plot::correlation(pl, loc.getX_def(), sct_coll::DUT_hit_local().getX_def());
-  auto corryy = sct_plot::correlation(pl, loc.getY_def(), sct_coll::DUT_hit_local().getY_def());
-#else
-  auto loc = sct_plot::convert_local_to_global(pl, *gear.detector.layer_by_ID(20), sct_coll::apix_hit_local());
-  auto loc11 = sct_plot::convert_global_to_local(pl, *gear.detector.layer_by_ID(8), loc);
-
-  auto closest = sct_plot::find_nearest(pl, 1, 1, loc11, sct_coll::DUT_fitted_local_GBL());
-  auto pix = sct_plot::convert_hits_to_zs_data_GBL(pl, *gear.detector.layer_by_ID(8), closest.getHitOnPlaneB());
-  auto corrxx = sct_plot::correlation(pl, pix.getX_def(), sct_coll::DUT_zs_data().getX_def());
-  auto corryy = sct_plot::correlation(pl, loc11.getY_def(), sct_coll::DUT_zs_data().getY_def());
-#endif
-
-#endif
-  auto co = sct_plot::correlation(pl, sct_coll::apix_hit().getX_def(), sct_coll::tel_hit(5).getX_def());
-
-  pl.loop(40000);
-  gCanvas.push_back(new TCanvas());
-  pl.Draw(closest.getResidual(), S_DrawOption().opt_colz());
-  gCanvas.push_back(new TCanvas());
-  TH2D* h3 = new TH2D("asdfkjsadasdsfdjhdsfadsfj", "corrxx", 100, 0, 0, 100, 0, 0);
-  pl.Draw(corrxx, S_DrawOption().draw_y_VS_x().output_object(h3));
-
-
-  gCanvas.push_back(new TCanvas());
-  TH2D* h33 = new TH2D("asdfkjsfdjhdsfadsfj", "corryy", 100, 0, 0, 100, 0, 0);
-  pl.Draw(corryy, S_DrawOption().draw_y_VS_x().output_object(h33));
-#if 1
-  auto f222 = SCT_helpers::LinearFit_Of_Profile(h3, 0.2);
-  f222.Print();
-  auto f22222 = SCT_helpers::LinearFit_Of_Profile(h33, 0.2);
-  f22222.Print();
-#endif // 0
-
-  new TBrowser();
-  theApp.Run();
-
-  return 1;
-}
 
 int asyncMain(void *arg) {
   inParam* para = static_cast<inParam *>(arg);
@@ -149,7 +75,7 @@ int asyncMain(void *arg) {
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
   TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000818_fitter.root");
-  rapidxml::file<> m_file("D:/GBL/Neuer Ordner/alignedGear-check-iter2-run000703_with_plane20.xml");
+  rapidxml::file<> m_file("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
   rapidxml::xml_document<> m_doc;
   m_doc.parse<0>(m_file.data());
 
@@ -161,7 +87,7 @@ int asyncMain(void *arg) {
   pl.setOutputFile(out_file);
   s_file_fitter file___(pl.get_plot_collection_ptr(), &gear);
 
-
+  auto local_hits = sct_processor::hitmap(file___.DUT_fitted_local_GBL());
   auto gbl_collection = file___.get_correlations_channel(
     S_YCut(-42, -36),
     100000, 
@@ -184,10 +110,9 @@ int asyncMain(void *arg) {
     S_XCut(280, 360),
     s_plot_prob().doNotSaveToDisk()
     );
-  auto sz_data = sct_coll::DUT_zs_data();
-  sz_data.set_s_plot_collection(pl.get_plot_collection_ptr());
+
   auto cluster_ = sct_processor::cluster_strip(
-    sz_data,
+    file___.DUT_zs_data(),
     x_axis_def,
     2,
     s_plot_prob().doNotSaveToDisk()
@@ -221,13 +146,10 @@ int asyncMain(void *arg) {
     mod_total_closest.getX_def(), cluster_closest.getHitOnPlaneA().getY_def()
     );
 
-  auto DUT_fitted_local_GBL__ = sct_coll::DUT_fitted_local_GBL();
-  DUT_fitted_local_GBL__.set_s_plot_collection(pl.get_plot_collection_ptr());
-  auto DUT_hit_local___ = sct_coll::DUT_hit_local();
-  DUT_hit_local___.set_s_plot_collection(pl.get_plot_collection_ptr());
   auto res = sct_processor::residual(
-    DUT_fitted_local_GBL__.getX_def(),
-    DUT_hit_local___.getX_def(),
+   file___.DUT_fitted_local_GBL().getX_def(),
+   file___.DUT_hit_local().getX_def(),
+   
     s_plot_prob("residualVSEvent")
     );
   auto mod_total = sct_processor::moduloHitMap(
@@ -274,8 +196,8 @@ int asyncMain(void *arg) {
   pl.Draw(gbl_collection.getResidual(), S_DrawOption().draw_x().cut_x(-5, 5));
 
   gCanvas.push_back(new TCanvas());
-  TH2D* h22 = new TH2D("asd22", "ResidualVSmissing", 100, 0, 0, 100, 0, 0);
-  pl.Draw(gbl_collection.getResidualVSmissing(), S_DrawOption().draw_x_VS_y().output_object(h22).cut_x(-2, 2));
+  
+  pl.Draw(gbl_collection.getTotalTrueHits(), S_DrawOption().draw_x_VS_y());
   //  auto f222 = SCT_helpers::LinearFit_Of_Profile(h22, 0.2);
   //  f222.Print();
 

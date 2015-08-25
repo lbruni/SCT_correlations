@@ -34,7 +34,7 @@ namespace sct_corr{
 
   const char* plot_a_if_b_has_a_hit::getType() const
   {
-    return sct::plot_A_if_B();
+    return "plot_a_if_b_has_a_hit__";
   }
 
 }

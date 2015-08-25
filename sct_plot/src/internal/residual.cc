@@ -36,7 +36,7 @@ namespace sct_corr{
 
   const char* residual::getType() const
   {
-    return sct::plot_residual();
+    return "residual___";
   }
 }
 S_plot sct_plot::residual(const s_plot_prob& plot_prob)

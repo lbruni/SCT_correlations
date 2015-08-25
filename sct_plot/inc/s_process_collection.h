@@ -16,7 +16,7 @@ namespace sct_corr{
   class treeCollection_ouput;
   struct Xgear;
 }
-
+class s_file_fitter;
 #endif
 #include "TTree.h"
 #include "TH2.h"
@@ -103,6 +103,7 @@ private:
   TFile* m_outpuFile = nullptr;
   std::string m_outname;
   std::shared_ptr<sct_corr::Xgear> m_gear;
+  std::shared_ptr < s_file_fitter> m_file_fitter;
 #endif
   ClassDef(s_process_collection, 0);
 };

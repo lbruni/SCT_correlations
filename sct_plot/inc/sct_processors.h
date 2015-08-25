@@ -128,8 +128,40 @@ public:
     const S_Axis& axisB,
     const s_plot_prob& = ""
     );
+  static S_plane_def convert_local_to_global(
+    const S_plane_def& local_hits, 
+    const sct_corr::Xlayer&, 
+    const s_plot_prob& = ""
+    );
+  static S_plane_def convert_global_to_local(
+    const S_plane_def& local_hits, 
+    const sct_corr::Xlayer&, 
+    const s_plot_prob& = ""
+    );
+  static S_plane_def convert_hits_to_zs_data_GBL(
+    const S_plane_def& hits, 
+    const sct_corr::Xlayer& layer, 
+    const s_plot_prob& plot_prob_ /*= ""*/
+    );
 
 
+  static  S_plane_def convert_zs_data_to_hits_GBL(
+    const S_plane_def& sz_data, 
+    const sct_corr::Xlayer& layer, 
+    const s_plot_prob& plot_prob_/*= ""*/
+    );
+
+  static S_plane_def convert_zs_data_to_hits_DAF(
+    const S_plane_def& sz_data, 
+    const sct_corr::Xlayer& layer, 
+    const s_plot_prob& plot_prob_/*= ""*/
+    );
+
+  static  S_plane_def convert_hits_to_zs_data_DAF(
+    const S_plane_def& hits, 
+    const sct_corr::Xlayer& layer, 
+    const s_plot_prob& plot_prob_
+    );
 };
 
 #ifdef __CINT__

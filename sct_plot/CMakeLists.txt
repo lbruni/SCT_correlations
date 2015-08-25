@@ -24,6 +24,7 @@ ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plane.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plane_def.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_processors.h
+${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_default_names.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_collection.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_prob.h
 ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_treeCollection.h

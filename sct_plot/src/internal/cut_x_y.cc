@@ -45,7 +45,7 @@ namespace sct_corr{
 
   const char* cut_x_y::getType() const
   {
-    return sct::plot_cut_x_y();
+    return "cut_x_y__";
   }
 }
 S_plot sct_plot::cut_x_y(const S_Cut& cut_, const s_plot_prob& plot_prob)
@@ -54,8 +54,4 @@ S_plot sct_plot::cut_x_y(const S_Cut& cut_, const s_plot_prob& plot_prob)
   return S_plot(new sct_corr::cut_x_y(cut_, plot_prob));
 }
 
-const char* sct::plot_cut_x_y()
-{
-  return "cut_x_y___";
-}
 

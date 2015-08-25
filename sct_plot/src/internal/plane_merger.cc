@@ -127,8 +127,3 @@ namespace sct_corr{
   }
 }
 
-s_plane_collection sct_plot::plane_merger(S_plot_collection& pl, s_plane_collection planes_, const s_plot_prob& plod_prob/*= ""*/)
-{
-
-  return pl.addPlot(S_plot(new sct_corr::plane_merger(plod_prob)), planes_);
-}

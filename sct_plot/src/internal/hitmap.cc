@@ -29,7 +29,7 @@ namespace sct_corr{
 
   const char* hitmap::getType() const
   {
-    return sct::plot_hitmap();
+    return "hitmap__";
   }
 }
 S_plot sct_plot::hitmap(const s_plot_prob& plot_prob)

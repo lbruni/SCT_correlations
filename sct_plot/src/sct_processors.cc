@@ -1,7 +1,7 @@
 #include "sct_processors.h"
 #include "sct_plots.h"
 #include "TMath.h"
-#include "geometry\setup_description.hh"
+#include "geometry/setup_description.hh"
 
 
 

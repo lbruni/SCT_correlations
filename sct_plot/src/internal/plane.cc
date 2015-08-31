@@ -4,6 +4,7 @@
 #include <iostream>
 #include "internal/plane_hit.hh"
 #include "factoryDef.hh"
+#include <algorithm>
 
 namespace sct_corr{
 

@@ -147,7 +147,7 @@
         return e;
       }
     }
-    throw std::exception("unknown type");
+    //throw std::exception("unknown type");
     return S_Axis();
   }
 

@@ -1,4 +1,4 @@
-#include "s_axis.h"
+#include "S_Axis.h"
 #include <iostream>
 #include "s_plot_collection.h"
 

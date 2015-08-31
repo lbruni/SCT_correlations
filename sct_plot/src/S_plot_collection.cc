@@ -202,10 +202,14 @@ void S_plot_collection::loop(Int_t last /*= -1*/, Int_t start /*= 0*/)
   last=getMaxEntriesFromTree(last);
   for (Int_t i = start; i < last; ++i)
   {
+#ifdef _DEBUG
+
     if (i%1000==0)
     {
       std::cout << "processing event: " << i << " of " << last <<"\n";
     }
+#endif // _DEBUG
+
     for (auto& e : m_trees)
     {
       e.second->GetEntry(i);

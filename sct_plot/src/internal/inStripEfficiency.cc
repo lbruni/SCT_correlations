@@ -6,7 +6,14 @@
 #include "internal/inStripEfficiency.hh"
 
 
-sct_corr::inStripEfficiency::inStripEfficiency(const S_plane_def& trueHits, const S_plane_def& trueHits_with_dut, const S_Cut& cut_, axis_def search_axis, double mod_, const s_plot_prob& plot_prob) :m_mod(mod_), m_search_axis(search_axis) {
+sct_corr::inStripEfficiency::inStripEfficiency(
+  const S_plane_def& trueHits, 
+  const S_plane_def& trueHits_with_dut, 
+  const S_Cut& cut_, axis_def search_axis, 
+  double mod_, 
+  const s_plot_prob& plot_prob) 
+  :m_mod(mod_), m_search_axis(search_axis), m_plot_prob(plot_prob)
+{
   double mod_x = 10000000000;
   double mod_y = 10000000000;
   if (search_axis == x_axis_def) {
@@ -74,5 +81,6 @@ Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
     return -1;
   }
   m_efficiency->Draw(d_option.getOptions());
+  m_efficiency->SetTitle(m_plot_prob.getName());
   return ret;
 }

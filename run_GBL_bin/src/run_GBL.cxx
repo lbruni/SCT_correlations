@@ -52,7 +52,7 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000816_fitter.root");
+  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000691_fitter.root");
   rapidxml::file<> m_file("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
   rapidxml::xml_document<> m_doc;
   m_doc.parse<0>(m_file.data());
@@ -81,7 +81,7 @@ int asyncMain(void *arg) {
     S_XCut(280, 360),
     x_axis_def,
     3,
-    s_plot_prob("mod11")
+    s_plot_prob("inStripEffi")
     );
   sct_corr::hit_efficiency eff(
     gbl_collection.getTotalTrueHits(),
@@ -95,7 +95,7 @@ int asyncMain(void *arg) {
     3, 
     s_plot_prob("cluster_size_instrip").SaveToDisk()
     );
-  pl.loop(4000);
+  pl.loop(4000000);
   
   gCanvas.push_back(new TCanvas());
   instrip.Draw(S_DrawOption());

@@ -5,10 +5,11 @@
 #include "S_Axis.h"
 #include "Rtypes.h"
 #include "internal/platform.hh"
+#include "s_plot_prob.h"
 
 class S_plane_def;
 class S_Cut;
-class s_plot_prob;
+
 class TH1D;
 class S_DrawOption;
 
@@ -36,6 +37,7 @@ private:
   std::shared_ptr<TH1D> m_efficiency;
   double m_mod;
   axis_def m_search_axis;
+  s_plot_prob m_plot_prob;
 };
 }
 #endif // inStripEfficiency_h__

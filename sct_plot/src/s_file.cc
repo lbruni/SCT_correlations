@@ -213,7 +213,7 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations(
     s_plot_prob().doNotSaveToDisk()
     );
 
-  loc11.set_s_plot_collection(loc.get_plot());
+
 
 
   auto trueHits = sct_processor::find_nearest(
@@ -346,7 +346,7 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
     *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
     );
-  trueHitsInStrips.set_s_plot_collection(trueHits_cut.get_plot());
+
 
   auto dut_rotated_17 = sct_processor::rotate(
     trueHitsInStrips,

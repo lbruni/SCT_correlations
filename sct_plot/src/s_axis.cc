@@ -29,6 +29,14 @@ std::shared_ptr<S_plot_collection> S_Axis::get_plot() const {
 }
 
 void S_Axis::set_plot_collection(std::weak_ptr<S_plot_collection> plot_collection_) {
+#ifdef _DEBUG
+  if (m_plot_collection.lock())
+  {
+    std::cout << "m_plot_collection was already defined " << std::endl;
+  }
+
+#endif // _DEBUG
+
   m_plot_collection = plot_collection_;
 }
 

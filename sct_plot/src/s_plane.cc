@@ -101,6 +101,12 @@
     return std::shared_ptr<S_plane_def>(new S_plane_def(*this));
   }
   void S_plane_def::set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection) {
+#ifdef _DEBUG
+    if (m_plot.lock()) {
+      std::cout << "m_plot was already defined " << std::endl;
+    }
+
+#endif // _DEBUG
     m_plot = plot_collection;
     for (auto&e : m_axis) {
       e.set_plot_collection(plot_collection);

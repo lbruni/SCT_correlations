@@ -74,7 +74,7 @@ sct_corr::inStripClusterSize::inStripClusterSize(
     m_cluster_size_vs_rel_pos = cluster_size_vs_rel_pos.copy();
 
   } else {
-    std::cout << "[inStripClusterSize]: axis not supported \m";
+    std::cout << "[inStripClusterSize]: axis not supported \n";
   }
 
 }

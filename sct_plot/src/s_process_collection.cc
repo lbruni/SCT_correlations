@@ -331,7 +331,7 @@ bool s_process_collection::process(FileProberties* fileP) {
     .SaveToDisk()
     );
 
-  m_output_planes.set_s_plot_collection(m_plotCollection->get_plot_collection_ptr());
+ 
 
   auto res = sct_processor::residual(
     m_file_fitter->DUT_fitted_local_GBL().getX_def(),

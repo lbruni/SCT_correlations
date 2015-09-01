@@ -62,8 +62,9 @@ s_plane_collection S_plot_collection::addPlot_internal(S_plot plot_def)
     std::cout << "[S_plot_collection]  unable to create plot " << plot_def.getType() << ":"<< plot_def.getName()<< "\n";
    return s_plane_collection();
   }
-   
-  return m_plots.back().second.getOutputcollection();
+  auto ret = m_plots.back().second.getOutputcollection();
+  ret.set_s_plot_collection(m_self);
+  return ret;
 }
 
 s_plane_collection S_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1)
@@ -241,6 +242,10 @@ bool S_plot_collection::collectionExist(const char* name) const{
   return false;
 }
 
+void S_plot_collection::set_self_weak_pointer(std::weak_ptr<S_plot_collection> self_) {
+  m_self = self_;
+}
+
 const sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
 {
   if (axis.m_axis == x_axis_def)
@@ -337,33 +342,34 @@ S_plane* S_plot_collection::pushPlane(const S_plane_def& pl)
 
 r_plot_collection::r_plot_collection(TFile* file) {
   m_plot = std::make_shared<S_plot_collection>(file);
+  m_plot->set_self_weak_pointer(m_plot);
 }
 
 s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis) {
   
   s_plane_collection ret = m_plot->addPlot(plot_def, x_axis, y_axis);
-  ret.set_s_plot_collection(m_plot);
+
   return ret;
 }
 
 s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2) {
   s_plane_collection ret=m_plot->addPlot(plot_def, p1, p2);
 
-  ret.set_s_plot_collection(m_plot);
+
   return ret;
 }
 
 s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const S_plane_def& p1) {
   s_plane_collection ret = m_plot->addPlot(plot_def, p1);
 
-  ret.set_s_plot_collection(m_plot);
+
   return ret;
 }
 
 s_plane_collection r_plot_collection::addPlot(S_plot plot_def, const s_plane_collection& p1) {
   s_plane_collection ret = m_plot->addPlot(plot_def, p1);
 
-  ret.set_s_plot_collection(m_plot);
+
   return ret;
 }
 

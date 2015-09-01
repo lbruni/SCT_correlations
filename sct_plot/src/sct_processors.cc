@@ -13,7 +13,7 @@ S_plane_def sct_processor::cut_x_y(
   auto pl = planeA.get_plot();
 
   S_plane_def ret = pl->addPlot(sct_plot::cut_x_y(cut_, plot_prob), planeA)();
-  ret.set_s_plot_collection(pl);
+
   return ret;
 }
 
@@ -26,7 +26,7 @@ S_plane_def sct_processor::cluster_strip(
   auto pl = hits.get_plot();
   S_plane_def ret = pl->addPlot(sct_plot::clustering_strip(search_axis, cluster_distance, plot_prob), hits)();
 
-  ret.set_s_plot_collection(pl);
+
   return ret;
 
 }
@@ -47,7 +47,7 @@ S_plane_def sct_processor::coordinate_transform(
     plot_prob), planeA
     )();
 
-  ret.set_s_plot_collection(pl);
+
   return ret;
 }
 
@@ -63,7 +63,7 @@ S_plane_def sct_processor::coordinate_transform_move(
     plot_prob__), planeA
     )();
 
-  ret.set_s_plot_collection(pl);
+ 
   return ret;
 }
 
@@ -88,7 +88,7 @@ s_plane_collection_find_closest sct_processor::find_nearest(
   ret.setResidual(collection_.getByType("nearest_distance")());
   ret.setHitOnPlaneA(collection_.getByType("nearest_plane1")());
   ret.setHitOnPlaneB(collection_.getByType("nearest_plane2")());
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -120,7 +120,7 @@ s_plane_collection_find_closest sct_processor::find_nearest_strip(
   ret.setResidual(collection_.getByType("nearest_strip_distance")());
   ret.setHitOnPlaneA(collection_.getByType("nearest_strip_plane1")());
   ret.setHitOnPlaneB(collection_.getByType("nearest_strip_plane2")());
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -151,7 +151,7 @@ s_plane_collection_find_closest sct_processor::modulo_find_nearest_strip(
   ret.setResidual(collection_.getByType("nearest_strip_distance")());
   ret.setHitOnPlaneA(collection_.getByType("nearest_strip_plane1")());
   ret.setHitOnPlaneB(collection_.getByType("nearest_strip_plane2")());
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -170,7 +170,7 @@ S_plane_def sct_processor::correlation(
   }
 
   auto ret = plA->addPlot(sct_plot::correlation(plot_prob__), axisA, axisB)();
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -181,7 +181,7 @@ S_plane_def sct_processor::correlation(
   ) {
   auto plA = planeA.get_plot();
   auto ret = plA->addPlot(sct_plot::correlation(plot_prob__), planeA)();
-  ret.set_s_plot_collection(plA);
+
   return ret;
 }
 
@@ -194,7 +194,7 @@ S_plane_def sct_processor::rotate(
   auto plA = planeA.get_plot();
   auto ret = plA->addPlot(sct_plot::rotated(angle, plot_prob__), planeA)();
 
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -211,7 +211,7 @@ S_plane_def sct_processor::linear_trans(
     plot_prob__), planeA
     )();
 
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -221,7 +221,7 @@ S_plane_def sct_processor::hitmap(
   ) {
   auto plA = hits.get_plot();
   auto ret = plA->addPlot(sct_plot::hitmap(plot_prob__), hits)();
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 
 }
@@ -240,7 +240,7 @@ S_plane_def sct_processor::hitmap(
   }
 
   auto ret = plA->addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -257,7 +257,7 @@ S_plane_def sct_processor::moduloHitMap(
     return S_plane_def("error", 0);
   }
   auto ret = plA->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), axisA, axisB)();
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -270,7 +270,7 @@ S_plane_def sct_processor::moduloHitMap(
   auto plA = hits.get_plot();
 
   auto ret = plA->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), hits)();
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 
@@ -281,7 +281,7 @@ S_plane_def sct_processor::residual(
   ) {
   auto plA = axisA.get_plot();
   auto ret = plA->addPlot(sct_plot::residual(plot_prob), axisA, axisB)();
-  ret.set_s_plot_collection(plA);
+ 
   return ret;
 }
 

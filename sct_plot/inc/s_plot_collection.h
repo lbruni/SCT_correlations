@@ -40,6 +40,7 @@ public:
   void loop(Int_t last = -1, Int_t start = 0);
   bool collectionExist(const char* name)  const;
 #ifndef __CINT__
+  void set_self_weak_pointer(std::weak_ptr<S_plot_collection> self_);
 private:
   Int_t getMaxEntriesFromTree(Int_t last);
   s_plane_collection addPlot_internal(S_plot plot_def);
@@ -56,6 +57,7 @@ private:
   std::map<std::string, S_DrawOption> m_drawOption;
   std::vector< std::pair<std::string, sct_corr::treeCollection*>> m_trees;
   std::vector<TFile*> m_file;
+  std::weak_ptr<S_plot_collection> m_self;
 #endif
   ClassDef(S_plot_collection, 0);
 };

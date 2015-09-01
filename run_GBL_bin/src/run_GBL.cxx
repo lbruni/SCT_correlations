@@ -25,6 +25,9 @@
 #include "SCT_helpers.h"
 #include "internal/hit_efficiency.hh"
 #include "internal/inStripClusterSize.hh"
+
+#include "internal/residual_efficienct.hh"
+
 using namespace xml_util;
 
 using namespace rapidxml;
@@ -52,7 +55,7 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000691_fitter.root");
+  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000703_fitter.root");
   rapidxml::file<> m_file("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
   rapidxml::xml_document<> m_doc;
   m_doc.parse<0>(m_file.data());
@@ -68,7 +71,7 @@ int asyncMain(void *arg) {
 
   auto gbl_collection = file___.get_correlations_channel(
     S_YCut(-42, -36),
-    100000, 
+    1, 
     0, 
     -6.36702e-001, 
     s_plot_prob("GBL").SaveToDisk()
@@ -83,6 +86,8 @@ int asyncMain(void *arg) {
     3,
     s_plot_prob("inStripEffi")
     );
+
+
   sct_corr::hit_efficiency eff(
     gbl_collection.getTotalTrueHits(),
     gbl_collection.getTrueHitsWithDUT(),
@@ -95,7 +100,21 @@ int asyncMain(void *arg) {
     3, 
     s_plot_prob("cluster_size_instrip").SaveToDisk()
     );
-  pl.loop(4000000);
+
+  sct_corr::residual_efficienct res_eff(
+    gbl_collection.getTotalTrueHits(), 
+    file___.DUT_zs_data(), 
+    400, 
+    x_axis_def, 
+    s_plot_prob("Res_efficiency")
+    );
+
+  pl.loop(40000);
+
+  gCanvas.push_back(new TCanvas());
+
+  res_eff.Draw();
+
   
   gCanvas.push_back(new TCanvas());
   instrip.Draw(S_DrawOption());

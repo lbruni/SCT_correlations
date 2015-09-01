@@ -22,6 +22,8 @@ namespace sct_corr{
 
     virtual void processEventStart();
     virtual void processHit(const plane_hit&  p1, const plane_hit&  p2) = 0;
+    virtual void processHit_1(const plane_hit&  p1) {}
+    virtual void processHit_2(const plane_hit&  p2) {}
     virtual void processEventEnd();
     virtual bool fill() override final;
     void pushHit(Double_t x, Double_t y);

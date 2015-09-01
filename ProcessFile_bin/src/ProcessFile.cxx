@@ -27,35 +27,6 @@ using namespace std;
 
 
 
-int ADDRun(s_process_collection& p, std::string xmlInputFileName, std::string path__, int element, std::string outputPath = ".") {
-  path__ += "/";
-  xmlImputFiles::XML_imput_file xml_imput(xmlInputFileName.c_str());
-
-  if (xml_imput.fileList().empty()) {
-    return -1;
-  }
-  auto collname = xml_imput.globalConfig().CollectionName();
-  outputPath += "/" + collname + "_" + std::to_string(element) + ".root";
-
-  p.setOutputName(outputPath.c_str());
-
-  p.SetNumberOfBins(xml_imput.globalConfig().NumberOfBins());
-  p.SetNumberOfStrips(xml_imput.globalConfig().NumberOfStrips());
-  p.AddCut(xml_imput.globalConfig().cut());
-  p.setActiveArea(xml_imput.globalConfig().AvtiveStrips().getMin(), xml_imput.globalConfig().AvtiveStrips().getMax());
-  p.SetRotation(xml_imput.globalConfig().Rotation());
-  p.SetPosition(xml_imput.globalConfig().Position_value(), 0);
-  p.setResidualCut(xml_imput.globalConfig().residual_cut());
-  p.setGearFile(xml_imput.globalConfig().gearFile().c_str());
-  if (element >= xml_imput.fileList().size()) {
-    return -1;
-  }
-  auto& e = xml_imput.fileList()[element];
-  p.push_files((path__ + std::string(e.name())).c_str(), e.threshold(), e.runNumber(), e.HV());
-
-
-  return 0;
-}
 std::string trim(const std::string &s) {
   static const std::string spaces = " \t\n\r\v";
   size_t b = s.find_first_not_of(spaces);

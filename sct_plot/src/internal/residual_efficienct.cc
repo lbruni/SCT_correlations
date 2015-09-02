@@ -4,6 +4,8 @@
 #include "TMath.h"
 #include "s_plot.h"
 #include "SCT_helpers.h"
+#include "sct_processors.h"
+#include "s_cuts.h"
 
 
 
@@ -147,6 +149,24 @@ residual_efficienct::residual_efficienct(
 
 
 
+
+}
+
+residual_efficienct::residual_efficienct(
+  const S_plane_def& trueHits, 
+  const S_plane_def& sz_data, 
+  const S_Cut& cut_, 
+  int strips, 
+  axis_def search_axis, 
+  const s_plot_prob& plot_prob
+  ) :residual_efficienct(
+  sct_processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk()),
+  sz_data,
+  strips,
+  search_axis,
+  plot_prob 
+  )
+{
 
 }
 

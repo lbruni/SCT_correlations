@@ -24,6 +24,13 @@ public:
     double mod_,
     const s_plot_prob& plot_prob
     );
+  inStripEfficiency(
+    const S_plane_def& trueHits,
+    const S_plane_def& trueHits_with_dut,
+    axis_def search_axis,
+    double mod_,
+    const s_plot_prob& plot_prob
+    );
   Long64_t Draw_true_hits(const S_DrawOption& d_option);
 
   Long64_t Draw_DUT_hits(const S_DrawOption& d_option);

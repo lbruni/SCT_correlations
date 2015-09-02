@@ -12,8 +12,27 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   const S_Cut& cut_, axis_def search_axis, 
   double mod_, 
   const s_plot_prob& plot_prob) 
+  :inStripEfficiency(
+      sct_processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk() ),
+      sct_processor::cut_x_y(trueHits_with_dut, cut_, s_plot_prob().doNotSaveToDisk()),
+      search_axis,
+      mod_,
+      plot_prob
+  )
+{
+
+}
+
+sct_corr::inStripEfficiency::inStripEfficiency(
+  const S_plane_def& trueHits, 
+  const S_plane_def& trueHits_with_dut, 
+  axis_def search_axis, 
+  double mod_, 
+  const s_plot_prob& plot_prob
+  ) 
   :m_mod(mod_), m_search_axis(search_axis), m_plot_prob(plot_prob)
 {
+
   double mod_x = 10000000000;
   double mod_y = 10000000000;
   if (search_axis == x_axis_def) {
@@ -22,21 +41,12 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   if (search_axis == y_axis_def) {
     mod_y = m_mod;
   }
-  auto cut_true = sct_processor::cut_x_y(
-    trueHits,
-    cut_,
-    s_plot_prob().doNotSaveToDisk()
-    );
 
 
-  auto cut_dut = sct_processor::cut_x_y(
-    trueHits_with_dut,
-    cut_,
-    s_plot_prob().doNotSaveToDisk()
-    );
+
   std::string true_hits_name = std::string(plot_prob.getName()) + "_true_hits";
   auto mod_total = sct_processor::moduloHitMap(
-    cut_true,
+    trueHits,
     mod_x,
     mod_y,
     s_plot_prob(true_hits_name.c_str())
@@ -46,7 +56,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   m_trueHits = mod_total.copy();
   std::string dut_hits_name = std::string(plot_prob.getName()) + "_DUT_hits";
   auto mod_DUT = sct_processor::moduloHitMap(
-    cut_dut,
+    trueHits_with_dut,
     mod_x,
     mod_y,
     s_plot_prob(dut_hits_name.c_str())
@@ -70,8 +80,8 @@ Long64_t sct_corr::inStripEfficiency::Draw() {
 
 
 Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 300, 0, m_mod);
-  TH1D DUtHitsMod("mod_dut", "DUT hits", 300, 0, m_mod);
+  TH1D trueHitsMod("mod_true", "true hits", 30, 0, m_mod);
+  TH1D DUtHitsMod("mod_dut", "DUT hits", 30, 0, m_mod);
   Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
   auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
 

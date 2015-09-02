@@ -21,6 +21,14 @@ public:
   residual_efficienct(
     const S_plane_def& trueHits,
     const S_plane_def& sz_data,
+    const S_Cut& cut_,
+    int strips,
+    axis_def search_axis,
+    const s_plot_prob& plot_prob
+    );
+  residual_efficienct(
+    const S_plane_def& trueHits,
+    const S_plane_def& sz_data,
     int strips,
     axis_def search_axis,
     const s_plot_prob& plot_prob

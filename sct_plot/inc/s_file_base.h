@@ -7,12 +7,9 @@
 #include "s_cuts.h"
 #include "s_plot_prob.h"
 #include "internal/platform.hh"
+#include "geometry/setup_description.hh"
 
 
-namespace sct_corr {
-struct  Xgear;
-struct Xlayer;
-}
 
 class DllExport s_file {
 public:
@@ -114,6 +111,13 @@ private:
     ) const;
 };
 
+class DllExport s_alibava_file :public s_file {
+public:
+  s_alibava_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  virtual ~s_alibava_file() {}
+  S_plane_def_Alibava Alibava_sz_data() const;
+  S_plane_def_GBL DUT_fitted_local_GBL() const;
+};
 
 
 

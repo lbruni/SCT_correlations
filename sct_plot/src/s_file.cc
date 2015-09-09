@@ -412,3 +412,22 @@ s_plane_collection_correlations s_file_fitter::get_correlations_channel(
   std::cout << "collection not found " << std::endl;
   return s_plane_collection_correlations();
 }
+
+
+s_alibava_file::s_alibava_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ /*= nullptr*/) :s_file(plot_collection, gear_) {
+
+}
+
+S_plane_def_Alibava s_alibava_file::Alibava_sz_data() const {
+  S_plane_def_Alibava ret("alibava",6);
+
+  ret.set_s_plot_collection(m_plot_collection);
+  return ret;
+}
+
+S_plane_def_GBL s_alibava_file::DUT_fitted_local_GBL() const {
+  S_plane_def_GBL ret("telescope", 0);
+
+  ret.set_s_plot_collection(m_plot_collection);
+  return ret;
+}

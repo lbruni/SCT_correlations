@@ -19,7 +19,9 @@ public:
   static Long64_t DrawTTree(TTree * tree, const S_DrawOption& opt);
   static TF1 LinearFit_Of_Profile(TH2* h2, Double_t cut_prozent = 0);
   static TH1* calc_efficiency(TH1* trueHits, TH1* dutHits);
+  static void saveTH1_as_txt(const TH1& h1, const char* nameTXT);
 };
+
 
 
 #ifdef __CINT__

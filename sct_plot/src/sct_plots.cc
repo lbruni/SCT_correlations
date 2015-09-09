@@ -173,7 +173,17 @@ TH1* SCT_helpers::calc_efficiency(TH1* trueHits, TH1* dutHits) {
   return effi;
 
 }
+void SCT_helpers::saveTH1_as_txt(const TH1& h1, const char* nameTXT) {
+  std::ofstream out(nameTXT);
+  out << h1.GetTitle() << std::endl;
+  out << h1.GetXaxis()->GetTitle() << " ; " << h1.GetYaxis()->GetTitle()<<std::endl;
 
+  for (int i = 0; i < h1.GetNbinsX(); ++i) {
+
+    out << h1.GetBinCenter(i) << " ; " << h1.GetBinContent(i) << std::endl;
+  }
+
+}
 
 
 

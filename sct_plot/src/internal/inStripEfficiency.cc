@@ -80,8 +80,8 @@ Long64_t sct_corr::inStripEfficiency::Draw() {
 
 
 Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 30, 0, m_mod);
-  TH1D DUtHitsMod("mod_dut", "DUT hits", 30, 0, m_mod);
+  TH1D trueHitsMod("mod_true", "true hits", 300, 0, m_mod);
+  TH1D DUtHitsMod("mod_dut", "DUT hits", 300, 0, m_mod);
   Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
   auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
 

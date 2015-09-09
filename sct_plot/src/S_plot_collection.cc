@@ -248,17 +248,8 @@ void S_plot_collection::set_self_weak_pointer(std::weak_ptr<S_plot_collection> s
 
 const sct_corr::axis_ref* S_plot_collection::getAxis_ref(const S_Axis & axis)
 {
-  if (axis.m_axis == x_axis_def)
-  {
-    return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.c_str()))->getX();
-  }
 
-  if (axis.m_axis == y_axis_def)
-  {
-    return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.c_str()))->getY();
-  }
-
-  return nullptr;
+  return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.c_str()))->getAxis(axis.m_axis);
 }
 
 sct_corr::treeCollection* S_plot_collection::getCollection(const char* name)

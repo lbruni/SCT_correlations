@@ -79,6 +79,14 @@
     return m_plane->getAxis(y_axis_def);
   }
 
+  const sct_corr::axis_ref* S_plane::getAxis(axis_def ax) const {
+    if (!m_plane) {
+      std::cout << "[s_plane] plane not set " << std::endl;
+      return nullptr;
+    }
+    return m_plane->getAxis(ax);
+  }
+
   const sct_corr::Xlayer* S_plane_def::getLayer() const {
     if (m_layer)
     {
@@ -186,6 +194,20 @@
 
   S_Axis S_plane_def_GBL::getTheta_def() const {
     return get_Axis(theta_axis_def);
+  }
+
+
+  S_plane_def_Alibava::S_plane_def_Alibava(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ ) :S_plane_def(name, ID, layer_) {
+    m_axis.emplace_back(name, ID, charge_axis_def);
+  }
+
+  S_Axis S_plane_def_Alibava::getCharge_def() const {
+    return get_Axis(charge_axis_def);
+  }
+
+
+  std::shared_ptr<S_plane_def> S_plane_def_Alibava::copy() const {
+    return std::shared_ptr<S_plane_def>(new S_plane_def_Alibava(*this));
   }
 
 

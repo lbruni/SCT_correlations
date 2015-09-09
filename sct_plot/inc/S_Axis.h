@@ -17,7 +17,8 @@ enum  axis_def
   theta_axis_def,
   Occupancy_axis_def,
   Occupancy_error_axis_def,
-  NumOfEvents_axis_def
+  NumOfEvents_axis_def,
+  charge_axis_def
 };
 const char* axis2String(axis_def ax);
 const char* getIDString();

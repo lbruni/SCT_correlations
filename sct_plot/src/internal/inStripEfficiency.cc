@@ -80,8 +80,8 @@ Long64_t sct_corr::inStripEfficiency::Draw() {
 
 
 Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 300, 0, m_mod);
-  TH1D DUtHitsMod("mod_dut", "DUT hits", 300, 0, m_mod);
+  TH1D trueHitsMod("mod_true", "true hits", 60, 0, m_mod);
+  TH1D DUtHitsMod("mod_dut", "DUT hits", 60, 0, m_mod);
   Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
   auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
 
@@ -92,5 +92,8 @@ Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
   }
   m_efficiency->Draw(d_option.getOptions());
   m_efficiency->SetTitle(m_plot_prob.getName());
+  m_efficiency->GetXaxis()->SetTitle("instrip_pos");
+  m_efficiency->GetYaxis()->SetTitle("Efficiency");
+  SCT_helpers::saveTH1_as_txt(*m_efficiency, "instripEffi.txt");
   return ret;
 }

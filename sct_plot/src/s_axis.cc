@@ -84,6 +84,9 @@ const char* axis2String(axis_def ax)
     {
         return "NumOfEvents";
     }
+    if (ax == charge_axis_def) {
+      return "Charge";
+    }
     return "\0";
 }
 

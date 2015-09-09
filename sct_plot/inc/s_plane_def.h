@@ -71,6 +71,15 @@ public:
 
 
 
+class DllExport S_plane_def_Alibava :public S_plane_def {
+public:
+  S_plane_def_Alibava(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ = nullptr);
+  S_Axis getCharge_def() const;
+#ifndef __CINT__
+  virtual std::shared_ptr<S_plane_def> copy() const override;
+#endif
+  ClassDef(S_plane_def_Alibava, 0);
+};
 class DllExport s_plane_collection {
 public:
 #ifndef __CINT__
@@ -138,6 +147,7 @@ DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def
 
 #pragma link C++ class S_plane_def;
 #pragma link C++ class S_plane_def_GBL;
+#pragma link C++ class S_plane_def_Alibava;
 #pragma link C++ class s_plane_collection;
 #pragma link C++ class s_plane_collection_correlations;
 #pragma link C++ class s_plane_collection_find_closest;

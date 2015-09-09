@@ -6,6 +6,8 @@
 #include "s_plot_prob.h"
 
 
+
+
 class DllExport sct_processor {
 public:
   static  S_plane_def cut_x_y(
@@ -126,6 +128,12 @@ public:
   static  S_plane_def residual(
     const S_Axis& axisA,
     const S_Axis& axisB,
+    const s_plot_prob& = ""
+    );
+
+  static  S_plane_def_Alibava residual_with_charge(
+    const S_plane_def_Alibava& hits_A,
+    const S_plane_def& hits_B, 
     const s_plot_prob& = ""
     );
   static S_plane_def convert_local_to_global(

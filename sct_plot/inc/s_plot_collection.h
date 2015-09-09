@@ -20,6 +20,31 @@ namespace sct_corr{
   class treeCollection;
   class sct_event_buffer;
 }
+
+template <typename plane_tA, typename plane_tB>
+std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, plane_tB& secound__) {
+  auto plA = first_.get_plot();
+  auto plB = secound__.get_plot();
+  if (plA.get() != plB.get()) {
+
+    return nullptr;
+  }
+  return plA;
+}
+
+
+template <typename plane_tA, typename plane_tB, typename... planes_t>
+std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, plane_tB& secound__, planes_t&... rest_) {
+  auto plA = first_.get_plot();
+  auto plB = secound__.get_plot();
+  if (plA.get() != plB.get()) {
+
+    return nullptr;
+  }
+  return getPlotCollectionIfUnique(secound__, rest_...);
+
+}
+
 class  DllExport S_plot_collection{
 public:
   S_plot_collection(TFile* file);

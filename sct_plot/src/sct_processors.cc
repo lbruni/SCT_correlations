@@ -5,6 +5,8 @@
 
 
 
+
+
 S_plane_def sct_processor::cut_x_y(
   const S_plane_def& planeA,
   const S_Cut& cut_,
@@ -74,15 +76,14 @@ s_plane_collection_find_closest sct_processor::find_nearest(
   Double_t y_cutoff,
   const s_plot_prob& plot_prob__
   ) {
-  auto plA = planeA.get_plot();
-  auto plB = planeB.get_plot();
+  auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
-  if (plA.get() != plB.get()) {
+  if (!pl) {
     std::cout << "[s_plane_collection_find_closest sct_processor::find_nearest] referencing to different plot collection\n";
     return s_plane_collection_find_closest();
   }
 
-  auto collection_ = plA->addPlot(sct_plot::find_nearest(x_cutoff, y_cutoff, plot_prob__), planeA, planeB);
+  auto collection_ = pl->addPlot(sct_plot::find_nearest(x_cutoff, y_cutoff, plot_prob__), planeA, planeB);
 
   s_plane_collection_find_closest ret;
   ret.setResidual(collection_.getByType("nearest_distance")());
@@ -99,15 +100,14 @@ s_plane_collection_find_closest sct_processor::find_nearest_strip(
   Double_t cutOfff,
   const s_plot_prob& plot_prob_ /*= "" */
   ) {
-  auto plA = planeA.get_plot();
-  auto plB = planeB.get_plot();
+  auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
-  if (plA.get() != plB.get()) {
+  if (!pl) {
     std::cout << "[s_plane_collection_find_closest sct_processor::find_nearest_strip] referencing to different plot collection\n";
     return s_plane_collection_find_closest();
   }
 
-  auto collection_ = plA->addPlot(
+  auto collection_ = pl->addPlot(
     sct_plot::find_nearest_strip(
     search_axis,
     cutOfff,
@@ -133,15 +133,14 @@ s_plane_collection_find_closest sct_processor::modulo_find_nearest_strip(
   const s_plot_prob& plot_prob_ /*= "" */
   ) {
 
-  auto plA = planeA.get_plot();
-  auto plB = planeB.get_plot();
+  auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
-  if (plA.get() != plB.get()) {
+  if (!pl) {
     std::cout << "[sct_processor::modulo_find_nearest_strip] referencing to different plot collection\n";
     return s_plane_collection_find_closest();
   }
 
-  auto collection_ = plA->addPlot(
+  auto collection_ = pl->addPlot(
     sct_plot::modulo_find_nearest_strip(search_axis, modulo_parameter, cutOfff, plot_prob_),
     planeA,
     planeB
@@ -161,15 +160,14 @@ S_plane_def sct_processor::correlation(
   const S_Axis& axisB,
   const s_plot_prob& plot_prob__/*= "" */
   ) {
-  auto plA = axisA.get_plot();
-  auto plB = axisB.get_plot();
+  auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
-  if (plA.get() != plB.get()) {
+  if (!pl) {
     std::cout << "[sct_processor::modulo_find_nearest_strip] referencing to different plot collection\n";
     return S_plane_def("error", 0);
   }
 
-  auto ret = plA->addPlot(sct_plot::correlation(plot_prob__), axisA, axisB)();
+  auto ret = pl->addPlot(sct_plot::correlation(plot_prob__), axisA, axisB)();
  
   return ret;
 }
@@ -231,15 +229,14 @@ S_plane_def sct_processor::hitmap(
   const S_Axis& axisB,
   const s_plot_prob& plot_prob__
   ) {
-  auto plA = axisA.get_plot();
-  auto plB = axisB.get_plot();
+  auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
-  if (plA.get() != plB.get()) {
+  if (!pl) {
     std::cout << "[sct_processor::hitmap] referencing to different plot collection\n";
     return S_plane_def("error", 0);
   }
 
-  auto ret = plA->addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
+  auto ret = pl->addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
  
   return ret;
 }
@@ -250,13 +247,13 @@ S_plane_def sct_processor::moduloHitMap(
   double mod_x, double mod_y,
   const s_plot_prob& plot_prob
   ) {
-  auto plA = axisA.get_plot();
-  auto plB = axisB.get_plot();
-  if (plA.get() != plB.get()) {
+  auto pl=getPlotCollectionIfUnique(axisA, axisB);
+ 
+  if (!pl) {
     std::cout << "[sct_processor::moduloHitMap] referencing to different plot collection\n";
     return S_plane_def("error", 0);
   }
-  auto ret = plA->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), axisA, axisB)();
+  auto ret = pl->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), axisA, axisB)();
  
   return ret;
 }
@@ -284,6 +281,7 @@ S_plane_def sct_processor::residual(
  
   return ret;
 }
+
 
 
 S_plane_def sct_processor::convert_local_to_global(

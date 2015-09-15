@@ -45,10 +45,10 @@
 using namespace std;
 using namespace TCLAP;
 int main(int argc, char **argv) {
+#ifdef _DEBUG
   int argc_asdasddsa = 1;
   char **argv_sadsda = new char*[1];
   argv_sadsda[0] = "dummy";
-#ifdef _DEBUG
   TApplication theApp("App", &argc_asdasddsa, argv_sadsda);
 
 #endif // _DEBUG

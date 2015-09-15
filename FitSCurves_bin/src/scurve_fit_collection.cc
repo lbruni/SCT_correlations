@@ -196,7 +196,7 @@ void scurve_fit_collection::processStrip(const char* stripName, axis_def axis__,
 
 
     m_out_data.mpv_fit = f.getLandauMostProbable();
-    m_out_data.max_efficiency = f.getErrorOfAmplitude();
+    m_out_data.max_efficiency = f.getAmplitude();
     m_out_data.gauss_sigma = f.getGaussSigma();
     m_out_data.landau_sigma = f.getErrorOfLandauSigma();
     m_out_data.mpv_estimated = mpv_start;

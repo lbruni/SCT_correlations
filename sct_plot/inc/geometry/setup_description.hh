@@ -152,6 +152,13 @@ public:
   Xdetector detector;
 };
 
+inline Xgear load_gear(const char* name) {
+  rapidxml::file<> m_file(name);
+  rapidxml::xml_document<> m_doc;
+  m_doc.parse<0>(m_file.data());
+
+  return sct_corr::Xgear(m_doc.first_node("gear"));
+}
 }
 
 #endif // setup_description_h__

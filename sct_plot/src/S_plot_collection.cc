@@ -22,6 +22,11 @@ S_plot_collection::S_plot_collection(TFile* file) :m_eventBuffer(std::make_share
 }
 
 
+S_plot_collection::S_plot_collection(const char* file_name) :m_eventBuffer(std::make_shared<sct_corr::sct_event_buffer>()) {
+  m_main_file = std::make_shared<TFile>(file_name);
+  addFile(m_main_file.get());
+}
+
 void S_plot_collection::addFile(TFile* file)
 {
   m_file.push_back(file);

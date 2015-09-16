@@ -47,7 +47,8 @@ std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, 
 
 class  DllExport S_plot_collection{
 public:
-  S_plot_collection(TFile* file);
+  S_plot_collection(TFile* file); 
+  S_plot_collection(const char* file_name);
   void addFile(TFile* file);
   void setOutputFile(TFile* file);
   void reset();
@@ -76,7 +77,7 @@ private:
   S_plane* pushPlane(const S_plane_def& pl);
 
   std::shared_ptr<sct_corr::sct_event_buffer> m_eventBuffer;
-
+  std::shared_ptr<TFile> m_main_file;
   std::vector<std::shared_ptr<S_plane>> m_planes;
   std::vector<std::pair<std::string, S_plot>> m_plots;
   std::map<std::string, S_DrawOption> m_drawOption;

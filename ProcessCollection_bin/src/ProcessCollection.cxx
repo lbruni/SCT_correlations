@@ -54,7 +54,7 @@ int asyncMain(void *arg) {
 #endif // _DEBUG
 
     cmd.parse(argc, argv);
-    s_process_collection p;
+    s_process_collection_standard p;
     p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
     p.setPrintout(true);
     p.process();

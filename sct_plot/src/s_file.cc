@@ -40,7 +40,9 @@ S_plane_def s_file::get_plane(const char* collection_name, double ID) const {
   return ret;
 }
 
-
+S_plot_collection* s_file::get_collection() {
+  return m_plot_collection.get();
+}
  S_plot_collection* s_file::get_plot_collection() const {
   return m_plot_collection.get();
 }
@@ -64,6 +66,13 @@ const sct_corr::Xlayer* s_file::get_layer(double ID) const {
 
   return m_gear->detector.layer_by_ID(ID);
 }
+
+s_file_fitter::s_file_fitter(const char* Fitter_File, const char* gear_file) :s_file_fitter(std::make_shared<S_plot_collection>(Fitter_File), &(sct_corr::load_gear(gear_file))) {
+
+  m_plot_collection->set_self_weak_pointer(m_plot_collection);
+
+}
+
 s_file_fitter::s_file_fitter(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ /*= nullptr*/):s_file(plot_collection,gear_) {
 
 }

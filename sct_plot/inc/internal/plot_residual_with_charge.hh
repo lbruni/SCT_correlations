@@ -17,7 +17,7 @@ class treeCollection_ouput;
 class plot_residual_with_charge :public plot {
 
 public:
-  plot_residual_with_charge(const s_plot_prob& = "");
+  plot_residual_with_charge(bool full_charge,const s_plot_prob& = "");
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
   virtual Long64_t Draw(const S_DrawOption& opt) override;
 
@@ -42,7 +42,7 @@ protected:
   sct_corr::plane *m_x = nullptr, *m_y = nullptr;
 
   rootEvent_Alibava m_outputEvent;
-
+  bool m_full_cluster = true;
   std::shared_ptr<treeCollection_ouput> m_outTree;
   Int_t m_current = 0;
 };

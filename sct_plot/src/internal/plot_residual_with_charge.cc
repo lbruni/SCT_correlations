@@ -9,7 +9,7 @@
 #include "s_plot_collection.h"
 
 
-sct_corr::plot_residual_with_charge::plot_residual_with_charge(const s_plot_prob& plot_prob/*= ""*/):plot(plot_prob) {
+sct_corr::plot_residual_with_charge::plot_residual_with_charge(bool full_cahrge_,const s_plot_prob& plot_prob/*= ""*/):plot(plot_prob),m_full_cluster(full_cahrge_) {
 
 }
 
@@ -50,10 +50,14 @@ void sct_corr::plot_residual_with_charge::processEventEnd() {
   {
     return;
   }
-  if (m_max_charge_hit.charge / m_entire_cluster.charge == 1) {
-    return;
+  if (m_full_cluster)
+  {
+  pushHit(m_max_charge_hit.x, m_max_charge_hit.y, m_entire_cluster.charge, 0);
   }
-  pushHit(m_max_charge_hit.x, m_max_charge_hit.y, m_max_charge_hit.charge / m_entire_cluster.charge, 0);
+  else {
+
+  pushHit(m_max_charge_hit.x, m_max_charge_hit.y, m_max_charge_hit.charge , 0);
+  }
 }
 
 void sct_corr::plot_residual_with_charge::processHit(const Alibava_hit& p1, const plane_hit& p2) {
@@ -72,7 +76,7 @@ void sct_corr::plot_residual_with_charge::processHit(const Alibava_hit& p1, cons
 
 
 void sct_corr::plot_residual_with_charge::processHit_1(const Alibava_hit& p1) {
-  if (p1.charge<30)
+  if (p1.charge<70)
   {
     return;
   }
@@ -160,6 +164,7 @@ Long64_t sct_corr::plot_residual_with_charge::Draw(const S_DrawOption& opt) {
 S_plane_def_Alibava sct_processor::residual_with_charge(
   const S_plane_def_Alibava& hits_A, 
   const S_plane_def& hits_B, 
+  bool full_cluster ,
   const s_plot_prob& plot_prob/*= "" */
   ) {
 
@@ -168,7 +173,7 @@ S_plane_def_Alibava sct_processor::residual_with_charge(
     std::cout << "[sct_processor::moduloHitMap] referencing to different plot collection\n";
     return S_plane_def_Alibava("error", 0);
   }
- auto  ret= pl->addPlot(S_plot(new sct_corr::plot_residual_with_charge(plot_prob)), hits_A, hits_B)();
+ auto  ret= pl->addPlot(S_plot(new sct_corr::plot_residual_with_charge(full_cluster,plot_prob)), hits_A, hits_B)();
   
  S_plane_def_Alibava ret1(ret.getName(), ret.getID(), ret.getLayer());
  ret1.set_s_plot_collection(ret.get_plot());

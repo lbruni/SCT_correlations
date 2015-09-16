@@ -134,6 +134,7 @@ public:
   static  S_plane_def_Alibava residual_with_charge(
     const S_plane_def_Alibava& hits_A,
     const S_plane_def& hits_B, 
+    bool full_cluster=true,
     const s_plot_prob& = ""
     );
   static S_plane_def convert_local_to_global(

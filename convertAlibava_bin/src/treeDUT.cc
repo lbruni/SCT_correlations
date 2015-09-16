@@ -164,7 +164,7 @@ void treeDUT::Loop()
 
    Long64_t nbytes = 0, nb = 0;
    sct_corr::track_hits tel(0,0,0,0,0,0);
-   sct_corr::Alibava_hits alib(0, 0, 0);
+   sct_corr::Alibava_hit alib(0, 0, 0);
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
      m_alibava->reset();
      m_telescope->reset();

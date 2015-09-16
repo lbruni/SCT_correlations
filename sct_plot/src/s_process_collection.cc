@@ -78,17 +78,17 @@ private:
 double BinNomialSigma(double totalHits, double DUTHits) {
   return sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits));
 }
-s_process_collection::s_process_collection() :m_outputl("out") {
+s_process_collection::s_process_collection() {
 
 
-  m_dummy = new TFile("dummy1.root", "recreate");
+ 
 
 
 }
 
 
 s_process_collection::~s_process_collection() {
-  delete m_dummy;
+
 
 }
 
@@ -119,18 +119,16 @@ void s_process_collection::push_files(const char* _fileName, double Threshold, d
 
 }
 
-void s_process_collection::AddCut(const S_Cut& cut) {
-  m_cuts.add_Cut(cut);
-}
+
 
 int s_process_collection::Add_XML_RunList(const std::string& xmlInputFileName, std::string path__, std::string outputPath /*= "."*/, int element /* = -1*/) {
   path__ += "/";
-  xmlImputFiles::XML_imput_file xml_imput(xmlInputFileName.c_str());
+  m_input_files_xml = std::make_shared<xmlImputFiles::XML_imput_file>(xmlInputFileName.c_str());
 
-  if (xml_imput.fileList().empty()) {
+  if (m_input_files_xml->fileList().empty()) {
     return -1;
   }
-  auto collname = xml_imput.globalConfig().CollectionName();
+  auto collname = m_input_files_xml->globalConfig().CollectionName();
   if (element != -1) {
     outputPath += "/" + collname + "_" + std::to_string(element) + ".root";
   } else {
@@ -140,25 +138,19 @@ int s_process_collection::Add_XML_RunList(const std::string& xmlInputFileName, s
 
   setOutputName(outputPath.c_str());
 
-  SetNumberOfBins(xml_imput.globalConfig().NumberOfBins());
-  SetNumberOfStrips(xml_imput.globalConfig().NumberOfStrips());
-  AddCut(xml_imput.globalConfig().cut());
-  setActiveArea(xml_imput.globalConfig().AvtiveStrips().getMin(), xml_imput.globalConfig().AvtiveStrips().getMax());
-  SetRotation(xml_imput.globalConfig().Rotation());
-  SetPosition(xml_imput.globalConfig().Position_value(), 0);
-  setResidualCut(xml_imput.globalConfig().residual_cut());
-  setGearFile(xml_imput.globalConfig().gearFile().c_str());
+
+  setGearFile(m_input_files_xml->globalConfig().gearFile().c_str());
 
 
   if (element != -1) {
-    if (element >= (int)xml_imput.fileList().size()) {
+    if (element >= (int)m_input_files_xml->fileList().size()) {
       return -1;
     }
-    auto& e = xml_imput.fileList()[element];
+    auto& e = m_input_files_xml->fileList()[element];
     push_files((path__ + std::string(e.name())).c_str(), e.threshold(), e.runNumber(), e.HV());
 
   } else {
-    for (auto& e : xml_imput.fileList()) {
+    for (auto& e : m_input_files_xml->fileList()) {
       push_files((path__ + std::string(e.name())).c_str(), e.threshold(), e.runNumber(), e.HV());
     }
 
@@ -168,36 +160,7 @@ int s_process_collection::Add_XML_RunList(const std::string& xmlInputFileName, s
   return 0;
 }
 
-void s_process_collection::SetPitchSize(Double_t pitchSize) {
-  m_pitchSize = pitchSize;
-}
 
-void s_process_collection::SetRotation(Double_t rotation) {
-  m_rotation = rotation;
-}
-
-void s_process_collection::SetPosition(Double_t x_pos, Double_t y_pos) {
-  m_pos_x = x_pos;
-  m_pos_y = y_pos;
-}
-
-void s_process_collection::setActiveArea(Double_t x_min, Double_t x_max) {
-  m_active_area_x_min = x_min;
-  m_active_area_x_max = x_max;
-}
-
-void s_process_collection::SetNumberOfBins(Int_t bins) {
-  m_bins = bins;
-}
-
-void s_process_collection::SetNumberOfStrips(Int_t strips) {
-  m_numOfStrips = strips;
-}
-
-
-void s_process_collection::setResidualCut(double residualCut) {
-  m_residual_cut = residualCut;
-}
 
 void s_process_collection::setGearFile(const char* name) {
 
@@ -212,12 +175,12 @@ void s_process_collection::setPrintout(bool print) {
   gDo_print = print;
 }
 
-void s_process_collection::extract_efficiency() {
+void s_process_collection_standard::extract_efficiency() {
 
   double totalHits = (double)m_plotCollection->Draw(m_output_planes.getTotalTrueHits(),
                                                     S_DrawOption()
-                                                    .cut_x(m_active_area_x_min,
-                                                    m_active_area_x_max)
+                                                    .cut_x(get_xml_input()->globalConfig().AvtiveStrips().getMin(),
+                                                    get_xml_input()->globalConfig().AvtiveStrips().getMax())
                                                     );
 
   xml_print("TotalNumOfEvents", totalHits);
@@ -225,8 +188,8 @@ void s_process_collection::extract_efficiency() {
 
   double DUTHits = (double)m_plotCollection->Draw(m_output_planes.getTrueHitsWithDUT(),
                                                   S_DrawOption()
-                                                  .cut_x(m_active_area_x_min,
-                                                  m_active_area_x_max)
+                                                  .cut_x(get_xml_input()->globalConfig().AvtiveStrips().getMin() ,
+                                                  get_xml_input()->globalConfig().AvtiveStrips().getMax())
                                                   );
   xml_print("DUTHits", DUTHits);
 
@@ -243,7 +206,7 @@ void s_process_collection::extract_efficiency() {
 
 }
 
-void s_process_collection::extract_hitMap() {
+void s_process_collection_standard::extract_hitMap() {
 
   for (Int_t i = 0; i < m_Efficieny_map->GetNbinsX(); ++i) {
     pushChannel(m_Efficieny_map->GetBinCenter(i), //xPosition
@@ -258,7 +221,7 @@ void s_process_collection::extract_hitMap() {
   }
 }
 
-void s_process_collection::extract_residual() {
+void s_process_collection_standard::extract_residual() {
   DrawResidual(-3, 3);
 
 
@@ -277,7 +240,7 @@ void s_process_collection::extract_residual() {
   }
 }
 
-void s_process_collection::extract_rotation() {
+void s_process_collection_standard::extract_rotation() {
   DrawResidualVsMissingCordinate(-10, 10);
   auto h = getResidualVsMissingCordinate();
   auto f1 = SCT_helpers::LinearFit_Of_Profile(h, 0.01);
@@ -286,12 +249,12 @@ void s_process_collection::extract_rotation() {
   xml_print("rotation", rot);
 }
 
-void s_process_collection::process_reset() {
+void s_process_collection_standard::process_reset() {
   m_plotCollection.reset();
   m_res_VS_event.clear();
   m_outputl.reset();
 }
-void s_process_collection::process_set_run_prob(const FileProberties& fileP) {
+void s_process_collection_standard::process_set_run_prob(const FileProberties& fileP) {
   xml_print("fileName", fileP.getTfile()->GetName());
 
 
@@ -306,7 +269,17 @@ void s_process_collection::process_set_run_prob(const FileProberties& fileP) {
   m_outputl.set_HV(fileP.m_HV);
 }
 
-bool s_process_collection::process(FileProberties* fileP) {
+void s_process_collection_standard::start_collection(TFile* file__) {
+  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
+    m_outputl,
+    &m_buffer,
+    true
+    );
+
+  m_outputTree->getTTree()->SetDirectory(file__->GetDirectory("/"));
+}
+
+bool s_process_collection_standard::process_file(FileProberties* fileP) {
   process_reset();
   auto file_PRINTOUT = xml_print("file");
 
@@ -320,13 +293,13 @@ bool s_process_collection::process(FileProberties* fileP) {
 
   m_plotCollection = std::make_shared<r_plot_collection>(fileP->getTfile());
   m_plotCollection->setOutputFile(m_dummy);
-  m_file_fitter = std::make_shared<s_file_fitter>(m_plotCollection->get_plot_collection_ptr(), m_gear.get());
+  m_file_fitter = std::make_shared<s_file_fitter>(m_plotCollection->get_plot_collection_ptr(), get_gear());
 
   m_output_planes = m_file_fitter->get_correlations_channel(
-    m_cuts,
-    m_residual_cut,
-    m_rotation,
-    m_pos_x,
+    get_xml_input()->globalConfig().cut(),
+    get_xml_input()->globalConfig().residual_cut(),
+    get_xml_input()->globalConfig().Rotation(),
+    get_xml_input()->globalConfig().Position_value(),
     s_plot_prob("Hits_in_channels")
     .SaveToDisk()
     );
@@ -360,6 +333,14 @@ bool s_process_collection::process(FileProberties* fileP) {
   return true;
 }
 
+const xmlImputFiles::XML_imput_file* s_process_collection::get_xml_input() const {
+  return m_input_files_xml.get();
+}
+
+const sct_corr::Xgear* s_process_collection::get_gear() const {
+  return m_gear.get();
+}
+
 bool s_process_collection::process() {
 
   TCanvas c;
@@ -370,16 +351,12 @@ bool s_process_collection::process() {
     m_outname.c_str(), 
     "recreate"
     );
+  start_collection(_file1);
 
-  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
-    m_outputl, 
-    &m_buffer, 
-    true
-    );
 
-  m_outputTree->getTTree()->SetDirectory(_file1->GetDirectory("/"));
+ 
   for (auto &e : m_files) {
-     process(&e);
+     process_file(&e);
 
   }
   _file1->Write();
@@ -389,7 +366,15 @@ bool s_process_collection::process() {
 
 
 
-Long64_t s_process_collection::DrawResidual(Double_t min_X, Double_t max_X) {
+s_process_collection_standard::s_process_collection_standard() :m_outputl("out") {
+  m_dummy = new TFile("dummy1.root", "recreate");
+}
+
+s_process_collection_standard::~s_process_collection_standard() {
+  delete m_dummy;
+}
+
+Long64_t s_process_collection_standard::DrawResidual(Double_t min_X, Double_t max_X) {
   m_Residual = std::make_shared<TH1D>(
     "residual", 
     "residual", 
@@ -410,7 +395,7 @@ Long64_t s_process_collection::DrawResidual(Double_t min_X, Double_t max_X) {
 
 
 
-Long64_t s_process_collection::DrawResidual() {
+Long64_t s_process_collection_standard::DrawResidual() {
 
   auto ret = m_plotCollection->Draw(
     m_output_planes.getResidual(), 
@@ -422,7 +407,7 @@ Long64_t s_process_collection::DrawResidual() {
   return ret;
 }
 
-Long64_t s_process_collection::DrawResidualVsEvent(Double_t min_X, Double_t max_X) {
+Long64_t s_process_collection_standard::DrawResidualVsEvent(Double_t min_X, Double_t max_X) {
   m_ResidualVsEvent = std::make_shared<TH2D>(
     "ResidualVsEvent", 
     "Residual Vs Event", 
@@ -440,7 +425,7 @@ Long64_t s_process_collection::DrawResidualVsEvent(Double_t min_X, Double_t max_
     );
 }
 
-Long64_t s_process_collection::DrawResidualVsEvent() {
+Long64_t s_process_collection_standard::DrawResidualVsEvent() {
 
   auto ret = m_plotCollection->Draw(
     m_res_VS_event(), 
@@ -454,7 +439,7 @@ Long64_t s_process_collection::DrawResidualVsEvent() {
 
 }
 
-Long64_t s_process_collection::DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X) {
+Long64_t s_process_collection_standard::DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X) {
   m_resVSMissing = std::make_shared<TH2D>(
     "ResidualVsMissingCordinate",
     "Residual Vs Missing Coordinate",
@@ -490,7 +475,7 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate(Double_t min_X, Do
   return ret;
 }
 
-Long64_t s_process_collection::DrawResidualVsMissingCordinate() {
+Long64_t s_process_collection_standard::DrawResidualVsMissingCordinate() {
 
   auto ret = m_plotCollection->Draw(
     m_output_planes.getResidualVSmissing(),
@@ -508,12 +493,12 @@ Long64_t s_process_collection::DrawResidualVsMissingCordinate() {
   return ret;
 }
 
-Long64_t s_process_collection::Draw_Efficinecy_map() {
+Long64_t s_process_collection_standard::Draw_Efficinecy_map() {
 
   m_Efficieny_trueHits = std::make_shared<TH1D>(
     "total", 
     "total", 
-    m_bins, -0.5, m_numOfStrips - 0.5
+    get_xml_input()->globalConfig().NumberOfBins(), -0.5, get_xml_input()->globalConfig().NumberOfStrips() - 0.5
     );
 
   m_plotCollection->Draw(
@@ -526,7 +511,7 @@ Long64_t s_process_collection::Draw_Efficinecy_map() {
   m_Efficieny_map = std::make_shared<TH1D>(
     "Efficiency", 
     "Efficiency", 
-    m_bins, -0.5, m_numOfStrips - 0.5
+    get_xml_input()->globalConfig().NumberOfBins(), -0.5, get_xml_input()->globalConfig().NumberOfStrips() - 0.5
     );
   
   auto n = m_plotCollection->Draw(
@@ -545,11 +530,11 @@ Long64_t s_process_collection::Draw_Efficinecy_map() {
   return n;
 }
 
-Long64_t s_process_collection::Draw_Hit_map() {
+Long64_t s_process_collection_standard::Draw_Hit_map() {
   m_Hits_total = std::make_shared<TH1D>(
     "total", 
     "total",
-    m_bins, -0.5, m_numOfStrips - 0.5
+    get_xml_input()->globalConfig().NumberOfBins(), -0.5, get_xml_input()->globalConfig().NumberOfStrips() - 0.5
     );
 
   return  m_plotCollection->Draw(
@@ -560,11 +545,11 @@ Long64_t s_process_collection::Draw_Hit_map() {
     );
 }
 
-Long64_t s_process_collection::Draw_DUT_Hits_map() {
+Long64_t s_process_collection_standard::Draw_DUT_Hits_map() {
   m_Hits_with_DUT_Hits = std::make_shared<TH1D>(
     "DUT", 
     "DUT", 
-    m_bins, -0.5, m_numOfStrips - 0.5
+    get_xml_input()->globalConfig().NumberOfBins(), -0.5, get_xml_input()->globalConfig().NumberOfStrips() - 0.5
     );
 
   return m_plotCollection->Draw(
@@ -575,11 +560,11 @@ Long64_t s_process_collection::Draw_DUT_Hits_map() {
     );
 }
 
-TH2D* s_process_collection::getResidualVsMissingCordinate() {
+TH2D* s_process_collection_standard::getResidualVsMissingCordinate() {
   return m_resVSMissing.get();
 }
 
-void s_process_collection::pushChannel(
+void s_process_collection_standard::pushChannel(
   Double_t channel_x, 
   Double_t channel_y, 
   Double_t Effi, 
@@ -597,7 +582,7 @@ void s_process_collection::pushChannel(
 
 }
 
-TFile* s_process_collection::FileProberties::getTfile() const {
+TFile* FileProberties::getTfile() const {
   if (m_fileOwnd) {
     return m_fileOwnd.get();
   }
@@ -608,10 +593,10 @@ TFile* s_process_collection::FileProberties::getTfile() const {
   return nullptr;
 }
 
-void s_process_collection::FileProberties::setTFile(std::shared_ptr<TFile> file) {
+void FileProberties::setTFile(std::shared_ptr<TFile> file) {
   m_fileOwnd = file;
 }
 
-void s_process_collection::FileProberties::setTFile(TFile* file) {
+void FileProberties::setTFile(TFile* file) {
   m_file = file;
 }

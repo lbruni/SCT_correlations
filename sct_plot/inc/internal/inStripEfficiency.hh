@@ -12,8 +12,9 @@ class S_Cut;
 
 class TH1D;
 class S_DrawOption;
-
+using modulo_t = double;
 namespace sct_corr {
+
 class DllExport inStripEfficiency {
 public:
   inStripEfficiency(
@@ -21,14 +22,14 @@ public:
     const S_plane_def& trueHits_with_dut,
     const S_Cut& cut_,
     axis_def search_axis,
-    double mod_,
+    modulo_t mod_,
     const s_plot_prob& plot_prob
     );
   inStripEfficiency(
     const S_plane_def& trueHits,
     const S_plane_def& trueHits_with_dut,
     axis_def search_axis,
-    double mod_,
+    modulo_t mod_,
     const s_plot_prob& plot_prob
     );
   Long64_t Draw_true_hits(const S_DrawOption& d_option);
@@ -37,12 +38,12 @@ public:
   Long64_t Draw();
   Long64_t Draw(const S_DrawOption& d_option);
 
-
+  TH1D* getEfficiency_map() const;
 private:
   std::shared_ptr<S_plane_def> m_trueHits;
   std::shared_ptr<S_plane_def> m_DUT_hits;
   std::shared_ptr<TH1D> m_efficiency;
-  double m_mod;
+  modulo_t m_mod;
   axis_def m_search_axis;
   s_plot_prob m_plot_prob;
 };

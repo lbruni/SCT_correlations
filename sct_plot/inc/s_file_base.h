@@ -9,7 +9,10 @@
 #include "internal/platform.hh"
 #include "geometry/setup_description.hh"
 
-
+using ID_t = double;
+using residualCut_t = double;
+using rot_angle_t = double;
+using move_t = double;
 
 class DllExport s_file {
 public:
@@ -17,36 +20,40 @@ public:
   virtual ~s_file() {}
 
 
-  S_plane_def get_plane(const char* collection_name, double plane_ID) const;
-
+  S_plane_def get_plane(const char* collection_name, ID_t plane_ID) const;
+  
+  S_plot_collection* get_collection();
+  
 protected:
    S_plot_collection* get_plot_collection() const;
    sct_corr::Xgear* get_gear() const;
   std::shared_ptr<S_plot_collection> m_plot_collection;
 private:
-  const sct_corr::Xlayer* get_layer(double ID) const;
+  const sct_corr::Xlayer* get_layer(ID_t ID) const;
   std::unique_ptr<sct_corr::Xgear> m_gear;
 };
+
 
 
 class DllExport s_file_fitter : public s_file{
 public:
   s_file_fitter(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  s_file_fitter(const char* Fitter_File, const char* gear_file);
   virtual ~s_file_fitter() {}
 
   s_plane_collection_correlations get_correlations(
     const S_Cut& fiducial_cut_,
-    double residualCut,
-    double rotate_angle,
-    double move_x,
+    residualCut_t residualCut,
+    rot_angle_t rotate_angle,
+    move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const ;
 
   s_plane_collection_correlations get_correlations_channel(
     const S_Cut& fiducial_cut_,
-    double residualCut,
-    double rotate_angle,
-    double move_x,
+    residualCut_t residualCut,
+    rot_angle_t rotate_angle,
+    move_t move_x,
     const s_plot_prob& = ""
     ) const ;
 
@@ -82,34 +89,35 @@ public:
 private:
   s_plane_collection_correlations get_Daff_correlations(
     const S_Cut& fiducial_cut_,
-    double residualCut,
-    double rotate_angle,
-    double move_x,
+    residualCut_t residualCut,
+    rot_angle_t rotate_angle,
+    move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
 
   s_plane_collection_correlations get_GBL_correlations(
     const S_Cut& fiducial_cut_,
-    double residualCut,
-    double rotate_angle,
-    double move_x,
+    residualCut_t residualCut,
+    rot_angle_t rotate_angle,
+    move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
   s_plane_collection_correlations get_Daff_correlations_channel(
     const S_Cut& fiducial_cut_,
-    double residualCut,
-    double rotate_angle,
-    double move_x,
+    residualCut_t residualCut,
+    rot_angle_t rotate_angle,
+    move_t move_x,
     const s_plot_prob& = ""
     ) const;
   s_plane_collection_correlations get_GBL_correlations_channel(
     const S_Cut& fiducial_cut_,
-    double residualCut,
-    double rotate_angle,
-    double move_x,
+    residualCut_t residualCut,
+    rot_angle_t rotate_angle,
+    move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
 };
+
 
 class DllExport s_alibava_file :public s_file {
 public:

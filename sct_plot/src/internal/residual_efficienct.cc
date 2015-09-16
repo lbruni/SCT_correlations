@@ -199,8 +199,12 @@ Long64_t residual_efficienct::Draw(const S_DrawOption& d_option) {
   m_efficiency->Draw(d_option.getOptions());
   m_efficiency->GetXaxis()->SetTitle("residual");
   m_efficiency->GetYaxis()->SetTitle("efficiency");
-  SCT_helpers::saveTH1_as_txt(*m_efficiency, "residual_efficienct.txt");
+  
   return m_dut_count;
+}
+
+TH1D* residual_efficienct::getEfficiency_map() const {
+  return m_efficiency.get();
 }
 
 }

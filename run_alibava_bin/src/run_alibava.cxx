@@ -56,21 +56,40 @@ int asyncMain(void *arg) {
   auto corr = sct_processor::correlation(file___.Alibava_sz_data().getX_def(), local_.getX_def());
   auto res = sct_processor::residual(file___.Alibava_sz_data().getX_def(), local_.getX_def());
 
-  auto res1 = sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_);
+  auto res1 = sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_,true,"entire_cluster");
 
   auto res2 = sct_processor::hitmap(res1.getX_def(), res1.getCharge_def());
   auto res_missing = sct_processor::hitmap(res1.getX_def(), res1.getY_def());
+
+
+  auto max_strip = sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_,false,"Leading_strip");
+
+  auto max_strip_ = sct_processor::hitmap(max_strip.getX_def(), max_strip.getCharge_def());
+
+  auto clusterVSMaxStrip = sct_processor::correlation(res1.getCharge_def(), max_strip.getCharge_def());
+
   pl.loop();
 
+
+
+
   new TCanvas();
-  pl.Draw(res_missing, S_DrawOption().draw_y_VS_x());
+  pl.Draw(clusterVSMaxStrip, S_DrawOption().draw_y_VS_x());
 
   new TCanvas();
 
   TH1D h1("h1", "h1", 100, 0, 500);
-  TH2D h3("h3", "h3", 100, -4,4 ,100,0,1.5);
-  pl.Draw(res2, S_DrawOption().draw_y_VS_x().output_object(&h3));
+  //TH2D h3("h3", "h3", 100, -4,4 ,100,0,1.5);
+  pl.Draw(res2, S_DrawOption().draw_y());
+  pl.Draw(max_strip_, S_DrawOption().draw_y().opt_same());
+
   //SCT_helpers::saveTH1_as_txt(h1, "all_cluster.txt");
+
+
+  new TCanvas();
+  pl.Draw(max_strip_, S_DrawOption().draw_x());
+  pl.Draw(res, S_DrawOption().draw_x().opt_same());
+
   new TCanvas();
 
   pl.Draw(corr, S_DrawOption().draw_y_VS_x().opt_colz().output_object(&h2));
@@ -82,6 +101,7 @@ int asyncMain(void *arg) {
   std::cout << p.GetParameter("p0") << std::endl;
   new TCanvas();
   pl.Draw(res, S_DrawOption().draw_x());
+
   gBrowser = new TBrowser();
   theApp.Run();
 

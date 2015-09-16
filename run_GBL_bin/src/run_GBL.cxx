@@ -51,29 +51,38 @@ struct  inParam {
 
 
 int asyncMain(void *arg) {
+
+
   inParam* para = static_cast<inParam *>(arg);
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  TFile * file_ = new TFile("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/run000691_fitter.root");
-  rapidxml::file<> m_file("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
-  rapidxml::xml_document<> m_doc;
-  m_doc.parse<0>(m_file.data());
-
-  auto gear = sct_corr::Xgear(m_doc.first_node("gear"));
-
+  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/";
+  std::string name_ = "run000688_";
+  std::string name_suffix = "fitter";
+  std::string extension_="root";
+  std::string fullName = path_ + name_ + name_suffix+"." + extension_;
+  
+ //TFile * file_ = new TFile(fullName.c_str());
+//   rapidxml::file<> m_file("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
+//   rapidxml::xml_document<> m_doc;
+//   m_doc.parse<0>(m_file.data());
+// 
+//   auto gear = sct_corr::Xgear(m_doc.first_node("gear"));
+//  auto gear = sct_corr::load_gear("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
 
   TFile * out_file = new TFile("output.root", "recreate");
-  r_plot_collection pl(file_);
-  pl.setOutputFile(out_file);
-  s_file_fitter file___(pl.get_plot_collection_ptr(), &gear);
-
+ // r_plot_collection pl(file_);
+//  pl.setOutputFile(out_file);
+  s_file_fitter file___(fullName.c_str(), "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
+  auto pl = file___.get_collection();
+  pl->setOutputFile(out_file);
 
   auto gbl_collection = file___.get_correlations_channel(
     S_YCut(-42, -36),
-    1, 
-    0, 
-    -6.36702e-001, 
+    residualCut_t(1),
+    rot_angle_t(0),
+    move_t(- 6.36702e-001),
     s_plot_prob("GBL").SaveToDisk()
     );
     
@@ -83,7 +92,7 @@ int asyncMain(void *arg) {
     gbl_collection.getTrueHitsWithDUT(),
     S_XCut(280, 360),
     x_axis_def,
-    3,
+    modulo_t(3),
     s_plot_prob("inStripEffi")
     );
 
@@ -97,7 +106,7 @@ int asyncMain(void *arg) {
     gbl_collection.getTrueHitsWithDUT(), 
     file___.DUT_zs_data(), 10,
     x_axis_def, 
-    3, 
+    modulo_t(3),
     s_plot_prob("cluster_size_instrip").SaveToDisk()
     );
 
@@ -110,16 +119,16 @@ int asyncMain(void *arg) {
     s_plot_prob("Res_efficiency")
     );
 
-  pl.loop(40000);
-
+  //pl.loop(4000);
+  pl->loop();
   gCanvas.push_back(new TCanvas());
 
   res_eff.Draw();
-
+  SCT_helpers::saveTH1_as_txt(*res_eff.getEfficiency_map(), (path_ + name_ + "residual_efficiency" + "." + "txt").c_str());
   
   gCanvas.push_back(new TCanvas());
   instrip.Draw(S_DrawOption());
-
+  SCT_helpers::saveTH1_as_txt(*instrip.getEfficiency_map(), (path_ + name_ + "instripEffi" + "." + "txt").c_str());
 
   gCanvas.push_back(new TCanvas());
   

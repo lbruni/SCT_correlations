@@ -24,7 +24,7 @@ S_plot::S_plot() : m_plot(nullptr)
 
 const char* S_plot::getName() const
 {
-  return m_plot->getName();
+  return m_plot->getName().value.c_str();
 }
 
 const char* S_plot::getType() const 

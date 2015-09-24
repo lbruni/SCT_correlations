@@ -9,11 +9,11 @@
 namespace sct_corr{
   class DllExport rootEvent_Track_hits :public rootEventBase{
   public:
-    rootEvent_Track_hits(const char* name);
+    rootEvent_Track_hits(const sct_type::collectionName_t& name);
     rootEvent_Track_hits();
 
     ~rootEvent_Track_hits();
-    virtual std::shared_ptr<plane> createPlane(double ID) ; 
+    virtual std::shared_ptr<plane> createPlane(const sct_type::ID_t& ID) override;
     void push_Hit(const plane_hit& h);
     void push_Hit(const plane_hit& h, double ID);
 

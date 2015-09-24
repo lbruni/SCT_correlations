@@ -3,9 +3,9 @@
 
 namespace sct_corr{
   int g_plot_count_intern = 0;
-  plot::plot(const s_plot_prob& plot_proberties) :m_prob(plot_proberties)
+  plot::plot(const s_plot_prob& plot_proberties) :m_prob(plot_proberties), m_name(plot_proberties.getName())
   {
-    m_name = m_prob.getName();
+   
   }
 
   void plot::setParameter(const char* tag, const char * value)
@@ -19,13 +19,13 @@ namespace sct_corr{
     return ret;
   }
 
-  const char* plot::getName() const
+   sct_type::collectionName_t plot::getName() const
   {
-    if (m_name.empty())
+    if (m_name.value.empty())
     {
-      m_name = getType() + std::to_string(g_plot_count_intern++);
+      m_name.value = getType() + std::to_string(g_plot_count_intern++);
     }
-    return m_name.c_str();
+    return m_name;
   }
 
   bool plot::getSave2disk() const

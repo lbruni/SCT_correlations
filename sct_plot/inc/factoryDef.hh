@@ -39,7 +39,7 @@ namespace Class_factory_Utilities{
     
     }
     
-    Class_factory_Utilities_THROW("unknown class: <" + name + ">");
+    Class_factory_Utilities_THROW(std::string("unknown class: <") + name + std::string(">"));
     return nullptr;
 
   }

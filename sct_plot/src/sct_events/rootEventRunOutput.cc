@@ -6,12 +6,12 @@
 
 std::vector<std::string> get_axis_list(){
     std::vector<std::string> ret;
-    ret.emplace_back(getIDString());
-    ret.emplace_back(axis2String(x_axis_def));
-    ret.emplace_back(axis2String(y_axis_def));
-    ret.emplace_back(axis2String(Occupancy_axis_def));
-    ret.emplace_back(axis2String(Occupancy_error_axis_def));
-    ret.emplace_back(axis2String(NumOfEvents_axis_def));
+    ret.emplace_back(Un_necessary_CONVERSION(getIDString()));
+    ret.emplace_back(Un_necessary_CONVERSION(axis2String(x_axis_def)));
+    ret.emplace_back(Un_necessary_CONVERSION(axis2String(y_axis_def)));
+    ret.emplace_back(Un_necessary_CONVERSION(axis2String(Occupancy_axis_def)));
+    ret.emplace_back(Un_necessary_CONVERSION(axis2String(Occupancy_error_axis_def)));
+    ret.emplace_back(Un_necessary_CONVERSION(axis2String(NumOfEvents_axis_def)));
     return ret;
     
 }
@@ -46,7 +46,7 @@ namespace sct_corr{
         tree->SetBranchAddress("HV", m_HV.get());
     }
     
-    rootEventRunOutput::rootEventRunOutput(const char* collectionName) :rootEventBase(collectionName, get_axis_list()),
+    rootEventRunOutput::rootEventRunOutput(const sct_type::collectionName_t& collectionName) :rootEventBase(collectionName, get_axis_list()),
     m_x(getData(x_axis_def)),
     m_y(getData(y_axis_def)),
     m_Occupancy(getData(Occupancy_axis_def)),
@@ -64,7 +64,7 @@ namespace sct_corr{
         m_HV = std::make_shared< double >(0);
     }
     
-    std::shared_ptr<plane> rootEventRunOutput::createPlane(double ID)
+    std::shared_ptr<plane> rootEventRunOutput::createPlane(const sct_type::ID_t& ID)
     {
         return nullptr;
     }

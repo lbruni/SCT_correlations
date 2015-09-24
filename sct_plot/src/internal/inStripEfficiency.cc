@@ -44,7 +44,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
 
 
 
-  std::string true_hits_name = std::string(plot_prob.getName()) + "_true_hits";
+  std::string true_hits_name = plot_prob.getName().value + "_true_hits";
   auto mod_total = sct_processor::moduloHitMap(
     trueHits,
     mod_x,
@@ -54,7 +54,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
     );
 
   m_trueHits = mod_total.copy();
-  std::string dut_hits_name = std::string(plot_prob.getName()) + "_DUT_hits";
+  std::string dut_hits_name = plot_prob.getName().value + "_DUT_hits";
   auto mod_DUT = sct_processor::moduloHitMap(
     trueHits_with_dut,
     mod_x,
@@ -95,7 +95,7 @@ Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
     return -1;
   }
   m_efficiency->Draw(d_option.getOptions());
-  m_efficiency->SetTitle(m_plot_prob.getName());
+  m_efficiency->SetTitle(m_plot_prob.getName().value.c_str());
   m_efficiency->GetXaxis()->SetTitle("instrip_pos");
   m_efficiency->GetYaxis()->SetTitle("Efficiency");
   //SCT_helpers::saveTH1_as_txt(*m_efficiency, "instripEffi.txt");

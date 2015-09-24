@@ -5,6 +5,7 @@
 #include "internal/plotsBase.hh"
 #include "s_plane_def.h"
 #include "sct_events/rootEvent_X_Y_hits.hh"
+#include "sct_types.h"
 
 namespace sct_corr{
   class treeCollection_ouput;
@@ -23,7 +24,7 @@ namespace sct_corr{
     virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) override;
     virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* axis);
-    virtual const char* getOutputName()  const;
+    virtual sct_type::collectionName_t getOutputName()  const;
   protected:
     const axis_ref* m_x = nullptr;
     const axis_ref* m_y = nullptr;

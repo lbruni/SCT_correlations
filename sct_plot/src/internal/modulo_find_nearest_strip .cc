@@ -86,9 +86,9 @@ namespace sct_corr{
   s_plane_collection modulo_find_nearest_strip::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_distance"), S_plane_def(getOutputName(), 0)));
-    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_plane1"), S_plane_def(getOutputName(), 1)));
-    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_plane2"), S_plane_def(getOutputName(), 2)));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_distance"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_plane1"), S_plane_def(getOutputName(), sct_type::ID_t(1))));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_strip_plane2"), S_plane_def(getOutputName(), sct_type::ID_t(2))));
     return ret;
   }
 

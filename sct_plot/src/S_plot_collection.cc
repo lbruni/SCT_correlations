@@ -74,7 +74,7 @@ s_plane_collection plot_collection_impl::addPlot_internal(S_plot plot_def) {
     return s_plane_collection();
   }
   auto ret = m_plots.back().second.getOutputcollection();
-  ret.set_s_plot_collection(m_self);
+  ret.set_plot_collection(m_self);
   return ret;
 }
 
@@ -109,7 +109,7 @@ Long64_t plot_collection_impl::Draw(const char* name, const S_DrawOption& option
       return  e.second.Draw(option);
     }
   }
-  auto tree_ = getTTree(name);
+  auto tree_ = getTTree(sct_type::collectionName_t(name));
   if (tree_) {
     return option.Draw(tree_);
   }
@@ -122,10 +122,10 @@ Long64_t plot_collection_impl::Draw(const S_plane_def& name, const S_DrawOption&
 
   S_DrawOption local(option);
 
-  TCut dummy = ("ID == " + std::to_string(name.getID())).c_str();
+  TCut dummy = ("ID == " + std::to_string( necessary_CONVERSION(name.getID()))).c_str(); //external library 
   local.cut_add(dummy);
 
-  return Draw(name.getName(), local);
+  return Draw(Un_necessary_CONVERSION(name.getName()).c_str(), local);
 
 }
 Long64_t plot_collection_impl::getMaxEntriesFromTree(Long64_t last) {
@@ -182,7 +182,7 @@ void plot_collection_impl::loop(Long64_t last /*= -1*/, Long64_t start /*= 0*/) 
   //   std::cout << (std::clock() - start_time) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 }
 
-bool plot_collection_impl::collectionExist(const char* name) const {
+bool plot_collection_impl::collectionExist(const sct_type::collectionName_t& name) const {
 
 
   if (getTTree(name)) {
@@ -197,12 +197,12 @@ void plot_collection_impl::set_self_weak_pointer(std::weak_ptr<sct_corr::plot_co
 
 const sct_corr::axis_ref* plot_collection_impl::getAxis_ref(const S_Axis & axis) {
 
-  return getPlane(axis.m_planeID, getCollection(axis.m_collectionName.c_str()))->getAxis(axis.m_axis);
+  return getPlane(axis.m_planeID, getCollection(axis.m_collectionName))->getAxis(axis.m_axis);
 }
 
-sct_corr::treeCollection* plot_collection_impl::getCollection(const char* name) {
+sct_corr::treeCollection* plot_collection_impl::getCollection(const sct_type::collectionName_t& name) {
   for (auto&e : m_trees) {
-    if (e.first == name) {
+    if (Un_necessary_CONVERSION(e.first) == Un_necessary_CONVERSION(name)) { // mising opperator == 
       return e.second;
     }
   }
@@ -210,7 +210,7 @@ sct_corr::treeCollection* plot_collection_impl::getCollection(const char* name) 
   if (m_eventBuffer->IsCollection(name)) {
     sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(name, m_eventBuffer.get());
 
-    m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
+    m_trees.push_back(std::make_pair(name, tree_pointer));
     return tree_pointer;
   }
 
@@ -223,23 +223,23 @@ sct_corr::treeCollection* plot_collection_impl::getCollection(const char* name) 
 
 
   if (!collection) {
-    std::cout << "collection not found! Collection name: \"" << name << "\"" << std::endl;
+    std::cout << "collection not found! Collection name: \"" << necessary_CONVERSION(name) << "\"" << std::endl;
     return nullptr;
   }
 
 
   sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(collection);
 
-  m_trees.push_back(std::make_pair(std::string(name), tree_pointer));
+  m_trees.push_back(std::make_pair(name, tree_pointer));
   return tree_pointer;
 
 }
 
-TTree* plot_collection_impl::getTTree(const char* name) const {
+TTree* plot_collection_impl::getTTree(const sct_type::collectionName_t& name) const {
   TTree *collection = NULL;
 
   for (auto& e : m_file) {
-    e->GetObject(name, collection);
+    e->GetObject(necessary_CONVERSION(name).c_str(), collection); ////external library 
     if (collection) {
       return collection;
     }
@@ -247,7 +247,7 @@ TTree* plot_collection_impl::getTTree(const char* name) const {
   return nullptr;
 }
 
-S_plane* plot_collection_impl::getPlane(double ID, sct_corr::treeCollection* coll) {
+S_plane* plot_collection_impl::getPlane(const sct_type::ID_t&  ID, sct_corr::treeCollection* coll) {
   if (!coll) {
     return nullptr;
   }

@@ -5,6 +5,7 @@
 
 #include "internal/platform.hh"
 #include "plot_save_option_def.h"
+#include "sct_types.h"
 class DllExport s_plot_prob{
 public:
   s_plot_prob();
@@ -13,12 +14,12 @@ public:
   s_plot_prob& setSaveOptione(plot_save_option_def save_);
   s_plot_prob& doNotSaveToDisk();
   s_plot_prob& SaveToDisk();
-  const char* getName() const;
+  sct_type::collectionName_t getName() const;
   size_t getNameSize() const;
   plot_save_option_def getPlotSaveOption() const;
 
 #ifndef __CINT__
-  std::string m_name;
+  sct_type::collectionName_t m_name = sct_type::collectionName_t("");
   plot_save_option_def m_save = save_to_disk;
 #endif
 

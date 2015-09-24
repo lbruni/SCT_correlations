@@ -11,7 +11,7 @@ s_plot_prob::s_plot_prob(const char* name) :m_name(name)
 
 s_plot_prob& s_plot_prob::setName(const char* name)
 {
-  m_name = name;
+  m_name =  sct_type::collectionName_t( name);
   return *this;
 }
 
@@ -31,14 +31,14 @@ s_plot_prob& s_plot_prob::SaveToDisk()
   return setSaveOptione(save_to_disk);
 }
 
-const char* s_plot_prob::getName() const
+sct_type::collectionName_t s_plot_prob::getName() const
 {
-  return m_name.c_str();
+  return m_name;
 }
 
 size_t  s_plot_prob::getNameSize() const
 {
-  return m_name.size();
+  return m_name.value.size();
 }
 
 plot_save_option_def s_plot_prob::getPlotSaveOption() const

@@ -12,8 +12,8 @@ namespace sct_corr{
 
 
 #ifdef _DEBUG   
-  TTreeVectorExtractor::TTreeVectorExtractor(const char* name, TTree* tree) :
-    m_vecRel(std::make_shared<ReleaseVectorDef>(name)),
+TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t& name, TTree* tree) :
+    m_vecRel(std::make_shared<ReleaseVectorDef>(necessary_CONVERSION(name).c_str())),
     m_name(name)
    
   {
@@ -25,7 +25,7 @@ namespace sct_corr{
   }
 
 
-  TTreeVectorExtractor::TTreeVectorExtractor(const char* name) :m_vecRel(std::make_shared<ReleaseVectorDef>(name)), m_name(name)
+TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t& name) :m_vecRel(std::make_shared<ReleaseVectorDef>(necessary_CONVERSION(name).c_str())), m_name(name)
   {
     m_owend_vector = std::make_shared<std::vector<double> >();
     m_vec = m_owend_vector.get();
@@ -122,9 +122,9 @@ namespace sct_corr{
 #endif
 
 
-  const char* TTreeVectorExtractor::getName() const
+  sct_type::AxesName_t TTreeVectorExtractor::getName() const
   {
-    return m_name.c_str();
+    return m_name;
   }
 
   void TTreeVectorExtractor::reset()
@@ -155,7 +155,7 @@ namespace sct_corr{
         continue;
       }
       
-      m_data.push_back(TTreeVectorExtractor( br->GetName(), tree));
+      m_data.push_back(TTreeVectorExtractor(sct_type::AxesName_t(br->GetName()), tree));
     }
     m_event_nr_ownd = std::make_shared<int>(0);
    
@@ -163,11 +163,11 @@ namespace sct_corr{
 
   }
 
-  rootEventBase::rootEventBase(const char* collectionName, std::vector<std::string> axis_list) :m_name(collectionName)
+  rootEventBase::rootEventBase(const sct_type::collectionName_t& collectionName, std::vector<std::string> axis_list) :m_name(collectionName)
   {
     for (auto&e : axis_list)
     {
-      m_data.emplace_back(e.c_str());
+      m_data.emplace_back(sct_type::AxesName_t(e.c_str()));
     }
     m_event_nr_ownd = std::make_shared<int>(0);
     m_event_nr = m_event_nr_ownd.get();
@@ -179,7 +179,7 @@ namespace sct_corr{
 
   }
 
-  std::shared_ptr<plane> rootEventBase::createPlane(double ID) 
+  std::shared_ptr<plane> rootEventBase::createPlane(const sct_type::ID_t& ID)
   {
     return  std::shared_ptr<plane>(std::move(plane::create(ID, this)));
   }
@@ -195,28 +195,26 @@ namespace sct_corr{
 
 
 
-  std::vector<double>* rootEventBase::getData(const char* name) const
+
+
+  std::vector<double>* rootEventBase::getData(axis_def ax) const
   {
-    
-    for (auto&e:m_data)
-    {
-      if (strcmp(name, e.getName()) ==0 )
-      {
+    return getData(sct_type::AxesName_t(axis2String(ax)));
+  }
+
+  std::vector<double>* rootEventBase::getData(const sct_type::AxesName_t& name) const {
+    for (auto&e : m_data) {
+      if (Un_necessary_CONVERSION(name) == Un_necessary_CONVERSION(e.getName())) { // the opperator== is missing for this class 
         return e.getVec();
       }
-       
+
     }
     return nullptr;
   }
 
-  std::vector<double>* rootEventBase::getData(axis_def ax) const
+  std::vector<sct_type::AxesName_t> rootEventBase::getDataNames() const
   {
-    return getData(axis2String(ax));
-  }
-
-  std::vector<std::string> rootEventBase::getDataNames() const
-  {
-    std::vector<std::string> ret;
+    std::vector<sct_type::AxesName_t> ret;
     for (auto&e : m_data)
     {
       ret.push_back(e.getName());
@@ -224,9 +222,9 @@ namespace sct_corr{
     return ret;
   }
 
-  const char* rootEventBase::getName() const
+  const sct_type::collectionName_t& rootEventBase::getName() const
   {
-    return m_name.c_str();
+    return m_name;
   }
 
   void rootEventBase::reset()
@@ -265,15 +263,17 @@ namespace sct_corr{
 
   rootEventBaseAxis::rootEventBaseAxis(const rootEventBase& ev, axis_def ax, double id_) :m_planeID(id_), m_name(axis2String(ax))
   {
-    m_axis = ev.getData(m_name.c_str());
-    m_ID = ev.getData("ID");
+    m_axis = ev.getData(m_name);
+    m_ID = ev.getData(sct_type::AxesName_t("ID"));
   }
 
-  rootEventBaseAxis::rootEventBaseAxis(const rootEventBase& ev, const char* ax_name, double id_) :m_planeID(id_), m_name(ax_name)
+  rootEventBaseAxis::rootEventBaseAxis(const rootEventBase& ev, const sct_type::AxesName_t& ax_name, const sct_type::ID_t& id_) :m_planeID(id_), m_name(ax_name)
   {
-    m_axis = ev.getData(m_name.c_str());
-    m_ID = ev.getData("ID");
+    m_axis = ev.getData(m_name);
+    m_ID = ev.getData(sct_type::AxesName_t("ID"));
   }
+
+
 
   bool rootEventBaseAxis::next() const
   {
@@ -284,7 +284,7 @@ namespace sct_corr{
         return false;
       }
 
-    } while ((m_ID->at(m_curr) != m_planeID));
+    } while ((m_ID->at(m_curr) != necessary_CONVERSION(m_planeID)));
 
     return true;
   }
@@ -294,29 +294,29 @@ namespace sct_corr{
     return m_axis->at(m_curr);
   }
 
-  const char* rootEventBaseAxis::getName() const
+  const sct_type::AxesName_t&  rootEventBaseAxis::getName() const
   {
-    return m_name.c_str();
+    return m_name;
   }
 
-  rootEventBaseAxisCollection::rootEventBaseAxisCollection(const rootEventBase& ev, double id_)
+  rootEventBaseAxisCollection::rootEventBaseAxisCollection(const rootEventBase& ev, const sct_type::ID_t& id_)
   {
     auto names = ev.getDataNames();
     for (auto& e : names){
-      m_axis.emplace_back(ev, e.c_str(), id_);
+      m_axis.emplace_back(ev, e, id_);
     }
   }
 
   const axis_ref* rootEventBaseAxisCollection::getAxis(axis_def ax) const
   {
-    return getAxis(axis2String(ax));
+    return getAxis(sct_type::AxesName_t(axis2String(ax)));
   }
 
-  const axis_ref* rootEventBaseAxisCollection::getAxis(const char* axisName) const
+  const axis_ref* rootEventBaseAxisCollection::getAxis(const sct_type::AxesName_t&  axisName) const
   {
     for (auto& e:m_axis)
     {
-      if (strcmp(axisName, e.getName()) == 0)
+      if (Un_necessary_CONVERSION(axisName) == Un_necessary_CONVERSION(e.getName()))
       {
         return dynamic_cast<const axis_ref*>(&e);
       }

@@ -3,46 +3,46 @@
 #include "sct_default_names.h"
 
 
-const char* sct::col_hit()
+sct_type::collectionName_t sct::col_hit()
 {
-  return "hit";
+  return  sct_type::collectionName_t("hit");
 }
 
-const char* sct::col_zsdata_strip()
+sct_type::collectionName_t sct::col_zsdata_strip()
 {
-  return "zsdata_strip";
+  return  sct_type::collectionName_t("zsdata_strip");
 }
 
-const char* sct::col_zsdata_m26()
+sct_type::collectionName_t sct::col_zsdata_m26()
 {
-  return "zsdata_m26";
+  return  sct_type::collectionName_t("zsdata_m26");
 }
 
-const char* sct::col_zsdata_apix()
+sct_type::collectionName_t sct::col_zsdata_apix()
 {
-  return "zsdata_apix";
+  return  sct_type::collectionName_t("zsdata_apix");
 }
 
-const char* sct::col_fitpoints()
+sct_type::collectionName_t sct::col_fitpoints()
 {
-  return "fitpoints";
+  return  sct_type::collectionName_t("fitpoints");
 }
 
-const char* sct::col_fitpoints_local()
+sct_type::collectionName_t sct::col_fitpoints_local()
 {
-  return "fitpoints_local";
+  return  sct_type::collectionName_t("fitpoints_local");
 }
 
-const char* sct::col_local_hit()
+sct_type::collectionName_t sct::col_local_hit()
 {
-  return "local_hit";
+  return  sct_type::collectionName_t("local_hit");
 }
-const char* sct::col_DUT_TTC()
+sct_type::collectionName_t sct::col_DUT_TTC()
 {
-  return "zsdata_strip_TTC";
+  return  sct_type::collectionName_t("zsdata_strip_TTC");
 }
-const char* sct::col_GBL_fitted_points() {
-  return "GBL_tracks";
+sct_type::collectionName_t sct::col_GBL_fitted_points() {
+  return sct_type::collectionName_t("GBL_tracks");
 }
 
 

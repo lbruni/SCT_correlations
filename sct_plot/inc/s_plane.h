@@ -32,8 +32,8 @@ public:
 
 
 
-  const char * getName() const;
-  Double_t getID() const;
+  const sct_type::collectionName_t& getName() const;
+  const sct_type::ID_t& getID() const;
   bool next();
 
 

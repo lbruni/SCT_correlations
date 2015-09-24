@@ -26,8 +26,8 @@ namespace sct_corr{
   s_plane_collection plot_a_if_b_has_a_hit::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("A_if_B_has_a_hit_get_A"), S_plane_def(getOutputName(), 0)));
-    ret.m_planes.push_back(std::make_pair(std::string("A_if_B_has_a_hit_get_B"), S_plane_def(getOutputName(), 1)));
+    ret.m_planes.push_back(std::make_pair(std::string("A_if_B_has_a_hit_get_A"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+    ret.m_planes.push_back(std::make_pair(std::string("A_if_B_has_a_hit_get_B"), S_plane_def(getOutputName(), sct_type::ID_t(1))));
     return ret;
   }
 

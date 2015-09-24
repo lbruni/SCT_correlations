@@ -8,6 +8,7 @@
 #include "Rtypes.h"
 #include <memory>
 #include "S_Axis.h"
+#include "sct_types.h"
 
 class S_Axis;
 class S_treeCollection;
@@ -24,18 +25,18 @@ struct Xlayer;
 class DllExport S_plane_def {
 
 public:
-  S_plane_def(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ =nullptr);
+  S_plane_def(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
   Long64_t Draw(const S_DrawOption& ) const;
-  Double_t getID() const;
-  const char* getName() const;
+  const sct_type::ID_t& getID() const;
+  const sct_type::collectionName_t& getName() const;
 
   S_Axis getX_def() const;
   S_Axis getY_def() const;
   S_Axis get_Axis(axis_def) const;
   const std::vector<S_Axis>& get_axis_defs() const;
   const sct_corr::Xlayer* getLayer() const;
-#ifndef __CINT__
-  void set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection);
+
+  void set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection);
   virtual std::shared_ptr<S_plane_def> copy() const;
   std::shared_ptr<sct_corr::plot_collection> get_plot() const;
 protected:
@@ -44,21 +45,21 @@ protected:
 private:
   std::weak_ptr<sct_corr::plot_collection> m_plot;
 
-  Double_t m_ID = 0;
-  std::string m_name;
+  sct_type::ID_t m_ID = sct_type::ID_t(0);
+  sct_type::collectionName_t m_name;
   std::shared_ptr<sct_corr::Xlayer> m_layer;
-#endif
+
 
 };
 
-
+DllExport S_plane_def s_error_plane_def();
 
 
 
 
 class DllExport S_plane_def_GBL :public S_plane_def {
 public:
-  S_plane_def_GBL(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ = nullptr);
+  S_plane_def_GBL(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
   S_Axis getChi2_def() const;
   S_Axis getNdf_def() const;
   S_Axis getPhi_def() const;
@@ -73,7 +74,7 @@ public:
 
 class DllExport S_plane_def_Alibava :public S_plane_def {
 public:
-  S_plane_def_Alibava(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ = nullptr);
+  S_plane_def_Alibava(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
   S_Axis getCharge_def() const;
 #ifndef __CINT__
   virtual std::shared_ptr<S_plane_def> copy() const override;
@@ -83,7 +84,7 @@ public:
 class DllExport s_plane_collection {
 public:
 #ifndef __CINT__
-  void set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection__);
+  void set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection__);
 #endif
   s_plane_collection(const S_plane_def& plane_);
   s_plane_collection() {}
@@ -136,6 +137,7 @@ public:
  
 };
 
+DllExport S_plane_def s_error_plane_def();
 
 DllExport s_plane_collection operator+(s_plane_collection pl1, const s_plane_collection& pl2);
 DllExport s_plane_collection operator+(s_plane_collection pl1, const S_plane_def& pl2);

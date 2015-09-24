@@ -30,7 +30,7 @@ namespace sct_corr{
     void pushHit(Double_t x, Double_t y, Double_t ID);
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
     virtual Long64_t Draw(const S_DrawOption& opt) override;
-    virtual const char* getOutputName() const;
+    virtual  sct_type::collectionName_t getOutputName() const;
     rootEvent_X_Y_hits m_outPutEvent;
 
     std::shared_ptr<treeCollection_ouput> m_outTree;

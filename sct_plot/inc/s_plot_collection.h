@@ -71,7 +71,7 @@ public:
 
   virtual Long64_t Draw(const char* name, const S_DrawOption& option)=0;
   virtual Long64_t Draw(const S_plane_def& name, const S_DrawOption& option)=0;
-  virtual bool collectionExist(const char* name)  const =0 ;
+  virtual bool collectionExist(const sct_type::collectionName_t& name)  const = 0;
 };
 
 

@@ -1,6 +1,9 @@
 #ifndef sct_types_h__
 #define sct_types_h__
+#include <string>
 
+#define necessary_CONVERSION(x) x.value
+#define Un_necessary_CONVERSION(x) x.value
 
 #define TYPE_CLASS(name,type) \
 class name { \
@@ -22,6 +25,8 @@ namespace sct_type {
   TYPE_CLASS(rot_angle_t, double);
 
   TYPE_CLASS(move_t, double);
+  TYPE_CLASS(collectionName_t, std::string);
+  TYPE_CLASS(AxesName_t, std::string);
 
 
 }

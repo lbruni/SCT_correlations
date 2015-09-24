@@ -6,18 +6,30 @@
 namespace sct_corr{
 
 
-  void sct_event_buffer::set(const char * name, rootEventBase* ev)
+void sct_event_buffer::set(const sct_type::collectionName_t& name, rootEventBase* ev)
   {
-    m_events[name] = *ev;
+    if (IsCollection(name))
+    {
+      std::cout << "[sct_event_buffer::set] name already used. name = " << name.value << std::endl;
+      return;
+    }
+    m_events.push_back(map_t(name, *ev));
   }
 
-  bool sct_event_buffer::get(const char* name, rootEventBase* ev)
+bool sct_event_buffer::get(const sct_type::collectionName_t& name, rootEventBase* ev)
   {
     if (!IsCollection(name))
     {
       return false;
     }
-    *ev = m_events[name];
+    for (auto&e:m_events)
+    {
+      if (e.first.value==name.value)
+      {
+        *ev = e.second;
+      }
+    }
+    
 
     return true;
   }
@@ -32,14 +44,16 @@ namespace sct_corr{
     m_outputFile = file;
   }
 
-  bool sct_event_buffer::IsCollection(const char* name)
+  bool sct_event_buffer::IsCollection(const sct_type::collectionName_t& name)
   {
-    auto it = m_events.find(name);
-    if (it == m_events.end())
+
+    for (auto&e :m_events)
     {
-      return false;
+      if (e.first.value == name.value) {
+        return true;
+      }
     }
-    return true;
+    return false;
   }
 
   void sct_event_buffer::reset()

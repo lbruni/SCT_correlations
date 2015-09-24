@@ -92,8 +92,8 @@ double  residual_efficiency_processor::make_residual(double true_hit, double dut
 
 s_plane_collection residual_efficiency_processor::getOutputcollection() {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("all_residuals"), S_plane_def(getOutputName(), 0)));
-  ret.m_planes.push_back(std::make_pair(std::string("dut_hits"), S_plane_def(getOutputName(), 1)));
+  ret.m_planes.push_back(std::make_pair(std::string("all_residuals"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+  ret.m_planes.push_back(std::make_pair(std::string("dut_hits"), S_plane_def(getOutputName(), sct_type::ID_t(1))));
   return ret;
 }
 
@@ -195,7 +195,7 @@ Long64_t residual_efficienct::Draw(const S_DrawOption& d_option) {
   if (!m_efficiency) {
     return -1;
   }
-  m_efficiency->SetTitle(m_plot_prob.getName());
+  m_efficiency->SetTitle(m_plot_prob.getName().value.c_str());
   m_efficiency->Draw(d_option.getOptions());
   m_efficiency->GetXaxis()->SetTitle("residual");
   m_efficiency->GetYaxis()->SetTitle("efficiency");

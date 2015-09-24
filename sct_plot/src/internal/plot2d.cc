@@ -88,9 +88,9 @@ namespace sct_corr{
     std::cout << "[plot2d::pushPlane(S_plane* plane)] only one plane is supported \n";
   }
 
-  const char* plot2d::getOutputName() const
+  sct_type::collectionName_t plot2d::getOutputName() const
   {
-    return m_outTree->m_name.c_str();
+    return m_outTree->m_name;
   }
 
 }

@@ -95,7 +95,7 @@ void sct_corr::plot_residual_with_charge::pushHit(Double_t x, Double_t y, Double
 
 s_plane_collection sct_corr::plot_residual_with_charge::getOutputcollection() {
   s_plane_collection ret;
-  ret.push_back(S_plane_def(getOutputName(), 0));
+  ret.push_back(S_plane_def(getOutputName(), sct_type::ID_t(0)));
   return ret;
 }
 
@@ -143,9 +143,9 @@ void sct_corr::plot_residual_with_charge::pushPlane(S_plane* plane_) {
   std::cout << "[plotPlaneVsPlane] this class only supports two input planes \n";
 }
 
-const char* sct_corr::plot_residual_with_charge::getOutputName() const {
+ sct_type::collectionName_t sct_corr::plot_residual_with_charge::getOutputName() const {
   if (m_outTree) {
-    return m_outTree->m_name.c_str();
+    return m_outTree->m_name;
   }
   return getName();
 }
@@ -171,11 +171,11 @@ S_plane_def_Alibava sct_processor::residual_with_charge(
   auto pl = getPlotCollectionIfUnique(hits_A, hits_B);
   if (!pl) {
     std::cout << "[sct_processor::moduloHitMap] referencing to different plot collection\n";
-    return S_plane_def_Alibava("error", 0);
+    return S_plane_def_Alibava(sct_type::collectionName_t("error"), sct_type::ID_t(0));
   }
  auto  ret= pl->addPlot(S_plot(new sct_corr::plot_residual_with_charge(full_cluster,plot_prob)), hits_A, hits_B)();
   
- S_plane_def_Alibava ret1(ret.getName(), ret.getID(), ret.getLayer());
- ret1.set_s_plot_collection(ret.get_plot());
+ S_plane_def_Alibava ret1(ret.getName(), sct_type::ID_t(ret.getID()), ret.getLayer());
+ ret1.set_plot_collection(ret.get_plot());
  return ret1;
 }

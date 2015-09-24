@@ -8,11 +8,11 @@
 namespace sct_corr{
   class DllExport rootEvent_Alibava :public rootEventBase{
   public:
-    rootEvent_Alibava(const char* name);
+    rootEvent_Alibava(const sct_type::collectionName_t& name);
     rootEvent_Alibava();
 
     ~rootEvent_Alibava();
-    virtual std::shared_ptr<plane> createPlane(double ID) ;
+    virtual std::shared_ptr<plane> createPlane(const sct_type::ID_t& ID) override;
     void push_Hit(double x, double y);
     void push_Hit(double x, double y,double ID);
     void push_Hit(const plane_hit& h, double ID=0);

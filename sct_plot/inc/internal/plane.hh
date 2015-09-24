@@ -15,27 +15,28 @@ namespace sct_corr{
 
   struct plane_struct {
   public:
-    plane_struct(double ID_, rootEventBase* buffer_) :ID(ID_), buffer(buffer_) {}
-    const double ID;
+    plane_struct(const sct_type::ID_t& ID_, rootEventBase* buffer_) :ID(ID_), buffer(buffer_) {}
+    const  sct_type::ID_t ID;
     const rootEventBase* buffer;
 
   };
   class axis_names {
   public:
     axis_names() {}
-    axis_names(const std::vector<std::string>& names):m_names(names) {}
-    std::vector<std::string> m_names;
+    axis_names(const std::vector<sct_type::AxesName_t>& names) :m_names(names) {}
+    std::vector<sct_type::AxesName_t> m_names;
 
   };
   bool operator==(const axis_names& a1, const axis_names& a2);
   bool operator==(const axis_names& a1, const std::vector<std::string>& a2);
-  bool operator==(const std::vector<std::string>& a1, const axis_names& a2);
+  bool operator==(const std::vector<sct_type::AxesName_t>& a1, const axis_names& a2);
   bool operator<(const axis_names&  a1, const axis_names& a2);
 
 
-  std::string operator+(const axis_names& a1, const std::string& str);
-  std::string operator+(const std::string& str, const axis_names& a1 );
-
+  std::string operator+(const axis_names& a1, const sct_type::AxesName_t& str);
+  std::string operator+(const sct_type::AxesName_t& str, const axis_names& a1);
+  std::string operator+(const  std::string& str, const axis_names& a1);
+  std::string operator+(const axis_names& a1, const  std::string& str);
   class plane{
   public:
 
@@ -46,14 +47,15 @@ namespace sct_corr{
 
 
     plane(Parameter_ref pl);
-    static std::unique_ptr<plane> create(double ID, rootEventBase* buffer);
+    static std::unique_ptr<plane> create(const sct_type::ID_t& ID, rootEventBase* buffer);
     virtual bool next() const =0;
     
     virtual const plane_hit * getHit() const =0;
     virtual std::string getType() const = 0;
 
     
-   const axis_ref* getAxis(const char* name) const;
+
+   const axis_ref* getAxis(const sct_type::AxesName_t& name) const;
    const axis_ref* getAxis(axis_def ax) const;
   protected:
     rootEventBaseAxisCollection m_axis;
@@ -61,7 +63,7 @@ namespace sct_corr{
 
     
 
-    const double m_ID = 0;
+    const sct_type::ID_t m_ID = sct_type::ID_t(0);
 
 
   };

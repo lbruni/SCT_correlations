@@ -12,6 +12,7 @@
 #include "Rtypes.h"
 #include "sct_event_buffer.h"
 #include "sct_events/rootEventBase.hh"
+#include "sct_types.h"
 #ifdef _DEBUG
   class Hit_extractor;
   class Hit_output;
@@ -31,17 +32,17 @@ namespace sct_corr{
    
 
     treeCollection(TTree *tree);
-    treeCollection(const char *name,sct_event_buffer* outputBuffer);
+    treeCollection(const sct_type::collectionName_t& name, sct_event_buffer* outputBuffer);
     virtual ~treeCollection();
     virtual Int_t    GetEntry(Long64_t entry);
     virtual Long64_t    GetEntries() const;
-    const char* getName() const;
+    sct_type::collectionName_t  getName() const;
   private:
 
     TTree* fChain = NULL;
 
 
-    std::string m_name;
+    sct_type::collectionName_t m_name = sct_type::collectionName_t("");
   };
 
 
@@ -63,7 +64,7 @@ namespace sct_corr{
 
 
 
-    std::string m_name;
+    sct_type::collectionName_t  m_name = sct_type::collectionName_t("");
   };
 }
 #endif// treeCollection_h__

@@ -19,7 +19,7 @@ public:
   virtual ~base_file() {}
 
 
-  S_plane_def get_plane(const char* collection_name, sct_type::ID_t plane_ID) const;
+  S_plane_def get_plane(const sct_type::collectionName_t& collection_name, sct_type::ID_t plane_ID) const;
 
   sct_corr::plot_collection* get_collection();
 

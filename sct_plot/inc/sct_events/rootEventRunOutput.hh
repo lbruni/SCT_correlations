@@ -9,10 +9,10 @@ namespace sct_corr{
   class DllExport rootEventRunOutput :public rootEventBase{
   public:
     rootEventRunOutput(TTree* tree);
-    rootEventRunOutput(const char* collectionName);
+    rootEventRunOutput(const sct_type::collectionName_t& collectionName);
     rootEventRunOutput();
     virtual ~rootEventRunOutput(){}
-    virtual std::shared_ptr<plane> createPlane(double ID) override;
+    virtual std::shared_ptr<plane> createPlane(const sct_type::ID_t& ID) override;
     virtual void Save2Tree(TTree* outputTree) override;
     void set_TotalNumOfEvents(double numOfEvents);
     void set_Total_efficiency(double effi);

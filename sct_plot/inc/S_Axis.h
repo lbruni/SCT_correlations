@@ -3,12 +3,9 @@
 #include "internal/platform.hh"
 #include <memory>
 #include <string>
+#include "sct_types.h"
 
-enum  axis_def
-#ifndef __CINT__
-  :int
-#endif // !__CINT__
-{
+enum  axis_def  :int{
   x_axis_def,
   y_axis_def,
   chi2_axis_def,
@@ -20,36 +17,32 @@ enum  axis_def
   NumOfEvents_axis_def,
   charge_axis_def
 };
-const char* axis2String(axis_def ax);
-const char* getIDString();
+sct_type::AxesName_t axis2String(axis_def ax);
+sct_type::AxesName_t getIDString();
 namespace sct_corr {
   class plot_collection;
 }
 class DllExport S_Axis{
 public:
-  S_Axis(const char* collctionName, double planeID, axis_def axis);
-#ifndef __CINT__
-  S_Axis(const char* collctionName, double planeID, axis_def axis, std::weak_ptr<sct_corr::plot_collection> plot_collection_);
+  S_Axis(sct_type::collectionName_t collctionName, sct_type::ID_t planeID, axis_def axis);
+
+  S_Axis(sct_type::collectionName_t collctionName, sct_type::ID_t planeID, axis_def axis, std::weak_ptr<sct_corr::plot_collection> plot_collection_);
   std::shared_ptr<sct_corr::plot_collection> get_plot() const;
   void set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection_);
-#endif // !__CINT__
+
 
   S_Axis();
   bool isValid() const;
-  std::string  m_collectionName;
-  double m_planeID;
+  sct_type::collectionName_t  m_collectionName;
+  sct_type::ID_t m_planeID;
   axis_def m_axis;
 private:
-#ifndef __CINT__
+
   std::weak_ptr<sct_corr::plot_collection> m_plot_collection;
   bool m_isValid;
-#endif
+
  
 };
-#ifdef __CINT__
 
-
-
-#endif // !__CINT__
 
 #endif // s_axis_h__

@@ -146,7 +146,7 @@ S_DrawOption& S_DrawOption::cut(axis_def ax, Double_t min_, Double_t max_)
 
 S_DrawOption& S_DrawOption::cut_min(axis_def ax, Double_t min_)
 {
-  std::string dummy_str = std::string(axis2String(ax)) + ">" + std::to_string(min_);
+  std::string dummy_str = necessary_CONVERSION(axis2String(ax)) + ">" + std::to_string(min_);
   TCut dummy = dummy_str.c_str();
   m_cut = m_cut&& dummy;
   return *this;
@@ -154,7 +154,7 @@ S_DrawOption& S_DrawOption::cut_min(axis_def ax, Double_t min_)
 
 S_DrawOption& S_DrawOption::cut_max(axis_def ax, Double_t max_)
 {
-  std::string dummy_str = std::string(axis2String(ax)) + "<" + std::to_string(max_);
+  std::string dummy_str = necessary_CONVERSION(axis2String(ax)) + "<" + std::to_string(max_);
   TCut dummy = dummy_str.c_str();
   m_cut = m_cut&& dummy;
   return *this;
@@ -219,19 +219,19 @@ S_DrawOption& S_DrawOption::draw_axis(const char* axis_)
 
 S_DrawOption& S_DrawOption::draw_axis(axis_def ax)
 {
-  return draw_axis(axis2String(ax));
+  return draw_axis(Un_necessary_CONVERSION(axis2String(ax)).c_str());
 }
 
 S_DrawOption& S_DrawOption::draw_axis(axis_def y, axis_def x)
 {
 
-  auto dummy = std::string(axis2String(y)) + std::string(":") + std::string(axis2String(x));
+  auto dummy = necessary_CONVERSION(axis2String(y)) + std::string(":") + necessary_CONVERSION(axis2String(x));
   return draw_axis( dummy.c_str() );
 }
 
 S_DrawOption& S_DrawOption::draw_axis(axis_def  x1, axis_def x2, axis_def x3)
 {
-  auto dummy = std::string(axis2String(x1)) + std::string(":") + std::string(axis2String(x2)) + std::string(":") + std::string(axis2String(x3));
+  auto dummy = necessary_CONVERSION(axis2String(x1)) + std::string(":") + necessary_CONVERSION(axis2String(x2)) + std::string(":") + necessary_CONVERSION(axis2String(x3));
   return draw_axis(dummy.c_str());
 }
 

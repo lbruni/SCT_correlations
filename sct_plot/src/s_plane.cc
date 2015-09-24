@@ -37,11 +37,11 @@
     return m_plane.get();
   }
 
-  const char * S_plane::getName() const
+  const sct_type::collectionName_t& S_plane::getName() const
   {
     return m_plane_def->getName();
   }
-  Double_t S_plane::getID() const
+  const sct_type::ID_t& S_plane::getID() const
   {
     return m_plane_def->getID();
   }
@@ -104,7 +104,7 @@
   std::shared_ptr<S_plane_def> S_plane_def::copy() const {
     return std::shared_ptr<S_plane_def>(new S_plane_def(*this));
   }
-  void S_plane_def::set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
+  void S_plane_def::set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
 #ifdef _DEBUG
     if (m_plot.lock()) {
       std::cout << "m_plot was already defined " << std::endl;
@@ -121,7 +121,7 @@
     return get_plot()->Draw(*this, opt);
   }
 
-  S_plane_def::S_plane_def(const char* name, Double_t ID,const sct_corr::Xlayer* layer_) :m_name(name), m_ID(ID)
+  S_plane_def::S_plane_def(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :m_name(name), m_ID(ID)
   {
     if (layer_)
     {
@@ -130,14 +130,14 @@
     m_axis.emplace_back(name, ID, x_axis_def);
     m_axis.emplace_back(name, ID, y_axis_def);
   }
-  Double_t S_plane_def::getID() const
+  const sct_type::ID_t& S_plane_def::getID() const
   {
     return m_ID;
   }
 
-  const char* S_plane_def::getName() const
+  const sct_type::collectionName_t& S_plane_def::getName() const
   {
-    return m_name.c_str();
+    return m_name;
   }
 
 
@@ -169,7 +169,7 @@
   std::shared_ptr<S_plane_def> S_plane_def_GBL::copy() const {
     return std::shared_ptr<S_plane_def>(new S_plane_def_GBL(*this));
   }
-  S_plane_def_GBL::S_plane_def_GBL(const char* name, Double_t ID, const sct_corr::Xlayer* layer_) :S_plane_def(name, ID, layer_) {
+  S_plane_def_GBL::S_plane_def_GBL(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :S_plane_def(name, ID, layer_) {
     m_axis.emplace_back(name, ID, chi2_axis_def);
     m_axis.emplace_back(name, ID, Ndf_axis_def);
     m_axis.emplace_back(name, ID, phi_axis_def);
@@ -193,7 +193,7 @@
   }
 
 
-  S_plane_def_Alibava::S_plane_def_Alibava(const char* name, Double_t ID, const sct_corr::Xlayer* layer_ ) :S_plane_def(name, ID, layer_) {
+  S_plane_def_Alibava::S_plane_def_Alibava(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :S_plane_def(name, ID, layer_) {
     m_axis.emplace_back(name, ID, charge_axis_def);
   }
 
@@ -282,4 +282,7 @@
 
   void s_plane_collection::clear() {
     m_planes.clear();
+  }
+ S_plane_def s_error_plane_def() {
+    return S_plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
   }

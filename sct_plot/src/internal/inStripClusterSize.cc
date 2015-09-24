@@ -99,24 +99,24 @@ TH2* sct_corr::inStripClusterSize::getHistogram() const {
 }
 
 Long64_t sct_corr::inStripClusterSize::Draw() {
-  std::string name = std::string(m_plot_prob.getName()) + "_hist";
+  std::string name = std::string(m_plot_prob.getName().value) + "_hist";
   m_cluster_size_plot = std::make_shared<TH2D>(
     name.c_str(),
-    m_plot_prob.getName(),
+    m_plot_prob.getName().value.c_str(),
     100, 0, m_mod.value,
     m_max_cluster * 100, -0.5, m_max_cluster - 0.5
     );
-  Draw(S_DrawOption(m_plot_prob.getName()).draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));
+  Draw(S_DrawOption().draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));
 
   m_profile = std::shared_ptr<TProfile>(dynamic_cast<TProfile*>(m_cluster_size_plot->ProfileX()));
 
   m_cluster_size_plot = std::make_shared<TH2D>(
     name.c_str(),
-    m_plot_prob.getName(),
+    m_plot_prob.getName().value.c_str(),
     100, 0, m_mod.value,
     m_max_cluster, -0.5, m_max_cluster - 0.5
     );
-  auto ret = Draw(S_DrawOption(m_plot_prob.getName()).draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));
+  auto ret = Draw(S_DrawOption().draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));
 
   m_profile->Draw("same");
   

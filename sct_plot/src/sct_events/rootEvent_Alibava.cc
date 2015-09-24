@@ -4,14 +4,14 @@
 namespace sct_corr {
 std::vector<std::string> get_rootEvent_Alibava() {
   std::vector<std::string> ret;
-  ret.emplace_back(getIDString());
-  ret.emplace_back(axis2String(x_axis_def));
-  ret.emplace_back(axis2String(y_axis_def));
-  ret.emplace_back(axis2String(charge_axis_def));
+  ret.emplace_back(Un_necessary_CONVERSION(getIDString()));
+  ret.emplace_back(Un_necessary_CONVERSION(axis2String(x_axis_def)));
+  ret.emplace_back(Un_necessary_CONVERSION(axis2String(y_axis_def)));
+  ret.emplace_back(Un_necessary_CONVERSION(axis2String(charge_axis_def)));
   return ret;
 }
 
-rootEvent_Alibava::rootEvent_Alibava(const char* name):rootEventBase(name,get_rootEvent_Alibava()),
+rootEvent_Alibava::rootEvent_Alibava(const sct_type::collectionName_t& name) :rootEventBase(name, get_rootEvent_Alibava()),
 m_x(getData(x_axis_def)),
 m_y(getData(y_axis_def)),
 m_id(getData(getIDString())),
@@ -69,7 +69,7 @@ void rootEvent_Alibava::push_Hit(const Alibava_hit& h, double ID /*= 0*/) {
   get_event_nr()++;
 }
 
-std::shared_ptr<plane> sct_corr::rootEvent_Alibava::createPlane(double ID) {
+std::shared_ptr<plane> sct_corr::rootEvent_Alibava::createPlane(const sct_type::ID_t& ID) {
   return std::dynamic_pointer_cast<plane>(std::make_shared<planeX_Y>(plane_struct(ID, this)));
 }
 

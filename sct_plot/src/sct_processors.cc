@@ -164,7 +164,7 @@ S_plane_def sct_processor::correlation(
 
   if (!pl) {
     std::cout << "[sct_processor::modulo_find_nearest_strip] referencing to different plot collection\n";
-    return S_plane_def("error", 0);
+    return S_plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
   }
 
   auto ret = pl->addPlot(sct_plot::correlation(plot_prob__), axisA, axisB)();
@@ -233,7 +233,7 @@ S_plane_def sct_processor::hitmap(
 
   if (!pl) {
     std::cout << "[sct_processor::hitmap] referencing to different plot collection\n";
-    return S_plane_def("error", 0);
+    return s_error_plane_def();
   }
 
   auto ret = pl->addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
@@ -251,7 +251,7 @@ S_plane_def sct_processor::moduloHitMap(
  
   if (!pl) {
     std::cout << "[sct_processor::moduloHitMap] referencing to different plot collection\n";
-    return S_plane_def("error", 0);
+    return s_error_plane_def();
   }
   auto ret = pl->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), axisA, axisB)();
  
@@ -335,7 +335,7 @@ S_plane_def sct_processor::convert_global_to_local(
 
   if (det_A == 0) {
     std::cout << "[sct_plot::convert_global_to_local] : Det_A ==0 " << std::endl;
-    return S_plane_def("error", 0);
+    return s_error_plane_def();
   }
 
 

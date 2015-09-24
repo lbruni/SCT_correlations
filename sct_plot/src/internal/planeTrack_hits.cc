@@ -6,13 +6,13 @@ namespace sct_corr{
   plane::MainType getPlane_track_names() {
     plane::MainType ret;
 
-    ret.m_names.push_back("x");
-    ret.m_names.push_back("y");
-    ret.m_names.push_back("ID");
-    ret.m_names.push_back("chi2");
-    ret.m_names.push_back("ndf");
-    ret.m_names.push_back("phi");
-    ret.m_names.push_back("theta");
+    ret.m_names.push_back(sct_type::AxesName_t("x"));
+    ret.m_names.push_back(sct_type::AxesName_t("y"));
+    ret.m_names.push_back(sct_type::AxesName_t("ID"));
+    ret.m_names.push_back(sct_type::AxesName_t("chi2"));
+    ret.m_names.push_back(sct_type::AxesName_t("ndf"));
+    ret.m_names.push_back(sct_type::AxesName_t("phi"));
+    ret.m_names.push_back(sct_type::AxesName_t("theta"));
     return ret;
   }
   

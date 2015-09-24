@@ -27,12 +27,12 @@ namespace sct_corr{
     virtual void setParameter(const char* tag, const char * value);
     virtual s_plane_collection getOutputcollection();
 
-    virtual const char* getOutputName()  const = 0;
-    const char* getName() const;
+    virtual sct_type::collectionName_t getOutputName()  const = 0;
+    sct_type::collectionName_t getName() const;
     bool getSave2disk() const;
   private:
     s_plot_prob m_prob;
-    mutable std::string m_name;
+    mutable  sct_type::collectionName_t m_name;
   };
 
 }

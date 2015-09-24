@@ -33,11 +33,11 @@ base_file::base_file(std::shared_ptr<sct_corr::plot_collection> plot_collection_
 
 
 
-S_plane_def base_file::get_plane(const char* collection_name, sct_type::ID_t ID) const {
+S_plane_def base_file::get_plane(const sct_type::collectionName_t& collection_name, sct_type::ID_t ID) const {
 
-  S_plane_def ret(collection_name, ID.value, get_layer(ID));
+  S_plane_def ret(collection_name, ID, get_layer(ID));
 
-  ret.set_s_plot_collection(m_plot_collection);
+  ret.set_plot_collection(m_plot_collection);
   return ret;
 }
 
@@ -63,7 +63,7 @@ const sct_corr::Xlayer*  base_file::get_layer(sct_type::ID_t ID) const {
     return nullptr;
   }
 
-  return m_gear->detector.layer_by_ID(ID.value);
+  return m_gear->detector.layer_by_ID(Un_necessary_CONVERSION(ID));
 }
 
 fitter_file::fitter_file(const char* Fitter_File_name, const char* gear_file) :fitter_file(sct_corr::create_plot_collection(), &(sct_corr::load_gear(gear_file))) {
@@ -162,17 +162,17 @@ S_plane_def fitter_file::tel_fitted_local(const sct_type::ID_t& ID) const {
 
 
 S_plane_def_GBL fitter_file::DUT_fitted_local_GBL() const {
-  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), 8);
+  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), sct_type::ID_t(8));
 
-  ret.set_s_plot_collection(m_plot_collection);
+  ret.set_plot_collection(m_plot_collection);
   return ret;
 }
 
 
 S_plane_def_GBL fitter_file::tel_fitted_local_GBL(const sct_type::ID_t& ID) const {
-  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), ID.value);
+  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), ID);
 
-  ret.set_s_plot_collection(m_plot_collection);
+  ret.set_plot_collection(m_plot_collection);
   return ret;
 }
 
@@ -252,7 +252,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
     s_plot_prob().SaveToDisk()
     );
 
-  std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
+  std::string find_closest_name = plot_prob_.getName().value + "_closest";
 
   auto find_closest = sct_processor::find_nearest_strip(
     trueHits_cut,
@@ -263,7 +263,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
-  std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
+  std::string res_vs_missing_name = plot_prob_.getName().value + "_res_vs_missing";
 
   auto res_vs_missing = sct_processor::hitmap(
     find_closest.getResidual().getX_def(),
@@ -348,7 +348,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     s_plot_prob().doNotSaveToDisk()
     );
 
-  std::string trueHitsInStrips_name = std::string(plot_prob_.getName()) + "_true";
+  std::string trueHitsInStrips_name = plot_prob_.getName().value + "_true";
 
   auto trueHitsInStrips = sct_processor::convert_hits_to_zs_data_GBL(
     trueHits_cut,
@@ -372,7 +372,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     );
 
 
-  std::string find_closest_name = std::string(plot_prob_.getName()) + "_closest";
+  std::string find_closest_name = plot_prob_.getName().value + "_closest";
 
 
   auto find_closest = sct_processor::find_nearest_strip(
@@ -384,7 +384,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
-  std::string res_vs_missing_name = std::string(plot_prob_.getName()) + "_res_vs_missing";
+  std::string res_vs_missing_name = plot_prob_.getName().value + "_res_vs_missing";
   auto res_vs_missing = sct_processor::hitmap(
     find_closest.getResidual().getX_def(),
     find_closest.getHitOnPlaneA().getY_def(),
@@ -431,16 +431,16 @@ alibava_file::alibava_file(
 }
 
 S_plane_def_Alibava alibava_file::Alibava_sz_data() const {
-  S_plane_def_Alibava ret("alibava", 6);
+  S_plane_def_Alibava ret(sct_type::collectionName_t("alibava"), sct_type::ID_t(6));
 
-  ret.set_s_plot_collection(m_plot_collection);
+  ret.set_plot_collection(m_plot_collection);
   return ret;
 }
 
 S_plane_def_GBL alibava_file::DUT_fitted_local_GBL() const {
-  S_plane_def_GBL ret("telescope", 0);
+  S_plane_def_GBL ret(sct_type::collectionName_t("telescope"), sct_type::ID_t(0));
 
-  ret.set_s_plot_collection(m_plot_collection);
+  ret.set_plot_collection(m_plot_collection);
   return ret;
 }
 }

@@ -9,16 +9,16 @@ namespace sct_corr{
   class plane_merger :public plot{
   public:
     plane_merger( const s_plot_prob& = "");
-    virtual const char* getType() const;
-    virtual bool MakeReadyForData(sct_event_buffer* outputBuffer);
-    virtual void pushAxis(const axis_ref* axis);
-    virtual void pushPlane(S_plane* axis) ;
-    virtual bool fill();
-    virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") ;
+    virtual const char* getType() const  override;
+    virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) override;
+    virtual void pushAxis(const axis_ref* axis) override;
+    virtual void pushPlane(S_plane* axis) override;
+    virtual bool fill() override;
+    virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x")  override;
     virtual Long64_t Draw(const S_DrawOption&) ;
     virtual s_plane_collection getOutputcollection();
 
-    virtual const char* getOutputName()  const ;
+    virtual sct_type::collectionName_t getOutputName()  const override;
     void processEvent(double x, double y, double id_);
     void processPlane(sct_corr::plane* plane_, double id_);
   private:
@@ -112,16 +112,16 @@ namespace sct_corr{
     double i = 0;
     for (auto& e : m_planes)
     {
-      ret =ret+ S_plane_def(e->getName(), i++);
+      ret = ret + S_plane_def(e->getName(), sct_type::ID_t(i++));
     }
     return ret;
   }
 
-  const char* plane_merger::getOutputName() const
+  sct_type::collectionName_t plane_merger::getOutputName() const
   {
     if (m_outTree)
     {
-      return m_outTree->m_name.c_str();
+      return m_outTree->m_name;
     }
     return getName();
   }

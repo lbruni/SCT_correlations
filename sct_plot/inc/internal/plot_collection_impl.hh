@@ -5,6 +5,7 @@
 
 #include "internal/platform.hh"
 #include <vector>
+#include "sct_types.h"
 
 namespace sct_corr {
 class  DllExport plot_collection_impl :public plot_collection {
@@ -30,28 +31,27 @@ public:
 
 
 
-  bool collectionExist(const char* name)  const override;
+  bool collectionExist(const sct_type::collectionName_t& name)  const override;
 
   void set_self_weak_pointer(std::weak_ptr<plot_collection> self_);
 private:
   Long64_t getMaxEntriesFromTree(Long64_t last);
   s_plane_collection addPlot_internal(S_plot plot_def);
   const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
-  sct_corr::treeCollection* getCollection(const char* name);
-  TTree*                    getTTree(const char* name) const;
-  S_plane* getPlane(double ID, sct_corr::treeCollection* coll);
+  sct_corr::treeCollection* getCollection(const sct_type::collectionName_t& name);
+  TTree*                    getTTree(const sct_type::collectionName_t& name) const;
+  S_plane* getPlane(const sct_type::ID_t& id_ , sct_corr::treeCollection* coll);
   S_plane* pushPlane(const S_plane_def& pl);
 
   std::shared_ptr<sct_corr::sct_event_buffer> m_eventBuffer;
 
   std::vector<std::shared_ptr<S_plane>> m_planes;
   std::vector<std::pair<std::string, S_plot>> m_plots;
-  std::vector< std::pair<std::string, sct_corr::treeCollection*>> m_trees;
+  std::vector< std::pair<sct_type::collectionName_t, sct_corr::treeCollection*>> m_trees;
   std::vector<TFile*> m_file;
   std::weak_ptr<plot_collection> m_self;
 
 };
-
 }
 
 #endif

@@ -57,7 +57,7 @@ namespace sct_corr{
     std::unique_ptr<lcio::LCEvent > ConvertToLCIO();
     void ConvertLCIOSubEvent(lcio::LCEvent & dest, S_plane* source);
     void ConvertPlaneToLCIOGenericPixel(S_plane* source, lcio::TrackerDataImpl& zsFrame);
-    virtual const char* getOutputName()  const;
+    virtual sct_type::collectionName_t getOutputName()  const override;
 
     std::string m_filename;
     std::vector<S_plane*> m_planes;
@@ -199,7 +199,7 @@ namespace sct_corr{
     LCCollectionVec* outputCollection = nullptr;
     try
     {
-      outputCollection = static_cast<LCCollectionVec*> (lcEv.getCollection(source->getName()));
+      outputCollection = static_cast<LCCollectionVec*> (lcEv.getCollection(necessary_CONVERSION(source->getName()))); //external library 
     }
     catch (...)
     {
@@ -237,8 +237,8 @@ namespace sct_corr{
       outputHit->setCovMatrix(cov);
       outputHit->setType(0);
       outputHit->setTime(0);
-      outputHit->setCellID0(static_cast<int>(id));
-      outputHit->setCellID1(static_cast<int>(id));
+      outputHit->setCellID0(static_cast<int>(necessary_CONVERSION(id))); //external library 
+      outputHit->setCellID1(static_cast<int>(necessary_CONVERSION(id))); //external library 
 
 
 
@@ -252,7 +252,7 @@ namespace sct_corr{
 
     try
     {
-      lcEv.addCollection(outputCollection, source->getName());
+      lcEv.addCollection(outputCollection, necessary_CONVERSION(source->getName()));//external library 
     }
     catch (...)
     {
@@ -262,9 +262,9 @@ namespace sct_corr{
 
 
 
-  const char* convert_to_LCIO::getOutputName() const
+  sct_type::collectionName_t convert_to_LCIO::getOutputName() const
   {
-    return m_filename.c_str();
+    return sct_type::collectionName_t(m_filename.c_str());
   }
 
   bool convert_to_LCIO::Collection_createIfNotExist(lcio::LCCollectionVec** zsDataCollection, const lcio::LCEvent & lcioEvent, const char * name)

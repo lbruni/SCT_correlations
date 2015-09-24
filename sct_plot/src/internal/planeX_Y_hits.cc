@@ -4,9 +4,9 @@
 namespace sct_corr{
   plane::MainType planeX_Y_names() {
     plane::MainType ret;
-    ret.m_names.push_back("x");
-    ret.m_names.push_back("y");
-    ret.m_names.push_back("ID");
+    ret.m_names.push_back(sct_type::AxesName_t("x"));
+    ret.m_names.push_back(sct_type::AxesName_t("y"));
+    ret.m_names.push_back(sct_type::AxesName_t("ID"));
     return ret;
   }
 

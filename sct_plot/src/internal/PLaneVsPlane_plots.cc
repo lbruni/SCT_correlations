@@ -102,9 +102,9 @@ Long64_t plotPlaneVsPlane::Draw(const S_DrawOption& opt) {
 
 }
 
-const char* plotPlaneVsPlane::getOutputName() const {
+sct_type::collectionName_t plotPlaneVsPlane::getOutputName() const {
   if (m_outTree) {
-    return m_outTree->m_name.c_str();
+    return m_outTree->m_name;
   }
   return getName();
 }
@@ -152,7 +152,7 @@ const char* plane_distance::getType() const {
 
 s_plane_collection plane_distance::getOutputcollection() {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), S_plane_def(getOutputName(), 0)));
+  ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
   return ret;
 }
 

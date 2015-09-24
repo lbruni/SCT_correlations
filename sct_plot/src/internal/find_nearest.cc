@@ -77,9 +77,9 @@ namespace sct_corr{
   s_plane_collection find_nearest::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane_def(getOutputName(), nearest_distance_pos)));
-    ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane_def(getOutputName(), nearest_plane1_pos)));
-    ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane_def(getOutputName(), nearest_plane2_pos)));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), S_plane_def(getOutputName(), sct_type::ID_t(nearest_distance_pos))));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_plane1"), S_plane_def(getOutputName(), sct_type::ID_t(nearest_plane1_pos))));
+    ret.m_planes.push_back(std::make_pair(std::string("nearest_plane2"), S_plane_def(getOutputName(), sct_type::ID_t(nearest_plane2_pos))));
     return ret;
   }
 

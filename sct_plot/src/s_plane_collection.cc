@@ -12,7 +12,7 @@ S_plane_def s_plane_collection::get(Int_t i) const
     return m_planes[i].second;
   }
   std::cout << "[s_plane_collection] out of range" << std::endl;
-  return S_plane_def("error",0);
+  return s_error_plane_def();
 }
 
 s_plane_collection s_plane_collection::getByType(const char* type) const
@@ -42,7 +42,7 @@ s_plane_collection s_plane_collection::getByName(const char* name) const
   s_plane_collection ret;
   for (auto& e : m_planes)
   {
-    if (std::string(e.second.getName()) == std::string(name)) {
+    if (e.second.getName().value == std::string(name)) {
       ret.push_back(e.first.c_str(), e.second);
     }
 
@@ -68,7 +68,7 @@ S_plane_def s_plane_collection::get(const char* name, const char* type) const
   if (pl.m_planes.empty())
   {
       std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
-      return S_plane_def("error", 0);
+      return s_error_plane_def();
   }
   if (pl.m_planes.size()>1)
   {
@@ -85,9 +85,9 @@ s_plane_collection::s_plane_collection(const S_plane_def& plane_)
 {
   push_back(plane_);
 }
-void s_plane_collection::set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
+void s_plane_collection::set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
   for (auto & e : m_planes) {
-    e.second.set_s_plot_collection(plot_collection___);
+    e.second.set_plot_collection(plot_collection___);
   }
 }
 const char* s_plane_collection::getName(Int_t i) const
@@ -119,7 +119,7 @@ void s_plane_collection::push_back(const char* name, const S_plane_def& pl)
 
 void s_plane_collection::push_back(const S_plane_def& pl)
 {
-  push_back(pl.getName(), pl);
+  push_back(pl.getName().value.c_str(), pl);
 }
 
 

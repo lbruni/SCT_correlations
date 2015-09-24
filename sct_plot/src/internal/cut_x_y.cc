@@ -37,7 +37,7 @@ namespace sct_corr{
   s_plane_collection cut_x_y::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("cut_x_y"), S_plane_def(getOutputName(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("cut_x_y"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
     return ret;
   }
 

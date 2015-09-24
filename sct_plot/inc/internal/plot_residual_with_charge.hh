@@ -33,7 +33,7 @@ public:
   virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) override;
   virtual void pushAxis(const axis_ref* axis);
   virtual void pushPlane(S_plane* axis);
-  virtual const char* getOutputName()  const;
+  virtual sct_type::collectionName_t getOutputName()  const override;
   virtual const char* getType() const override;
 protected:
   const Alibava_hit* m_HitA = nullptr;

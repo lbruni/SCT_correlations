@@ -18,7 +18,7 @@ namespace sct_corr{
   s_plane_collection plot_find_correspondingX::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("plot_find_correspondingX"), S_plane_def(getOutputName(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("plot_find_correspondingX"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
     return ret;
   }
 
@@ -50,7 +50,7 @@ namespace sct_corr{
   s_plane_collection plot_find_correspondingXY::getOutputcollection() {
 
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("correspondingXY"), S_plane_def(getOutputName(), 0)));
+    ret.m_planes.push_back(std::make_pair(std::string("correspondingXY"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
     return ret;
   }
 

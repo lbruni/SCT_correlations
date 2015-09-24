@@ -374,7 +374,7 @@ bool s_process_collection::process() {
 
 
 
-s_process_collection_standard::s_process_collection_standard() :m_outputl("out") {
+s_process_collection_standard::s_process_collection_standard() :m_outputl(sct_type::collectionName_t("out")) {
   m_dummy = new TFile("dummy1.root", "recreate");
 }
 
@@ -609,7 +609,7 @@ void FileProberties::setTFile(TFile* file) {
   m_file = file;
 }
 
-s_process_collection_modulo::s_process_collection_modulo() :m_outputl("out") {
+s_process_collection_modulo::s_process_collection_modulo() :m_outputl(sct_type::collectionName_t("out")) {
   m_dummy = new TFile("dummy1.root", "recreate");
 }
 

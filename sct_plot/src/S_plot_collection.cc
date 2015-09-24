@@ -128,7 +128,7 @@ Long64_t plot_collection_impl::Draw(const S_plane_def& name, const S_DrawOption&
   return Draw(name.getName(), local);
 
 }
-Int_t plot_collection_impl::getMaxEntriesFromTree(Int_t last) {
+Long64_t plot_collection_impl::getMaxEntriesFromTree(Long64_t last) {
   bool external_last_event = true;
   if (last == -1) {
     last = kMaxInt;
@@ -151,11 +151,11 @@ Int_t plot_collection_impl::getMaxEntriesFromTree(Int_t last) {
   return last;
 }
 
-void plot_collection_impl::loop(Int_t last /*= -1*/, Int_t start /*= 0*/) {
+void plot_collection_impl::loop(Long64_t last /*= -1*/, Long64_t start /*= 0*/) {
 
   //  std::clock_t    start_time = std::clock();
   last = getMaxEntriesFromTree(last);
-  for (Int_t i = start; i < last; ++i) {
+  for (Long64_t i = start; i < last; ++i) {
 #ifdef _DEBUG
 
     if (i % 1000 == 0) {

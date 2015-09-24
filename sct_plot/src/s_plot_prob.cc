@@ -36,7 +36,7 @@ const char* s_plot_prob::getName() const
   return m_name.c_str();
 }
 
-bool s_plot_prob::getNameSize() const
+size_t  s_plot_prob::getNameSize() const
 {
   return m_name.size();
 }

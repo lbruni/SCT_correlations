@@ -77,9 +77,9 @@ namespace sct_corr{
     return ret;
   }
 
-  Int_t treeCollection::GetEntries() const
+  Long64_t treeCollection::GetEntries() const
   {
-    Int_t max_entry = kMaxInt;
+    Long64_t max_entry = kMaxInt;
     if (fChain == NULL)
     {
       return kMaxInt;
@@ -96,10 +96,10 @@ namespace sct_corr{
       if (strcmp("vector<double>", className) != 0) {
         continue;
       }
-      Int_t current_max = br->GetEntries();
+      Long64_t current_max = br->GetEntries();
       max_entry = TMath::Min(max_entry, current_max);
     }
-    Int_t current_max = fChain->GetEntries();
+    Long64_t current_max = fChain->GetEntries();
     max_entry = TMath::Min(max_entry, current_max);
     return max_entry;
 
@@ -158,7 +158,7 @@ namespace sct_corr{
     }
   }
 
-  Int_t treeCollection_ouput::Draw(const char* axis, const char* cuts, const char * options)
+  Long64_t treeCollection_ouput::Draw(const char* axis, const char* cuts, const char * options)
   {
     if (!m_tree)
     {

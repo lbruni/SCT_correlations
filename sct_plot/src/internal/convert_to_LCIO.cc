@@ -237,8 +237,8 @@ namespace sct_corr{
       outputHit->setCovMatrix(cov);
       outputHit->setType(0);
       outputHit->setTime(0);
-      outputHit->setCellID0(id);
-      outputHit->setCellID1(id);
+      outputHit->setCellID0(static_cast<int>(id));
+      outputHit->setCellID1(static_cast<int>(id));
 
 
 
@@ -275,7 +275,7 @@ namespace sct_corr{
       *zsDataCollection = static_cast<lcio::LCCollectionVec*> (lcioEvent.getCollection(name));
       zsDataCollectionExists = true;
     }
-    catch (lcio::DataNotAvailableException& e)
+    catch (lcio::DataNotAvailableException& )
     {
       *zsDataCollection = new lcio::LCCollectionVec(lcio::LCIO::TRACKERDATA);
     }

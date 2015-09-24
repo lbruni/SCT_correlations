@@ -21,7 +21,7 @@ public:
   virtual s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1) override;
   virtual s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1) override;
 
-  virtual void loop(Int_t last = -1, Int_t start = 0) override;
+  virtual void loop(Long64_t last = -1, Long64_t start = 0) override;
 
 
   virtual Long64_t Draw(const char* name, const S_DrawOption& option) override;
@@ -34,7 +34,7 @@ public:
 
   void set_self_weak_pointer(std::weak_ptr<plot_collection> self_);
 private:
-  Int_t getMaxEntriesFromTree(Int_t last);
+  Long64_t getMaxEntriesFromTree(Long64_t last);
   s_plane_collection addPlot_internal(S_plot plot_def);
   const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
   sct_corr::treeCollection* getCollection(const char* name);

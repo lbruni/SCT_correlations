@@ -66,7 +66,7 @@ public:
   virtual s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1)=0;
   virtual s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1)=0;
 
-  virtual void loop(Int_t last = -1, Int_t start = 0)=0;
+  virtual void loop(Long64_t last = -1, Long64_t start = 0) = 0;
 
 
   virtual Long64_t Draw(const char* name, const S_DrawOption& option)=0;

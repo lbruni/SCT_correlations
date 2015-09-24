@@ -24,7 +24,7 @@ getScurvesFromTTree::getScurvesFromTTree(TTree* tree) : m_tree(tree) {
   tree_pointer->GetEntry(0);
   m_max_index = tree_pointer->m_rootBuffer.getData(x_axis_def)->size();
 
-  m_Threshold.resize(tree_pointer->GetEntries());
+  m_Threshold.resize(static_cast<size_t>(tree_pointer->GetEntries()));
   m_Ocuupancy.resize(m_max_index);
   m_Occuoancy_error.resize(m_max_index);
   m_total_hits.resize(m_max_index);

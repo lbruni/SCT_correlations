@@ -65,7 +65,7 @@ std::unique_ptr<xmlImputFiles::MinMaxRange<double>> make_range(const std::string
   return   std::unique_ptr<xmlImputFiles::MinMaxRange<double>>(); 
 
 }
-void drawResidual(s_process_collection& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
+void drawResidual(s_process_collection_standard& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
   new TCanvas();
   if (range_){
       p.DrawResidual(range_->getMin(), range_->getMax());
@@ -77,20 +77,20 @@ void drawResidual(s_process_collection& p, const xmlImputFiles::MinMaxRange<doub
 
 }
 
-void Draw_Track_hits(s_process_collection& p) {
+void Draw_Track_hits(s_process_collection_standard& p) {
   new TCanvas();
   p.Draw_Hit_map();
 }
-void Draw_DUT_hits(s_process_collection& p) {
+void Draw_DUT_hits(s_process_collection_standard& p) {
   new TCanvas();
   p.Draw_DUT_Hits_map();
 }
-void draw_efficiency_map(s_process_collection& p) {
+void draw_efficiency_map(s_process_collection_standard& p) {
   new TCanvas();
   p.Draw_Efficinecy_map();
 }
 
-void Draw_missing_coordinate(s_process_collection& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
+void Draw_missing_coordinate(s_process_collection_standard& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
   new TCanvas();
   if (range_)
   {
@@ -99,7 +99,7 @@ void Draw_missing_coordinate(s_process_collection& p, const xmlImputFiles::MinMa
     p.DrawResidualVsMissingCordinate();
   }
 }
-void Draw_Residual_VS_N(s_process_collection& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
+void Draw_Residual_VS_N(s_process_collection_standard& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
   new TCanvas();
   if (range_) {
     p.DrawResidualVsEvent(range_->getMin(), range_->getMax());
@@ -161,7 +161,7 @@ int asyncMain(void *arg) {
 
 
 
-  s_process_collection p;
+  s_process_collection_standard p;
   p.setPrintout(true);
 
   gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 

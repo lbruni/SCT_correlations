@@ -76,17 +76,17 @@ TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t& name) :m_
 
 #else  //release
 
-  TTreeVectorExtractor::TTreeVectorExtractor(const char* name, TTree* tree) :
+TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t&  name, TTree* tree) :
     m_name(name)
    {
 
-    tree->SetBranchAddress(m_name.c_str(), &m_vec);
+    tree->SetBranchAddress(necessary_CONVERSION(m_name).c_str(), &m_vec);
 
 
   }
 
 
-  TTreeVectorExtractor::TTreeVectorExtractor(const char* name) : m_name(name)
+TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t&  name) : m_name(name)
   {
     m_owend_vector = std::make_shared<std::vector<double>>();
     m_vec = m_owend_vector.get();
@@ -101,11 +101,11 @@ TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t& name) :m_
 
     if (!tree)
     {
-      std::cout << "unable to push \"" << m_name << "\" to TTree. Tree is empty " << std::endl;
+      std::cout << "unable to push \"" << necessary_CONVERSION(m_name) << "\" to TTree. Tree is empty " << std::endl;
       return false;
     }
 
-    tree->Branch(m_name.c_str(), &m_vec);
+    tree->Branch(necessary_CONVERSION(m_name).c_str(), &m_vec);
 
     return true;
   }

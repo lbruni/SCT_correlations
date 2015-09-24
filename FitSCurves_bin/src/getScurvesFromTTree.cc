@@ -45,7 +45,7 @@ getScurvesFromTTree::getScurvesFromTTree(TTree* tree) : m_tree(tree) {
       } else {
         m_Occuoancy_error[index].push_back(0);
       }
-      m_total_hits[index].push_back(tree_pointer->m_rootBuffer.getData("NumOfEvents")->at(index));
+      m_total_hits[index].push_back(tree_pointer->m_rootBuffer.getData(NumOfEvents_axis_def)->at(index));
       x_pos[index] = tree_pointer->m_rootBuffer.getData(x_axis_def)->at(index);
 
 

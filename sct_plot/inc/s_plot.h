@@ -39,14 +39,14 @@ public:
 
   std::shared_ptr<sct_corr::plot> m_plot;
 #endif
-  ClassDef(S_plot, 0);
+
 };
 
 
 #ifdef __CINT__
 
 
-#pragma link C++ class S_plot;
+
 
 
 #endif

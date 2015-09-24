@@ -4,7 +4,7 @@
 #include "internal/platform.hh"
 #include "TH1.h"
 
-#ifndef __CINT__
+
 #include <memory>
 #include "s_plot_collection.h"
 #include "s_cuts.h"
@@ -35,7 +35,7 @@ private:
   std::shared_ptr<TFile> m_fileOwnd;
   TFile* m_file = nullptr;
 };
-#endif
+
 #include "TTree.h"
 #include "TH2.h"
 
@@ -55,7 +55,7 @@ public:
   bool process();
 
 
-#ifndef __CINT__
+
   const xmlImputFiles::XML_imput_file* get_xml_input() const;
   const sct_corr::Xgear* get_gear() const;
 private:
@@ -80,7 +80,7 @@ private:
   std::string m_outname;
 
 
-#endif
+
 
 };
 class DllExport s_process_collection_standard :public s_process_collection {
@@ -97,7 +97,7 @@ public:
   Long64_t Draw_Hit_map();
   Long64_t Draw_DUT_Hits_map();
   TH2D* getResidualVsMissingCordinate();
-#ifndef __CINT__
+
 private:
   virtual void start_collection(TFile* file__) override;
   virtual  bool process_file(FileProberties* fileP) override;
@@ -127,7 +127,7 @@ private:
   std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
   std::shared_ptr <sct_files::fitter_file> m_file_fitter;
   TFile* m_dummy = nullptr;
-#endif
+
 
 };
 
@@ -136,7 +136,7 @@ public:
   s_process_collection_modulo();
   virtual ~s_process_collection_modulo() ;
 
-#ifndef __CINT__
+
 private:
   virtual void start_collection(TFile* file__) override;
   virtual  bool process_file(FileProberties* fileP) override;
@@ -147,12 +147,8 @@ private:
 
   std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
   std::shared_ptr<sct_files::fitter_file> m_file_fitter;
-#endif
+
 };
 
-#ifdef __CINT__
 
-
-
-#endif
 #endif // s_process_files_h__

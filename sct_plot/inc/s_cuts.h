@@ -20,7 +20,7 @@ public:
   virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const { return false; }
   virtual bool isOutOfRange(Double_t BinContent, Double_t x)  const { return false; }
   virtual bool isOutOfRange(Double_t BinContent)  const { return false; }
-  ClassDef(S_Cut, 0);
+ 
 };
 class DllExport S_NoCut:public S_Cut
 {
@@ -34,7 +34,7 @@ public:
   }
 #endif // __CINT__
 
-  ClassDef(S_NoCut, 0);
+  
 };
 class DllExport S_Cut_min_max : public S_Cut
 {
@@ -51,7 +51,7 @@ protected:
   bool isOutOfRange_intern(Double_t val)  const;
 #endif // !__CINT__
 
-  ClassDef(S_Cut, 0);
+  
 };
 
 class DllExport  S_XCut :public S_Cut_min_max
@@ -68,7 +68,7 @@ public:
   virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
   virtual bool isOutOfRange(Double_t BinContent)  const;
 
-  ClassDef(S_XCut, 0);
+ 
 };
 class DllExport S_YCut :public S_Cut_min_max
 {
@@ -83,7 +83,7 @@ public:
   virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const;
   virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
   virtual bool isOutOfRange(Double_t BinContent) const;
-  ClassDef(S_YCut, 0);
+ 
 };
 class  DllExport S_Cut_BinContent :public S_Cut_min_max
 {
@@ -99,7 +99,7 @@ public:
   virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
   virtual bool isOutOfRange(Double_t BinContent) const;
 
-  ClassDef(S_Cut_BinContent, 0);
+ 
 };
 
 class  DllExport S_CutCoollection :public S_Cut
@@ -120,23 +120,10 @@ public:
 #ifndef __CINT__
   std::vector<std::shared_ptr<S_Cut> > m_cuts;
 #endif // !__CINT__
-  ClassDef(S_CutCoollection, 0);
+
 };
 DllExport S_CutCoollection operator+(const S_Cut& cut_a, const S_Cut& cut_b);
 
 
-#ifdef __CINT__
 
-#pragma link C++ class S_Cut;
-
-#pragma link C++ function  operator+(const S_Cut&, const S_Cut&);
-
-#pragma link C++ class S_XCut;
-#pragma link C++ class S_YCut;
-#pragma link C++ class S_Cut_min_max;
-#pragma link C++ class S_Cut_BinContent;
-#pragma link C++ class S_CutCoollection;
-#pragma link C++ class S_NoCut;
-
-#endif
 #endif // s_cuts_h__

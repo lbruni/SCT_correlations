@@ -102,15 +102,6 @@ public:
 
 
 
-#ifdef __CINT__
-
-
-
-#pragma link C++ class sct_plot;
-
-
-
-#endif
 
 
 

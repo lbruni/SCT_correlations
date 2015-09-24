@@ -24,9 +24,7 @@ public:
 
 
 
-#ifdef __CINT__
-#pragma link C++ class SCT_helpers;
-#endif // __CINT__
+
 
 
 #endif // SCT_helpers_h__

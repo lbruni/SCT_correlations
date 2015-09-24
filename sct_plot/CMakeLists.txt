@@ -14,31 +14,11 @@ SET(ProjectDict_name SCT_plotsDict.cxx)
 
 INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} ${RapidXML_INCLUDE_DIR} )
 
-# fill list of header files 
-set(Project_HEADERS 
-  ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots.h
-  ${PROJECT_SOURCE_DIR}/sct_plot/inc/S_Axis.h
- ${PROJECT_SOURCE_DIR}/sct_plot/inc/s_cuts.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_DrawOption.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plane.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plane_def.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_processors.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_default_names.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_collection.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_plot_prob.h
-${PROJECT_SOURCE_DIR}/sct_plot/inc/s_process_collection.h
-  ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots_LinkDef.h
-  )
 
-SET(MY_INCLUDE_DIRECTORIES ./sct_plot/inc ./inc  ${ROOT_INCLUDE_DIR} )
 
-# set everything needed for the root dictonary and create the
-# dictionary
-set(Project_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/${ProjectDict_name}) 
 
-ROOT_GENERATE_DICTIONARY_OLD("${Project_HEADERS}" "${Project_DICTIONARY}" "${MY_INCLUDE_DIRECTORIES}")
-ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources} ${library_sources_internals} ${library_sources_sct_events} ${Project_DICTIONARY} )
+
+ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources} ${library_sources_internals} ${library_sources_sct_events}  )
 
 
 

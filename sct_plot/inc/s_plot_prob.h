@@ -14,18 +14,15 @@ public:
   s_plot_prob& doNotSaveToDisk();
   s_plot_prob& SaveToDisk();
   const char* getName() const;
-  bool getNameSize() const;
+  size_t getNameSize() const;
   plot_save_option_def getPlotSaveOption() const;
 
 #ifndef __CINT__
   std::string m_name;
   plot_save_option_def m_save = save_to_disk;
 #endif
-  ClassDef(s_plot_prob, 0);
+
 };
 
-#ifdef __CINT__
 
-#pragma link C++ class s_plot_prob;
-#endif
 #endif // s_plot_prob_h__

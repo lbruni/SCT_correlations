@@ -48,7 +48,7 @@ private:
   std::string m_name;
   std::shared_ptr<sct_corr::Xlayer> m_layer;
 #endif
-  ClassDef(S_plane_def, 0);
+
 };
 
 
@@ -66,7 +66,7 @@ public:
 #ifndef __CINT__
   virtual std::shared_ptr<S_plane_def> copy() const override;
 #endif
-  ClassDef(S_plane_def_GBL, 0);
+ 
 };
 
 
@@ -78,7 +78,7 @@ public:
 #ifndef __CINT__
   virtual std::shared_ptr<S_plane_def> copy() const override;
 #endif
-  ClassDef(S_plane_def_Alibava, 0);
+ 
 };
 class DllExport s_plane_collection {
 public:
@@ -102,7 +102,7 @@ public:
 #ifndef __CINT__
   std::vector<std::pair<std::string, S_plane_def>> m_planes;
 #endif
-  ClassDef(s_plane_collection, 0);
+  
 };
 
 
@@ -121,7 +121,7 @@ public:
   S_plane_def getTotalTrueHits() const;
   S_plane_def getTrueHitsWithDUT() const;
   S_plane_def getDUT_Hits() const;
-  ClassDef(s_plane_collection_correlations, 0);
+  
 };
 class DllExport s_plane_collection_find_closest :public s_plane_collection {
 public:
@@ -133,7 +133,7 @@ public:
   S_plane_def getResidual() const;
   S_plane_def getHitOnPlaneA() const;
   S_plane_def getHitOnPlaneB() const;
-  ClassDef(s_plane_collection_find_closest, 0);
+ 
 };
 
 
@@ -143,18 +143,6 @@ DllExport s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def
 
 
 
-#ifdef __CINT__
-
-#pragma link C++ class S_plane_def;
-#pragma link C++ class S_plane_def_GBL;
-#pragma link C++ class S_plane_def_Alibava;
-#pragma link C++ class s_plane_collection;
-#pragma link C++ class s_plane_collection_correlations;
-#pragma link C++ class s_plane_collection_find_closest;
-#pragma link C++ function  operator+(s_plane_collection , const s_plane_collection& );
-#pragma link C++ function  operator+(s_plane_collection , const S_plane_def& );
-#pragma link C++ function  operator+(const S_plane_def& , const S_plane_def& );
-#endif
 
 
 #endif // s_plane_def_h__

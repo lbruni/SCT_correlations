@@ -22,12 +22,12 @@ namespace sct_corr{
 class DllExport S_plane{
 public:
   S_plane();
-#ifndef __CINT__
+
 
   S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits);
   void setTreeCollection(sct_corr::treeCollection* hits);
   sct_corr::plane* getPlane() const;
-#endif
+
 
 
 
@@ -41,19 +41,16 @@ public:
   const sct_corr::axis_ref* getX() const;
   const sct_corr::axis_ref* getY() const;
   const sct_corr::axis_ref* getAxis(axis_def ax) const;
-#ifndef __CINT__
+
   std::shared_ptr<S_plane_def> m_plane_def;
   std::shared_ptr<sct_corr::plane> m_plane;
-#endif
-  ClassDef(S_plane, 0);
+
+
 };
 
 
 
 
 
-#ifdef __CINT__
-#pragma link C++ class S_plane;
-#endif
 
 #endif // s_plane_h__

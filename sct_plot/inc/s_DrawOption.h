@@ -78,9 +78,7 @@ private:
   bool m_same = false;
 #endif // !__CINT__
 
-  ClassDef(S_DrawOption, 0);
+
 };
-#ifdef __CINT__ 
-#pragma link C++ class S_DrawOption;
-#endif
+
 #endif // s_DrawOption_h__

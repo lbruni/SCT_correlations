@@ -173,9 +173,5 @@ public:
     );
 };
 
-#ifdef __CINT__
 
-#pragma link C++ class sct_processor;
-
-#endif
 #endif // sct_processors_h__

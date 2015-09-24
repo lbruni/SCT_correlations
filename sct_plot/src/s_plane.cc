@@ -4,7 +4,7 @@
 #include "sct_plots_internal.h"
 #include "internal/plane.hh"
 #include "S_Axis.h"
-#include "s_treeCollection.h"
+
 #include "treeCollection.h"
 #include "internal/plane_hit.hh"
 #include "s_DrawOption.h"
@@ -18,11 +18,7 @@
   }
 
 
-  S_plane::S_plane(const S_plane_def& plane_def, S_treeCollection* hits) : S_plane(plane_def, hits->m_tree.get())
-  {
 
-
-  }
 
   S_plane::S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits) : m_plane_def(plane_def.copy())
   {

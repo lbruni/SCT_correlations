@@ -29,7 +29,7 @@ public:
   sct_corr::plane* getPlane() const;
 #endif
 
-  S_plane(const S_plane_def& plane_def, S_treeCollection* hits);
+
 
 
   const char * getName() const;

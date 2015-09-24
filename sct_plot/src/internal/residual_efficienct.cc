@@ -6,6 +6,7 @@
 #include "SCT_helpers.h"
 #include "sct_processors.h"
 #include "s_cuts.h"
+#include "sct_types.h"
 
 
 
@@ -107,7 +108,7 @@ s_plane_collection make_residual_efficiency_processor(
   const S_plane_def& planeA,
   const S_plane_def& planeB,
   axis_def search_axis,
-  int strips,
+  const sct_type::stripNr_t& strips,
   const s_plot_prob& plot_prob_ /*= "" */
   ) {
   auto plA = planeA.get_plot();
@@ -123,7 +124,7 @@ s_plane_collection make_residual_efficiency_processor(
   auto collection_ = plA->addPlot(
     S_plot(new residual_efficiency_processor(
     search_axis,
-    strips,
+    strips.value,
     plot_prob_)),
     planeA,
     planeB
@@ -137,7 +138,7 @@ s_plane_collection make_residual_efficiency_processor(
 residual_efficienct::residual_efficienct(
   const S_plane_def& trueHits,
   const S_plane_def& sz_data,
-  int strips,
+  const sct_type::stripNr_t&  strips,
   axis_def search_axis,
   const s_plot_prob& plot_prob
   ) :m_plot_prob(plot_prob) {
@@ -156,7 +157,7 @@ residual_efficienct::residual_efficienct(
   const S_plane_def& trueHits, 
   const S_plane_def& sz_data, 
   const S_Cut& cut_, 
-  int strips, 
+  const sct_type::stripNr_t&  strips,
   axis_def search_axis, 
   const s_plot_prob& plot_prob
   ) :residual_efficienct(
@@ -195,7 +196,7 @@ Long64_t residual_efficienct::Draw(const S_DrawOption& d_option) {
   if (!m_efficiency) {
     return -1;
   }
-  m_efficiency->SetTitle(m_plot_prob.getName().value.c_str());
+  m_efficiency->SetTitle(necessary_CONVERSION(m_plot_prob.getName()).c_str());
   m_efficiency->Draw(d_option.getOptions());
   m_efficiency->GetXaxis()->SetTitle("residual");
   m_efficiency->GetYaxis()->SetTitle("efficiency");

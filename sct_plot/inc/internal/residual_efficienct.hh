@@ -5,6 +5,7 @@
 #include "s_plot_prob.h"
 #include <memory>
 #include "S_Axis.h"
+#include "sct_types.h"
 
 
 class S_plane_def;
@@ -22,14 +23,14 @@ public:
     const S_plane_def& trueHits,
     const S_plane_def& sz_data,
     const S_Cut& cut_,
-    int strips,
+    const sct_type::stripNr_t& strips,
     axis_def search_axis,
     const s_plot_prob& plot_prob
     );
   residual_efficienct(
     const S_plane_def& trueHits,
     const S_plane_def& sz_data,
-    int strips,
+    const sct_type::stripNr_t&  strips,
     axis_def search_axis,
     const s_plot_prob& plot_prob
     );

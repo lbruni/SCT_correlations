@@ -21,6 +21,7 @@ namespace sct_type {
 
 
   TYPE_CLASS(ID_t, double);
+  TYPE_CLASS(stripNr_t, int);
   TYPE_CLASS(residualCut_t, double);
   TYPE_CLASS(rot_angle_t, double);
 

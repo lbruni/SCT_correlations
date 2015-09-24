@@ -114,7 +114,7 @@ int asyncMain(void *arg) {
     gbl_collection.getTotalTrueHits(), 
     file___.DUT_zs_data(), 
     S_XCut(280,360),
-    400, 
+    stripNr_t(400),
     x_axis_def, 
     s_plot_prob("Res_efficiency")
     );

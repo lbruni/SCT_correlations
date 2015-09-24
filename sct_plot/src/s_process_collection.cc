@@ -674,7 +674,7 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
     gbl_collection.getTotalTrueHits(),
     m_file_fitter->DUT_zs_data(),
     S_XCut(280, 360),
-    400,
+    sct_type::stripNr_t(400),
     x_axis_def,
     s_plot_prob("Res_efficiency")
     );

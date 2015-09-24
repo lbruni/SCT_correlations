@@ -47,7 +47,7 @@ namespace sct_corr{
   class DllExport rootEventBase{
   public:
     rootEventBase(TTree* tree);
-    rootEventBase(const sct_type::collectionName_t&  collectionName, std::vector<std::string> axis_list);
+    rootEventBase(const sct_type::collectionName_t&  collectionName, const  std::vector<sct_type::AxesName_t>& axis_list);
 
     rootEventBase();
     virtual ~rootEventBase(){}

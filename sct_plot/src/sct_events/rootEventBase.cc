@@ -163,11 +163,11 @@ TTreeVectorExtractor::TTreeVectorExtractor(const sct_type::AxesName_t&  name) : 
 
   }
 
-  rootEventBase::rootEventBase(const sct_type::collectionName_t& collectionName, std::vector<std::string> axis_list) :m_name(collectionName)
+  rootEventBase::rootEventBase(const sct_type::collectionName_t& collectionName,const  std::vector<sct_type::AxesName_t>& axis_list) :m_name(collectionName)
   {
     for (auto&e : axis_list)
     {
-      m_data.emplace_back(sct_type::AxesName_t(e.c_str()));
+      m_data.emplace_back(e);
     }
     m_event_nr_ownd = std::make_shared<int>(0);
     m_event_nr = m_event_nr_ownd.get();

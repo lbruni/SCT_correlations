@@ -22,9 +22,9 @@
 
 
 
+namespace sct_files {
 
-
-s_file::s_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ /*= nullptr*/) :m_plot_collection(plot_collection) {
+base_file::base_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ /*= nullptr*/) :m_plot_collection(plot_collection) {
 
   if (gear_) {
     m_gear = std::unique_ptr<sct_corr::Xgear>(new sct_corr::Xgear(*gear_));
@@ -33,7 +33,7 @@ s_file::s_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_cor
 
 
 
-S_plane_def s_file::get_plane(const char* collection_name, sct_type::ID_t ID) const {
+S_plane_def base_file::get_plane(const char* collection_name, sct_type::ID_t ID) const {
 
   S_plane_def ret(collection_name, ID.value, get_layer(ID));
 
@@ -41,136 +41,134 @@ S_plane_def s_file::get_plane(const char* collection_name, sct_type::ID_t ID) co
   return ret;
 }
 
-S_plot_collection* s_file::get_collection() {
+S_plot_collection* base_file::get_collection() {
   return m_plot_collection.get();
 }
- S_plot_collection* s_file::get_plot_collection() const {
+S_plot_collection* base_file::get_plot_collection() const {
   return m_plot_collection.get();
 }
- sct_corr::Xgear* s_file::get_gear() const {
-   
-   if (!m_gear)
-   {
-     return nullptr;
-   }
+sct_corr::Xgear* base_file::get_gear() const {
 
-   return m_gear.get();
- }
+  if (!m_gear) {
+    return nullptr;
+  }
+
+  return m_gear.get();
+}
 
 
- const sct_corr::Xlayer* s_file::get_layer(sct_type::ID_t ID) const {
+const sct_corr::Xlayer*  base_file::get_layer(sct_type::ID_t ID) const {
 
-  if (!m_gear)
-  {
+  if (!m_gear) {
     return nullptr;
   }
 
   return m_gear->detector.layer_by_ID(ID.value);
 }
 
-s_file_fitter::s_file_fitter(const char* Fitter_File, const char* gear_file) :s_file_fitter(std::make_shared<S_plot_collection>(Fitter_File), &(sct_corr::load_gear(gear_file))) {
+fitter_file::fitter_file(const char* Fitter_File, const char* gear_file) :fitter_file(std::make_shared<S_plot_collection>(Fitter_File), &(sct_corr::load_gear(gear_file))) {
 
   m_plot_collection->set_self_weak_pointer(m_plot_collection);
 
 }
 
-s_file_fitter::s_file_fitter(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ /*= nullptr*/):s_file(plot_collection,gear_) {
+fitter_file::fitter_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ /*= nullptr*/) :base_file(plot_collection, gear_) {
 
 }
-S_plane_def s_file_fitter::apix_hit_local() const {
+S_plane_def fitter_file::apix_hit_local() const {
   return get_plane(sct::col_local_hit(), sct_type::ID_t(20));
 }
 
-S_plane_def s_file_fitter::apix_hit() const {
+S_plane_def fitter_file::apix_hit() const {
   return get_plane(sct::col_hit(), sct_type::ID_t(20));
 }
 
-S_plane_def s_file_fitter::apix_zs_data() const {
+S_plane_def fitter_file::apix_zs_data() const {
   return get_plane(sct::col_zsdata_apix(), sct_type::ID_t(20));
 }
 
 
-S_plane_def s_file_fitter::apix_fitted() const {
+S_plane_def fitter_file::apix_fitted() const {
   return get_plane(sct::col_fitpoints(), sct_type::ID_t(20));
 }
 
-S_plane_def s_file_fitter::apix_fitted_local() const {
+S_plane_def fitter_file::apix_fitted_local() const {
   return get_plane(sct::col_fitpoints_local(), sct_type::ID_t(20));
 }
 
 
-S_plane_def s_file_fitter::DUT_hit_local() const {
+S_plane_def fitter_file::DUT_hit_local() const {
   return get_plane(sct::col_local_hit(), sct_type::ID_t(8));
 }
 
 
-S_plane_def s_file_fitter::DUT_hit() const {
+S_plane_def fitter_file::DUT_hit() const {
   return get_plane(sct::col_hit(), sct_type::ID_t(8));
 }
 
 
-S_plane_def s_file_fitter::DUT_zs_data() const {
+S_plane_def fitter_file::DUT_zs_data() const {
   return   get_plane(sct::col_zsdata_strip(), sct_type::ID_t(8));
 }
 
-S_plane_def s_file_fitter::DUT_fitted() const {
+S_plane_def fitter_file::DUT_fitted() const {
   return   get_plane(sct::col_fitpoints(), sct_type::ID_t(8));
 }
 
-S_plane_def s_file_fitter::DUT_fitted_local() const {
+S_plane_def fitter_file::DUT_fitted_local() const {
   return   get_plane(sct::col_fitpoints_local(), sct_type::ID_t(8));
 }
 
-S_plane_def s_file_fitter::DUT_TTC_data() const {
+S_plane_def fitter_file::DUT_TTC_data() const {
   return get_plane(sct::col_DUT_TTC(), sct_type::ID_t(9));
 }
 
-S_plane_def s_file_fitter::DUT_Timestamp() const {
+S_plane_def fitter_file::DUT_Timestamp() const {
   return get_plane(sct::col_DUT_TTC(), sct_type::ID_t(10));
 }
 
-S_plane_def s_file_fitter::DUT_Timestamp_L0ID() const {
+S_plane_def fitter_file::DUT_Timestamp_L0ID() const {
   return get_plane(sct::col_DUT_TTC(), sct_type::ID_t(11));
 }
 
-S_plane_def s_file_fitter::DUT_TDC_L0ID() const {
+S_plane_def fitter_file::DUT_TDC_L0ID() const {
   return get_plane(sct::col_DUT_TTC(), sct_type::ID_t(12));
 }
 
-S_plane_def s_file_fitter::DUT_TLU_TLUID() const {
+S_plane_def fitter_file::DUT_TLU_TLUID() const {
   return get_plane(sct::col_DUT_TTC(), sct_type::ID_t(13));
 }
 
-S_plane_def s_file_fitter::tel_hit_local(const sct_type::ID_t& ID) const {
+S_plane_def fitter_file::tel_hit_local(const sct_type::ID_t& ID) const {
   return get_plane(sct::col_local_hit(), ID);
 }
 
-S_plane_def s_file_fitter::tel_hit(const sct_type::ID_t& ID) const {
+S_plane_def fitter_file::tel_hit(const sct_type::ID_t& ID) const {
   return get_plane(sct::col_hit(), ID);
 }
 
-S_plane_def s_file_fitter::tel_zs_data(const sct_type::ID_t& ID) const {
+S_plane_def fitter_file::tel_zs_data(const sct_type::ID_t& ID) const {
   return get_plane(sct::col_zsdata_m26(), ID);
 }
 
-S_plane_def s_file_fitter::tel_fitted(const sct_type::ID_t& ID) const {
+S_plane_def fitter_file::tel_fitted(const sct_type::ID_t& ID) const {
   return get_plane(sct::col_fitpoints(), ID);
 }
 
-S_plane_def s_file_fitter::tel_fitted_local(const sct_type::ID_t& ID) const {
+S_plane_def fitter_file::tel_fitted_local(const sct_type::ID_t& ID) const {
   return get_plane(sct::col_fitpoints_local(), ID);
 }
 
 
-S_plane_def_GBL s_file_fitter::DUT_fitted_local_GBL() const {
-   S_plane_def_GBL ret(sct::col_GBL_fitted_points(), 8);
+S_plane_def_GBL fitter_file::DUT_fitted_local_GBL() const {
+  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), 8);
 
-   ret.set_s_plot_collection(m_plot_collection);
-   return ret;
+  ret.set_s_plot_collection(m_plot_collection);
+  return ret;
 }
 
 
-S_plane_def_GBL s_file_fitter::tel_fitted_local_GBL(const sct_type::ID_t& ID) const {
+S_plane_def_GBL fitter_file::tel_fitted_local_GBL(const sct_type::ID_t& ID) const {
   S_plane_def_GBL ret(sct::col_GBL_fitted_points(), ID.value);
 
   ret.set_s_plot_collection(m_plot_collection);
@@ -178,48 +176,48 @@ S_plane_def_GBL s_file_fitter::tel_fitted_local_GBL(const sct_type::ID_t& ID) co
 }
 
 
-s_plane_collection_correlations s_file_fitter::get_correlations(
-  const S_Cut& fiducial_cut_, 
-  sct_type::residualCut_t residualCut, 
-  sct_type::rot_angle_t rotate_angle, 
-  sct_type::move_t move_x, 
+s_plane_collection_correlations fitter_file::get_correlations(
+  const S_Cut& fiducial_cut_,
+  sct_type::residualCut_t residualCut,
+  sct_type::rot_angle_t rotate_angle,
+  sct_type::move_t move_x,
   const s_plot_prob& plot_prob_ /*= "" */
   ) const {
 
 
   if (get_plot_collection()->collectionExist(sct::col_GBL_fitted_points())) {
 
-    return get_GBL_correlations(fiducial_cut_, residualCut,  rotate_angle, move_x, plot_prob_);
+    return get_GBL_correlations(fiducial_cut_, residualCut, rotate_angle, move_x, plot_prob_);
   }
 
   if (get_plot_collection()->collectionExist(sct::col_fitpoints_local())) {
 
-    return get_Daff_correlations(fiducial_cut_, residualCut,  rotate_angle, move_x, plot_prob_);
+    return get_Daff_correlations(fiducial_cut_, residualCut, rotate_angle, move_x, plot_prob_);
   }
   std::cout << "collection not found " << std::endl;
   return s_plane_collection_correlations();
 }
 
 
-s_plane_collection_correlations s_file_fitter::get_GBL_correlations(
-  const S_Cut& fiducial_cut_, 
-  sct_type::residualCut_t residualCut, 
-  sct_type::rot_angle_t rotate_angle, 
-  sct_type::move_t move_x, 
-  const s_plot_prob& plot_prob_ 
+s_plane_collection_correlations fitter_file::get_GBL_correlations(
+  const S_Cut& fiducial_cut_,
+  sct_type::residualCut_t residualCut,
+  sct_type::rot_angle_t rotate_angle,
+  sct_type::move_t move_x,
+  const s_plot_prob& plot_prob_
   ) const {
 
 
   auto loc = sct_processor::convert_local_to_global(
-    apix_hit_local(), 
-    *get_gear()->detector.layer_by_ID(20), 
+    apix_hit_local(),
+    *get_gear()->detector.layer_by_ID(20),
     s_plot_prob().doNotSaveToDisk()
     );
-  
+
 
   auto loc11 = sct_processor::convert_global_to_local(
-    loc, 
-    *get_gear()->detector.layer_by_ID(8), 
+    loc,
+    *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
     );
 
@@ -227,29 +225,29 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations(
 
 
   auto trueHits = sct_processor::find_nearest(
-    loc11, 
-    DUT_fitted_local_GBL(), 
+    loc11,
+    DUT_fitted_local_GBL(),
     1,  //x cut in mm
     1, //y cut in mm
     s_plot_prob().doNotSaveToDisk()
     ).getHitOnPlaneB();
 
   auto dut_rotated_17 = sct_processor::rotate(
-    trueHits, 
-    rotate_angle.value, 
+    trueHits,
+    rotate_angle.value,
     s_plot_prob().doNotSaveToDisk()
     );
 
   auto dut_rotated_17_move = sct_processor::coordinate_transform_move(
-    dut_rotated_17, 
-    move_x.value, 
-    0, 
+    dut_rotated_17,
+    move_x.value,
+    0,
     s_plot_prob().doNotSaveToDisk()
     );
 
   auto trueHits_cut = sct_processor::cut_x_y(
-    dut_rotated_17_move, 
-    fiducial_cut_, 
+    dut_rotated_17_move,
+    fiducial_cut_,
     s_plot_prob().SaveToDisk()
     );
 
@@ -283,39 +281,39 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations(
 }
 
 
-s_plane_collection_correlations s_file_fitter::get_Daff_correlations(
-  const S_Cut& fiducial_cut_, 
-  sct_type::residualCut_t residualCut, 
-  sct_type::rot_angle_t rotate_angle, 
-  sct_type::move_t move_x, 
+s_plane_collection_correlations fitter_file::get_Daff_correlations(
+  const S_Cut& fiducial_cut_,
+  sct_type::residualCut_t residualCut,
+  sct_type::rot_angle_t rotate_angle,
+  sct_type::move_t move_x,
   const s_plot_prob& plot_prob_ /*= "" */
   ) const {
 
 
-  std::cout << "[s_file_fitter::get_Daff_correlations]: not implemented \n";
+  std::cout << "[fitter_file::get_Daff_correlations]: not implemented \n";
   s_plane_collection_correlations ret;
   return ret;
 }
 
 
-s_plane_collection_correlations s_file_fitter::get_Daff_correlations_channel(
-  const S_Cut& fiducial_cut_, 
+s_plane_collection_correlations fitter_file::get_Daff_correlations_channel(
+  const S_Cut& fiducial_cut_,
   sct_type::residualCut_t residualCut,
   sct_type::rot_angle_t rotate_angle,
   sct_type::move_t move_x,
   const s_plot_prob& plot_prob_) const {
 
-  std::cout << "[s_file_fitter::get_Daff_correlations_channel]: not implemented \n";
+  std::cout << "[fitter_file::get_Daff_correlations_channel]: not implemented \n";
   s_plane_collection_correlations ret;
   return ret;
 }
 
-s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
-  const S_Cut& fiducial_cut_, 
+s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
+  const S_Cut& fiducial_cut_,
   sct_type::residualCut_t residualCut,
   sct_type::rot_angle_t rotate_angle,
   sct_type::move_t move_x,
-  const s_plot_prob& plot_prob_ 
+  const s_plot_prob& plot_prob_
   ) const {
 
 
@@ -326,7 +324,7 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
     *get_gear()->detector.layer_by_ID(20),
     s_plot_prob().doNotSaveToDisk()
     );
-  
+
 
   auto apix_on_DUT = sct_processor::convert_global_to_local(
     apix_global,
@@ -335,9 +333,9 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
     );
 
 
-  auto trueHits =sct_processor::find_nearest(
+  auto trueHits = sct_processor::find_nearest(
     apix_on_DUT,
-   DUT_fitted_local_GBL(),
+    DUT_fitted_local_GBL(),
     1, // residual cut x
     1,  // residual cut y
     s_plot_prob().SaveToDisk()
@@ -402,7 +400,7 @@ s_plane_collection_correlations s_file_fitter::get_GBL_correlations_channel(
   return ret;
 }
 
-s_plane_collection_correlations s_file_fitter::get_correlations_channel(
+s_plane_collection_correlations fitter_file::get_correlations_channel(
   const S_Cut& fiducial_cut_,
   sct_type::residualCut_t residualCut,
   sct_type::rot_angle_t rotate_angle,
@@ -424,23 +422,24 @@ s_plane_collection_correlations s_file_fitter::get_correlations_channel(
 }
 
 
-s_alibava_file::s_alibava_file(
-  std::shared_ptr<S_plot_collection> plot_collection, 
+alibava_file::alibava_file(
+  std::shared_ptr<S_plot_collection> plot_collection,
   const sct_corr::Xgear* gear_ /*= nullptr*/
-  ) :s_file(plot_collection, gear_) {
+  ) :base_file(plot_collection, gear_) {
 
 }
 
-S_plane_def_Alibava s_alibava_file::Alibava_sz_data() const {
-  S_plane_def_Alibava ret("alibava",6);
+S_plane_def_Alibava alibava_file::Alibava_sz_data() const {
+  S_plane_def_Alibava ret("alibava", 6);
 
   ret.set_s_plot_collection(m_plot_collection);
   return ret;
 }
 
-S_plane_def_GBL s_alibava_file::DUT_fitted_local_GBL() const {
+S_plane_def_GBL alibava_file::DUT_fitted_local_GBL() const {
   S_plane_def_GBL ret("telescope", 0);
 
   ret.set_s_plot_collection(m_plot_collection);
   return ret;
+}
 }

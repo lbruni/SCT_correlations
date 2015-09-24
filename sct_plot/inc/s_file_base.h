@@ -11,19 +11,21 @@
 
 #include "sct_types.h"
 
-class DllExport s_file {
+
+namespace sct_files {
+class DllExport base_file {
 public:
-  s_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
-  virtual ~s_file() {}
+  base_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  virtual ~base_file() {}
 
 
   S_plane_def get_plane(const char* collection_name, sct_type::ID_t plane_ID) const;
-  
+
   S_plot_collection* get_collection();
-  
+
 protected:
-   S_plot_collection* get_plot_collection() const;
-   sct_corr::Xgear* get_gear() const;
+  S_plot_collection* get_plot_collection() const;
+  sct_corr::Xgear* get_gear() const;
   std::shared_ptr<S_plot_collection> m_plot_collection;
 private:
   const sct_corr::Xlayer* get_layer(sct_type::ID_t ID) const;
@@ -32,11 +34,11 @@ private:
 
 
 
-class DllExport s_file_fitter : public s_file{
+class DllExport fitter_file : public base_file {
 public:
-  s_file_fitter(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
-  s_file_fitter(const char* Fitter_File, const char* gear_file);
-  virtual ~s_file_fitter() {}
+  fitter_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  fitter_file(const char* Fitter_File, const char* gear_file);
+  virtual ~fitter_file() {}
 
   s_plane_collection_correlations get_correlations(
     const S_Cut& fiducial_cut_,
@@ -44,7 +46,7 @@ public:
     sct_type::rot_angle_t rotate_angle,
     sct_type::move_t move_x,
     const s_plot_prob& plot_prob_ = ""
-    ) const ;
+    ) const;
 
   s_plane_collection_correlations get_correlations_channel(
     const S_Cut& fiducial_cut_,
@@ -52,7 +54,7 @@ public:
     sct_type::rot_angle_t rotate_angle,
     sct_type::move_t move_x,
     const s_plot_prob& = ""
-    ) const ;
+    ) const;
 
 
   S_plane_def apix_hit_local() const;
@@ -116,14 +118,14 @@ private:
 };
 
 
-class DllExport s_alibava_file :public s_file {
+class DllExport alibava_file :public base_file {
 public:
-  s_alibava_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
-  virtual ~s_alibava_file() {}
+  alibava_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  virtual ~alibava_file() {}
   S_plane_def_Alibava Alibava_sz_data() const;
   S_plane_def_GBL DUT_fitted_local_GBL() const;
 };
 
-
+}
 
 #endif // s_file_base_h__

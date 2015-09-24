@@ -49,7 +49,7 @@ struct  inParam {
 };
 
 
-
+using namespace sct_type;
 int asyncMain(void *arg) {
 
 
@@ -57,8 +57,8 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/";
-  std::string name_ = "run000688_";
+  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_150V/";
+  std::string name_ = "run000704_";
   std::string name_suffix = "fitter";
   std::string extension_="root";
   std::string fullName = path_ + name_ + name_suffix+"." + extension_;
@@ -74,7 +74,7 @@ int asyncMain(void *arg) {
   TFile * out_file = new TFile("output.root", "recreate");
  // r_plot_collection pl(file_);
 //  pl.setOutputFile(out_file);
-  s_file_fitter file___(fullName.c_str(), "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
+  sct_files::fitter_file file___(fullName.c_str(), "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
   auto pl = file___.get_collection();
   pl->setOutputFile(out_file);
 
@@ -82,7 +82,7 @@ int asyncMain(void *arg) {
     S_YCut(-42, -36),
     residualCut_t(1),
     rot_angle_t(0),
-    move_t(- 6.36702e-001),
+    move_t(-6.36702e-001),
     s_plot_prob("GBL").SaveToDisk()
     );
     
@@ -119,8 +119,8 @@ int asyncMain(void *arg) {
     s_plot_prob("Res_efficiency")
     );
 
-  //pl.loop(4000);
-  pl->loop();
+  pl->loop(4000);
+  //pl->loop();
   gCanvas.push_back(new TCanvas());
 
   res_eff.Draw();

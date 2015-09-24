@@ -16,10 +16,12 @@ namespace sct_corr{
   class treeCollection_ouput;
   struct Xgear;
 }
-class s_file_fitter;
-namespace xmlImputFiles {
+namespace sct_files {
+  class fitter_file;
+}
 
-class XML_imput_file;
+namespace xmlImputFiles {
+  class XML_imput_file;
 }
 class FileProberties {
 public:
@@ -123,7 +125,7 @@ private:
   s_plane_collection_correlations m_output_planes;
 
   std::shared_ptr<S_plot_collection> m_plotCollection;
-  std::shared_ptr < s_file_fitter> m_file_fitter;
+  std::shared_ptr <sct_files::fitter_file> m_file_fitter;
   TFile* m_dummy = nullptr;
 #endif
 
@@ -144,7 +146,7 @@ private:
   TFile* m_dummy = nullptr;
 
   std::shared_ptr<S_plot_collection> m_plotCollection;
-  std::shared_ptr < s_file_fitter> m_file_fitter;
+  std::shared_ptr<sct_files::fitter_file> m_file_fitter;
 #endif
 };
 

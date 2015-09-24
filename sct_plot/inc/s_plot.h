@@ -42,36 +42,13 @@ public:
   ClassDef(S_plot, 0);
 };
 
-class DllExport S_plot_def{
-public:
 
-  S_plot_def(const char* type, const char* name, plot_save_option_def save_option = save_to_disk);
-  void setParameter(const char* tag, const char* value);
-  const char * getParameter(const char* tag, const char* default_value);
-
-
-
-#ifndef __CINT__
-
-  void setParameter(const std::string & tag, const std::string& value);
-  std::string getParameter(const std::string &  tag, const std::string &  default_value);
-
-  std::vector<S_plane*> m_planes;
-  std::vector<sct_corr::axis_ref*> m_axis;
-  std::map<std::string, std::string> m_tags;
-  std::string m_name, m_type;
-  bool m_save2disk;
-#endif
-  ClassDef(S_plot_def, 0);
-private:
-  S_plot_def(){}
-};
 #ifdef __CINT__
 
 
 #pragma link C++ class S_plot;
 
-#pragma link C++ class S_plot_def;
+
 #endif
 
 #endif // s_plot_h__

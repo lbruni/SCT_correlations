@@ -10,7 +10,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   const S_plane_def& trueHits, 
   const S_plane_def& trueHits_with_dut, 
   const S_Cut& cut_, axis_def search_axis, 
-  double mod_, 
+  sct_type::modulo_t mod_,
   const s_plot_prob& plot_prob) 
   :inStripEfficiency(
       sct_processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk() ),
@@ -27,7 +27,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   const S_plane_def& trueHits, 
   const S_plane_def& trueHits_with_dut, 
   axis_def search_axis, 
-  double mod_, 
+  sct_type::modulo_t mod_,
   const s_plot_prob& plot_prob
   ) 
   :m_mod(mod_), m_search_axis(search_axis), m_plot_prob(plot_prob)
@@ -36,10 +36,10 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   double mod_x = 10000000000;
   double mod_y = 10000000000;
   if (search_axis == x_axis_def) {
-    mod_x = m_mod;
+    mod_x = m_mod.value;
   }
   if (search_axis == y_axis_def) {
-    mod_y = m_mod;
+    mod_y = m_mod.value;
   }
 
 
@@ -84,8 +84,8 @@ TH1D* sct_corr::inStripEfficiency::getEfficiency_map() const {
 }
 
 Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 60, 0, m_mod);
-  TH1D DUtHitsMod("mod_dut", "DUT hits", 60, 0, m_mod);
+  TH1D trueHitsMod("mod_true", "true hits", 60, 0, m_mod.value);
+  TH1D DUtHitsMod("mod_dut", "DUT hits", 60, 0, m_mod.value);
   Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
   auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
 

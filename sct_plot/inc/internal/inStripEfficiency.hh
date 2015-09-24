@@ -6,13 +6,14 @@
 #include "Rtypes.h"
 #include "internal/platform.hh"
 #include "s_plot_prob.h"
+#include "sct_types.h"
 
 class S_plane_def;
 class S_Cut;
 
 class TH1D;
 class S_DrawOption;
-using modulo_t = double;
+
 namespace sct_corr {
 
 class DllExport inStripEfficiency {
@@ -22,14 +23,14 @@ public:
     const S_plane_def& trueHits_with_dut,
     const S_Cut& cut_,
     axis_def search_axis,
-    modulo_t mod_,
+    sct_type::modulo_t mod_,
     const s_plot_prob& plot_prob
     );
   inStripEfficiency(
     const S_plane_def& trueHits,
     const S_plane_def& trueHits_with_dut,
     axis_def search_axis,
-    modulo_t mod_,
+    sct_type::modulo_t mod_,
     const s_plot_prob& plot_prob
     );
   Long64_t Draw_true_hits(const S_DrawOption& d_option);
@@ -43,7 +44,7 @@ private:
   std::shared_ptr<S_plane_def> m_trueHits;
   std::shared_ptr<S_plane_def> m_DUT_hits;
   std::shared_ptr<TH1D> m_efficiency;
-  modulo_t m_mod;
+  sct_type::modulo_t m_mod;
   axis_def m_search_axis;
   s_plot_prob m_plot_prob;
 };

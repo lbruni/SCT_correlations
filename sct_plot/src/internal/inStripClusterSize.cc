@@ -12,7 +12,7 @@ sct_corr::inStripClusterSize::inStripClusterSize(
   const S_plane_def& sz_data,
   int max_cluster_size,
   axis_def search_axis,
-  double mod_,
+  const sct_type::modulo_t & mod_,
   const s_plot_prob& plot_prob
   )
   :m_plot_prob(plot_prob),
@@ -23,11 +23,11 @@ sct_corr::inStripClusterSize::inStripClusterSize(
   double mod_x = 10000000;
   double mod_y = 10000000;
   if (search_axis == x_axis_def) {
-    mod_x = mod_;
+    mod_x = mod_.value;
   }
 
   if (search_axis == y_axis_def) {
-    mod_y = mod_;
+    mod_y = mod_.value;
   }
   auto cluster_ = sct_processor::cluster_strip(
     sz_data,
@@ -103,7 +103,7 @@ Long64_t sct_corr::inStripClusterSize::Draw() {
   m_cluster_size_plot = std::make_shared<TH2D>(
     name.c_str(),
     m_plot_prob.getName(),
-    100, 0, m_mod,
+    100, 0, m_mod.value,
     m_max_cluster * 100, -0.5, m_max_cluster - 0.5
     );
   Draw(S_DrawOption(m_plot_prob.getName()).draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));
@@ -113,7 +113,7 @@ Long64_t sct_corr::inStripClusterSize::Draw() {
   m_cluster_size_plot = std::make_shared<TH2D>(
     name.c_str(),
     m_plot_prob.getName(),
-    100, 0, m_mod,
+    100, 0, m_mod.value,
     m_max_cluster, -0.5, m_max_cluster - 0.5
     );
   auto ret = Draw(S_DrawOption(m_plot_prob.getName()).draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));

@@ -9,10 +9,7 @@
 #include "internal/platform.hh"
 #include "geometry/setup_description.hh"
 
-using ID_t = double;
-using residualCut_t = double;
-using rot_angle_t = double;
-using move_t = double;
+#include "sct_types.h"
 
 class DllExport s_file {
 public:
@@ -20,7 +17,7 @@ public:
   virtual ~s_file() {}
 
 
-  S_plane_def get_plane(const char* collection_name, ID_t plane_ID) const;
+  S_plane_def get_plane(const char* collection_name, sct_type::ID_t plane_ID) const;
   
   S_plot_collection* get_collection();
   
@@ -29,7 +26,7 @@ protected:
    sct_corr::Xgear* get_gear() const;
   std::shared_ptr<S_plot_collection> m_plot_collection;
 private:
-  const sct_corr::Xlayer* get_layer(ID_t ID) const;
+  const sct_corr::Xlayer* get_layer(sct_type::ID_t ID) const;
   std::unique_ptr<sct_corr::Xgear> m_gear;
 };
 
@@ -43,17 +40,17 @@ public:
 
   s_plane_collection_correlations get_correlations(
     const S_Cut& fiducial_cut_,
-    residualCut_t residualCut,
-    rot_angle_t rotate_angle,
-    move_t move_x,
+    sct_type::residualCut_t residualCut,
+    sct_type::rot_angle_t rotate_angle,
+    sct_type::move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const ;
 
   s_plane_collection_correlations get_correlations_channel(
     const S_Cut& fiducial_cut_,
-    residualCut_t residualCut,
-    rot_angle_t rotate_angle,
-    move_t move_x,
+    sct_type::residualCut_t residualCut,
+    sct_type::rot_angle_t rotate_angle,
+    sct_type::move_t move_x,
     const s_plot_prob& = ""
     ) const ;
 
@@ -76,44 +73,44 @@ public:
 
   S_plane_def     DUT_TDC_L0ID() const;
   S_plane_def     DUT_TLU_TLUID() const;
-  S_plane_def     tel_hit_local(double ID) const;
-  S_plane_def     tel_hit(double ID) const;
-  S_plane_def     tel_zs_data(double ID) const;
-  S_plane_def     tel_fitted(double ID) const;
-  S_plane_def     tel_fitted_local(double ID) const;
+  S_plane_def     tel_hit_local(const sct_type::ID_t& ID) const;
+  S_plane_def     tel_hit(const sct_type::ID_t& ID) const;
+  S_plane_def     tel_zs_data(const sct_type::ID_t& ID) const;
+  S_plane_def     tel_fitted(const sct_type::ID_t& ID) const;
+  S_plane_def     tel_fitted_local(const sct_type::ID_t& ID) const;
 
   S_plane_def_GBL DUT_fitted_local_GBL() const;
-  S_plane_def_GBL tel_fitted_local_GBL(double ID) const;
+  S_plane_def_GBL tel_fitted_local_GBL(const sct_type::ID_t& ID) const;
 
 
 private:
   s_plane_collection_correlations get_Daff_correlations(
     const S_Cut& fiducial_cut_,
-    residualCut_t residualCut,
-    rot_angle_t rotate_angle,
-    move_t move_x,
+    sct_type::residualCut_t residualCut,
+    sct_type::rot_angle_t rotate_angle,
+    sct_type::move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
 
   s_plane_collection_correlations get_GBL_correlations(
     const S_Cut& fiducial_cut_,
-    residualCut_t residualCut,
-    rot_angle_t rotate_angle,
-    move_t move_x,
+    sct_type::residualCut_t residualCut,
+    sct_type::rot_angle_t rotate_angle,
+    sct_type::move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
   s_plane_collection_correlations get_Daff_correlations_channel(
     const S_Cut& fiducial_cut_,
-    residualCut_t residualCut,
-    rot_angle_t rotate_angle,
-    move_t move_x,
+    sct_type::residualCut_t residualCut,
+    sct_type::rot_angle_t rotate_angle,
+    sct_type::move_t move_x,
     const s_plot_prob& = ""
     ) const;
   s_plane_collection_correlations get_GBL_correlations_channel(
     const S_Cut& fiducial_cut_,
-    residualCut_t residualCut,
-    rot_angle_t rotate_angle,
-    move_t move_x,
+    sct_type::residualCut_t residualCut,
+    sct_type::rot_angle_t rotate_angle,
+    sct_type::move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
 };

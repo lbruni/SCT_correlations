@@ -147,7 +147,9 @@ private:
 
   std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
   std::shared_ptr<sct_files::fitter_file> m_file_fitter;
-
+  std::shared_ptr<sct_corr::inStripEfficiency> m_instripEfficiency ;
+  std::shared_ptr<sct_corr::inStripClusterSize> m_instripClusterSize ;
+  std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency ;
 };
 
 

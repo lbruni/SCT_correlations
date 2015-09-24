@@ -646,8 +646,7 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
     s_plot_prob("GBL").SaveToDisk()
     );
 
-
-  sct_corr::inStripEfficiency instrip(
+  m_instripEfficiency = std::make_shared<sct_corr::inStripEfficiency>(
     gbl_collection.getTotalTrueHits(),
     gbl_collection.getTrueHitsWithDUT(),
     S_XCut(280, 360),
@@ -656,13 +655,7 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
     s_plot_prob("inStripEffi")
     );
 
-
-  sct_corr::hit_efficiency eff(
-    gbl_collection.getTotalTrueHits(),
-    gbl_collection.getTrueHitsWithDUT(),
-    s_plot_prob("effi")
-    );
-  sct_corr::inStripClusterSize cl_instrip(
+  m_instripClusterSize = std::make_shared<sct_corr::inStripClusterSize>(
     gbl_collection.getTrueHitsWithDUT(),
     m_file_fitter->DUT_zs_data(), 10,
     x_axis_def,
@@ -670,7 +663,8 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
     s_plot_prob("cluster_size_instrip").SaveToDisk()
     );
 
-  sct_corr::residual_efficienct res_eff(
+  m_residualEffieciency = std::make_shared<
+  sct_corr::residual_efficienct>(
     gbl_collection.getTotalTrueHits(),
     m_file_fitter->DUT_zs_data(),
     S_XCut(280, 360),
@@ -683,20 +677,15 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
   //pl->loop();
   
 
-  res_eff.Draw();
+  m_residualEffieciency->Draw();
 //  SCT_helpers::saveTH1_as_txt(*res_eff.getEfficiency_map(), (path_ + name_ + "residual_efficiency" + "." + "txt").c_str());
 
   
-  instrip.Draw(S_DrawOption());
+  m_instripClusterSize->Draw(S_DrawOption());
 //  SCT_helpers::saveTH1_as_txt(*instrip.getEfficiency_map(), (path_ + name_ + "instripEffi" + "." + "txt").c_str());
-
   
 
-  eff.Draw();
-
-  
-
-  cl_instrip.Draw();
+  m_instripEfficiency->Draw();
 
   return true;
 }

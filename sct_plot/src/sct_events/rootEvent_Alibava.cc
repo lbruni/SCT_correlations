@@ -2,13 +2,13 @@
 #include "internal/planeX_Y_hits.hh"
 
 namespace sct_corr {
-std::vector<std::string> get_rootEvent_Alibava() {
-  std::vector<std::string> ret;
-  ret.emplace_back(Un_necessary_CONVERSION(getIDString()));
-  ret.emplace_back(Un_necessary_CONVERSION(axis2String(x_axis_def)));
-  ret.emplace_back(Un_necessary_CONVERSION(axis2String(y_axis_def)));
-  ret.emplace_back(Un_necessary_CONVERSION(axis2String(charge_axis_def)));
-  return ret;
+std::vector<sct_type::AxesName_t> get_rootEvent_Alibava() {
+  return{
+    getIDString(),
+    axis2String(x_axis_def),
+    axis2String(y_axis_def),
+    axis2String(charge_axis_def)
+  };
 }
 
 rootEvent_Alibava::rootEvent_Alibava(const sct_type::collectionName_t& name) :rootEventBase(name, get_rootEvent_Alibava()),

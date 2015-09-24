@@ -4,15 +4,15 @@
 #include <iostream>
 
 
-std::vector<std::string> get_axis_list(){
-    std::vector<std::string> ret;
-    ret.emplace_back(Un_necessary_CONVERSION(getIDString()));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(x_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(y_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(Occupancy_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(Occupancy_error_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(NumOfEvents_axis_def)));
-    return ret;
+std::vector<sct_type::AxesName_t > get_axis_list(){
+  return{
+    getIDString(),
+    axis2String(x_axis_def),
+    axis2String(y_axis_def),
+    axis2String(Occupancy_axis_def),
+    axis2String(Occupancy_error_axis_def),
+    axis2String(NumOfEvents_axis_def)
+  };
     
 }
 namespace sct_corr{

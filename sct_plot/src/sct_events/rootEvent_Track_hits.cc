@@ -4,16 +4,16 @@
 
 namespace sct_corr{
 
-  std::vector<std::string> getrootEvent_Track_hitsList(){
-    std::vector<std::string> ret;
-    ret.emplace_back(Un_necessary_CONVERSION(getIDString()));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(x_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(y_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(chi2_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(phi_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(theta_axis_def)));
-    ret.emplace_back(Un_necessary_CONVERSION(axis2String(Ndf_axis_def)));
-    return ret;
+std::vector <sct_type::AxesName_t> getrootEvent_Track_hitsList() {
+  return{
+    getIDString(),
+    axis2String(x_axis_def),
+    axis2String(y_axis_def),
+    axis2String(chi2_axis_def),
+    axis2String(phi_axis_def),
+    axis2String(theta_axis_def),
+    axis2String(Ndf_axis_def) };
+ 
   }
 
 

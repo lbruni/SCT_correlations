@@ -4,7 +4,7 @@
 #include <TCanvas.h>
 #include <iostream>
 #include "TTree.h"
-#include "sct_global.h"
+
 
 
 namespace sct_corr{

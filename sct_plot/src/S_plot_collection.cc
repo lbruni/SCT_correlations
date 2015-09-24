@@ -6,7 +6,7 @@
 #include "TCanvas.h"
 
 #include "sct_event_buffer.h"
-#include "sct_global.h"
+
 #include "internal/plotsBase.hh"
 #include "s_DrawOption.h"
 #include "s_plane_def.h"

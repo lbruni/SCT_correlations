@@ -41,11 +41,11 @@ treeDUT::treeDUT(TTree *tree, const char* outputName) {
 
   telescope = new TTree("telescope", "telescope");
 
-  m_telescope = new sct_corr::rootEvent_Track_hits("telescope");
+  m_telescope = new sct_corr::rootEvent_Track_hits(sct_type::collectionName_t("telescope"));
   m_telescope->Save2Tree(telescope);
 
   alibava = new TTree("alibava", "alibava");
-  m_alibava = new sct_corr::rootEvent_Alibava("alibava");
+  m_alibava = new sct_corr::rootEvent_Alibava(sct_type::collectionName_t("alibava"));
   m_alibava->Save2Tree(alibava);
 }
 

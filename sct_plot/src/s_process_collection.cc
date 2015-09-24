@@ -296,8 +296,11 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
   
 
 
-  m_plotCollection = std::make_shared<S_plot_collection>(fileP->getTfile());
+  
+  m_plotCollection = sct_corr::create_plot_collection();
+  m_plotCollection->addFile(fileP->getTfile());
   m_plotCollection->setOutputFile(m_dummy);
+  
   m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
 
   m_output_planes = m_file_fitter->get_correlations_channel(
@@ -626,7 +629,9 @@ void s_process_collection_modulo::start_collection(TFile* file__) {
 
 bool s_process_collection_modulo::process_file(FileProberties* fileP) {
 
-  m_plotCollection = std::make_shared<S_plot_collection>(fileP->getTfile());
+
+  m_plotCollection = sct_corr::create_plot_collection();
+  m_plotCollection->addFile(fileP->getTfile());
   m_plotCollection->setOutputFile(m_dummy);
   m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
 

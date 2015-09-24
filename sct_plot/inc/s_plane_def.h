@@ -35,14 +35,14 @@ public:
   const std::vector<S_Axis>& get_axis_defs() const;
   const sct_corr::Xlayer* getLayer() const;
 #ifndef __CINT__
-  void set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection);
+  void set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection);
   virtual std::shared_ptr<S_plane_def> copy() const;
-  std::shared_ptr<S_plot_collection> get_plot() const;
+  std::shared_ptr<sct_corr::plot_collection> get_plot() const;
 protected:
   std::vector<S_Axis> m_axis;
 
 private:
-  std::weak_ptr<S_plot_collection> m_plot;
+  std::weak_ptr<sct_corr::plot_collection> m_plot;
 
   Double_t m_ID = 0;
   std::string m_name;
@@ -83,7 +83,7 @@ public:
 class DllExport s_plane_collection {
 public:
 #ifndef __CINT__
-  void set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection);
+  void set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection__);
 #endif
   s_plane_collection(const S_plane_def& plane_);
   s_plane_collection() {}

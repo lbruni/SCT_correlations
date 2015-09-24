@@ -1,8 +1,8 @@
 #ifndef s_axis_h__
 #define s_axis_h__
 #include "internal/platform.hh"
-#include "TString.h"
 #include <memory>
+#include <string>
 
 enum  axis_def
 #ifndef __CINT__
@@ -22,15 +22,16 @@ enum  axis_def
 };
 const char* axis2String(axis_def ax);
 const char* getIDString();
-
-class S_plot_collection;
+namespace sct_corr {
+  class plot_collection;
+}
 class DllExport S_Axis{
 public:
   S_Axis(const char* collctionName, double planeID, axis_def axis);
 #ifndef __CINT__
-  S_Axis(const char* collctionName, double planeID, axis_def axis,std::weak_ptr<S_plot_collection> plot_collection_);
-  std::shared_ptr<S_plot_collection> get_plot() const;
-  void set_plot_collection(std::weak_ptr<S_plot_collection> plot_collection_);
+  S_Axis(const char* collctionName, double planeID, axis_def axis, std::weak_ptr<sct_corr::plot_collection> plot_collection_);
+  std::shared_ptr<sct_corr::plot_collection> get_plot() const;
+  void set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection_);
 #endif // !__CINT__
 
   S_Axis();
@@ -40,15 +41,15 @@ public:
   axis_def m_axis;
 private:
 #ifndef __CINT__
-  std::weak_ptr<S_plot_collection> m_plot_collection;
+  std::weak_ptr<sct_corr::plot_collection> m_plot_collection;
   bool m_isValid;
 #endif
-  ClassDef(S_Axis, 0);
+ 
 };
 #ifdef __CINT__
-#pragma link C++ enum axis_def;
 
-#pragma link C++ class S_Axis;
+
+
 #endif // !__CINT__
 
 #endif // s_axis_h__

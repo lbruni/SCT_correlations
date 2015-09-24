@@ -3,45 +3,7 @@
 #include "s_plane_def.h"
 #include "s_DrawOption.h"
 #include "s_plane_def.h"
-// class output_streamer;
-// 
-// class output_lock{
-// public:
-//   output_lock(output_streamer& out_streamer_collection, std::ostream* local_outstreamer);
-//   ~output_lock();
-//   std::ostream* m_local_outstreamer = nullptr;
-//   output_streamer& m_out_streamer_collection;
-// };
-// 
-// std::ostream* out=nullptr;
-// class output_streamer{
-// public:
-//   output_streamer(){ m_out.push_back(&(std::cout));
-//   out = &(std::cout);
-//   }
-//   
-//   output_lock lock(std::ostream* local_outstreamer);
-//   std::vector<std::ostream*> m_out;
-// } out_collection;
-// 
-// 
-// output_lock::output_lock(output_streamer& out_streamer_collection, std::ostream* local_outstreamer) :m_local_outstreamer(local_outstreamer), m_out_streamer_collection(out_streamer_collection)
-// {
-//   m_out_streamer_collection.m_out.push_back(m_local_outstreamer);
-// }
-// 
-// output_lock::~output_lock()
-// {
-//   if (m_out_streamer_collection.m_out.back() == m_local_outstreamer){
-//     m_out_streamer_collection.m_out.pop_back();
-//   }
-//   else
-//   {
-//     std::cout << "stream collection mixed up" << std::endl;
-// 
-//   }
-// 
-// }
+
 
 S_plane_def s_plane_collection::get(Int_t i) const
 {
@@ -123,9 +85,9 @@ s_plane_collection::s_plane_collection(const S_plane_def& plane_)
 {
   push_back(plane_);
 }
-void s_plane_collection::set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection) {
+void s_plane_collection::set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
   for (auto & e : m_planes) {
-    e.second.set_s_plot_collection(plot_collection);
+    e.second.set_s_plot_collection(plot_collection___);
   }
 }
 const char* s_plane_collection::getName(Int_t i) const

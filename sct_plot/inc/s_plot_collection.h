@@ -15,14 +15,14 @@ class S_DrawOption;
 class S_plane_def;
 class S_Axis;
 class S_plane;
-namespace sct_corr{
-  class axis_ref;
-  class treeCollection;
-  class sct_event_buffer;
+namespace sct_corr {
+class axis_ref;
+class treeCollection;
+class sct_event_buffer;
 }
 
 template <typename plane_tA, typename plane_tB>
-std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, plane_tB& secound__) {
+std::shared_ptr <sct_corr::plot_collection> getPlotCollectionIfUnique(plane_tA& first_, plane_tB& secound__) {
   auto plA = first_.get_plot();
   auto plB = secound__.get_plot();
   if (plA.get() != plB.get()) {
@@ -34,7 +34,7 @@ std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, 
 
 
 template <typename plane_tA, typename plane_tB, typename... planes_t>
-std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, plane_tB& secound__, planes_t&... rest_) {
+std::shared_ptr <sct_corr::plot_collection> getPlotCollectionIfUnique(plane_tA& first_, plane_tB& secound__, planes_t&... rest_) {
   auto plA = first_.get_plot();
   auto plB = secound__.get_plot();
   if (plA.get() != plB.get()) {
@@ -45,63 +45,38 @@ std::shared_ptr <S_plot_collection> getPlotCollectionIfUnique(plane_tA& first_, 
 
 }
 
-class  DllExport S_plot_collection{
+
+
+namespace sct_corr {
+
+
+std::shared_ptr<plot_collection> create_plot_collection();
+class  DllExport plot_collection {
 public:
-  S_plot_collection(TFile* file); 
-  S_plot_collection(const char* file_name);
-  void addFile(TFile* file);
-  void setOutputFile(TFile* file);
-  void reset();
-  s_plane_collection addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis);
+  plot_collection();
+  virtual  ~plot_collection();
+  
+  
+  virtual void addFile(TFile* file)=0;
+  virtual void setOutputFile(TFile* file)=0;
+  virtual void reset()=0;
+  virtual s_plane_collection addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis)=0;
 
-  s_plane_collection addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2);
-  s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1);
-  s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1);
-  void Draw();
-  Long64_t Draw(const char* name);
-  Long64_t Draw(const char* name, const S_DrawOption& option);
-  Long64_t Draw(const S_plane_def& name, const S_DrawOption& option);
-  Long64_t Draw(const s_plane_collection& name, const S_DrawOption& option);
-  Long64_t DrawAll(const s_plane_collection& name, const S_DrawOption& option);
-  void loop(Int_t last = -1, Int_t start = 0);
-  bool collectionExist(const char* name)  const;
-#ifndef __CINT__
-  void set_self_weak_pointer(std::weak_ptr<S_plot_collection> self_);
-private:
-  Int_t getMaxEntriesFromTree(Int_t last);
-  s_plane_collection addPlot_internal(S_plot plot_def);
-  const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
-  sct_corr::treeCollection* getCollection(const char* name);
-  TTree*                    getTTree(const char* name) const;
-  S_plane* getPlane(double ID, sct_corr::treeCollection* coll);
-  S_plane* pushPlane(const S_plane_def& pl);
+  virtual s_plane_collection addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2)=0;
+  virtual s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1)=0;
+  virtual s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1)=0;
 
-  std::shared_ptr<sct_corr::sct_event_buffer> m_eventBuffer;
-  std::shared_ptr<TFile> m_main_file;
-  std::vector<std::shared_ptr<S_plane>> m_planes;
-  std::vector<std::pair<std::string, S_plot>> m_plots;
-  std::map<std::string, S_DrawOption> m_drawOption;
-  std::vector< std::pair<std::string, sct_corr::treeCollection*>> m_trees;
-  std::vector<TFile*> m_file;
-  std::weak_ptr<S_plot_collection> m_self;
-#endif
-  ClassDef(S_plot_collection, 0);
+  virtual void loop(Int_t last = -1, Int_t start = 0)=0;
+
+
+  virtual Long64_t Draw(const char* name, const S_DrawOption& option)=0;
+  virtual Long64_t Draw(const S_plane_def& name, const S_DrawOption& option)=0;
+  virtual bool collectionExist(const char* name)  const =0 ;
 };
 
 
-class r_plane_def {
-public:
-  r_plane_def(const S_plane_def& plane_, S_plot_collection& pl);
-  bool isValid() const; 
 
-private:
-  S_plot_collection* m_plot_collection;
+}
 
-};
-#ifdef __CINT__
-
-#pragma link C++ class S_plot_collection;
-
-#endif // __CINT__
 
 #endif // s_plot_collection_h__

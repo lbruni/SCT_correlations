@@ -15,18 +15,18 @@
 namespace sct_files {
 class DllExport base_file {
 public:
-  base_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  base_file(std::shared_ptr<sct_corr::plot_collection> plot_collection___, const sct_corr::Xgear* gear_ = nullptr);
   virtual ~base_file() {}
 
 
   S_plane_def get_plane(const char* collection_name, sct_type::ID_t plane_ID) const;
 
-  S_plot_collection* get_collection();
+  sct_corr::plot_collection* get_collection();
 
 protected:
-  S_plot_collection* get_plot_collection() const;
+  sct_corr::plot_collection* get_plot_collection() const;
   sct_corr::Xgear* get_gear() const;
-  std::shared_ptr<S_plot_collection> m_plot_collection;
+  std::shared_ptr<sct_corr::plot_collection> m_plot_collection;
 private:
   const sct_corr::Xlayer* get_layer(sct_type::ID_t ID) const;
   std::unique_ptr<sct_corr::Xgear> m_gear;
@@ -36,7 +36,7 @@ private:
 
 class DllExport fitter_file : public base_file {
 public:
-  fitter_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  fitter_file(std::shared_ptr<sct_corr::plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
   fitter_file(const char* Fitter_File, const char* gear_file);
   virtual ~fitter_file() {}
 
@@ -115,12 +115,14 @@ private:
     sct_type::move_t move_x,
     const s_plot_prob& plot_prob_ = ""
     ) const;
+private:
+  std::shared_ptr<TFile> m_main_file;
 };
 
 
 class DllExport alibava_file :public base_file {
 public:
-  alibava_file(std::shared_ptr<S_plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  alibava_file(std::shared_ptr<sct_corr::plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
   virtual ~alibava_file() {}
   S_plane_def_Alibava Alibava_sz_data() const;
   S_plane_def_GBL DUT_fitted_local_GBL() const;

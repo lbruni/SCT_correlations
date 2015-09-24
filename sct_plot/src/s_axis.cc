@@ -12,14 +12,14 @@ S_Axis::S_Axis():m_isValid(false) {
   std::cout << "invalid axis" << std::endl;
 }
 
-S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis, std::weak_ptr<S_plot_collection> plot_collection_)
+S_Axis::S_Axis(const char* collctionName, double planeID, axis_def axis, std::weak_ptr<sct_corr::plot_collection> plot_collection_)
   : S_Axis(collctionName, planeID, axis) 
 {
   m_plot_collection = plot_collection_;
 }
 
-std::shared_ptr<S_plot_collection> S_Axis::get_plot() const {
-  if (std::shared_ptr<S_plot_collection> ret = m_plot_collection.lock()) {
+std::shared_ptr<sct_corr::plot_collection> S_Axis::get_plot() const {
+  if (std::shared_ptr<sct_corr::plot_collection> ret = m_plot_collection.lock()) {
 
     return ret;
   } else {
@@ -28,7 +28,7 @@ std::shared_ptr<S_plot_collection> S_Axis::get_plot() const {
   return nullptr;
 }
 
-void S_Axis::set_plot_collection(std::weak_ptr<S_plot_collection> plot_collection_) {
+void S_Axis::set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection_) {
 #ifdef _DEBUG
   if (m_plot_collection.lock())
   {

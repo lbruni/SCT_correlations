@@ -95,8 +95,8 @@
 
     return nullptr;
   }
-  std::shared_ptr<S_plot_collection> S_plane_def::get_plot() const {
-    if (std::shared_ptr<S_plot_collection> ret = m_plot.lock()) {
+  std::shared_ptr<sct_corr::plot_collection> S_plane_def::get_plot() const {
+    if (std::shared_ptr<sct_corr::plot_collection> ret = m_plot.lock()) {
 
       return ret;
     } else {
@@ -108,16 +108,16 @@
   std::shared_ptr<S_plane_def> S_plane_def::copy() const {
     return std::shared_ptr<S_plane_def>(new S_plane_def(*this));
   }
-  void S_plane_def::set_s_plot_collection(std::weak_ptr<S_plot_collection> plot_collection) {
+  void S_plane_def::set_s_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
 #ifdef _DEBUG
     if (m_plot.lock()) {
       std::cout << "m_plot was already defined " << std::endl;
     }
 
 #endif // _DEBUG
-    m_plot = plot_collection;
+    m_plot = plot_collection___;
     for (auto&e : m_axis) {
-      e.set_plot_collection(plot_collection);
+      e.set_plot_collection(plot_collection___);
 
     }
   }

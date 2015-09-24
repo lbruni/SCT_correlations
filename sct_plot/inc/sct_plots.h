@@ -35,14 +35,14 @@ class S_DrawOption;
 class S_Axis;
 class S_treeCollection;
 class S_Cut;
-class S_plot_collection;
 class s_plane_collection;
 class s_process_collection;
 class S_plane_def;
 
 namespace sct_corr {
   class treeCollection;
-
+  
+  class plot_collection;
   class axis_ref;
   class plot;
   class plane;

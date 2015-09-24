@@ -122,7 +122,7 @@ private:
   s_plane_collection m_res_VS_event;
   s_plane_collection_correlations m_output_planes;
 
-  std::shared_ptr<r_plot_collection> m_plotCollection;
+  std::shared_ptr<S_plot_collection> m_plotCollection;
   std::shared_ptr < s_file_fitter> m_file_fitter;
   TFile* m_dummy = nullptr;
 #endif
@@ -143,7 +143,7 @@ private:
   sct_corr::rootEventRunOutput m_outputl;
   TFile* m_dummy = nullptr;
 
-  std::shared_ptr<r_plot_collection> m_plotCollection;
+  std::shared_ptr<S_plot_collection> m_plotCollection;
   std::shared_ptr < s_file_fitter> m_file_fitter;
 #endif
 };

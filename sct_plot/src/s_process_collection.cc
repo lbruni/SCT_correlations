@@ -12,11 +12,16 @@
 #include "SCT_helpers.h"
 #include "s_file_base.h"
 #include "sct_processors.h"
+#include "internal/hit_efficiency.hh"
+#include "internal/inStripClusterSize.hh"
+#include "internal/residual_efficienct.hh"
+#include "internal/inStripEfficiency.hh"
+#include "sct_types.h"
 
 
 bool gDo_print = false;
 int gPos = 0;
-
+using namespace sct_type;
 std::ostream* m_out = &std::cout;
 class xml_print {
 
@@ -297,9 +302,9 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
 
   m_output_planes = m_file_fitter->get_correlations_channel(
     get_xml_input()->globalConfig().cut(),
-    get_xml_input()->globalConfig().residual_cut(),
-    get_xml_input()->globalConfig().Rotation(),
-    get_xml_input()->globalConfig().Position_value(),
+    residualCut_t(get_xml_input()->globalConfig().residual_cut()),
+    rot_angle_t(get_xml_input()->globalConfig().Rotation()),
+    move_t(get_xml_input()->globalConfig().Position_value()),
     s_plot_prob("Hits_in_channels")
     .SaveToDisk()
     );
@@ -443,7 +448,7 @@ Long64_t s_process_collection_standard::DrawResidualVsMissingCordinate(Double_t 
   m_resVSMissing = std::make_shared<TH2D>(
     "ResidualVsMissingCordinate",
     "Residual Vs Missing Coordinate",
-    10000, 0, 0,
+    100, 0, 0,
     100, min_X, max_X
     );
 
@@ -599,4 +604,94 @@ void FileProberties::setTFile(std::shared_ptr<TFile> file) {
 
 void FileProberties::setTFile(TFile* file) {
   m_file = file;
+}
+
+s_process_collection_modulo::s_process_collection_modulo() :m_outputl("out") {
+  m_dummy = new TFile("dummy1.root", "recreate");
+}
+
+s_process_collection_modulo::~s_process_collection_modulo() {
+
+}
+
+void s_process_collection_modulo::start_collection(TFile* file__) {
+  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
+    m_outputl,
+    &m_buffer,
+    true
+    );
+
+  m_outputTree->getTTree()->SetDirectory(file__->GetDirectory("/"));
+}
+
+bool s_process_collection_modulo::process_file(FileProberties* fileP) {
+
+  m_plotCollection = std::make_shared<r_plot_collection>(fileP->getTfile());
+  m_plotCollection->setOutputFile(m_dummy);
+  m_file_fitter = std::make_shared<s_file_fitter>(m_plotCollection->get_plot_collection_ptr(), get_gear());
+
+  auto pl = m_file_fitter->get_collection();
+
+
+  auto gbl_collection = m_file_fitter->get_correlations_channel(
+    S_YCut(-42, -36),
+    residualCut_t(1),
+    rot_angle_t(0),
+    move_t(-6.36702e-001),
+    s_plot_prob("GBL").SaveToDisk()
+    );
+
+
+  sct_corr::inStripEfficiency instrip(
+    gbl_collection.getTotalTrueHits(),
+    gbl_collection.getTrueHitsWithDUT(),
+    S_XCut(280, 360),
+    x_axis_def,
+    sct_type::modulo_t(3),
+    s_plot_prob("inStripEffi")
+    );
+
+
+  sct_corr::hit_efficiency eff(
+    gbl_collection.getTotalTrueHits(),
+    gbl_collection.getTrueHitsWithDUT(),
+    s_plot_prob("effi")
+    );
+  sct_corr::inStripClusterSize cl_instrip(
+    gbl_collection.getTrueHitsWithDUT(),
+    m_file_fitter->DUT_zs_data(), 10,
+    x_axis_def,
+    sct_type::modulo_t(3),
+    s_plot_prob("cluster_size_instrip").SaveToDisk()
+    );
+
+  sct_corr::residual_efficienct res_eff(
+    gbl_collection.getTotalTrueHits(),
+    m_file_fitter->DUT_zs_data(),
+    S_XCut(280, 360),
+    400,
+    x_axis_def,
+    s_plot_prob("Res_efficiency")
+    );
+
+  pl->loop(4000);
+  //pl->loop();
+  
+
+  res_eff.Draw();
+//  SCT_helpers::saveTH1_as_txt(*res_eff.getEfficiency_map(), (path_ + name_ + "residual_efficiency" + "." + "txt").c_str());
+
+  
+  instrip.Draw(S_DrawOption());
+//  SCT_helpers::saveTH1_as_txt(*instrip.getEfficiency_map(), (path_ + name_ + "instripEffi" + "." + "txt").c_str());
+
+  
+
+  eff.Draw();
+
+  
+
+  cl_instrip.Draw();
+
+  return true;
 }

@@ -129,6 +129,25 @@ private:
 
 };
 
+class DllExport s_process_collection_modulo : public s_process_collection {
+public:
+  s_process_collection_modulo();
+  virtual ~s_process_collection_modulo() ;
+
+#ifndef __CINT__
+private:
+  virtual void start_collection(TFile* file__) override;
+  virtual  bool process_file(FileProberties* fileP) override;
+  std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
+  sct_corr::sct_event_buffer m_buffer;
+  sct_corr::rootEventRunOutput m_outputl;
+  TFile* m_dummy = nullptr;
+
+  std::shared_ptr<r_plot_collection> m_plotCollection;
+  std::shared_ptr < s_file_fitter> m_file_fitter;
+#endif
+};
+
 #ifdef __CINT__
 
 

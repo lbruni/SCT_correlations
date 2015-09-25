@@ -12,7 +12,7 @@ public: \
   type value; \
 }
 
-using type = int;
+
 namespace sct_type {
 
   TYPE_CLASS(modulo_x, double);

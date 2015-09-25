@@ -89,9 +89,9 @@ public:
   s_plane_collection(const S_plane_def& plane_);
   s_plane_collection() {}
   S_plane_def get(Int_t i) const;
-  s_plane_collection getByName(const char* name) const;
+  s_plane_collection getByName(const sct_type::collectionName_t& name) const;
   s_plane_collection getByType(const char* type) const;
-  S_plane_def get(const char* name, const char* type) const;
+  S_plane_def get(const sct_type::collectionName_t&  name, const char* type) const;
   s_plane_collection get(const char* nameOrType) const;
   S_plane_def operator()() const;
   const char* getName(Int_t i) const;

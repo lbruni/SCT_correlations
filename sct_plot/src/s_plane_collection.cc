@@ -37,12 +37,12 @@ s_plane_collection s_plane_collection::getByType(const char* type) const
 
 
 }
-s_plane_collection s_plane_collection::getByName(const char* name) const
+s_plane_collection s_plane_collection::getByName(const sct_type::collectionName_t& name) const
 {
   s_plane_collection ret;
   for (auto& e : m_planes)
   {
-    if (e.second.getName().value == std::string(name)) {
+    if (Un_necessary_CONVERSION(e.second.getName())== Un_necessary_CONVERSION(name)) {
       ret.push_back(e.first.c_str(), e.second);
     }
 
@@ -55,24 +55,24 @@ s_plane_collection s_plane_collection::getByName(const char* name) const
 }
 s_plane_collection s_plane_collection::get(const char* nameOrType) const
 {
-  auto pl = getByName(nameOrType);
+  auto pl = getByName(sct_type::collectionName_t(nameOrType));
   auto pl_type = getByType(nameOrType);
  
   return pl + pl_type;
 
 }
 
-S_plane_def s_plane_collection::get(const char* name, const char* type) const
+S_plane_def s_plane_collection::get(const sct_type::collectionName_t&  name, const char* type) const
 {
   auto pl=getByName(name).getByType(type);
   if (pl.m_planes.empty())
   {
-      std::cout << "[s_plane_collection] unknown name = \"" << name << "\"" << std::endl;
+      std::cout << "[s_plane_collection] unknown name = \"" << necessary_CONVERSION(name) << "\"" << std::endl;
       return s_error_plane_def();
   }
   if (pl.m_planes.size()>1)
   {
-    std::cout << "[s_plane_collection] multiple combinations of type = "<<type<< " and name = "<<name << std::endl;
+    std::cout << "[s_plane_collection] multiple combinations of type = " << type << " and name = " << necessary_CONVERSION(name) << std::endl;
   }
   return pl.get(0);
 }

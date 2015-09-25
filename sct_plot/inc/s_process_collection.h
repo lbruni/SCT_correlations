@@ -15,6 +15,11 @@
 namespace sct_corr{
   class treeCollection_ouput;
   struct Xgear;
+  class inStripEfficiency;
+  
+  class inStripClusterSize;
+  class residual_efficienct;
+
 }
 namespace sct_files {
   class fitter_file;

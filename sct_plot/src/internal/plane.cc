@@ -33,7 +33,7 @@ namespace sct_corr{
   }
 
  const axis_ref* plane::getAxis(const sct_type::AxesName_t& name) const {
-   return getAxis(name);
+   return m_axis.getAxis(name);
  }
 
 

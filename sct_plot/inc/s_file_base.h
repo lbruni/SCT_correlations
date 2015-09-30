@@ -81,8 +81,8 @@ public:
   sct_corr::plane_def     tel_fitted(const sct_type::ID_t& ID) const;
   sct_corr::plane_def     tel_fitted_local(const sct_type::ID_t& ID) const;
 
-  S_plane_def_GBL DUT_fitted_local_GBL() const;
-  S_plane_def_GBL tel_fitted_local_GBL(const sct_type::ID_t& ID) const;
+  sct_corr::plane_def_GBL DUT_fitted_local_GBL() const;
+  sct_corr::plane_def_GBL tel_fitted_local_GBL(const sct_type::ID_t& ID) const;
 
 
 private:
@@ -125,7 +125,7 @@ public:
   alibava_file(std::shared_ptr<sct_corr::plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
   virtual ~alibava_file() {}
   S_plane_def_Alibava Alibava_sz_data() const;
-  S_plane_def_GBL DUT_fitted_local_GBL() const;
+  sct_corr::plane_def_GBL DUT_fitted_local_GBL() const;
 };
 
 }

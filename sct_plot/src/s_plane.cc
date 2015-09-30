@@ -150,29 +150,29 @@ const std::vector<S_Axis>& plane_def::get_axis_defs() const {
 }
 
 }
-std::shared_ptr<sct_corr::plane_def> S_plane_def_GBL::copy() const {
-  return std::shared_ptr<plane_def>(new S_plane_def_GBL(*this));
+std::shared_ptr<sct_corr::plane_def> sct_corr::plane_def_GBL::copy() const {
+  return std::shared_ptr<sct_corr::plane_def>(new sct_corr::plane_def_GBL(*this));
 }
-S_plane_def_GBL::S_plane_def_GBL(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :sct_corr::plane_def(name, ID, layer_) {
+sct_corr::plane_def_GBL::plane_def_GBL(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :sct_corr::plane_def(name, ID, layer_) {
   m_axis.emplace_back(name, ID, chi2_axis_def);
   m_axis.emplace_back(name, ID, Ndf_axis_def);
   m_axis.emplace_back(name, ID, phi_axis_def);
   m_axis.emplace_back(name, ID, theta_axis_def);
 }
 
-S_Axis S_plane_def_GBL::getChi2_def() const {
+S_Axis sct_corr::plane_def_GBL::getChi2_def() const {
   return get_Axis(chi2_axis_def);
 }
 
-S_Axis S_plane_def_GBL::getNdf_def() const {
+S_Axis sct_corr::plane_def_GBL::getNdf_def() const {
   return get_Axis(Ndf_axis_def);
 }
 
-S_Axis S_plane_def_GBL::getPhi_def() const {
+S_Axis sct_corr::plane_def_GBL::getPhi_def() const {
   return get_Axis(phi_axis_def);
 }
 
-S_Axis S_plane_def_GBL::getTheta_def() const {
+S_Axis sct_corr::plane_def_GBL::getTheta_def() const {
   return get_Axis(theta_axis_def);
 }
 
@@ -267,6 +267,6 @@ sct_corr::plane_def s_plane_collection_find_closest::getHitOnPlaneB() const {
 void s_plane_collection::clear() {
   m_planes.clear();
 }
-sct_corr::plane_def s_error_plane_def() {
+sct_corr::plane_def sct_corr::error_plane_def() {
   return sct_corr::plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
 }

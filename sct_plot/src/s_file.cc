@@ -19,6 +19,7 @@
 #include "sct_processors.h"
 #include "sct_default_names.h"
 #include "sct_types.h"
+#include "processors/find_nearest.hh"
 
 
 
@@ -161,16 +162,16 @@ sct_corr::plane_def fitter_file::tel_fitted_local(const sct_type::ID_t& ID) cons
 }
 
 
-S_plane_def_GBL fitter_file::DUT_fitted_local_GBL() const {
-  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), sct_type::ID_t(8));
+sct_corr::plane_def_GBL fitter_file::DUT_fitted_local_GBL() const {
+  sct_corr::plane_def_GBL ret(sct::col_GBL_fitted_points(), sct_type::ID_t(8));
 
   ret.set_plot_collection(m_plot_collection);
   return ret;
 }
 
 
-S_plane_def_GBL fitter_file::tel_fitted_local_GBL(const sct_type::ID_t& ID) const {
-  S_plane_def_GBL ret(sct::col_GBL_fitted_points(), ID);
+sct_corr::plane_def_GBL fitter_file::tel_fitted_local_GBL(const sct_type::ID_t& ID) const {
+  sct_corr::plane_def_GBL ret(sct::col_GBL_fitted_points(), ID);
 
   ret.set_plot_collection(m_plot_collection);
   return ret;
@@ -225,7 +226,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
 
 
 
-  auto trueHits = sct_corr::sct_processor::find_nearest(
+  auto trueHits = sct_processor::find_nearest(
     loc11,
     DUT_fitted_local_GBL(),
     1,  //x cut in mm
@@ -334,7 +335,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     );
 
 
-  auto trueHits = sct_corr::sct_processor::find_nearest(
+  auto trueHits = sct_processor::find_nearest(
     apix_on_DUT,
     DUT_fitted_local_GBL(),
     1, // residual cut x
@@ -437,8 +438,8 @@ S_plane_def_Alibava alibava_file::Alibava_sz_data() const {
   return ret;
 }
 
-S_plane_def_GBL alibava_file::DUT_fitted_local_GBL() const {
-  S_plane_def_GBL ret(sct_type::collectionName_t("telescope"), sct_type::ID_t(0));
+sct_corr::plane_def_GBL alibava_file::DUT_fitted_local_GBL() const {
+  sct_corr::plane_def_GBL ret(sct_type::collectionName_t("telescope"), sct_type::ID_t(0));
 
   ret.set_plot_collection(m_plot_collection);
   return ret;

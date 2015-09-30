@@ -43,6 +43,7 @@ protected:
   std::vector<S_Axis> m_axis;
 
 private:
+
   std::weak_ptr<sct_corr::plot_collection> m_plot;
 
   sct_type::ID_t m_ID = sct_type::ID_t(0);
@@ -51,15 +52,15 @@ private:
 
 
 };
-}
-DllExport sct_corr::plane_def s_error_plane_def();
+
+DllExport plane_def error_plane_def();
 
 
 
 
-class DllExport S_plane_def_GBL :public sct_corr::plane_def {
+class DllExport plane_def_GBL :public plane_def {
 public:
-  S_plane_def_GBL(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
+  plane_def_GBL(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
   S_Axis getChi2_def() const;
   S_Axis getNdf_def() const;
   S_Axis getPhi_def() const;
@@ -67,9 +68,9 @@ public:
 #ifndef __CINT__
   virtual std::shared_ptr<sct_corr::plane_def> copy() const override;
 #endif
- 
-};
 
+};
+}
 
 
 class DllExport S_plane_def_Alibava :public sct_corr::plane_def {
@@ -137,7 +138,7 @@ public:
  
 };
 
-DllExport sct_corr::plane_def s_error_plane_def();
+
 
 DllExport s_plane_collection operator+(s_plane_collection pl1, const s_plane_collection& pl2);
 DllExport s_plane_collection operator+(s_plane_collection pl1, const sct_corr::plane_def& pl2);

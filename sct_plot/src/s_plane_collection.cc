@@ -12,7 +12,7 @@ sct_corr::plane_def s_plane_collection::get(Int_t i) const
     return m_planes[i].second;
   }
   std::cout << "[s_plane_collection] out of range" << std::endl;
-  return s_error_plane_def();
+  return sct_corr::error_plane_def();
 }
 
 s_plane_collection s_plane_collection::getByType(const char* type) const
@@ -68,7 +68,7 @@ sct_corr::plane_def s_plane_collection::get(const sct_type::collectionName_t&  n
   if (pl.m_planes.empty())
   {
       std::cout << "[s_plane_collection] unknown name = \"" << necessary_CONVERSION(name) << "\"" << std::endl;
-      return s_error_plane_def();
+      return sct_corr::error_plane_def();
   }
   if (pl.m_planes.size()>1)
   {

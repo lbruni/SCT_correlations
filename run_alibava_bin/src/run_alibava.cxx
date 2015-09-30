@@ -52,21 +52,21 @@ int asyncMain(void *arg) {
   sct_files::alibava_file file___(pl);
 
   TH2D h2("h2", "h2", 100, 0, 0, 100, 0, 0);
-  auto local_ = sct_processor::coordinate_transform(file___.DUT_fitted_local_GBL(), 1 / 0.0763636, +60.6567 + 3.73549, 1, 0);
-  auto corr = sct_processor::correlation(file___.Alibava_sz_data().getX_def(), local_.getX_def());
-  auto res = sct_processor::residual(file___.Alibava_sz_data().getX_def(), local_.getX_def());
+  auto local_ = sct_corr::sct_processor::coordinate_transform(file___.DUT_fitted_local_GBL(), 1 / 0.0763636, +60.6567 + 3.73549, 1, 0);
+  auto corr = sct_corr::sct_processor::correlation(file___.Alibava_sz_data().getX_def(), local_.getX_def());
+  auto res = sct_corr::sct_processor::residual(file___.Alibava_sz_data().getX_def(), local_.getX_def());
 
-  auto res1 = sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_,true,"entire_cluster");
+  auto res1 = sct_corr::sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_,true,"entire_cluster");
 
-  auto res2 = sct_processor::hitmap(res1.getX_def(), res1.getCharge_def());
-  auto res_missing = sct_processor::hitmap(res1.getX_def(), res1.getY_def());
+  auto res2 = sct_corr::sct_processor::hitmap(res1.getX_def(), res1.getCharge_def());
+  auto res_missing = sct_corr::sct_processor::hitmap(res1.getX_def(), res1.getY_def());
 
 
-  auto max_strip = sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_,false,"Leading_strip");
+  auto max_strip = sct_corr::sct_processor::residual_with_charge(file___.Alibava_sz_data(), local_,false,"Leading_strip");
 
-  auto max_strip_ = sct_processor::hitmap(max_strip.getX_def(), max_strip.getCharge_def());
+  auto max_strip_ = sct_corr::sct_processor::hitmap(max_strip.getX_def(), max_strip.getCharge_def());
 
-  auto clusterVSMaxStrip = sct_processor::correlation(res1.getCharge_def(), max_strip.getCharge_def());
+  auto clusterVSMaxStrip = sct_corr::sct_processor::correlation(res1.getCharge_def(), max_strip.getCharge_def());
 
   pl->loop();
 

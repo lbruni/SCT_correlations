@@ -10,7 +10,7 @@
 #include "s_cuts.h"
 #include "sct_events/rootEventRunOutput.hh"
 #include "sct_event_buffer.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 
 namespace sct_corr{
   class treeCollection_ouput;

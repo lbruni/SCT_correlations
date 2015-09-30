@@ -112,7 +112,7 @@ namespace sct_corr{
     double i = 0;
     for (auto& e : m_planes)
     {
-      ret = ret + S_plane_def(e->getName(), sct_type::ID_t(i++));
+      ret = ret + plane_def(e->getName(), sct_type::ID_t(i++));
     }
     return ret;
   }

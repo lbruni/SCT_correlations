@@ -3,7 +3,7 @@
 #include "s_plot_collection.h"
 #include <memory>
 #include "TFile.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "s_cuts.h"
 #include "s_plot_prob.h"
 #include "internal/platform.hh"
@@ -19,7 +19,7 @@ public:
   virtual ~base_file() {}
 
 
-  S_plane_def get_plane(const sct_type::collectionName_t& collection_name, sct_type::ID_t plane_ID) const;
+  sct_corr::plane_def get_plane(const sct_type::collectionName_t& collection_name, sct_type::ID_t plane_ID) const;
 
   sct_corr::plot_collection* get_collection();
 
@@ -57,29 +57,29 @@ public:
     ) const;
 
 
-  S_plane_def apix_hit_local() const;
-  S_plane_def apix_hit() const;
-  S_plane_def apix_zs_data() const;
-  S_plane_def apix_fitted() const;
-  S_plane_def apix_fitted_local() const;
+  sct_corr::plane_def apix_hit_local() const;
+  sct_corr::plane_def apix_hit() const;
+  sct_corr::plane_def apix_zs_data() const;
+  sct_corr::plane_def apix_fitted() const;
+  sct_corr::plane_def apix_fitted_local() const;
 
-  S_plane_def DUT_hit_local() const;
-  S_plane_def DUT_hit() const;
-  S_plane_def DUT_zs_data() const;
-  S_plane_def DUT_fitted() const;
-  S_plane_def DUT_fitted_local() const;
-  S_plane_def DUT_TTC_data() const;
-  S_plane_def DUT_Timestamp() const;
+  sct_corr::plane_def DUT_hit_local() const;
+  sct_corr::plane_def DUT_hit() const;
+  sct_corr::plane_def DUT_zs_data() const;
+  sct_corr::plane_def DUT_fitted() const;
+  sct_corr::plane_def DUT_fitted_local() const;
+  sct_corr::plane_def DUT_TTC_data() const;
+  sct_corr::plane_def DUT_Timestamp() const;
 
-  S_plane_def DUT_Timestamp_L0ID() const;
+  sct_corr::plane_def DUT_Timestamp_L0ID() const;
 
-  S_plane_def     DUT_TDC_L0ID() const;
-  S_plane_def     DUT_TLU_TLUID() const;
-  S_plane_def     tel_hit_local(const sct_type::ID_t& ID) const;
-  S_plane_def     tel_hit(const sct_type::ID_t& ID) const;
-  S_plane_def     tel_zs_data(const sct_type::ID_t& ID) const;
-  S_plane_def     tel_fitted(const sct_type::ID_t& ID) const;
-  S_plane_def     tel_fitted_local(const sct_type::ID_t& ID) const;
+  sct_corr::plane_def     DUT_TDC_L0ID() const;
+  sct_corr::plane_def     DUT_TLU_TLUID() const;
+  sct_corr::plane_def     tel_hit_local(const sct_type::ID_t& ID) const;
+  sct_corr::plane_def     tel_hit(const sct_type::ID_t& ID) const;
+  sct_corr::plane_def     tel_zs_data(const sct_type::ID_t& ID) const;
+  sct_corr::plane_def     tel_fitted(const sct_type::ID_t& ID) const;
+  sct_corr::plane_def     tel_fitted_local(const sct_type::ID_t& ID) const;
 
   S_plane_def_GBL DUT_fitted_local_GBL() const;
   S_plane_def_GBL tel_fitted_local_GBL(const sct_type::ID_t& ID) const;

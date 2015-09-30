@@ -1,7 +1,7 @@
 #include "s_process_collection.h"
 #include "TFile.h"
 
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include <string>
 #include <iostream>
 #include "treeCollection.h"
@@ -314,7 +314,7 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
 
  
 
-  auto res = sct_processor::residual(
+  auto res = sct_corr::sct_processor::residual(
     m_file_fitter->DUT_fitted_local_GBL().getX_def(),
     m_file_fitter->DUT_hit_local().getX_def(),
     s_plot_prob("residualVSEvent").SaveToDisk()

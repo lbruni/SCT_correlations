@@ -12,10 +12,10 @@ class TTree;
 class s_plane_collection;
 class S_plot;
 class S_DrawOption;
-class S_plane_def;
 class S_Axis;
 class S_plane;
 namespace sct_corr {
+class plane_def;
 class axis_ref;
 class treeCollection;
 class sct_event_buffer;
@@ -61,15 +61,15 @@ public:
   virtual void reset()=0;
   virtual s_plane_collection addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis)=0;
 
-  virtual s_plane_collection addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2)=0;
-  virtual s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1)=0;
+  virtual s_plane_collection addPlot(S_plot plot_def, const sct_corr::plane_def& p1, const plane_def & p2) = 0;
+  virtual s_plane_collection addPlot(S_plot plot_def, const  sct_corr::plane_def& p1) = 0;
   virtual s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1)=0;
 
   virtual void loop(Long64_t last = -1, Long64_t start = 0) = 0;
 
 
   virtual Long64_t Draw(const char* name, const S_DrawOption& option)=0;
-  virtual Long64_t Draw(const S_plane_def& name, const S_DrawOption& option)=0;
+  virtual Long64_t Draw(const sct_corr::plane_def& name, const S_DrawOption& option) = 0;
   virtual bool collectionExist(const sct_type::collectionName_t& name)  const = 0;
 };
 

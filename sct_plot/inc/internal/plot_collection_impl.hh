@@ -18,15 +18,15 @@ public:
   virtual void reset() override;
   virtual s_plane_collection addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis) override;
 
-  virtual s_plane_collection addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2) override;
-  virtual s_plane_collection addPlot(S_plot plot_def, const  S_plane_def& p1) override;
+  virtual s_plane_collection addPlot(S_plot plot_def, const sct_corr::plane_def& p1, const sct_corr::plane_def & p2) override;
+  virtual s_plane_collection addPlot(S_plot plot_def, const  sct_corr::plane_def& p1) override;
   virtual s_plane_collection addPlot(S_plot plot_def, const  s_plane_collection& p1) override;
 
   virtual void loop(Long64_t last = -1, Long64_t start = 0) override;
 
 
   virtual Long64_t Draw(const char* name, const S_DrawOption& option) override;
-  virtual Long64_t Draw(const S_plane_def& name, const S_DrawOption& option) override;
+  virtual Long64_t Draw(const sct_corr::plane_def& name, const S_DrawOption& option) override;
 
 
 
@@ -41,7 +41,7 @@ private:
   sct_corr::treeCollection* getCollection(const sct_type::collectionName_t& name);
   TTree*                    getTTree(const sct_type::collectionName_t& name) const;
   S_plane* getPlane(const sct_type::ID_t& id_ , sct_corr::treeCollection* coll);
-  S_plane* pushPlane(const S_plane_def& pl);
+  S_plane* pushPlane(const sct_corr::plane_def& pl);
 
   std::shared_ptr<sct_corr::sct_event_buffer> m_eventBuffer;
 

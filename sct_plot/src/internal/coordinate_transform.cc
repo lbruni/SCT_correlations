@@ -39,7 +39,7 @@ namespace sct_corr{
   s_plane_collection coordinate_transform::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("coordinate_transform"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+    ret.m_planes.push_back(std::make_pair(std::string("coordinate_transform"), plane_def(getOutputName(), sct_type::ID_t(0))));
     return ret;
   }
 

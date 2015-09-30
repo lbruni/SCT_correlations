@@ -1,5 +1,5 @@
 #include "sct_plots.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "sct_default_names.h"
 
 

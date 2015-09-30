@@ -1,13 +1,13 @@
 #include "internal/hit_efficiency.hh"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "s_DrawOption.h"
 #include "s_plot_prob.h"
 #include "TH1.h"
 #include "SCT_helpers.h"
 
 sct_corr::hit_efficiency::hit_efficiency(
-  const S_plane_def& trueHits, 
-  const S_plane_def& trueHits_with_dut, 
+  const sct_corr::plane_def& trueHits, 
+  const sct_corr::plane_def& trueHits_with_dut, 
   const s_plot_prob& plot_prob
   ):m_plot_prob(plot_prob) {
   m_DUT_hits = trueHits_with_dut.copy();

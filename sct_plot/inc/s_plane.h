@@ -15,6 +15,7 @@ namespace sct_corr{
   class treeCollection;
   class axis_ref;
   class plane;
+  class plane_def;
 }
 
 
@@ -24,7 +25,7 @@ public:
   S_plane();
 
 
-  S_plane(const S_plane_def& plane_def, sct_corr::treeCollection* hits);
+  S_plane(const sct_corr::plane_def& plane_def, sct_corr::treeCollection* hits);
   void setTreeCollection(sct_corr::treeCollection* hits);
   sct_corr::plane* getPlane() const;
 
@@ -42,7 +43,7 @@ public:
   const sct_corr::axis_ref* getY() const;
   const sct_corr::axis_ref* getAxis(axis_def ax) const;
 
-  std::shared_ptr<S_plane_def> m_plane_def;
+  std::shared_ptr<sct_corr::plane_def> m_plane_def;
   std::shared_ptr<sct_corr::plane> m_plane;
 
 

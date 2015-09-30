@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 #include "internal/plane.hh"
-#include "s_plane_def.h"
+#include "plane_def.h"
 namespace sct_corr {
 plotPlaneVsPlane::plotPlaneVsPlane(const s_plot_prob& plot_prob) :plot(plot_prob) {
 
@@ -152,7 +152,7 @@ const char* plane_distance::getType() const {
 
 s_plane_collection plane_distance::getOutputcollection() {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+  ret.m_planes.push_back(std::make_pair(std::string("A_and_b"), plane_def(getOutputName(), sct_type::ID_t(0))));
   return ret;
 }
 

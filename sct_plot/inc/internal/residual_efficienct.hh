@@ -8,28 +8,28 @@
 #include "sct_types.h"
 
 
-class S_plane_def;
 class S_Cut;
 class s_plot_prob;
 class TH1D;
 class S_DrawOption;
 namespace sct_corr {
+class plane_def;
 
 
 
 class DllExport residual_efficienct {
 public:
   residual_efficienct(
-    const S_plane_def& trueHits,
-    const S_plane_def& sz_data,
+    const sct_corr::plane_def& trueHits,
+    const sct_corr::plane_def& sz_data,
     const S_Cut& cut_,
     const sct_type::stripNr_t& strips,
     axis_def search_axis,
     const s_plot_prob& plot_prob
     );
   residual_efficienct(
-    const S_plane_def& trueHits,
-    const S_plane_def& sz_data,
+    const sct_corr::plane_def& trueHits,
+    const sct_corr::plane_def& sz_data,
     const sct_type::stripNr_t&  strips,
     axis_def search_axis,
     const s_plot_prob& plot_prob
@@ -42,8 +42,8 @@ public:
   TH1D* getEfficiency_map() const;
   double get_efficiency() const;
 private:
-  std::shared_ptr<S_plane_def> m_trueHits;
-  std::shared_ptr<S_plane_def> m_DUT_hits;
+  std::shared_ptr<sct_corr::plane_def> m_trueHits;
+  std::shared_ptr<sct_corr::plane_def> m_DUT_hits;
   std::shared_ptr<TH1D> m_efficiency;
   s_plot_prob m_plot_prob;
   Long64_t m_total = -1;

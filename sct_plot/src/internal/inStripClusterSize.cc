@@ -1,15 +1,15 @@
 #include <iostream>
 #include "internal/inStripClusterSize.hh"
 #include "sct_processors.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "s_cuts.h"
 #include "s_DrawOption.h"
 #include "TH2.h"
 #include "TProfile.h"
 
 sct_corr::inStripClusterSize::inStripClusterSize(
-  const S_plane_def& trueHits_with_dut,
-  const S_plane_def& sz_data,
+  const plane_def& trueHits_with_dut,
+  const plane_def& sz_data,
   int max_cluster_size,
   axis_def search_axis,
   const sct_type::modulo_t & mod_,

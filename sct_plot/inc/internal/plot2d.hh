@@ -3,7 +3,7 @@
 
 
 #include "internal/plotsBase.hh"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "sct_events/rootEvent_X_Y_hits.hh"
 #include "sct_types.h"
 

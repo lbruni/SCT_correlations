@@ -1,11 +1,11 @@
 
 #include <iostream>
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "s_DrawOption.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 
 
-S_plane_def s_plane_collection::get(Int_t i) const
+sct_corr::plane_def s_plane_collection::get(Int_t i) const
 {
   if (i< static_cast<Int_t>(m_planes.size()))
   {
@@ -62,7 +62,7 @@ s_plane_collection s_plane_collection::get(const char* nameOrType) const
 
 }
 
-S_plane_def s_plane_collection::get(const sct_type::collectionName_t&  name, const char* type) const
+sct_corr::plane_def s_plane_collection::get(const sct_type::collectionName_t&  name, const char* type) const
 {
   auto pl=getByName(name).getByType(type);
   if (pl.m_planes.empty())
@@ -76,12 +76,12 @@ S_plane_def s_plane_collection::get(const sct_type::collectionName_t&  name, con
   }
   return pl.get(0);
 }
-S_plane_def s_plane_collection::operator()() const
+sct_corr::plane_def s_plane_collection::operator()() const
 {
   
   return get(0);
 }
-s_plane_collection::s_plane_collection(const S_plane_def& plane_)
+s_plane_collection::s_plane_collection(const sct_corr::plane_def& plane_)
 {
   push_back(plane_);
 }
@@ -112,12 +112,12 @@ Int_t s_plane_collection::size() const
   return m_planes.size();
 }
 
-void s_plane_collection::push_back(const char* name, const S_plane_def& pl)
+void s_plane_collection::push_back(const char* name, const sct_corr::plane_def& pl)
 {
   m_planes.push_back(std::make_pair(std::string(name), pl));
 }
 
-void s_plane_collection::push_back(const S_plane_def& pl)
+void s_plane_collection::push_back(const sct_corr::plane_def& pl)
 {
   push_back(pl.getName().value.c_str(), pl);
 }
@@ -135,7 +135,7 @@ void s_plane_collection::push_back(const S_plane_def& pl)
   return pl1;
 }
 
-  s_plane_collection operator+(s_plane_collection pl1, const S_plane_def& pl2)
+ s_plane_collection operator+(s_plane_collection pl1, const sct_corr::plane_def& pl2)
  {
    pl1.push_back(pl2);
    return pl1;
@@ -146,7 +146,7 @@ void s_plane_collection::push_back(const S_plane_def& pl)
 
 
 
- s_plane_collection operator+(const S_plane_def& pl1, const S_plane_def& pl2)
+ s_plane_collection operator+(const sct_corr::plane_def& pl1, const sct_corr::plane_def& pl2)
   {
     s_plane_collection ret;
     ret.push_back(pl1);

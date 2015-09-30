@@ -24,7 +24,7 @@
 #include "s_plot_prob.h"
 #include "s_plot_collection.h"
 #include "s_DrawOption.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 
 
 
@@ -37,7 +37,7 @@ class S_treeCollection;
 class S_Cut;
 class s_plane_collection;
 class s_process_collection;
-class S_plane_def;
+class plane_def;
 
 namespace sct_corr {
   class treeCollection;

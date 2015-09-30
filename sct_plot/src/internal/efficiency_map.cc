@@ -57,10 +57,10 @@ namespace sct_corr{
   s_plane_collection efficieny_map::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("A_and_B_with_A_binning"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
-    ret.m_planes.push_back(std::make_pair(std::string("A_and_B_with_B_binning"), S_plane_def(getOutputName(), sct_type::ID_t(1))));
-    ret.m_planes.push_back(std::make_pair(std::string("A_binned"), S_plane_def(getOutputName(), sct_type::ID_t(2))));
-    ret.m_planes.push_back(std::make_pair(std::string("B_binned"), S_plane_def(getOutputName(), sct_type::ID_t(3))));
+    ret.m_planes.push_back(std::make_pair(std::string("A_and_B_with_A_binning"), plane_def(getOutputName(), sct_type::ID_t(0))));
+    ret.m_planes.push_back(std::make_pair(std::string("A_and_B_with_B_binning"), plane_def(getOutputName(), sct_type::ID_t(1))));
+    ret.m_planes.push_back(std::make_pair(std::string("A_binned"), plane_def(getOutputName(), sct_type::ID_t(2))));
+    ret.m_planes.push_back(std::make_pair(std::string("B_binned"), plane_def(getOutputName(), sct_type::ID_t(3))));
 
     return ret;
   }

@@ -95,7 +95,7 @@ void sct_corr::plot_residual_with_charge::pushHit(Double_t x, Double_t y, Double
 
 s_plane_collection sct_corr::plot_residual_with_charge::getOutputcollection() {
   s_plane_collection ret;
-  ret.push_back(S_plane_def(getOutputName(), sct_type::ID_t(0)));
+  ret.push_back(plane_def(getOutputName(), sct_type::ID_t(0)));
   return ret;
 }
 
@@ -161,9 +161,9 @@ Long64_t sct_corr::plot_residual_with_charge::Draw(const S_DrawOption& opt) {
 
 
 
-S_plane_def_Alibava sct_processor::residual_with_charge(
+S_plane_def_Alibava sct_corr::sct_processor::residual_with_charge(
   const S_plane_def_Alibava& hits_A, 
-  const S_plane_def& hits_B, 
+  const plane_def& hits_B, 
   bool full_cluster ,
   const s_plot_prob& plot_prob/*= "" */
   ) {

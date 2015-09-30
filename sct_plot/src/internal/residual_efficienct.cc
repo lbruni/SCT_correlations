@@ -1,5 +1,5 @@
 #include "internal/residual_efficienct.hh"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "internal/PLaneVsPlane_plots.hh"
 #include "TMath.h"
 #include "s_plot.h"
@@ -93,8 +93,8 @@ double  residual_efficiency_processor::make_residual(double true_hit, double dut
 
 s_plane_collection residual_efficiency_processor::getOutputcollection() {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("all_residuals"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
-  ret.m_planes.push_back(std::make_pair(std::string("dut_hits"), S_plane_def(getOutputName(), sct_type::ID_t(1))));
+  ret.m_planes.push_back(std::make_pair(std::string("all_residuals"), plane_def(getOutputName(), sct_type::ID_t(0))));
+  ret.m_planes.push_back(std::make_pair(std::string("dut_hits"), plane_def(getOutputName(), sct_type::ID_t(1))));
   return ret;
 }
 
@@ -105,8 +105,8 @@ const char* residual_efficiency_processor::getType() const {
 
 
 s_plane_collection make_residual_efficiency_processor(
-  const S_plane_def& planeA,
-  const S_plane_def& planeB,
+  const plane_def& planeA,
+  const plane_def& planeB,
   axis_def search_axis,
   const sct_type::stripNr_t& strips,
   const s_plot_prob& plot_prob_ /*= "" */
@@ -136,8 +136,8 @@ s_plane_collection make_residual_efficiency_processor(
 
 
 residual_efficienct::residual_efficienct(
-  const S_plane_def& trueHits,
-  const S_plane_def& sz_data,
+  const plane_def& trueHits,
+  const plane_def& sz_data,
   const sct_type::stripNr_t&  strips,
   axis_def search_axis,
   const s_plot_prob& plot_prob
@@ -154,8 +154,8 @@ residual_efficienct::residual_efficienct(
 }
 
 residual_efficienct::residual_efficienct(
-  const S_plane_def& trueHits, 
-  const S_plane_def& sz_data, 
+  const plane_def& trueHits, 
+  const plane_def& sz_data, 
   const S_Cut& cut_, 
   const sct_type::stripNr_t&  strips,
   axis_def search_axis, 

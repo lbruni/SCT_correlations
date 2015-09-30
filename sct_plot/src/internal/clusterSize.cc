@@ -58,7 +58,7 @@ void Cluster_strip::processEventEnd() {
 
 s_plane_collection Cluster_strip::getOutputcollection() {
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("clusterPos_size"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+  ret.m_planes.push_back(std::make_pair(std::string("clusterPos_size"), plane_def(getOutputName(), sct_type::ID_t(0))));
   return ret;
 }
 
@@ -103,8 +103,8 @@ void clusterSize::processEventEnd() {
 s_plane_collection clusterSize::getOutputcollection() {
 
   s_plane_collection ret;
-  ret.m_planes.push_back(std::make_pair(std::string("clusterPos"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
-  ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), S_plane_def(getOutputName(), sct_type::ID_t(1))));
+  ret.m_planes.push_back(std::make_pair(std::string("clusterPos"), plane_def(getOutputName(), sct_type::ID_t(0))));
+  ret.m_planes.push_back(std::make_pair(std::string("clusterSize"), plane_def(getOutputName(), sct_type::ID_t(1))));
   return ret;
 }
 }

@@ -7,8 +7,8 @@
 
 
 sct_corr::inStripEfficiency::inStripEfficiency(
-  const S_plane_def& trueHits, 
-  const S_plane_def& trueHits_with_dut, 
+  const sct_corr::plane_def& trueHits,
+  const sct_corr::plane_def& trueHits_with_dut,
   const S_Cut& cut_, axis_def search_axis, 
   sct_type::modulo_t mod_,
   const s_plot_prob& plot_prob) 
@@ -24,8 +24,8 @@ sct_corr::inStripEfficiency::inStripEfficiency(
 }
 
 sct_corr::inStripEfficiency::inStripEfficiency(
-  const S_plane_def& trueHits, 
-  const S_plane_def& trueHits_with_dut, 
+  const sct_corr::plane_def& trueHits,
+  const sct_corr::plane_def& trueHits_with_dut,
   axis_def search_axis, 
   sct_type::modulo_t mod_,
   const s_plot_prob& plot_prob

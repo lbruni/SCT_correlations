@@ -8,27 +8,27 @@
 #include "s_plot_prob.h"
 #include "sct_types.h"
 
-class S_plane_def;
 class S_Cut;
 
 class TH1D;
 class S_DrawOption;
 
 namespace sct_corr {
+class plane_def;
 
 class DllExport inStripEfficiency {
 public:
   inStripEfficiency(
-    const S_plane_def& trueHits,
-    const S_plane_def& trueHits_with_dut,
+    const sct_corr::plane_def& trueHits,
+    const sct_corr::plane_def& trueHits_with_dut,
     const S_Cut& cut_,
     axis_def search_axis,
     sct_type::modulo_t mod_,
     const s_plot_prob& plot_prob
     );
   inStripEfficiency(
-    const S_plane_def& trueHits,
-    const S_plane_def& trueHits_with_dut,
+    const sct_corr::plane_def& trueHits,
+    const sct_corr::plane_def& trueHits_with_dut,
     axis_def search_axis,
     sct_type::modulo_t mod_,
     const s_plot_prob& plot_prob
@@ -41,8 +41,8 @@ public:
 
   TH1D* getEfficiency_map() const;
 private:
-  std::shared_ptr<S_plane_def> m_trueHits;
-  std::shared_ptr<S_plane_def> m_DUT_hits;
+  std::shared_ptr<sct_corr::plane_def> m_trueHits;
+  std::shared_ptr<sct_corr::plane_def> m_DUT_hits;
   std::shared_ptr<TH1D> m_efficiency;
   sct_type::modulo_t m_mod;
   axis_def m_search_axis;

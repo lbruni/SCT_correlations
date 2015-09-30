@@ -30,7 +30,7 @@ namespace sct_corr{
   s_plane_collection rotated_plane::getOutputcollection()
   {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("rotated"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+    ret.m_planes.push_back(std::make_pair(std::string("rotated"), plane_def(getOutputName(), sct_type::ID_t(0))));
     return ret;
   }
 
@@ -58,7 +58,7 @@ namespace sct_corr{
 
   s_plane_collection linear_transorm::getOutputcollection() {
     s_plane_collection ret;
-    ret.m_planes.push_back(std::make_pair(std::string("linear_trans"), S_plane_def(getOutputName(), sct_type::ID_t(0))));
+    ret.m_planes.push_back(std::make_pair(std::string("linear_trans"), plane_def(getOutputName(), sct_type::ID_t(0))));
     return ret;
   }
 

@@ -9,9 +9,9 @@
 
 #include "internal/plotsBase.hh"
 #include "s_DrawOption.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "TTree.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include <ctime>
 #include "internal/plot_collection_impl.hh"
 
@@ -78,11 +78,11 @@ s_plane_collection plot_collection_impl::addPlot_internal(S_plot plot_def) {
   return ret;
 }
 
-s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const S_plane_def& p1) {
+s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const plane_def& p1) {
   return addPlot(std::move(plot_def), s_plane_collection(p1));
 }
 
-s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const S_plane_def& p1, const S_plane_def & p2) {
+s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const plane_def& p1, const plane_def & p2) {
   return addPlot(std::move(plot_def), p1 + p2);
 }
 
@@ -118,7 +118,7 @@ Long64_t plot_collection_impl::Draw(const char* name, const S_DrawOption& option
 
 
 
-Long64_t plot_collection_impl::Draw(const S_plane_def& name, const S_DrawOption& option) {
+Long64_t plot_collection_impl::Draw(const sct_corr::plane_def& name, const S_DrawOption& option) {
 
   S_DrawOption local(option);
 
@@ -252,11 +252,11 @@ S_plane* plot_collection_impl::getPlane(const sct_type::ID_t&  ID, sct_corr::tre
     return nullptr;
   }
 
-  m_planes.push_back(std::make_shared<S_plane>(S_plane_def(coll->getName(), ID), coll));
+  m_planes.push_back(std::make_shared<S_plane>(plane_def(coll->getName(), ID), coll));
   return m_planes.back().get();
 }
 
-S_plane* plot_collection_impl::pushPlane(const S_plane_def& pl) {
+S_plane* plot_collection_impl::pushPlane(const plane_def& pl) {
 
   auto pl_pointer = getCollection(pl.getName());
   if (!pl_pointer) {

@@ -13,7 +13,7 @@
 #include "TTree.h"
 #include "s_cuts.h"
 #include "s_plot_collection.h"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "s_DrawOption.h"
 
 
@@ -23,7 +23,7 @@
 #include "TF1.h"
 #include "TProfile.h"
 #include "geometry/setup_description.hh"
-#include "s_plane_def.h"
+#include "plane_def.h"
 #include "SCT_helpers.h"
 
 

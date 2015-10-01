@@ -4,6 +4,7 @@
 #include "Rtypes.h"
 #include "S_Axis.h"
 #include "TF1.h"
+#include "plane_def.h"
 class TH2D;
 class TH2;
 class TH1;
@@ -20,10 +21,11 @@ public:
   static TF1 LinearFit_Of_Profile(TH2* h2, Double_t cut_prozent = 0);
   static TH1* calc_efficiency(TH1* trueHits, TH1* dutHits);
   static void saveTH1_as_txt(const TH1& h1, const char* nameTXT);
+
+  static void Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt);
+
+  
 };
-
-
-
 
 
 

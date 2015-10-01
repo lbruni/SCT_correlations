@@ -27,6 +27,11 @@
 #include "internal/inStripClusterSize.hh"
 
 #include "internal/residual_efficienct.hh"
+#include "processors/find_second_nearest_strip.hh"
+#include "processors/find_nearest.hh"
+#include "sct_processors.h"
+#include "processors/modulo.hh"
+
 
 using namespace xml_util;
 
@@ -57,8 +62,8 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_150V/";
-  std::string name_ = "run000704_";
+  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/";
+  std::string name_ = "run000816_";
   std::string name_suffix = "fitter";
   std::string extension_="root";
   std::string fullName = path_ + name_ + name_suffix+"." + extension_;
@@ -71,25 +76,45 @@ int asyncMain(void *arg) {
 //   auto gear = sct_corr::Xgear(m_doc.first_node("gear"));
 //  auto gear = sct_corr::load_gear("D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
 
-  TFile * out_file = new TFile("output.root", "recreate");
  // r_plot_collection pl(file_);
 //  pl.setOutputFile(out_file);
   sct_files::fitter_file file___(fullName.c_str(), "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
+  TFile * out_file = new TFile("output.root", "recreate");
   auto pl = file___.get_collection();
   pl->setOutputFile(out_file);
 
   auto gbl_collection = file___.get_correlations_channel(
     S_YCut(-42, -36),
-    residualCut_t(1),
+    residualCut_t(10),
     rot_angle_t(0),
     move_t(-6.36702e-001),
     s_plot_prob("GBL").SaveToDisk()
     );
     
+  sct_processor::find_second_nearest_strip second_nearest(
+    gbl_collection.getTotalTrueHits(),
+    file___.DUT_zs_data(),
+    x_axis_def, 
+    3, 
+    "second"
+    );
+  
+  auto mod = sct_processor::modulo(
+    second_nearest.getSecondHitOnPlaneA(), 
+    modulo_t(3), 
+    x_axis_def
+    );
+
+
+  auto rmap = sct_corr::processor::correlation(
+    mod.getModulo().getX_def(), 
+    second_nearest.getSecondResidual().getX_def()
+    );
+
 
   sct_corr::inStripEfficiency instrip(
     gbl_collection.getTotalTrueHits(),
-    gbl_collection.getTrueHitsWithDUT(),
+    second_nearest.getSecondHitOnPlaneA(),
     S_XCut(280, 360),
     x_axis_def,
     modulo_t(3),
@@ -99,7 +124,7 @@ int asyncMain(void *arg) {
 
   sct_corr::hit_efficiency eff(
     gbl_collection.getTotalTrueHits(),
-    gbl_collection.getTrueHitsWithDUT(),
+    second_nearest.getSecondHitOnPlaneA(),
     s_plot_prob("effi")
     );
   sct_corr::inStripClusterSize cl_instrip(
@@ -112,15 +137,20 @@ int asyncMain(void *arg) {
 
   sct_corr::residual_efficienct res_eff(
     gbl_collection.getTotalTrueHits(), 
-    file___.DUT_zs_data(), 
+    second_nearest.getsecondHitOnPlaneB(), 
     S_XCut(280,360),
     stripNr_t(400),
     x_axis_def, 
     s_plot_prob("Res_efficiency")
     );
 
-  pl->loop(4000);
+  pl->loop(40000);
+
   //pl->loop();
+
+  gCanvas.push_back(new TCanvas());
+  SCT_helpers::Draw(rmap, S_DrawOption().draw_y_VS_x());
+
   gCanvas.push_back(new TCanvas());
 
   res_eff.Draw();
@@ -128,6 +158,7 @@ int asyncMain(void *arg) {
   
   gCanvas.push_back(new TCanvas());
   instrip.Draw(S_DrawOption());
+  std::cout << "Efficiency " << instrip.get_total_efficiency() << std::endl;
   SCT_helpers::saveTH1_as_txt(*instrip.getEfficiency_map(), (path_ + name_ + "instripEffi" + "." + "txt").c_str());
 
   gCanvas.push_back(new TCanvas());

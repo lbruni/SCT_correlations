@@ -1,37 +1,21 @@
 #include "internal/PLaneVsPlane_plots.hh"
 #include <iostream>
 #include "TMath.h"
-
+#include "internal/find_nearest_processor.hh"
 
 namespace sct_corr{
-  class find_nearest :public plotPlaneVsPlane{
-  public:
 
-
-    find_nearest(double x_cutOff, double y_cutOff,const s_plot_prob& = "");
-    virtual void processEventStart();
-    virtual void processHit(const plane_hit&  p1, const plane_hit&  p2);
-
-    virtual void processEventEnd();
-    const double m_c_noHit = 100000000000;
-    double m_x_cutOff, m_y_cutOff;
-    double r;
-    plane_hit  dist = plane_hit(0, 0), h1 = plane_hit(0, 0), h2 = plane_hit(0, 0);
-    virtual s_plane_collection getOutputcollection();
-
-    virtual const char* getType() const override;
-  };
 
 #define nearest_distance_pos 0
 #define nearest_plane1_pos 1
 #define nearest_plane2_pos 2
 
-  find_nearest::find_nearest(double x_cutOff, double y_cutOff, const s_plot_prob& plot_prob) :plotPlaneVsPlane(plot_prob), m_x_cutOff(x_cutOff), m_y_cutOff(y_cutOff)
+find_nearest_processor::find_nearest_processor(double x_cutOff, double y_cutOff, const s_plot_prob& plot_prob) :plotPlaneVsPlane(plot_prob), m_x_cutOff(x_cutOff), m_y_cutOff(y_cutOff)
   {
 
   }
 
-  void find_nearest::processEventStart()
+  void find_nearest_processor::processEventStart()
   {
     dist = plane_hit(0, 0);
     h1 = plane_hit(0, 0);
@@ -39,7 +23,7 @@ namespace sct_corr{
     r = m_c_noHit;
   }
 
-  void find_nearest::processHit(const plane_hit& p1, const plane_hit& p2)
+  void find_nearest_processor::processHit(const plane_hit& p1, const plane_hit& p2)
   {
 
 
@@ -61,7 +45,7 @@ namespace sct_corr{
 
   }
 
-  void find_nearest::processEventEnd()
+  void find_nearest_processor::processEventEnd()
   {
     if (r < m_c_noHit)
     {
@@ -74,7 +58,7 @@ namespace sct_corr{
     }
   }
 
-  s_plane_collection find_nearest::getOutputcollection()
+  s_plane_collection find_nearest_processor::getOutputcollection()
   {
     s_plane_collection ret;
     ret.m_planes.push_back(std::make_pair(std::string("nearest_distance"), plane_def(getOutputName(), sct_type::ID_t(nearest_distance_pos))));
@@ -86,12 +70,12 @@ namespace sct_corr{
 
 
 
-  const char* find_nearest::getType() const
+  const char* find_nearest_processor::getType() const
   {
     return "find_nearest__";
   }
 }
 S_plot sct_plot::find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& plot_prob)
 {
-      return S_plot(new sct_corr::find_nearest(x_cutoff, y_cutoff,plot_prob));
+      return S_plot(new sct_corr::find_nearest_processor(x_cutoff, y_cutoff,plot_prob));
 }

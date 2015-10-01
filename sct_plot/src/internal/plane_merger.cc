@@ -82,7 +82,7 @@ namespace sct_corr{
 
   void plane_merger::processEvent(double x, double y, double id_)
   {
-    m_outputEvent.push_Hit(x, y, id_);
+    m_outputEvent.push_Hit(sct_corr::plane_hit(x, y), id_);
   }
 
   void plane_merger::processPlane(sct_corr::plane* plane_, double id_)

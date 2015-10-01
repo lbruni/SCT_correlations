@@ -62,10 +62,10 @@ bool plotPlaneVsPlane::fill() {
   bool first = true;
   processEventStart();
   while (m_y->next()) {
-    ++m_size_x;
+    ++m_size_y;
     while (m_x->next()) {
       if (first) {
-        ++m_size_y;
+        ++m_size_x;
       }
       processHit(*m_HitA, *m_HitB);
     }
@@ -90,7 +90,10 @@ void plotPlaneVsPlane::pushHit(Double_t x, Double_t y) {
 }
 
 void plotPlaneVsPlane::pushHit(Double_t x, Double_t y, Double_t ID) {
-  m_outPutEvent.push_Hit(x, y, ID);
+  m_outPutEvent.push_Hit(sct_corr::plane_hit(x, y), ID);
+}
+void plotPlaneVsPlane::pushHit(const sct_corr::plane_hit& hit, Double_t ID) {
+  m_outPutEvent.push_Hit(hit, ID);
 }
 
 Long64_t plotPlaneVsPlane::Draw(const char* options, const char* cuts /*= ""*/, const char* axis /*= "y:x"*/) {

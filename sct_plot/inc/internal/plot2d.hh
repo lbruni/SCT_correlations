@@ -20,7 +20,7 @@ namespace sct_corr{
     virtual bool fill() override final;
     void pushHit(Double_t x, Double_t y);
     void pushHit(Double_t x, Double_t y, Double_t ID);
-
+    void pushHit(const plane_hit& hit, Double_t ID);
     virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) override;
     virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* axis);

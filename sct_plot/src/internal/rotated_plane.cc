@@ -24,7 +24,7 @@ namespace sct_corr{
   void rotated_plane::processHit(double x, double y)
   {
     auto h = rotate(plane_hit(x, y), m_angele);
-    pushHit(h.x, h.y);
+    pushHit(h,0);
   }
 
   s_plane_collection rotated_plane::getOutputcollection()
@@ -58,7 +58,10 @@ namespace sct_corr{
 
   s_plane_collection linear_transorm::getOutputcollection() {
     s_plane_collection ret;
+    
+    
     ret.m_planes.push_back(std::make_pair(std::string("linear_trans"), plane_def(getOutputName(), sct_type::ID_t(0))));
+    
     return ret;
   }
 

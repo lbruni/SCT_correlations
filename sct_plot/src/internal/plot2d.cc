@@ -44,7 +44,11 @@ namespace sct_corr{
 
   void plot2d::pushHit(Double_t x, Double_t y, Double_t ID)
   {
-    m_outputEvent.push_Hit(x, y, ID);
+    m_outputEvent.push_Hit(sct_corr::plane_hit(x, y), ID);
+  }
+
+  void plot2d::pushHit(const plane_hit& hit, Double_t ID) {
+    m_outputEvent.push_Hit(hit, ID);
   }
 
   bool plot2d::MakeReadyForData(sct_event_buffer* outputBuffer)

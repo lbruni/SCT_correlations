@@ -70,18 +70,19 @@ public:
 #endif
 
 };
-}
 
 
-class DllExport S_plane_def_Alibava :public sct_corr::plane_def {
+
+class DllExport plane_def_Alibava :public sct_corr::plane_def {
 public:
-  S_plane_def_Alibava(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
+  plane_def_Alibava(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_ = nullptr);
   S_Axis getCharge_def() const;
 #ifndef __CINT__
   virtual std::shared_ptr<sct_corr::plane_def> copy() const override;
 #endif
- 
+
 };
+}
 class DllExport s_plane_collection {
 public:
 #ifndef __CINT__

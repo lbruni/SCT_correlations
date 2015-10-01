@@ -161,8 +161,8 @@ Long64_t sct_corr::plot_residual_with_charge::Draw(const S_DrawOption& opt) {
 
 
 
-S_plane_def_Alibava sct_corr::sct_processor::residual_with_charge(
-  const S_plane_def_Alibava& hits_A, 
+sct_corr::plane_def_Alibava sct_corr::processor::residual_with_charge(
+  const sct_corr::plane_def_Alibava& hits_A,
   const plane_def& hits_B, 
   bool full_cluster ,
   const s_plot_prob& plot_prob/*= "" */
@@ -170,12 +170,12 @@ S_plane_def_Alibava sct_corr::sct_processor::residual_with_charge(
 
   auto pl = getPlotCollectionIfUnique(hits_A, hits_B);
   if (!pl) {
-    std::cout << "[sct_processor::moduloHitMap] referencing to different plot collection\n";
-    return S_plane_def_Alibava(sct_type::collectionName_t("error"), sct_type::ID_t(0));
+    std::cout << "[processor::moduloHitMap] referencing to different plot collection\n";
+    return sct_corr::plane_def_Alibava(sct_type::collectionName_t("error"), sct_type::ID_t(0));
   }
  auto  ret= pl->addPlot(S_plot(new sct_corr::plot_residual_with_charge(full_cluster,plot_prob)), hits_A, hits_B)();
   
- S_plane_def_Alibava ret1(ret.getName(), sct_type::ID_t(ret.getID()), ret.getLayer());
+ sct_corr::plane_def_Alibava ret1(ret.getName(), sct_type::ID_t(ret.getID()), ret.getLayer());
  ret1.set_plot_collection(ret.get_plot());
  return ret1;
 }

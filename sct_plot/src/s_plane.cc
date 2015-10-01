@@ -177,17 +177,17 @@ S_Axis sct_corr::plane_def_GBL::getTheta_def() const {
 }
 
 
-S_plane_def_Alibava::S_plane_def_Alibava(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :sct_corr::plane_def(name, ID, layer_) {
+sct_corr::plane_def_Alibava::plane_def_Alibava(const sct_type::collectionName_t& name, const sct_type::ID_t& ID, const sct_corr::Xlayer* layer_) :sct_corr::plane_def(name, ID, layer_) {
   m_axis.emplace_back(name, ID, charge_axis_def);
 }
 
-S_Axis S_plane_def_Alibava::getCharge_def() const {
+S_Axis sct_corr::plane_def_Alibava::getCharge_def() const {
   return get_Axis(charge_axis_def);
 }
 
 
-std::shared_ptr<sct_corr::plane_def> S_plane_def_Alibava::copy() const {
-  return std::shared_ptr<sct_corr::plane_def>(new S_plane_def_Alibava(*this));
+std::shared_ptr<sct_corr::plane_def> sct_corr::plane_def_Alibava::copy() const {
+  return std::shared_ptr<sct_corr::plane_def>(new sct_corr::plane_def_Alibava(*this));
 }
 
 

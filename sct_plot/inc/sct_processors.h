@@ -118,8 +118,8 @@ public:
     const s_plot_prob& = ""
     );
 
-  static  S_plane_def_Alibava residual_with_charge(
-    const S_plane_def_Alibava& hits_A,
+  static  sct_corr::plane_def_Alibava residual_with_charge(
+    const sct_corr::plane_def_Alibava& hits_A,
     const plane_def& hits_B,
     bool full_cluster = true,
     const s_plot_prob& = ""

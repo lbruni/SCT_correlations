@@ -14,8 +14,7 @@ namespace sct_corr{
 
     ~rootEvent_Track_hits();
     virtual std::shared_ptr<plane> createPlane(const sct_type::ID_t& ID) override;
-    void push_Hit(const plane_hit& h);
-    void push_Hit(const plane_hit& h, double ID);
+    void push_Hit(const plane_hit& h, double ID=0);
 
     void push_Hit(const track_hits& h, double ID=0);
   private:

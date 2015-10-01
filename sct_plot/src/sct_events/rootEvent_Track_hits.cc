@@ -44,11 +44,6 @@ std::vector <sct_type::AxesName_t> getrootEvent_Track_hitsList() {
     return std::dynamic_pointer_cast<plane>(std::make_shared<planeTrack_hits>(plane_struct(ID, this)));
   }
 
-  void rootEvent_Track_hits::push_Hit(const plane_hit& h)
-  {
-    
-    push_Hit(h, 0);
-  }
 
   void rootEvent_Track_hits::push_Hit(const plane_hit& h, double ID)
   {

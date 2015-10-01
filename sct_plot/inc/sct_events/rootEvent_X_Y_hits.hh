@@ -11,8 +11,7 @@ namespace sct_corr{
 
     ~rootEvent_X_Y_hits();
     virtual std::shared_ptr<plane> createPlane(const sct_type::ID_t& ID);
-    void push_Hit(double x, double y);
-    void push_Hit(double x, double y,double ID);
+
     void push_Hit(const plane_hit& h, double ID=0);
   private:
     std::vector<double> *m_x=nullptr, // these are just shortcuts 

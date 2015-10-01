@@ -42,22 +42,9 @@ public:
     const s_plot_prob& = ""
     );
 
-  static s_plane_collection_find_closest find_nearest(
-    const plane_def& planeA,
-    const plane_def& planeB,
-    Double_t x_cutoff,
-    Double_t y_cutoff,
-    const s_plot_prob& = ""
-    );
 
 
-  static s_plane_collection_find_closest find_nearest_strip(
-    const plane_def& planeA,
-    const plane_def& planeB,
-    axis_def search_axis,
-    Double_t cutOfff,
-    const s_plot_prob& plot_prob_ = ""
-    );
+
 
   static s_plane_collection_find_closest modulo_find_nearest_strip(
     const plane_def& planeA,

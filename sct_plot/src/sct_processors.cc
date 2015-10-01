@@ -69,60 +69,9 @@ plane_def processor::coordinate_transform_move(
   return ret;
 }
 
-s_plane_collection_find_closest sct_processor::find_nearest(
-  const plane_def& planeA,
-  const plane_def& planeB,
-  Double_t x_cutoff,
-  Double_t y_cutoff,
-  const s_plot_prob& plot_prob__
-  ) {
-  auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
-  if (!pl) {
-    std::cout << "[s_plane_collection_find_closest sct_processor::find_nearest] referencing to different plot collection\n";
-    return s_plane_collection_find_closest();
-  }
 
-  auto collection_ = pl->addPlot(sct_plot::find_nearest(x_cutoff, y_cutoff, plot_prob__), planeA, planeB);
 
-  s_plane_collection_find_closest ret;
-  ret.setResidual(collection_.getByType("nearest_distance")());
-  ret.setHitOnPlaneA(collection_.getByType("nearest_plane1")());
-  ret.setHitOnPlaneB(collection_.getByType("nearest_plane2")());
-
-  return ret;
-}
-
-s_plane_collection_find_closest sct_processor::find_nearest_strip(
-  const plane_def& planeA,
-  const plane_def& planeB,
-  axis_def search_axis,
-  Double_t cutOfff,
-  const s_plot_prob& plot_prob_ /*= "" */
-  ) {
-  auto pl = getPlotCollectionIfUnique(planeA, planeB);
-
-  if (!pl) {
-    std::cout << "[s_plane_collection_find_closest sct_processor::find_nearest_strip] referencing to different plot collection\n";
-    return s_plane_collection_find_closest();
-  }
-
-  auto collection_ = pl->addPlot(
-    sct_plot::find_nearest_strip(
-    search_axis,
-    cutOfff,
-    plot_prob_),
-    planeA,
-    planeB
-    );
-
-  s_plane_collection_find_closest ret;
-  ret.setResidual(collection_.getByType("nearest_strip_distance")());
-  ret.setHitOnPlaneA(collection_.getByType("nearest_strip_plane1")());
-  ret.setHitOnPlaneB(collection_.getByType("nearest_strip_plane2")());
-
-  return ret;
-}
 
 s_plane_collection_find_closest processor::modulo_find_nearest_strip(
   const plane_def& planeA,

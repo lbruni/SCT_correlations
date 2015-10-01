@@ -1,12 +1,13 @@
 #ifndef sct_types_h__
 #define sct_types_h__
 #include <string>
+#include "internal/platform.hh"
 
 #define necessary_CONVERSION(x) x.value
 #define Un_necessary_CONVERSION(x) x.value
 
 #define TYPE_CLASS(name,type) \
-class name { \
+class DllExport name { \
 public: \
   explicit name(const type& param_) :value(param_) {}\
   type value; \

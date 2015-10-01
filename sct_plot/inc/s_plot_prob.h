@@ -18,10 +18,10 @@ public:
   size_t getNameSize() const;
   plot_save_option_def getPlotSaveOption() const;
 
-#ifndef __CINT__
+private:
   sct_type::collectionName_t m_name = sct_type::collectionName_t("");
   plot_save_option_def m_save = save_to_disk;
-#endif
+
 
 };
 

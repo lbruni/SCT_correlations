@@ -40,6 +40,7 @@ public:
   Long64_t Draw(const S_DrawOption& d_option);
 
   TH1D* getEfficiency_map() const;
+  double get_total_efficiency() const;
 private:
   std::shared_ptr<sct_corr::plane_def> m_trueHits;
   std::shared_ptr<sct_corr::plane_def> m_DUT_hits;
@@ -47,6 +48,7 @@ private:
   sct_type::modulo_t m_mod;
   axis_def m_search_axis;
   s_plot_prob m_plot_prob;
+  double m_efficiency_total;
 };
 }
 #endif // inStripEfficiency_h__

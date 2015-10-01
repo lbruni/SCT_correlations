@@ -8,7 +8,7 @@
 
 
 namespace sct_corr {
-class DllExport sct_processor {
+class DllExport processor {
 public:
   static  plane_def cut_x_y(
     const plane_def& planeA,

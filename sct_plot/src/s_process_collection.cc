@@ -314,7 +314,7 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
 
  
 
-  auto res = sct_corr::sct_processor::residual(
+  auto res = sct_corr::processor::residual(
     m_file_fitter->DUT_fitted_local_GBL().getX_def(),
     m_file_fitter->DUT_hit_local().getX_def(),
     s_plot_prob("residualVSEvent").SaveToDisk()

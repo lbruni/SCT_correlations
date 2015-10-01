@@ -20,6 +20,8 @@
 #include "sct_default_names.h"
 #include "sct_types.h"
 #include "processors/find_nearest.hh"
+#include "processors/find_nearest_strip.hh"
+#include "processors/find_second_nearest_strip.hh"
 
 
 
@@ -210,14 +212,14 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
   ) const {
 
 
-  auto loc = sct_corr::sct_processor::convert_local_to_global(
+  auto loc = sct_corr::processor::convert_local_to_global(
     apix_hit_local(),
     *get_gear()->detector.layer_by_ID(20),
     s_plot_prob().doNotSaveToDisk()
     );
 
 
-  auto loc11 = sct_corr::sct_processor::convert_global_to_local(
+  auto loc11 = sct_corr::processor::convert_global_to_local(
     loc,
     *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
@@ -234,20 +236,20 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
     s_plot_prob().doNotSaveToDisk()
     ).getHitOnPlaneB();
 
-  auto dut_rotated_17 = sct_corr::sct_processor::rotate(
+  auto dut_rotated_17 = sct_corr::processor::rotate(
     trueHits,
     rotate_angle.value,
     s_plot_prob().doNotSaveToDisk()
     );
 
-  auto dut_rotated_17_move = sct_corr::sct_processor::coordinate_transform_move(
+  auto dut_rotated_17_move = sct_corr::processor::coordinate_transform_move(
     dut_rotated_17,
     move_x.value,
     0,
     s_plot_prob().doNotSaveToDisk()
     );
 
-  auto trueHits_cut = sct_corr::sct_processor::cut_x_y(
+  auto trueHits_cut = sct_corr::processor::cut_x_y(
     dut_rotated_17_move,
     fiducial_cut_,
     s_plot_prob().SaveToDisk()
@@ -255,7 +257,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
 
   std::string find_closest_name = plot_prob_.getName().value + "_closest";
 
-  auto find_closest = sct_corr::sct_processor::find_nearest_strip(
+  auto find_closest = sct_processor::find_nearest_strip(
     trueHits_cut,
     DUT_hit_local(),
     x_axis_def,
@@ -266,7 +268,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
 
   std::string res_vs_missing_name = plot_prob_.getName().value + "_res_vs_missing";
 
-  auto res_vs_missing = sct_corr::sct_processor::hitmap(
+  auto res_vs_missing = sct_corr::processor::hitmap(
     find_closest.getResidual().getX_def(),
     find_closest.getHitOnPlaneA().getY_def(),
     s_plot_prob(res_vs_missing_name.c_str())
@@ -321,14 +323,14 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
 
 
 
-  auto apix_global = sct_corr::sct_processor::convert_local_to_global(
+  auto apix_global = sct_corr::processor::convert_local_to_global(
     apix_hit_local(),
     *get_gear()->detector.layer_by_ID(20),
     s_plot_prob().doNotSaveToDisk()
     );
 
 
-  auto apix_on_DUT = sct_corr::sct_processor::convert_global_to_local(
+  auto apix_on_DUT = sct_corr::processor::convert_global_to_local(
     apix_global,
     *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
@@ -343,7 +345,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     s_plot_prob().SaveToDisk()
     ).getHitOnPlaneB();
 
-  auto trueHits_cut = sct_corr::sct_processor::cut_x_y(
+  auto trueHits_cut = sct_corr::processor::cut_x_y(
     trueHits,
     fiducial_cut_,
     s_plot_prob().doNotSaveToDisk()
@@ -351,20 +353,20 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
 
   std::string trueHitsInStrips_name = plot_prob_.getName().value + "_true";
 
-  auto trueHitsInStrips = sct_corr::sct_processor::convert_hits_to_zs_data_GBL(
+  auto trueHitsInStrips = sct_corr::processor::convert_hits_to_zs_data_GBL(
     trueHits_cut,
     *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
     );
 
 
-  auto dut_rotated_17 = sct_corr::sct_processor::rotate(
+  auto dut_rotated_17 = sct_corr::processor::rotate(
     trueHitsInStrips,
     rotate_angle.value,
     s_plot_prob().doNotSaveToDisk()
     );
 
-  auto dut_rotated_17_move = sct_corr::sct_processor::coordinate_transform_move(
+  auto dut_rotated_17_move = sct_corr::processor::coordinate_transform_move(
     dut_rotated_17,
     move_x.value,
     0,
@@ -376,17 +378,17 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
   std::string find_closest_name = plot_prob_.getName().value + "_closest";
 
 
-  auto find_closest = sct_corr::sct_processor::find_nearest_strip(
+  auto find_closest = sct_processor::find_nearest_strip(
     dut_rotated_17_move,
     DUT_zs_data(),
     x_axis_def,
-    residualCut.value,
+    Un_necessary_CONVERSION(residualCut),
     s_plot_prob(find_closest_name.c_str())
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
   std::string res_vs_missing_name = plot_prob_.getName().value + "_res_vs_missing";
-  auto res_vs_missing = sct_corr::sct_processor::hitmap(
+  auto res_vs_missing = sct_corr::processor::hitmap(
     find_closest.getResidual().getX_def(),
     find_closest.getHitOnPlaneA().getY_def(),
     s_plot_prob(res_vs_missing_name.c_str())
@@ -431,8 +433,8 @@ alibava_file::alibava_file(
 
 }
 
-S_plane_def_Alibava alibava_file::Alibava_sz_data() const {
-  S_plane_def_Alibava ret(sct_type::collectionName_t("alibava"), sct_type::ID_t(6));
+sct_corr::plane_def_Alibava alibava_file::Alibava_sz_data() const {
+  sct_corr::plane_def_Alibava ret(sct_type::collectionName_t("alibava"), sct_type::ID_t(6));
 
   ret.set_plot_collection(m_plot_collection);
   return ret;

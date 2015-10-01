@@ -161,7 +161,7 @@ residual_efficienct::residual_efficienct(
   axis_def search_axis, 
   const s_plot_prob& plot_prob
   ) :residual_efficienct(
-  sct_processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk()),
+  processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk()),
   sz_data,
   strips,
   search_axis,

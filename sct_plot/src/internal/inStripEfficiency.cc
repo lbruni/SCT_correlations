@@ -13,8 +13,8 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   sct_type::modulo_t mod_,
   const s_plot_prob& plot_prob) 
   :inStripEfficiency(
-      sct_processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk() ),
-      sct_processor::cut_x_y(trueHits_with_dut, cut_, s_plot_prob().doNotSaveToDisk()),
+      processor::cut_x_y(trueHits, cut_, s_plot_prob().doNotSaveToDisk() ),
+      processor::cut_x_y(trueHits_with_dut, cut_, s_plot_prob().doNotSaveToDisk()),
       search_axis,
       mod_,
       plot_prob
@@ -45,7 +45,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
 
 
   std::string true_hits_name = plot_prob.getName().value + "_true_hits";
-  auto mod_total = sct_processor::moduloHitMap(
+  auto mod_total = processor::moduloHitMap(
     trueHits,
     mod_x,
     mod_y,
@@ -55,7 +55,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
 
   m_trueHits = mod_total.copy();
   std::string dut_hits_name = plot_prob.getName().value + "_DUT_hits";
-  auto mod_DUT = sct_processor::moduloHitMap(
+  auto mod_DUT = processor::moduloHitMap(
     trueHits_with_dut,
     mod_x,
     mod_y,

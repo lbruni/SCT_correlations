@@ -7,7 +7,7 @@
 namespace sct_corr {
 
 
-plane_def sct_processor::cut_x_y(
+plane_def processor::cut_x_y(
   const plane_def& planeA,
   const S_Cut& cut_,
   const s_plot_prob& plot_prob/*= ""*/
@@ -19,7 +19,7 @@ plane_def sct_processor::cut_x_y(
   return ret;
 }
 
-plane_def sct_processor::cluster_strip(
+plane_def processor::cluster_strip(
   const plane_def& hits,
   axis_def search_axis,
   double cluster_distance,
@@ -35,7 +35,7 @@ plane_def sct_processor::cluster_strip(
 
 
 
-plane_def sct_processor::coordinate_transform(
+plane_def processor::coordinate_transform(
   const plane_def& planeA,
   Double_t x_slope, Double_t x_offset,
   Double_t y_slope, Double_t y_offset,
@@ -53,7 +53,7 @@ plane_def sct_processor::coordinate_transform(
   return ret;
 }
 
-plane_def sct_processor::coordinate_transform_move(
+plane_def processor::coordinate_transform_move(
   const plane_def& planeA,
   Double_t x_offset, Double_t y_offset,
   const s_plot_prob& plot_prob__
@@ -124,7 +124,7 @@ s_plane_collection_find_closest sct_processor::find_nearest_strip(
   return ret;
 }
 
-s_plane_collection_find_closest sct_processor::modulo_find_nearest_strip(
+s_plane_collection_find_closest processor::modulo_find_nearest_strip(
   const plane_def& planeA,
   const plane_def& planeB,
   axis_def search_axis,
@@ -136,7 +136,7 @@ s_plane_collection_find_closest sct_processor::modulo_find_nearest_strip(
   auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
   if (!pl) {
-    std::cout << "[sct_processor::modulo_find_nearest_strip] referencing to different plot collection\n";
+    std::cout << "[processor::modulo_find_nearest_strip] referencing to different plot collection\n";
     return s_plane_collection_find_closest();
   }
 
@@ -155,7 +155,7 @@ s_plane_collection_find_closest sct_processor::modulo_find_nearest_strip(
 }
 
 
-plane_def sct_processor::correlation(
+plane_def processor::correlation(
   const S_Axis& axisA,
   const S_Axis& axisB,
   const s_plot_prob& plot_prob__/*= "" */
@@ -163,7 +163,7 @@ plane_def sct_processor::correlation(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[sct_processor::modulo_find_nearest_strip] referencing to different plot collection\n";
+    std::cout << "[processor::modulo_find_nearest_strip] referencing to different plot collection\n";
     return plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
   }
 
@@ -173,7 +173,7 @@ plane_def sct_processor::correlation(
 }
 
 
-plane_def sct_processor::correlation(
+plane_def processor::correlation(
   const plane_def& planeA,
   const s_plot_prob& plot_prob__/*= "" */
   ) {
@@ -183,7 +183,7 @@ plane_def sct_processor::correlation(
   return ret;
 }
 
-plane_def sct_processor::rotate(
+plane_def processor::rotate(
   const plane_def& planeA,
   Double_t angle,
   const s_plot_prob& plot_prob__/*= "" */
@@ -196,7 +196,7 @@ plane_def sct_processor::rotate(
   return ret;
 }
 
-plane_def sct_processor::linear_trans(
+plane_def processor::linear_trans(
   const plane_def& planeA,
   Double_t a11, Double_t a21,
   Double_t a12, Double_t a22,
@@ -213,7 +213,7 @@ plane_def sct_processor::linear_trans(
   return ret;
 }
 
-plane_def sct_processor::hitmap(
+plane_def processor::hitmap(
   const plane_def& hits,
   const s_plot_prob& plot_prob__
   ) {
@@ -224,7 +224,7 @@ plane_def sct_processor::hitmap(
 
 }
 
-plane_def sct_processor::hitmap(
+plane_def processor::hitmap(
   const S_Axis& axisA,
   const S_Axis& axisB,
   const s_plot_prob& plot_prob__
@@ -232,8 +232,8 @@ plane_def sct_processor::hitmap(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[sct_processor::hitmap] referencing to different plot collection\n";
-    return s_error_plane_def();
+    std::cout << "[processor::hitmap] referencing to different plot collection\n";
+    return sct_corr::error_plane_def();
   }
 
   auto ret = pl->addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
@@ -241,7 +241,7 @@ plane_def sct_processor::hitmap(
   return ret;
 }
 
-plane_def sct_processor::moduloHitMap(
+plane_def processor::moduloHitMap(
   const S_Axis& axisA,
   const S_Axis& axisB,
   double mod_x, double mod_y,
@@ -250,15 +250,15 @@ plane_def sct_processor::moduloHitMap(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[sct_processor::moduloHitMap] referencing to different plot collection\n";
-    return s_error_plane_def();
+    std::cout << "[processor::moduloHitMap] referencing to different plot collection\n";
+    return sct_corr::error_plane_def();
   }
   auto ret = pl->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), axisA, axisB)();
 
   return ret;
 }
 
-plane_def sct_processor::moduloHitMap(
+plane_def processor::moduloHitMap(
   const plane_def& hits,
   double mod_x,
   double mod_y,
@@ -271,7 +271,7 @@ plane_def sct_processor::moduloHitMap(
   return ret;
 }
 
-plane_def sct_processor::residual(
+plane_def processor::residual(
   const S_Axis& axisA,
   const S_Axis& axisB,
   const s_plot_prob& plot_prob
@@ -284,7 +284,7 @@ plane_def sct_processor::residual(
 
 
 
-plane_def sct_processor::convert_local_to_global(
+plane_def processor::convert_local_to_global(
   const plane_def& local_hits,
   const sct_corr::Xlayer& layer,
   const s_plot_prob& plot_prob_
@@ -316,7 +316,7 @@ plane_def sct_processor::convert_local_to_global(
 }
 
 
-plane_def sct_processor::convert_global_to_local(
+plane_def processor::convert_global_to_local(
   const plane_def& global_hits,
   const sct_corr::Xlayer& layer,
   const s_plot_prob& plot_prob_/*= ""*/
@@ -335,7 +335,7 @@ plane_def sct_processor::convert_global_to_local(
 
   if (det_A == 0) {
     std::cout << "[sct_plot::convert_global_to_local] : Det_A ==0 " << std::endl;
-    return s_error_plane_def();
+    return sct_corr::error_plane_def();
   }
 
 
@@ -357,7 +357,7 @@ plane_def sct_processor::convert_global_to_local(
   return local_hits;
 }
 
-plane_def sct_processor::convert_hits_to_zs_data_GBL(
+plane_def processor::convert_hits_to_zs_data_GBL(
   const plane_def& hits,
   const sct_corr::Xlayer& layer,
   const s_plot_prob& plot_prob_ /*= ""*/
@@ -373,7 +373,7 @@ plane_def sct_processor::convert_hits_to_zs_data_GBL(
     );
 }
 
-plane_def sct_processor::convert_zs_data_to_hits_GBL(const plane_def& sz_data, const sct_corr::Xlayer& layer, const s_plot_prob& plot_prob_/*= ""*/) {
+plane_def processor::convert_zs_data_to_hits_GBL(const plane_def& sz_data, const sct_corr::Xlayer& layer, const s_plot_prob& plot_prob_/*= ""*/) {
   return coordinate_transform(
     sz_data,
     layer.sensitive.pitchX,                                     // x_slope
@@ -384,7 +384,7 @@ plane_def sct_processor::convert_zs_data_to_hits_GBL(const plane_def& sz_data, c
     );
 }
 
-plane_def sct_processor::convert_zs_data_to_hits_DAF(
+plane_def processor::convert_zs_data_to_hits_DAF(
   const plane_def& sz_data,
   const sct_corr::Xlayer& layer,
   const s_plot_prob& plot_prob_/*= ""*/
@@ -399,7 +399,7 @@ plane_def sct_processor::convert_zs_data_to_hits_DAF(
     );
 }
 
-plane_def sct_processor::convert_hits_to_zs_data_DAF(
+plane_def processor::convert_hits_to_zs_data_DAF(
   const plane_def& hits,
   const sct_corr::Xlayer& layer,
   const s_plot_prob& plot_prob_

@@ -6,6 +6,7 @@
 #include "s_DrawOption.h"
 #include "TH2.h"
 #include "TProfile.h"
+#include "processors/find_nearest_strip.hh"
 
 sct_corr::inStripClusterSize::inStripClusterSize(
   const plane_def& trueHits_with_dut,
@@ -29,13 +30,13 @@ sct_corr::inStripClusterSize::inStripClusterSize(
   if (search_axis == y_axis_def) {
     mod_y = mod_.value;
   }
-  auto cluster_ = sct_processor::cluster_strip(
+  auto cluster_ = processor::cluster_strip(
     sz_data,
     x_axis_def,
     2,
     s_plot_prob().doNotSaveToDisk()
     );
-  auto cluster__cut = sct_processor::cut_x_y(
+  auto cluster__cut = processor::cut_x_y(
     cluster_,
     S_YCut(0, max_cluster_size),
     s_plot_prob().doNotSaveToDisk()
@@ -48,14 +49,14 @@ sct_corr::inStripClusterSize::inStripClusterSize(
     1000,
     s_plot_prob().doNotSaveToDisk()
     );
-  auto mod_total_closest = sct_processor::moduloHitMap(
+  auto mod_total_closest = processor::moduloHitMap(
     cluster_closest.getHitOnPlaneB(),
     mod_x,
     mod_y,
     s_plot_prob().doNotSaveToDisk()
     );
   if (search_axis == x_axis_def) {
-    auto cluster_size_vs_rel_pos = sct_processor::hitmap(
+    auto cluster_size_vs_rel_pos = processor::hitmap(
       mod_total_closest.getX_def(),
       cluster_closest.getHitOnPlaneA().getY_def(),
       plot_prob
@@ -65,7 +66,7 @@ sct_corr::inStripClusterSize::inStripClusterSize(
 
   } else if (search_axis == y_axis_def) {
 
-    auto cluster_size_vs_rel_pos = sct_processor::hitmap(
+    auto cluster_size_vs_rel_pos = processor::hitmap(
       mod_total_closest.getY_def(),
       cluster_closest.getHitOnPlaneA().getY_def(),
       plot_prob

@@ -69,13 +69,15 @@ const sct_corr::Xlayer*  base_file::get_layer(sct_type::ID_t ID) const {
   return m_gear->detector.layer_by_ID(Un_necessary_CONVERSION(ID));
 }
 
-fitter_file::fitter_file(const char* Fitter_File_name, const char* gear_file) :fitter_file(sct_corr::create_plot_collection(), &(sct_corr::load_gear(gear_file))) {
+fitter_file::fitter_file(const char* Fitter_File_name, const char* gear_file) :fitter_file(sct_corr::create_plot_collection(), (sct_corr::load_gear(gear_file))) {
 
   m_main_file = std::make_shared<TFile>(Fitter_File_name);
   m_plot_collection->addFile(m_main_file.get());
 
 }
+fitter_file::fitter_file(std::shared_ptr<sct_corr::plot_collection> plot_collection, const sct_corr::Xgear& gear_):fitter_file(plot_collection,&gear_) {
 
+}
 fitter_file::fitter_file(std::shared_ptr<sct_corr::plot_collection> plot_collection___, const sct_corr::Xgear* gear_ /*= nullptr*/) :base_file(plot_collection___, gear_) {
 
 }

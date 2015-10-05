@@ -37,6 +37,7 @@ private:
 class DllExport fitter_file : public base_file {
 public:
   fitter_file(std::shared_ptr<sct_corr::plot_collection> plot_collection, const sct_corr::Xgear* gear_ = nullptr);
+  fitter_file(std::shared_ptr<sct_corr::plot_collection> plot_collection, const sct_corr::Xgear& gear_ );
   fitter_file(const char* Fitter_File, const char* gear_file);
   virtual ~fitter_file() {}
 
@@ -118,6 +119,7 @@ private:
 private:
   std::shared_ptr<TFile> m_main_file;
 };
+
 
 
 class DllExport alibava_file :public base_file {

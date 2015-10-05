@@ -1,5 +1,5 @@
 
-#include "s_process_collection.h"
+#include "processorBase.h"
 
 #include "TError.h"
 

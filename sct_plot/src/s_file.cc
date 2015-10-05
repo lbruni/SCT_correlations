@@ -9,7 +9,7 @@
 #include "s_DrawOption.h"
 
 
-#include "s_process_collection.h"
+#include "processorBase.h"
 #include "sct_plots_internal.h"
 
 #include "TF1.h"

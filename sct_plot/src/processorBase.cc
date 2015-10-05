@@ -1,4 +1,4 @@
-#include "s_process_collection.h"
+#include "processorBase.h"
 #include "TFile.h"
 
 #include "plane_def.h"
@@ -83,25 +83,63 @@ private:
 double BinNomialSigma(double totalHits, double DUTHits) {
   return sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits));
 }
-s_process_collection::s_process_collection() {
+
+namespace sct_corr {
 
 
- 
+
+
+
+Processor::~Processor() {
+
+}
+
+void Processor::push_processor_batch(std::weak_ptr<processorBatch> batch) {
+  m_batch=batch;
+}
+
+
+
+std::weak_ptr<processorBatch> Processor::get_batch() {
+  return m_batch;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+processorBase::processorBase() {
+
+
+
 
 
 }
 
 
-s_process_collection::~s_process_collection() {
+processorBase::~processorBase() {
 
 
 }
 
-void s_process_collection::setOutputName(const char* name) {
+void processorBase::setOutputName(const char* name) {
   m_outname = name;
 }
 
-void s_process_collection::push_files(TFile* _file, double Threshold, double runNumber) {
+void processorBase::push_files(TFile* _file, double Threshold, double runNumber) {
   FileProberties p;
   p.setTFile(_file);
   p.m_Threshold = Threshold;
@@ -109,7 +147,7 @@ void s_process_collection::push_files(TFile* _file, double Threshold, double run
   m_files.push_back(p);
 }
 
-void s_process_collection::push_files(const char* _fileName, double Threshold, double runNumber, double HV) {
+void processorBase::push_files(const char* _fileName, double Threshold, double runNumber, double HV) {
   FileProberties p;
   p.setTFile(std::shared_ptr<TFile>(new TFile(_fileName)));
   if (!p.getTfile()->IsOpen()) {
@@ -126,7 +164,7 @@ void s_process_collection::push_files(const char* _fileName, double Threshold, d
 
 
 
-int s_process_collection::Add_XML_RunList(const std::string& xmlInputFileName, std::string path__, std::string outputPath /*= "."*/, int element /* = -1*/) {
+int processorBase::Add_XML_RunList(const std::string& xmlInputFileName, std::string path__, std::string outputPath /*= "."*/, int element /* = -1*/) {
   path__ += "/";
   m_input_files_xml = std::make_shared<xmlImputFiles::XML_imput_file>(xmlInputFileName.c_str());
 
@@ -167,7 +205,7 @@ int s_process_collection::Add_XML_RunList(const std::string& xmlInputFileName, s
 
 
 
-void s_process_collection::setGearFile(const char* name) {
+void processorBase::setGearFile(const char* name) {
 
   rapidxml::file<> m_file(name);
   rapidxml::xml_document<> m_doc;
@@ -176,9 +214,206 @@ void s_process_collection::setGearFile(const char* name) {
   m_gear = std::make_shared<sct_corr::Xgear>(m_doc.first_node("gear"));
 }
 
-void s_process_collection::setPrintout(bool print) {
+void processorBase::setPrintout(bool print) {
   gDo_print = print;
 }
+
+
+const xmlImputFiles::XML_imput_file* processorBase::get_xml_input() const {
+  return m_input_files_xml.get();
+}
+
+const sct_corr::Xgear* processorBase::get_gear() const {
+  return m_gear.get();
+}
+
+bool processorBase::process() {
+
+  TCanvas c;
+
+  auto files = xml_print("files");
+
+  TFile* _file1 = new TFile(
+    m_outname.c_str(),
+    "recreate"
+    );
+  start_collection(_file1);
+
+
+
+  for (auto &e : m_files) {
+    process_file(&e);
+
+  }
+  _file1->Write();
+  return true;
+}
+
+
+Processor::ProcessState processorBatch::ProceessEvent() {
+  for (auto& e : m_processors) {
+    auto ret = e->ProceessEvent();
+    if (ret != ok) {
+      return ret;
+    }
+  }
+  return ok;
+}
+
+void processorBatch::push_processor(Processor* processor_) {
+  if (processor_) {
+    m_processors.push_back(processor_);
+    processor_->push_processor_batch(get_batch());
+  }
+}
+
+void processorBatch::loop() {
+  while (ProceessEvent() == ok) {
+  
+  }
+}
+
+std::shared_ptr<processorBatch> create_batch() {
+  auto ret = std::make_shared<processorBatch>();
+
+  ret->push_processor_batch(ret);
+
+  return ret;
+}
+
+ProcessorXML_loader::ProcessorXML_loader(const std::string& xmlInputFileName, std::string path__, std::string outputPath /*= "."*/):m_path(path__+"/") {
+   m_input_files_xml = std::make_shared<xmlImputFiles::XML_imput_file>(xmlInputFileName.c_str());
+
+
+  auto collname = m_input_files_xml->globalConfig().CollectionName();
+
+
+  m_outname= outputPath += "/" + collname + ".root";
+
+
+
+ 
+
+
+  rapidxml::file<> m_file(m_input_files_xml->globalConfig().gearFile().c_str());
+  rapidxml::xml_document<> m_doc;
+  m_doc.parse<0>(m_file.data());
+
+  m_gear = std::make_shared<sct_corr::Xgear>(m_doc.first_node("gear"));
+
+
+  m_files = std::make_shared<FileProberties>();
+
+  m_owndBatch = create_batch();
+  m_files->m_batch = m_owndBatch;
+  push_processor_batch(m_owndBatch);
+  m_owndBatch->push_processor(this);
+}
+
+Processor::ProcessState ProcessorXML_loader::ProceessEvent() {
+  
+  while (m_iterrator <= m_input_files_xml->fileList().size()) {
+    auto& e = m_input_files_xml->fileList()[m_iterrator++];
+    m_files->m_Threshold = e.threshold();
+    m_files->m_HV = e.HV();
+    m_files->m_runNumber = e.runNumber();
+    m_files->setTFile(std::shared_ptr<TFile>(new TFile((m_path + std::string(e.name())).c_str())));
+    if (m_files->getTfile()->IsOpen()) {
+      return ok;
+    }
+  }
+
+  return done;
+}
+
+const FileProberties* ProcessorXML_loader::getData() const {
+  return m_files.get();
+}
+
+processorEfficiency::processorEfficiency(FileProberties* fileProb):m_file(fileProb) {
+
+}
+
+Processor::ProcessState processorEfficiency::ProceessEvent() {
+  process_reset();
+  auto file_PRINTOUT = xml_print("file");
+
+  process_set_run_prob();
+
+
+  m_file_fitter.reset();
+
+
+
+
+
+  m_plotCollection = sct_corr::create_plot_collection();
+  m_plotCollection->addFile(m_file->getTfile());
+  m_plotCollection->setOutputFile(m_dummy);
+
+  m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
+
+  m_output_planes = m_file_fitter->get_correlations_channel(
+    get_xml_input()->globalConfig().cut(),
+    residualCut_t(get_xml_input()->globalConfig().residual_cut()),
+    rot_angle_t(get_xml_input()->globalConfig().Rotation()),
+    move_t(get_xml_input()->globalConfig().Position_value()),
+    s_plot_prob("Hits_in_channels")
+    .SaveToDisk()
+    );
+
+
+
+  auto res = sct_corr::processor::residual(
+    m_file_fitter->DUT_fitted_local_GBL().getX_def(),
+    m_file_fitter->DUT_hit_local().getX_def(),
+    s_plot_prob("residualVSEvent").SaveToDisk()
+    );
+
+  m_res_VS_event.push_back(res);
+
+#ifdef _DEBUG
+  m_plotCollection->loop(40000);
+#else
+  m_plotCollection->loop();
+#endif // _DEBUG
+
+
+
+  Draw_Efficinecy_map();
+
+  extract_hitMap();
+  extract_efficiency();
+  extract_residual();
+  extract_rotation();
+
+  m_outputTree->fill();
+  return true;
+}
+
+void processorEfficiency::process_reset() {
+  m_plotCollection.reset();
+  m_res_VS_event.clear();
+  m_outputl.reset();
+}
+
+void processorEfficiency::process_set_run_prob() {
+  xml_print("fileName", m_file->getTfile()->GetName());
+
+
+  xml_print("m_runNumber", m_file->m_runNumber);
+  m_outputl.set_RunNumber(m_file->m_runNumber);
+
+
+  xml_print("threshold", m_file->m_Threshold);
+  m_outputl.set_Threshold(m_file->m_Threshold);
+
+  xml_print("HV", m_file->m_HV);
+  m_outputl.set_HV(m_file->m_HV);
+}
+
+}
+
 
 void s_process_collection_standard::extract_efficiency() {
 
@@ -340,37 +575,6 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
   m_outputTree->fill();
   return true;
 }
-
-const xmlImputFiles::XML_imput_file* s_process_collection::get_xml_input() const {
-  return m_input_files_xml.get();
-}
-
-const sct_corr::Xgear* s_process_collection::get_gear() const {
-  return m_gear.get();
-}
-
-bool s_process_collection::process() {
-
-  TCanvas c;
-
-  auto files = xml_print("files");
-
-  TFile* _file1 = new TFile(
-    m_outname.c_str(), 
-    "recreate"
-    );
-  start_collection(_file1);
-
-
- 
-  for (auto &e : m_files) {
-     process_file(&e);
-
-  }
-  _file1->Write();
-  return true;
-}
-
 
 
 

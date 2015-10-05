@@ -20,7 +20,7 @@
 #include "s_cuts.h"
 #include "TGraph.h"
 #include "TGraphErrors.h"
-#include "s_process_collection.h"
+#include "processorBase.h"
 
 #include "landgausFit.h"
 #include <algorithm>

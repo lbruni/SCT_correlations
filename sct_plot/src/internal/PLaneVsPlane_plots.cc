@@ -5,6 +5,7 @@
 #include <iostream>
 #include "internal/plane.hh"
 #include "plane_def.h"
+#include "TMath.h"
 namespace sct_corr {
 plotPlaneVsPlane::plotPlaneVsPlane(const s_plot_prob& plot_prob) :plot(plot_prob) {
 
@@ -146,7 +147,7 @@ void plane_distance::processHit(const plane_hit& p1, const plane_hit& p2) {
 }
 
 double plane_distance::hit_abs(const plane_hit& h) {
-  return sqrt(h.x*h.x + h.y * h.y);
+  return TMath::Sqrt(h.x*h.x + h.y * h.y);
 }
 
 const char* plane_distance::getType() const {

@@ -117,7 +117,7 @@ private:
   void process_reset();
   void process_set_run_prob();
   FileProberties* m_file;
-  sct_corr::rootEventRunOutput m_outputl;
+  //sct_corr::rootEventRunOutput m_outputl;
   std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
   sct_corr::sct_event_buffer m_buffer;
 

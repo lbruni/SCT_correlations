@@ -347,20 +347,20 @@ Processor::ProcessState processorEfficiency::ProceessEvent() {
 
 
 
-  m_plotCollection = sct_corr::create_plot_collection();
-  m_plotCollection->addFile(m_file->getTfile());
-  m_plotCollection->setOutputFile(m_dummy);
+//   m_plotCollection = sct_corr::create_plot_collection();
+//   m_plotCollection->addFile(m_file->getTfile());
+//   m_plotCollection->setOutputFile(m_dummy);
+// 
+//   m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
 
-  m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
-
-  m_output_planes = m_file_fitter->get_correlations_channel(
-    get_xml_input()->globalConfig().cut(),
-    residualCut_t(get_xml_input()->globalConfig().residual_cut()),
-    rot_angle_t(get_xml_input()->globalConfig().Rotation()),
-    move_t(get_xml_input()->globalConfig().Position_value()),
-    s_plot_prob("Hits_in_channels")
-    .SaveToDisk()
-    );
+//   m_output_planes = m_file_fitter->get_correlations_channel(
+//     get_xml_input()->globalConfig().cut(),
+//     residualCut_t(get_xml_input()->globalConfig().residual_cut()),
+//     rot_angle_t(get_xml_input()->globalConfig().Rotation()),
+//     move_t(get_xml_input()->globalConfig().Position_value()),
+//     s_plot_prob("Hits_in_channels")
+//     .SaveToDisk()
+//     );
 
 
 
@@ -380,21 +380,21 @@ Processor::ProcessState processorEfficiency::ProceessEvent() {
 
 
 
-  Draw_Efficinecy_map();
-
-  extract_hitMap();
-  extract_efficiency();
-  extract_residual();
-  extract_rotation();
+//   Draw_Efficinecy_map();
+// 
+//   extract_hitMap();
+//   extract_efficiency();
+//   extract_residual();
+//   extract_rotation();
 
   m_outputTree->fill();
-  return true;
+  return ok;
 }
 
 void processorEfficiency::process_reset() {
   m_plotCollection.reset();
   m_res_VS_event.clear();
-  m_outputl.reset();
+//  m_outputl.reset();
 }
 
 void processorEfficiency::process_set_run_prob() {
@@ -402,14 +402,14 @@ void processorEfficiency::process_set_run_prob() {
 
 
   xml_print("m_runNumber", m_file->m_runNumber);
-  m_outputl.set_RunNumber(m_file->m_runNumber);
+ // m_outputl.set_RunNumber(m_file->m_runNumber);
 
 
   xml_print("threshold", m_file->m_Threshold);
-  m_outputl.set_Threshold(m_file->m_Threshold);
+//  m_outputl.set_Threshold(m_file->m_Threshold);
 
   xml_print("HV", m_file->m_HV);
-  m_outputl.set_HV(m_file->m_HV);
+//  m_outputl.set_HV(m_file->m_HV);
 }
 
 }

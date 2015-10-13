@@ -13,7 +13,7 @@ namespace sct_corr{
     virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) override;
     virtual void pushAxis(const axis_ref* axis) override;
     virtual void pushPlane(S_plane* axis) override;
-    virtual bool fill() override;
+    virtual returnFill fill() override;
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x")  override;
     virtual Long64_t Draw(const S_DrawOption&) ;
     virtual s_plane_collection getOutputcollection();
@@ -66,8 +66,8 @@ namespace sct_corr{
     m_planes.push_back(plane_);
   }
 
-  bool plane_merger::fill()
-  {
+ returnFill plane_merger::fill()
+{
     m_outputEvent.reset();
     double i = 0;
     for (auto& e:m_planes)
@@ -77,7 +77,7 @@ namespace sct_corr{
     }
 
     ++m_current;
-    return true;
+    return FILL_OK;
   }
 
   void plane_merger::processEvent(double x, double y, double id_)

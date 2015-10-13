@@ -31,6 +31,7 @@
 #include "processors/find_nearest.hh"
 #include "sct_processors.h"
 #include "processors/modulo.hh"
+#include "processors/find_nearest_strip.hh"
 
 
 using namespace xml_util;
@@ -54,6 +55,7 @@ struct  inParam {
 };
 
 
+
 using namespace sct_type;
 int asyncMain(void *arg) {
 
@@ -62,8 +64,8 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/";
-  std::string name_ = "run000816_";
+  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_400V/";
+  std::string name_ = "run000801_";
   std::string name_suffix = "fitter";
   std::string extension_="root";
   std::string fullName = path_ + name_ + name_suffix+"." + extension_;
@@ -82,6 +84,8 @@ int asyncMain(void *arg) {
   TFile * out_file = new TFile("output.root", "recreate");
   auto pl = file___.get_collection();
   pl->setOutputFile(out_file);
+  
+
 
   auto gbl_collection = file___.get_correlations_channel(
     S_YCut(-42, -36),
@@ -90,17 +94,27 @@ int asyncMain(void *arg) {
     move_t(-6.36702e-001),
     s_plot_prob("GBL").SaveToDisk()
     );
-    
-  sct_processor::find_second_nearest_strip second_nearest(
-    gbl_collection.getTotalTrueHits(),
+ 
+
+
+    auto trueHit_with_tdc_cut = sct_corr::processor::if_a_get_b(
+      file___.DUT_TTC_data(),
+      gbl_collection.getTotalTrueHits(), 
+      S_XCut(0, 100),
+      s_plot_prob("withTDC_CUT")
+      );
+
+
+    auto  second_nearest = sct_processor::find_nearest_strip(
+    trueHit_with_tdc_cut,
     file___.DUT_zs_data(),
     x_axis_def, 
     3, 
-    "second"
+    "first"
     );
   
   auto mod = sct_processor::modulo(
-    second_nearest.getSecondHitOnPlaneA(), 
+    second_nearest.getHitOnPlaneA(), 
     modulo_t(3), 
     x_axis_def
     );
@@ -108,13 +122,13 @@ int asyncMain(void *arg) {
 
   auto rmap = sct_corr::processor::correlation(
     mod.getModulo().getX_def(), 
-    second_nearest.getSecondResidual().getX_def()
+    second_nearest.getResidual().getX_def()
     );
 
 
   sct_corr::inStripEfficiency instrip(
     gbl_collection.getTotalTrueHits(),
-    second_nearest.getSecondHitOnPlaneA(),
+    second_nearest.getHitOnPlaneA(),
     S_XCut(280, 360),
     x_axis_def,
     modulo_t(3),
@@ -124,7 +138,7 @@ int asyncMain(void *arg) {
 
   sct_corr::hit_efficiency eff(
     gbl_collection.getTotalTrueHits(),
-    second_nearest.getSecondHitOnPlaneA(),
+    second_nearest.getHitOnPlaneA(),
     s_plot_prob("effi")
     );
   sct_corr::inStripClusterSize cl_instrip(
@@ -137,7 +151,7 @@ int asyncMain(void *arg) {
 
   sct_corr::residual_efficienct res_eff(
     gbl_collection.getTotalTrueHits(), 
-    second_nearest.getsecondHitOnPlaneB(), 
+    second_nearest.getHitOnPlaneB(), 
     S_XCut(280,360),
     stripNr_t(400),
     x_axis_def, 

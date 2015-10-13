@@ -8,7 +8,7 @@
 
 namespace sct_processor {
 
-class find_nearest_strip {
+class DllExport find_nearest_strip {
 public:
   find_nearest_strip(const sct_corr::plane_def& planeA,
                      const sct_corr::plane_def& planeB,

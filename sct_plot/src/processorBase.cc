@@ -893,3 +893,16 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
 
   return true;
 }
+/*
+s_process_collection_secound_highest::s_process_collection_secound_highest() :m_outputl(sct_type::collectionName_t("out")) {
+  m_dummy = new TFile("dummy1.root", "recreate");
+}
+
+s_process_collection_secound_highest::~s_process_collection_secound_highest() {
+  delete m_dummy;
+}
+
+Long64_t s_process_collection_secound_highest::DrawResidual(Double_t min_X, Double_t max_X) {
+  return 0;
+}
+*/

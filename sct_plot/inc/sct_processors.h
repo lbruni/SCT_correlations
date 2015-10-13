@@ -16,7 +16,12 @@ public:
     const s_plot_prob& = ""
     );
 
-
+  static plane_def if_a_get_b(
+    const plane_def& planeA,
+    const plane_def& planeB,
+    const S_Cut& cut_,
+    const s_plot_prob& plot_prob_ = ""
+    );
   static  plane_def cluster_strip(
     const plane_def& hits,
     axis_def search_axis,

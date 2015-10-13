@@ -21,7 +21,7 @@ public:
   virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
   virtual Long64_t Draw(const S_DrawOption& opt) override;
 
-  virtual bool fill() override final;
+  virtual returnFill fill() override final;
   void processEventStart();
   void processEventEnd();
   void processHit(const Alibava_hit& p1, const plane_hit& p2);

@@ -19,6 +19,24 @@ plane_def processor::cut_x_y(
   return ret;
 }
 
+sct_corr::plane_def processor::if_a_get_b(
+  const plane_def& planeA, 
+  const plane_def& planeB, 
+  const S_Cut& cut_, 
+  const s_plot_prob& plot_prob_ /*= "" */
+  ) {
+  auto pl = getPlotCollectionIfUnique(planeA, planeB);
+
+  if (!pl) {
+    std::cout << "[processor::modulo_find_nearest_strip] referencing to different plot collection\n";
+    return sct_corr::error_plane_def();
+  }
+
+  plane_def a_cutted = processor::cut_x_y(planeA, cut_, s_plot_prob().doNotSaveToDisk());
+  plane_def ret = pl->addPlot(sct_plot::A_if_B(plot_prob_), planeB, a_cutted)();
+  return ret;
+}
+
 plane_def processor::cluster_strip(
   const plane_def& hits,
   axis_def search_axis,

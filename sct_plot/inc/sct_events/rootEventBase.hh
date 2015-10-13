@@ -77,7 +77,6 @@ namespace sct_corr{
     rootEventBaseAxis(const rootEventBase& ev, const sct_type::AxesName_t& ax_name, const sct_type::ID_t& id_);
     virtual bool next() const override;
     virtual double get() const override;
-
     const sct_type::AxesName_t&  getName() const;
     std::vector<double>* m_axis;
     std::vector<double>* m_ID;

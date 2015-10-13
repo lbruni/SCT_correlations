@@ -108,6 +108,7 @@ int main(int argc, char **argv) {
     return 0;
   } catch (ArgException &e)  // catch any exceptions
   {
+
     cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     return -1;
   }

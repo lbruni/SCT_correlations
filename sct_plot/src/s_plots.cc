@@ -37,11 +37,11 @@ S_plot::S_plot(const S_plot& pl)
 }
 
 
-bool S_plot::fill()
+int S_plot::fill()
 {
   if (!m_plot) {
     std::cout << "[S_plot] plot not set" << std::endl;
-    return false;
+    return sct_corr::FILL_DONE;
   }
  return m_plot->fill();
 }

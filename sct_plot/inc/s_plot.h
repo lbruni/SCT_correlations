@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include "plot_save_option_def.h"
+#include "internal/plotsBase.hh"
 
 class S_DrawOption;
 class s_plane_collection;
@@ -27,7 +28,7 @@ class DllExport S_plot{
 public:
   S_plot();
   S_plot(const S_plot&);
-  bool fill();
+  int fill();
   Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
   Long64_t Draw(const char* options, const TCut& cuts, const char* axis = "y:x");
   Long64_t Draw(const S_DrawOption& opt);

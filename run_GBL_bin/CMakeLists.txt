@@ -5,13 +5,13 @@ find_package(RapidXML REQUIRED)
 
 INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR}  ./inc/ ${TCLAP_INCLUDE_DIR} ${SCT_PLOTS_INCLUDES} ${LANDAUGAUS_INCLUDE_DIR} ${RapidXML_INCLUDE_DIR})
 
-add_executable(ProcessFile    src/ProcessFile.cxx )
-set_property(TARGET ProcessFile   PROPERTY PROJECT_LABEL "bin_ProcessFile") 
+add_executable(run_gbl    src/run_GBL.cxx )
+set_property(TARGET run_gbl   PROPERTY PROJECT_LABEL "bin_run_gbl") 
 
 
-target_link_libraries(ProcessFile    ${PROJECT_NAME} ${LANDAUGAUS_LIBRARY})
+target_link_libraries(run_gbl    ${PROJECT_NAME} )
 
-INSTALL(TARGETS ProcessFile  
+INSTALL(TARGETS run_gbl  
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)

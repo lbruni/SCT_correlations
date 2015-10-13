@@ -1,6 +1,5 @@
 FIND_PACKAGE( ROOT REQUIRED)
 find_package(TCLAP REQUIRED)
-find_package(LANDAUGAUSS REQUIRED)
 find_package(RapidXML REQUIRED)
 
 

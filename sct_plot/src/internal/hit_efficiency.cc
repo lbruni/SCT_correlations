@@ -57,7 +57,7 @@ Long64_t sct_corr::hit_efficiency::Draw(
   if (!m_efficiency) {
     return -1;
   }
-  m_efficiency->SetTitle(m_plot_prob.getName().value.c_str());
+  m_efficiency->SetTitle(necessary_CONVERSION(m_plot_prob.getName()).c_str());
   m_efficiency->Draw(d_option.getOptions());
 
   return m_dut_count;

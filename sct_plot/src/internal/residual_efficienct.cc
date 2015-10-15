@@ -124,7 +124,7 @@ s_plane_collection make_residual_efficiency_processor(
   auto collection_ = plA->addPlot(
     S_plot(new residual_efficiency_processor(
     search_axis,
-    strips.value,
+    Un_necessary_CONVERSION(strips),
     plot_prob_)),
     planeA,
     planeB

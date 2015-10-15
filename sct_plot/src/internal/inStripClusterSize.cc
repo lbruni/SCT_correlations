@@ -24,11 +24,11 @@ sct_corr::inStripClusterSize::inStripClusterSize(
   double mod_x = 10000000;
   double mod_y = 10000000;
   if (search_axis == x_axis_def) {
-    mod_x = mod_.value;
+    mod_x = Un_necessary_CONVERSION(mod_);
   }
 
   if (search_axis == y_axis_def) {
-    mod_y = mod_.value;
+    mod_y = Un_necessary_CONVERSION(mod_);
   }
   auto cluster_ = processor::cluster_strip(
     sz_data,
@@ -100,11 +100,11 @@ TH2* sct_corr::inStripClusterSize::getHistogram() const {
 }
 
 Long64_t sct_corr::inStripClusterSize::Draw() {
-  std::string name = std::string(m_plot_prob.getName().value) + "_hist";
+  std::string name = std::string(Un_necessary_CONVERSION(m_plot_prob.getName())) + "_hist";
   m_cluster_size_plot = std::make_shared<TH2D>(
     name.c_str(),
-    m_plot_prob.getName().value.c_str(),
-    100, 0, m_mod.value,
+    Un_necessary_CONVERSION(m_plot_prob.getName()).c_str(),
+    100, 0, Un_necessary_CONVERSION(m_mod),
     m_max_cluster * 100, -0.5, m_max_cluster - 0.5
     );
   Draw(S_DrawOption().draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));
@@ -113,8 +113,8 @@ Long64_t sct_corr::inStripClusterSize::Draw() {
 
   m_cluster_size_plot = std::make_shared<TH2D>(
     name.c_str(),
-    m_plot_prob.getName().value.c_str(),
-    100, 0, m_mod.value,
+    Un_necessary_CONVERSION(m_plot_prob.getName()).c_str(),
+    100, 0, Un_necessary_CONVERSION(m_mod),
     m_max_cluster, -0.5, m_max_cluster - 0.5
     );
   auto ret = Draw(S_DrawOption().draw_y_VS_x().opt_colz().output_object(m_cluster_size_plot.get()));

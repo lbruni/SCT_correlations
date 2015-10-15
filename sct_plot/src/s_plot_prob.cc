@@ -38,7 +38,7 @@ sct_type::collectionName_t s_plot_prob::getName() const
 
 size_t  s_plot_prob::getNameSize() const
 {
-  return m_name.value.size();
+  return necessary_CONVERSION(m_name).size();
 }
 
 plot_save_option_def s_plot_prob::getPlotSaveOption() const

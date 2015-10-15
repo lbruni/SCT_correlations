@@ -79,6 +79,8 @@ namespace sct_corr{
 
    return m_dumm1 < m_dumm2;
  }
+#ifdef _DEBUG
+
 
  std::string operator+(const axis_names& a1, const sct_type::AxesName_t& str) {
    std::string ret;
@@ -102,6 +104,7 @@ namespace sct_corr{
    return ret;
  }
 
+#endif // _DEBUG
 
  std::string operator+(const axis_names& a1, const  std::string& str) {
    std::string ret;

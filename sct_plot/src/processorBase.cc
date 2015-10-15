@@ -233,10 +233,11 @@ bool processorBase::process() {
 
   auto files = xml_print("files");
 
-  TFile* _file1 = new TFile(
+ 
+  auto _file1 = sct_corr::output_TFile_ptr(new TFile(
     m_outname.c_str(),
     "recreate"
-    );
+    ));
   start_collection(_file1);
 
 
@@ -245,7 +246,10 @@ bool processorBase::process() {
     process_file(&e);
 
   }
-  _file1->Write();
+  end_collection();
+
+  necessary_CONVERSION(_file1)->Write();
+  delete necessary_CONVERSION(_file1);
   return true;
 }
 
@@ -509,14 +513,14 @@ void s_process_collection_standard::process_set_run_prob(const FileProberties& f
   m_outputl.set_HV(fileP.m_HV);
 }
 
-void s_process_collection_standard::start_collection(TFile* file__) {
+void s_process_collection_standard::start_collection(sct_corr::output_TFile_ptr  file__) {
   m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
     m_outputl,
     &m_buffer,
     true
     );
 
-  m_outputTree->getTTree()->SetDirectory(file__->GetDirectory("/"));
+  m_outputTree->getTTree()->SetDirectory(necessary_CONVERSION(file__)->GetDirectory("/"));
 }
 
 bool s_process_collection_standard::process_file(FileProberties* fileP) {
@@ -821,14 +825,14 @@ s_process_collection_modulo::~s_process_collection_modulo() {
 
 }
 
-void s_process_collection_modulo::start_collection(TFile* file__) {
+void s_process_collection_modulo::start_collection(sct_corr::output_TFile_ptr file__) {
   m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
     m_outputl,
     &m_buffer,
     true
     );
 
-  m_outputTree->getTTree()->SetDirectory(file__->GetDirectory("/"));
+  m_outputTree->getTTree()->SetDirectory(necessary_CONVERSION(file__)->GetDirectory("/"));
 }
 
 bool s_process_collection_modulo::process_file(FileProberties* fileP) {

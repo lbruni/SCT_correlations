@@ -5,7 +5,12 @@ template <typename T>
 class pixelHit{
 public:
   pixelHit(T x, T y) :m_x(x), m_y(y){}
-
+  T X() const {
+    return m_x;
+  }
+  T Y() const {
+    return m_y;
+  }
   T m_x, m_y;
 };
 template <typename T>
@@ -40,8 +45,17 @@ public:
     }
     return false;
   }
-  const  pixelHit_t & getPos(){
+  const  pixelHit_t & getPos() const{
     return m_hits.front();
+  }
+  double x() const {
+    return getPos().X();
+  }
+  double y() const {
+    return getPos().Y();
+  }
+  size_t size() const {
+    return m_hits.size();
   }
   std::vector<pixelHit_t> m_hits;
 };
@@ -119,14 +133,14 @@ public:
 
   bool isDuplicated(const pixelHit<T>& h){
 
-    auto it = find(m_hits.begin(), m_hits.end(), h);
-    if (it == m_hits.end()){
-
-
-      return false;
+    for (auto&e : m_hits)
+    {
+      if (e==h)
+      {
+        return true;
+      }
     }
-
-    return true;
+    return false;
   }
   T m_pixelDistance;
   bool m_allowHitDuplication;

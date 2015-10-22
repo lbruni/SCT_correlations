@@ -72,6 +72,11 @@ Int_t Hit_extractor::GetNumberOfEvents()
 
 
 
+const char* Hit_extractor::getName() const
+{
+  return m_hits->getName();
+}
+
 Hit_output::Hit_output(const char* name) :m_hits(new Hit_output_impl(name))
 {
 
@@ -100,4 +105,9 @@ void Hit_output::fill()
 Int_t Hit_output::Draw(const char* axis, const char* cuts, const char * options)
 {
  return  m_hits->Draw(axis, cuts, options);
+}
+
+TTree* Hit_output::getTTree()
+{
+  return m_hits->fChain;
 }

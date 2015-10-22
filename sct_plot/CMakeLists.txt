@@ -1,30 +1,26 @@
 FIND_PACKAGE( ROOT REQUIRED)
-
+find_package(RapidXML REQUIRED)
 
 
 
 
 AUX_SOURCE_DIRECTORY( src library_sources )
-
+AUX_SOURCE_DIRECTORY( src/internal library_sources_internals )
+AUX_SOURCE_DIRECTORY( src/sct_events library_sources_sct_events )
+AUX_SOURCE_DIRECTORY( src/processors library_sources_processors)
+SOURCE_GROUP(internals FILES ${library_sources_internals})
+SOURCE_GROUP(event FILES ${library_sources_processors})
+SOURCE_GROUP(processors FILES ${library_sources_sct_events})
 SET(ProjectDict_name SCT_plotsDict.cxx)
 
 
-INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} )
+INCLUDE_DIRECTORIES(  ${ROOT_INCLUDE_DIR} ${RapidXML_INCLUDE_DIR} )
 
-# fill list of header files 
-set(Project_HEADERS 
-  ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots.h
-  ${PROJECT_SOURCE_DIR}/sct_plot/inc/sct_plots_LinkDef.h
-  )
 
-SET(MY_INCLUDE_DIRECTORIES ./sct_plot/inc ./inc  ${ROOT_INCLUDE_DIR} )
 
-# set everything needed for the root dictonary and create the
-# dictionary
-set(Project_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/${ProjectDict_name}) 
 
-ROOT_GENERATE_DICTIONARY_OLD("${Project_HEADERS}" "${Project_DICTIONARY}" "${MY_INCLUDE_DIRECTORIES}")
-ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources}  ${Project_DICTIONARY} )
+
+ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources} ${library_sources_internals} ${library_sources_sct_events} ${library_sources_processors} )
 
 
 

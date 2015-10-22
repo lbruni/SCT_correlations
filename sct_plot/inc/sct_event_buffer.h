@@ -2,33 +2,35 @@
 #define sct_event_buffer_h__
 
 #include <vector>
-#include <map>
+
 #include "Rtypes.h"
+#include <memory>
+#include "internal/axis_ref.hh"
+#include "sct_plots.h"
+
+#include "sct_events/rootEventBase.hh"
+#include "sct_types.h"
+#include <utility>
 
 
-class treeCollection;
-class treeCollection_ouput;
-class root_event{
-public:
-  root_event(std::vector<double>  *ID,
-    std::vector<double>  *x,
-    std::vector<double>  *y,
-    Int_t*                event_nr);
-  root_event();
-  std::vector<double>  *m_ID=nullptr;
-  std::vector<double>  *m_x=nullptr;
-  std::vector<double>  *m_y =nullptr;
-  Int_t*                m_event_nr=nullptr;
-};
+class TFile;
+namespace sct_corr{
 
 
-class sct_event_buffer{
-public:
-  void set(const char * name, root_event* ev);
-  bool get(const char* name, root_event* ev);
-  bool IsCollection(const char* name);
-  void reset();
 
-  std::map<std::string, root_event> m_events;
-};
+  class sct_event_buffer{
+  public:
+    void set(const sct_type::collectionName_t& name, rootEventBase* ev);
+    bool get(const sct_type::collectionName_t& name, rootEventBase* ev);
+    TFile* getOutputFile();
+    void setOutputFile(TFile* file);
+    bool IsCollection(const sct_type::collectionName_t& name);
+    void reset();
+
+
+    using map_t = std::pair<sct_type::collectionName_t, rootEventBase>;
+    std::vector<map_t> m_events;
+    TFile* m_outputFile = nullptr;
+  };
+}
 #endif // sct_event_buffer_h__

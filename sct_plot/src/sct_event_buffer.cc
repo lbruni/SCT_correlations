@@ -3,46 +3,64 @@
 
 
 
+namespace sct_corr{
 
 
-
-void sct_event_buffer::set(const char * name, root_event* ev)
-{
-  m_events[name] = *ev;
-}
-
-bool sct_event_buffer::get(const char* name, root_event* ev)
-{
-  if (!IsCollection(name))
+void sct_event_buffer::set(const sct_type::collectionName_t& name, rootEventBase* ev)
   {
+    if (IsCollection(name))
+    {
+      std::cout << "[sct_event_buffer::set] name already used. name = " << name.value << std::endl;
+      return;
+    }
+    m_events.push_back(map_t(name, *ev));
+  }
+
+bool sct_event_buffer::get(const sct_type::collectionName_t& name, rootEventBase* ev)
+  {
+    if (!IsCollection(name))
+    {
+      return false;
+    }
+    for (auto&e:m_events)
+    {
+      if (e.first.value==name.value)
+      {
+        *ev = e.second;
+      }
+    }
+    
+
+    return true;
+  }
+
+  TFile* sct_event_buffer::getOutputFile()
+  {
+    return m_outputFile;
+  }
+
+  void sct_event_buffer::setOutputFile(TFile* file)
+  {
+    m_outputFile = file;
+  }
+
+  bool sct_event_buffer::IsCollection(const sct_type::collectionName_t& name)
+  {
+
+    for (auto&e :m_events)
+    {
+      if (e.first.value == name.value) {
+        return true;
+      }
+    }
     return false;
   }
-  *ev = m_events[name];
 
-  return true;
-}
-
-bool sct_event_buffer::IsCollection(const char* name)
-{
-  auto it = m_events.find(name);
-  if (it == m_events.end())
+  void sct_event_buffer::reset()
   {
-    return false;
+    m_events.clear();
   }
-  return true;
-}
 
-void sct_event_buffer::reset()
-{
-  m_events.clear();
-}
 
-root_event::root_event(std::vector<double> *ID, std::vector<double> *x, std::vector<double> *y, Int_t* event_nr) :m_ID(ID), m_x(x), m_y(y), m_event_nr(event_nr)
-{
-
-}
-
-root_event::root_event()
-{
 
 }

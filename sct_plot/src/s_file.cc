@@ -448,4 +448,36 @@ sct_corr::plane_def_GBL alibava_file::DUT_fitted_local_GBL() const {
   ret.set_plot_collection(m_plot_collection);
   return ret;
 }
+
+sz_data_file::sz_data_file(const char* fileName, const sct_corr::Xgear* gear_ /*= nullptr*/) 
+  :base_file(sct_corr::create_plot_collection(), gear_) {
+
+  m_main_file = std::make_shared<TFile>(fileName);
+  m_plot_collection->addFile(m_main_file.get());
+
+}
+
+
+sct_corr::plane_def sz_data_file::DUT_sz_data() const
+{
+  auto ret = sct_corr::plane_def(sct_type::collectionName_t("szData"), sct_type::ID_t(8));
+  ret.set_plot_collection(m_plot_collection);
+  return ret;
+}
+
+
+sct_corr::plane_def sz_data_file::TEL_sz_data(const sct_type::ID_t& id_) const
+{
+  auto ret = sct_corr::plane_def(sct_type::collectionName_t("szData"), sct_type::ID_t(id_));
+  ret.set_plot_collection(m_plot_collection);
+  return ret;
+}
+
+sct_corr::plane_def sz_data_file::APIX_sz_data() const
+{
+  auto ret = sct_corr::plane_def(sct_type::collectionName_t("szData"), sct_type::ID_t(7));
+  ret.set_plot_collection(m_plot_collection);
+  return ret;
+}
+
 }

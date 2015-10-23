@@ -129,6 +129,19 @@ public:
   sct_corr::plane_def_Alibava Alibava_sz_data() const;
   sct_corr::plane_def_GBL DUT_fitted_local_GBL() const;
 };
+class DllExport sz_data_file : public base_file {
+public:
+  sz_data_file(const char* fileName, const sct_corr::Xgear* gear_ = nullptr);
+  
+  virtual ~sz_data_file() {}
+
+  sct_corr::plane_def DUT_sz_data() const;
+  sct_corr::plane_def TEL_sz_data(const sct_type::ID_t& id_) const;
+  sct_corr::plane_def APIX_sz_data() const;
+private:
+  std::shared_ptr<TFile> m_main_file;
+};
+
 
 }
 

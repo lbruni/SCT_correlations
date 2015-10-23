@@ -83,18 +83,22 @@ TH1D* sct_corr::inStripEfficiency::getEfficiency_map() const {
   return m_efficiency.get();
 }
 
+TH1D* sct_corr::inStripEfficiency::getHits() const {
+  return m_total_hits.get();
+}
+
 double sct_corr::inStripEfficiency::get_total_efficiency() const {
   return m_efficiency_total;
 }
 
 Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 60, 0, necessary_CONVERSION(m_mod));
+  m_total_hits= std::make_shared<TH1D>("mod_true", "true hits", 60, 0, necessary_CONVERSION(m_mod));
   TH1D DUtHitsMod("mod_dut", "DUT hits", 60, 0,necessary_CONVERSION(m_mod));
-  auto total=Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
+  auto total = Draw_true_hits(S_DrawOption().output_object(m_total_hits.get()).draw_axis(m_search_axis));
   auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
 
   m_efficiency_total = (double)ret / (double)total;
-  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(&trueHitsMod, &DUtHitsMod)));
+  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(m_total_hits.get(), &DUtHitsMod)));
   if (!m_efficiency) {
     return -1;
   }

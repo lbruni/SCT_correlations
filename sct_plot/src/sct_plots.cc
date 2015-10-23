@@ -198,10 +198,10 @@ void SCT_helpers::saveTH1_as_txt(const TProfile& h1, const char* nameTXT) {
 
 }
 
-void SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
+TObject* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
   auto pl = plane_.get_plot();
   pl->Draw(plane_, opt);
-
+ return gPad->GetPrimitive("htemp");
 }
 
 

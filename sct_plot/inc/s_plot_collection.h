@@ -73,7 +73,7 @@ public:
   virtual bool collectionExist(const sct_type::collectionName_t& name)  const = 0;
 };
 
-DllExport std::shared_ptr<plot_collection> create_plot_collection();
+DllExport std::shared_ptr<sct_corr::plot_collection> create_plot_collection();
 
 
 }

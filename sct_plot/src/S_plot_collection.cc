@@ -273,12 +273,12 @@ S_plane* plot_collection_impl::pushPlane(const plane_def& pl) {
   return m_planes.back().get();
 }
 
-std::shared_ptr<plot_collection> create_plot_collection() {
-  auto  ret = std::make_shared<plot_collection_impl>();
+std::shared_ptr<sct_corr::plot_collection> create_plot_collection() {
+  auto  ret = std::make_shared<sct_corr::plot_collection_impl>();
 
   ret->set_self_weak_pointer(ret);
 
-  return std::dynamic_pointer_cast<plot_collection>(ret);
+  return std::dynamic_pointer_cast<sct_corr::plot_collection>(ret);
 }
 
 

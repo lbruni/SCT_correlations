@@ -5,6 +5,7 @@
 #include "S_Axis.h"
 #include "TF1.h"
 #include "plane_def.h"
+#include "TProfile.h"
 class TH2D;
 class TH2;
 class TH1;
@@ -23,7 +24,7 @@ public:
   static void saveTH1_as_txt(const TH1& h1, const char* nameTXT);
 
   static void Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt);
-
+  static void saveTH1_as_txt(const TProfile& h1, const char* nameTXT);
   
 };
 

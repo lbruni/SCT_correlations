@@ -186,6 +186,18 @@ void SCT_helpers::saveTH1_as_txt(const TH1& h1, const char* nameTXT) {
 }
 
 
+void SCT_helpers::saveTH1_as_txt(const TProfile& h1, const char* nameTXT) {
+  std::ofstream out(nameTXT);
+  out << h1.GetTitle() << std::endl;
+  out << h1.GetXaxis()->GetTitle() << " ; " << h1.GetYaxis()->GetTitle() << std::endl;
+
+  for (int i = 0; i < h1.GetNbinsX(); ++i) {
+
+    out << h1.GetBinCenter(i) << " ; " << h1.GetBinContent(i) << std::endl;
+  }
+
+}
+
 void SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
   auto pl = plane_.get_plot();
   pl->Draw(plane_, opt);

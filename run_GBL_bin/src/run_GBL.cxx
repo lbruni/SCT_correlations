@@ -32,6 +32,8 @@
 #include "sct_processors.h"
 #include "processors/modulo.hh"
 #include "processors/find_nearest_strip.hh"
+#include "s_plot_collection.h"
+#include "plane_def.h"
 
 
 using namespace xml_util;
@@ -64,8 +66,8 @@ int asyncMain(void *arg) {
   int argc = para->argc;
   char **argv = para->argv;
   TApplication theApp("App", &argc, argv);
-  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_400V/";
-  std::string name_ = "run000801_";
+  std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/";
+  std::string name_ = "run000688_";
   std::string name_suffix = "fitter";
   std::string extension_="root";
   std::string fullName = path_ + name_ + name_suffix+"." + extension_;
@@ -80,7 +82,12 @@ int asyncMain(void *arg) {
 
  // r_plot_collection pl(file_);
 //  pl.setOutputFile(out_file);
-  sct_files::fitter_file file___(fullName.c_str(), "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml");
+  sct_files::fitter_file file___(
+    fullName.c_str(), 
+    "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/alignedGear-check-iter2-run000703_with_plane20.xml"
+    );
+
+
   TFile * out_file = new TFile("output.root", "recreate");
   auto pl = file___.get_collection();
   pl->setOutputFile(out_file);
@@ -106,7 +113,7 @@ int asyncMain(void *arg) {
 
 
     auto  second_nearest = sct_processor::find_nearest_strip(
-    trueHit_with_tdc_cut,
+      gbl_collection.getTotalTrueHits(),
     file___.DUT_zs_data(),
     x_axis_def, 
     3, 
@@ -158,7 +165,7 @@ int asyncMain(void *arg) {
     s_plot_prob("Res_efficiency")
     );
 
-  pl->loop(40000);
+  pl->loop();
 
   //pl->loop();
 
@@ -182,6 +189,7 @@ int asyncMain(void *arg) {
   gCanvas.push_back(new TCanvas());
 
   cl_instrip.Draw();
+  SCT_helpers::saveTH1_as_txt(*cl_instrip.getProfile(), (path_ + name_ + "clusterSize" + "." + "txt").c_str());
   gBrowser = new TBrowser();
   theApp.Run();
 

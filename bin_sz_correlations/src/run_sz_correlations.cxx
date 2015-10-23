@@ -96,7 +96,8 @@ int asyncMain(void *arg) {
   auto corryy = sct_corr::processor::correlation(sz_dut.getY_def(), cuted.getY_def(), s_plot_prob("correlation_y_y").SaveToDisk());
   pl1->loop();
   new TCanvas();
-  SCT_helpers::Draw(corr, S_DrawOption().opt_colz());
+  auto xy = (TH2*)SCT_helpers::Draw(corr, S_DrawOption().opt_colz());
+  xy->SetTitle("test");
   new TCanvas();
   SCT_helpers::Draw(corryx, S_DrawOption().opt_colz());
   new TCanvas();

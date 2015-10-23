@@ -137,6 +137,8 @@ private:
   std::shared_ptr <sct_files::fitter_file> m_file_fitter;
 
 };
+
+TYPE_CLASS_PTR(output_TFile_ptr, TFile*);
 class DllExport processorBase {
 public:
   processorBase();
@@ -155,25 +157,29 @@ public:
 
   const xmlImputFiles::XML_imput_file* get_xml_input() const;
   const sct_corr::Xgear* get_gear() const;
+protected:
+  sct_corr::rootEventRunOutput m_outputl;
+  std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
+  sct_corr::sct_event_buffer m_buffer;
 private:
 
   std::shared_ptr<xmlImputFiles::XML_imput_file> m_input_files_xml;
 
+  void process_set_run_prob(const FileProberties& fileP);
 
 
   std::shared_ptr<sct_corr::Xgear> m_gear;
 
 
-  virtual void start_collection(TFile* file__) = 0;
+  void start_collection(output_TFile_ptr file__) ;
   virtual  bool process_file(FileProberties* fileP) = 0;
-
+  virtual void end_collection() {}
 
 
   std::vector<FileProberties> m_files;
 
 
 
-  TFile* m_outpuFile = nullptr;
   std::string m_outname;
 
 
@@ -197,18 +203,17 @@ public:
   TH2D* getResidualVsMissingCordinate();
 
 private:
-  virtual void start_collection(TFile* file__) override;
+
   virtual  bool process_file(FileProberties* fileP) override;
-  void process_set_run_prob(const FileProberties& fileP);
   void extract_efficiency();
   void extract_hitMap();
   void extract_residual();
   void extract_rotation();
   void process_reset();
-  void pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Effi_error);
-  sct_corr::rootEventRunOutput m_outputl;
-  std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
-  sct_corr::sct_event_buffer m_buffer;
+
+
+
+
 
 
   std::shared_ptr<TH1D> m_Residual;
@@ -284,11 +289,11 @@ public:
 
 
 private:
-  virtual void start_collection(TFile* file__) override;
+  
   virtual  bool process_file(FileProberties* fileP) override;
   std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
   sct_corr::sct_event_buffer m_buffer;
-  sct_corr::rootEventRunOutput m_outputl;
+
   TFile* m_dummy = nullptr;
 
   std::shared_ptr<sct_corr::plot_collection> m_plotCollection;

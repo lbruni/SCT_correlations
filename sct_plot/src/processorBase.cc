@@ -542,7 +542,7 @@ void s_process_collection_standard::extract_residual() {
 void s_process_collection_standard::extract_rotation() {
   DrawResidualVsMissingCordinate(-10, 10);
   auto h = getResidualVsMissingCordinate();
-  auto f1 = SCT_helpers::LinearFit_Of_Profile(h, 0.01);
+  auto f1 = SCT_helpers::LinearFit_Of_Profile(h,sct_type::procent_t(1));
   auto rot = TMath::ATan(f1.GetParameter("p1"));
   m_outputl.set_rotation(rot);
   xml_print("rotation", rot);
@@ -705,7 +705,7 @@ Long64_t s_process_collection_standard::DrawResidualVsMissingCordinate(Double_t 
     .output_object(m_resVSMissing.get())
     .opt_colz()
     );
-  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(m_resVSMissing.get(), 0));
+  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(m_resVSMissing.get(), sct_type::procent_t(0)));
 //   std::cout << f->GetParameter("p1") << std::endl;
 //   std::cout << f->GetParameter("p0") << std::endl;
   m_plotCollection->Draw(

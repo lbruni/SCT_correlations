@@ -46,7 +46,7 @@ namespace sct_type {
   TYPE_CLASS(move_t, double);
   TYPE_CLASS(collectionName_t, std::string);
   TYPE_CLASS(AxesName_t, std::string);
-
+  TYPE_CLASS(procent_t, double);
 
 }
 

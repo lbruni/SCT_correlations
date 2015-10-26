@@ -87,24 +87,33 @@ int asyncMain(void *arg) {
   
 
   auto sz_dut = file__.DUT_sz_data();
-  auto sz_tel = file__.TEL_sz_data(sct_type::ID_t(5));
+  auto sz_tel = file__.TEL_sz_data(sct_type::ID_t(3));
 
   auto cuted = sct_corr::processor::cut_x_y(sz_tel, S_XCut(200) + S_YCut(200),s_plot_prob().doNotSaveToDisk());
   auto corr = sct_corr::processor::correlation(sz_dut.getX_def(), cuted.getY_def(), s_plot_prob("correlation_x_y").SaveToDisk());
   auto corryx = sct_corr::processor::correlation(sz_dut.getY_def(), cuted.getX_def(), s_plot_prob("correlation_y_x").SaveToDisk());
   auto corrxx = sct_corr::processor::correlation(sz_dut.getX_def(), cuted.getX_def(), s_plot_prob("correlation_x_x").SaveToDisk());
   auto corryy = sct_corr::processor::correlation(sz_dut.getY_def(), cuted.getY_def(), s_plot_prob("correlation_y_y").SaveToDisk());
+
+
+
+
+  auto sz_dut_normalized = sct_corr::processor::coordinate_transform(sz_dut, 0.0745, 0, 1, 0, s_plot_prob().doNotSaveToDisk());
+  auto sz_tel_normalized = sct_corr::processor::coordinate_transform(cuted, 0.018, 0, 0.018, 0, s_plot_prob().doNotSaveToDisk());
+  auto res = sct_corr::processor::residual(sz_dut_normalized.getX_def(), sz_tel_normalized.getY_def());
   pl1->loop();
   new TCanvas();
-  auto xy = (TH2*)SCT_helpers::Draw(corr, S_DrawOption().opt_colz());
-  xy->SetTitle("test");
+  SCT_helpers::Draw<TH2>(corr, S_DrawOption().opt_colz())->SetTitle("correlation DUT  X vs Tel Y");
+  
   new TCanvas();
-  SCT_helpers::Draw(corryx, S_DrawOption().opt_colz());
+  SCT_helpers::Draw<TH2>(corryx, S_DrawOption().opt_colz())->SetTitle("correlation DUT  Y vs Tel X");
   new TCanvas();
-  SCT_helpers::Draw(corrxx, S_DrawOption().opt_colz());
+  SCT_helpers::Draw<TH2>(corrxx, S_DrawOption().opt_colz())->SetTitle("correlation DUT  X vs Tel X");
   new TCanvas();
-  SCT_helpers::Draw(corryy, S_DrawOption().opt_colz());
+  SCT_helpers::Draw<TH2>(corryy, S_DrawOption().opt_colz())->SetTitle("correlation DUT  Y vs Tel Y");
 
+  new TCanvas();
+  SCT_helpers::Draw<TH2>(res, S_DrawOption().opt_colz().draw_x_VS_y())->SetTitle("correlation over time");
   gBrowser = new TBrowser();
   theApp.Run();
 

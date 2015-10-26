@@ -60,6 +60,7 @@ public:
   S_DrawOption& draw_x_VS_y();
   S_DrawOption& draw_y_VS_x();
   S_DrawOption& output_object(TObject* out_);
+  TObject* get_output_object() const;
   Long64_t Draw(TTree * tree) const;
   const char* getOptions() const;
   const char* getAxis() const;

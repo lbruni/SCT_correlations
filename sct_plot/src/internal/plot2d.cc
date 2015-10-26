@@ -97,4 +97,8 @@ namespace sct_corr{
     return m_outTree->m_name;
   }
 
+  Int_t plot2d::get_current_event() const {
+    return m_current;
+  }
+
 }

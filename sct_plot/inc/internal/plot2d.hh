@@ -25,6 +25,7 @@ namespace sct_corr{
     virtual void pushAxis(const axis_ref* axis);
     virtual void pushPlane(S_plane* axis);
     virtual sct_type::collectionName_t getOutputName()  const;
+    Int_t get_current_event() const;
   protected:
     const axis_ref* m_x = nullptr;
     const axis_ref* m_y = nullptr;

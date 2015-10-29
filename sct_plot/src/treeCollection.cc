@@ -32,7 +32,7 @@ sct_type::collectionName_t treeCollection::getName() const
 
     if (!buffer->get(name, &m_rootBuffer))
     {
-      std::cout << "collection not found. name: \"" << name.value << "\"" << std::endl;
+      std::cout << "collection not found. name: \"" << necessary_CONVERSION(name)<< "\"" << std::endl;
     }
 
 
@@ -128,7 +128,7 @@ namespace sct_corr{
     if (save2disk)
     {
 
-      m_tree = new TTree(m_name.value.c_str(), m_name.value.c_str());
+      m_tree = new TTree(necessary_CONVERSION(m_name).c_str(), necessary_CONVERSION(m_name).c_str());
       if (outputBuffer->getOutputFile())
       {
         m_tree->SetDirectory(outputBuffer->getOutputFile()->GetDirectory("/"));
@@ -162,7 +162,7 @@ namespace sct_corr{
   {
     if (!m_tree)
     {
-      std::cout << "collection not stored: \"" << m_name.value << "\"" << std::endl;
+      std::cout << "collection not stored: \"" <<necessary_CONVERSION(m_name)<< "\"" << std::endl;
       return -1; // nothing to do 
     }
     return m_tree->Draw(axis, cuts, options);

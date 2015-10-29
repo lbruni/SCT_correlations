@@ -10,7 +10,7 @@ void sct_event_buffer::set(const sct_type::collectionName_t& name, rootEventBase
   {
     if (IsCollection(name))
     {
-      std::cout << "[sct_event_buffer::set] name already used. name = " << name.value << std::endl;
+      std::cout << "[sct_event_buffer::set] name already used. name = " << necessary_CONVERSION(name) << std::endl;
       return;
     }
     m_events.push_back(map_t(name, *ev));
@@ -24,7 +24,7 @@ bool sct_event_buffer::get(const sct_type::collectionName_t& name, rootEventBase
     }
     for (auto&e:m_events)
     {
-      if (e.first.value==name.value)
+      if (Un_necessary_CONVERSION(e.first) == Un_necessary_CONVERSION(name))
       {
         *ev = e.second;
       }
@@ -49,7 +49,7 @@ bool sct_event_buffer::get(const sct_type::collectionName_t& name, rootEventBase
 
     for (auto&e :m_events)
     {
-      if (e.first.value == name.value) {
+      if (Un_necessary_CONVERSION(e.first) ==Un_necessary_CONVERSION(name)) {
         return true;
       }
     }

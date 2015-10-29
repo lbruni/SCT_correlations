@@ -91,13 +91,13 @@ public:
   S_Cut_BinContent(Double_t min_, Double_t max_);
   S_Cut_BinContent(Double_t min_);
 #ifndef __CINT__
-  virtual std::shared_ptr<S_Cut> copy()const {
+  virtual std::shared_ptr<S_Cut> copy()const override{
     return  std::shared_ptr<S_Cut>(new S_Cut_BinContent(*this));
   }
 #endif // __CINT__
-  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const;
-  virtual bool isOutOfRange(Double_t BinContent, Double_t x) const;
-  virtual bool isOutOfRange(Double_t BinContent) const;
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x, Double_t y) const override;
+  virtual bool isOutOfRange(Double_t BinContent, Double_t x) const override;
+  virtual bool isOutOfRange(Double_t BinContent) const override;
 
  
 };

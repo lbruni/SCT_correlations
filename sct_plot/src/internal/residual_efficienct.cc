@@ -124,7 +124,7 @@ s_plane_collection make_residual_efficiency_processor(
   auto collection_ = plA->addPlot(
     S_plot(new residual_efficiency_processor(
     search_axis,
-    strips.value,
+    Un_necessary_CONVERSION(strips),
     plot_prob_)),
     planeA,
     planeB
@@ -185,14 +185,14 @@ Long64_t residual_efficienct::Draw() {
 }
 
 Long64_t residual_efficienct::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 100, -2, 2);
+  m_total_hits = std::make_shared<TH1D>("mod_true", "true hits", 100, -2, 2);
   TH1D DUtHitsMod("mod_dut", "DUT hits", 100, -2, 2);
   S_DrawOption local_(d_option);
-  m_total = Draw_true_hits(local_.output_object(&trueHitsMod));
+  m_total = Draw_true_hits(local_.output_object(m_total_hits.get()));
   auto m_dut_count = Draw_DUT_hits(local_.output_object(&DUtHitsMod));
 
 
-  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(&trueHitsMod, &DUtHitsMod)));
+  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(m_total_hits.get(), &DUtHitsMod)));
   if (!m_efficiency) {
     return -1;
   }
@@ -206,6 +206,14 @@ Long64_t residual_efficienct::Draw(const S_DrawOption& d_option) {
 
 TH1D* residual_efficienct::getEfficiency_map() const {
   return m_efficiency.get();
+}
+
+TH1D* residual_efficienct::get_total() const {
+  return m_total_hits.get();
+}
+
+double residual_efficienct::get_efficiency() const {
+  return (double)m_dut_count / m_total;
 }
 
 }

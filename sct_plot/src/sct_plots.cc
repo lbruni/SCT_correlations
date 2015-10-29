@@ -150,17 +150,20 @@ Long64_t SCT_helpers::DrawTTree(TTree * tree, const S_DrawOption& opt)
 {
   return opt.Draw(tree);
 }
-TF1 SCT_helpers::LinearFit_Of_Profile(TH2* h2, Double_t cut_prozent /*= 0*/) {
+
+
+
+TF1 SCT_helpers::LinearFit_Of_Profile(TH2* h2, const sct_type::procent_t& cut_prozent) {
+
+
   auto max_ = h2->GetMaximum();
-  SCT_helpers::CutTH2(h2, S_Cut_BinContent(max_*cut_prozent));
-TProfile* p1 = h2->ProfileX();
-TF1 f("f1", "pol1", h2->GetXaxis()->GetBinCenter(0), h2->GetXaxis()->GetBinCenter(h2->GetNbinsX()));
+  SCT_helpers::CutTH2(h2, S_Cut_BinContent(max_* necessary_CONVERSION( cut_prozent)/100));
+  TProfile* p1 = h2->ProfileX();
+  TF1 f("f1", "pol1", h2->GetXaxis()->GetBinCenter(0), h2->GetXaxis()->GetBinCenter(h2->GetNbinsX()));
 
-p1->Fit(&f,"Q");
-return f;
+  p1->Fit(&f, "Q");
+  return f;
 }
-
-
 
 
 
@@ -186,10 +189,27 @@ void SCT_helpers::saveTH1_as_txt(const TH1& h1, const char* nameTXT) {
 }
 
 
-void SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
+void SCT_helpers::saveTH1_as_txt(const TProfile& h1, const char* nameTXT) {
+  std::ofstream out(nameTXT);
+  out << h1.GetTitle() << std::endl;
+  out << h1.GetXaxis()->GetTitle() << " ; " << h1.GetYaxis()->GetTitle() << std::endl;
+
+  for (int i = 0; i < h1.GetNbinsX(); ++i) {
+
+    out << h1.GetBinCenter(i) << " ; " << h1.GetBinContent(i) << std::endl;
+  }
+
+}
+
+TObject* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
   auto pl = plane_.get_plot();
   pl->Draw(plane_, opt);
-
+  
+  if (opt.get_output_object())
+  {
+    return opt.get_output_object();
+  }
+ return gPad->GetPrimitive("htemp");
 }
 
 

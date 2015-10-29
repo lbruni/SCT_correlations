@@ -23,7 +23,7 @@ namespace sct_corr{
 
   void residual::processHit(double x, double y)
   {
-    pushHit(x - y, ++m_index);
+    pushHit(x - y, get_current_event());
   }
 
 

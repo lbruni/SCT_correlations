@@ -21,9 +21,9 @@ namespace sct_corr{
 
    sct_type::collectionName_t plot::getName() const
   {
-    if (m_name.value.empty())
+    if (necessary_CONVERSION(m_name).empty())
     {
-      m_name.value = getType() + std::to_string(g_plot_count_intern++);
+      necessary_CONVERSION(m_name) = getType() + std::to_string(g_plot_count_intern++);
     }
     return m_name;
   }

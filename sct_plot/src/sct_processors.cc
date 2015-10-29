@@ -130,7 +130,7 @@ plane_def processor::correlation(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[processor::modulo_find_nearest_strip] referencing to different plot collection\n";
+    std::cout << "[processor::correlation] referencing to different plot collection\n";
     return plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
   }
 

@@ -80,9 +80,48 @@ private:
   bool end_printed = false, first_element=true;
   int m_pos;
 };
+
 double BinNomialSigma(double totalHits, double DUTHits) {
   return sqrt((DUTHits / totalHits)*(1 - (DUTHits / totalHits))*(1 / totalHits));
 }
+
+void pushChannel(sct_corr::rootEventRunOutput& outEvent, Double_t channel_x,
+                 Double_t channel_y,
+                 Double_t Effi,
+                 Double_t NumberOfEvents,
+                 Double_t Error_Effi,
+                 const sct_type::ID_t& ID
+                 ) {
+  outEvent.getData(x_axis_def)->push_back(channel_x);
+  outEvent.getData(y_axis_def)->push_back(channel_y);
+  outEvent.getData(Occupancy_axis_def)->push_back(Effi);
+  outEvent.getData(Occupancy_error_axis_def)->push_back(Error_Effi);
+  outEvent.getData(NumOfEvents_axis_def)->push_back(NumberOfEvents);
+  outEvent.getData(getIDString())->push_back(necessary_CONVERSION(ID));
+
+
+}
+
+
+void push2outputEvent(sct_corr::rootEventRunOutput& outEvent, const TH1D& ouantity, const TH1D& numOfEvents,const sct_type::ID_t& ID) {
+  for (Int_t i = 0; i < ouantity.GetNbinsX(); ++i) {
+    pushChannel(outEvent,
+                ouantity.GetBinCenter(i),        //xPosition
+                1,                               //yPosition   
+                ouantity.GetBinContent(i),       //Efficiency
+                numOfEvents.GetBinContent(i),    //Total True Hits
+
+                BinNomialSigma(
+                numOfEvents.GetBinContent(i),
+                ouantity.GetBinContent(i)
+                ),
+                ID
+                );
+  }
+
+}
+
+
 
 namespace sct_corr {
 
@@ -121,7 +160,7 @@ std::weak_ptr<processorBatch> Processor::get_batch() {
 
 
 
-processorBase::processorBase() {
+processorBase::processorBase(): m_outputl(sct_type::collectionName_t("out")) {
 
 
 
@@ -227,25 +266,56 @@ const sct_corr::Xgear* processorBase::get_gear() const {
   return m_gear.get();
 }
 
+void processorBase::process_set_run_prob(const FileProberties& fileP) {
+  xml_print("fileName", fileP.getTfile()->GetName());
+  m_outputl.reset();
+
+  xml_print("m_runNumber", fileP.m_runNumber);
+  m_outputl.set_RunNumber(fileP.m_runNumber);
+
+
+  xml_print("threshold", fileP.m_Threshold);
+  m_outputl.set_Threshold(fileP.m_Threshold);
+
+  xml_print("HV", fileP.m_HV);
+  m_outputl.set_HV(fileP.m_HV);
+}
+
+void processorBase::start_collection(output_TFile_ptr file__) {
+  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
+    m_outputl,
+    &m_buffer,
+    true
+    );
+
+  m_outputTree->getTTree()->SetDirectory(necessary_CONVERSION(file__)->GetDirectory("/"));
+}
+
 bool processorBase::process() {
 
   TCanvas c;
 
   auto files = xml_print("files");
 
-  TFile* _file1 = new TFile(
+ 
+  auto _file1 = sct_corr::output_TFile_ptr(new TFile(
     m_outname.c_str(),
     "recreate"
-    );
+    ));
   start_collection(_file1);
 
 
 
   for (auto &e : m_files) {
-    process_file(&e);
 
+    process_set_run_prob(e);
+    process_file(&e);
+    m_outputTree->fill();
   }
-  _file1->Write();
+  end_collection();
+
+  necessary_CONVERSION(_file1)->Write();
+  //delete necessary_CONVERSION(_file1);
   return true;
 }
 
@@ -447,18 +517,7 @@ void s_process_collection_standard::extract_efficiency() {
 }
 
 void s_process_collection_standard::extract_hitMap() {
-
-  for (Int_t i = 0; i < m_Efficieny_map->GetNbinsX(); ++i) {
-    pushChannel(m_Efficieny_map->GetBinCenter(i), //xPosition
-                1,                                //yPosition   
-                m_Efficieny_map->GetBinContent(i), // Efficiency
-                m_Efficieny_trueHits->GetBinContent(i), //Total True Hits
-
-                BinNomialSigma(m_Efficieny_trueHits->GetBinContent(i),
-                m_Efficieny_map->GetBinContent(i))
-
-                );
-  }
+  push2outputEvent(m_outputl, *m_Efficieny_map, *m_Efficieny_trueHits,sct_type::ID_t(0));
 }
 
 void s_process_collection_standard::extract_residual() {
@@ -483,7 +542,7 @@ void s_process_collection_standard::extract_residual() {
 void s_process_collection_standard::extract_rotation() {
   DrawResidualVsMissingCordinate(-10, 10);
   auto h = getResidualVsMissingCordinate();
-  auto f1 = SCT_helpers::LinearFit_Of_Profile(h, 0.01);
+  auto f1 = SCT_helpers::LinearFit_Of_Profile(h,sct_type::procent_t(1));
   auto rot = TMath::ATan(f1.GetParameter("p1"));
   m_outputl.set_rotation(rot);
   xml_print("rotation", rot);
@@ -494,36 +553,12 @@ void s_process_collection_standard::process_reset() {
   m_res_VS_event.clear();
   m_outputl.reset();
 }
-void s_process_collection_standard::process_set_run_prob(const FileProberties& fileP) {
-  xml_print("fileName", fileP.getTfile()->GetName());
 
-
-  xml_print("m_runNumber", fileP.m_runNumber);
-  m_outputl.set_RunNumber(fileP.m_runNumber);
-
-
-  xml_print("threshold", fileP.m_Threshold);
-  m_outputl.set_Threshold(fileP.m_Threshold);
-
-  xml_print("HV", fileP.m_HV);
-  m_outputl.set_HV(fileP.m_HV);
-}
-
-void s_process_collection_standard::start_collection(TFile* file__) {
-  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
-    m_outputl,
-    &m_buffer,
-    true
-    );
-
-  m_outputTree->getTTree()->SetDirectory(file__->GetDirectory("/"));
-}
 
 bool s_process_collection_standard::process_file(FileProberties* fileP) {
   process_reset();
   auto file_PRINTOUT = xml_print("file");
 
-  process_set_run_prob(*fileP);
 
   
   m_file_fitter.reset();
@@ -578,7 +613,7 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
 
 
 
-s_process_collection_standard::s_process_collection_standard() :m_outputl(sct_type::collectionName_t("out")) {
+s_process_collection_standard::s_process_collection_standard()  {
   m_dummy = new TFile("dummy1.root", "recreate");
 }
 
@@ -670,7 +705,7 @@ Long64_t s_process_collection_standard::DrawResidualVsMissingCordinate(Double_t 
     .output_object(m_resVSMissing.get())
     .opt_colz()
     );
-  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(m_resVSMissing.get(), 0));
+  auto f = new TF1(SCT_helpers::LinearFit_Of_Profile(m_resVSMissing.get(), sct_type::procent_t(0)));
 //   std::cout << f->GetParameter("p1") << std::endl;
 //   std::cout << f->GetParameter("p0") << std::endl;
   m_plotCollection->Draw(
@@ -776,23 +811,7 @@ TH2D* s_process_collection_standard::getResidualVsMissingCordinate() {
   return m_resVSMissing.get();
 }
 
-void s_process_collection_standard::pushChannel(
-  Double_t channel_x, 
-  Double_t channel_y, 
-  Double_t Effi, 
-  Double_t NumberOfEvents, 
-  Double_t Error_Effi
-  ) {
 
-  m_outputl.getData(x_axis_def)->push_back(channel_x);
-  m_outputl.getData(y_axis_def)->push_back(channel_y);
-  m_outputl.getData(Occupancy_axis_def)->push_back(Effi);
-  m_outputl.getData(Occupancy_error_axis_def)->push_back(Error_Effi);//LB
-  m_outputl.getData(NumOfEvents_axis_def)->push_back(NumberOfEvents);
-  m_outputl.getData(getIDString())->push_back(0);
-
-
-}
 
 TFile* FileProberties::getTfile() const {
   if (m_fileOwnd) {
@@ -813,7 +832,7 @@ void FileProberties::setTFile(TFile* file) {
   m_file = file;
 }
 
-s_process_collection_modulo::s_process_collection_modulo() :m_outputl(sct_type::collectionName_t("out")) {
+s_process_collection_modulo::s_process_collection_modulo()  {
   m_dummy = new TFile("dummy1.root", "recreate");
 }
 
@@ -821,15 +840,6 @@ s_process_collection_modulo::~s_process_collection_modulo() {
 
 }
 
-void s_process_collection_modulo::start_collection(TFile* file__) {
-  m_outputTree = std::make_shared<sct_corr::treeCollection_ouput>(
-    m_outputl,
-    &m_buffer,
-    true
-    );
-
-  m_outputTree->getTTree()->SetDirectory(file__->GetDirectory("/"));
-}
 
 bool s_process_collection_modulo::process_file(FileProberties* fileP) {
 
@@ -877,19 +887,35 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
     s_plot_prob("Res_efficiency")
     );
 
+#ifdef _DEBUG
   pl->loop(4000);
-  //pl->loop();
+#else
+  pl->loop();
+#endif // _DEBUG
+
   
 
   m_residualEffieciency->Draw();
-//  SCT_helpers::saveTH1_as_txt(*res_eff.getEfficiency_map(), (path_ + name_ + "residual_efficiency" + "." + "txt").c_str());
 
+  std::string outName = "file_residual_effi_" + std::to_string(fileP->m_runNumber) + ".txt";
+  SCT_helpers::saveTH1_as_txt(*m_residualEffieciency->getEfficiency_map(), outName.c_str());
+  
+  xml_print("Efficiency", m_residualEffieciency->get_efficiency());
+
+  
   
   m_instripClusterSize->Draw(S_DrawOption());
-//  SCT_helpers::saveTH1_as_txt(*instrip.getEfficiency_map(), (path_ + name_ + "instripEffi" + "." + "txt").c_str());
-  
+
+
 
   m_instripEfficiency->Draw();
+  std::string outName_instrip = "file_instrip_" + std::to_string(fileP->m_runNumber) + ".txt";
+  SCT_helpers::saveTH1_as_txt(*m_instripEfficiency->getEfficiency_map(), outName_instrip.c_str());
+  
+  
+
+  push2outputEvent(m_outputl, *m_residualEffieciency->getEfficiency_map(), *m_residualEffieciency->get_total(), ID_t(0));
+  push2outputEvent(m_outputl, *m_instripEfficiency->getEfficiency_map(), *m_instripEfficiency->getHits(), ID_t(1));
 
   return true;
 }

@@ -119,7 +119,7 @@ void s_plane_collection::push_back(const char* name, const sct_corr::plane_def& 
 
 void s_plane_collection::push_back(const sct_corr::plane_def& pl)
 {
-  push_back(pl.getName().value.c_str(), pl);
+  push_back(Un_necessary_CONVERSION(pl.getName()).c_str(), pl);
 }
 
 

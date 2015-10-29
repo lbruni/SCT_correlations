@@ -240,13 +240,13 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
 
   auto dut_rotated_17 = sct_corr::processor::rotate(
     trueHits,
-    rotate_angle.value,
+    Un_necessary_CONVERSION(rotate_angle),
     s_plot_prob().doNotSaveToDisk()
     );
 
   auto dut_rotated_17_move = sct_corr::processor::coordinate_transform_move(
     dut_rotated_17,
-    move_x.value,
+    Un_necessary_CONVERSION(move_x),
     0,
     s_plot_prob().doNotSaveToDisk()
     );
@@ -257,18 +257,18 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations(
     s_plot_prob().SaveToDisk()
     );
 
-  std::string find_closest_name = plot_prob_.getName().value + "_closest";
+  std::string find_closest_name = necessary_CONVERSION(plot_prob_.getName()) + "_closest";
 
   auto find_closest = sct_processor::find_nearest_strip(
     trueHits_cut,
     DUT_hit_local(),
     x_axis_def,
-    residualCut.value,
+    Un_necessary_CONVERSION(residualCut),
     s_plot_prob(find_closest_name.c_str())
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
-  std::string res_vs_missing_name = plot_prob_.getName().value + "_res_vs_missing";
+  std::string res_vs_missing_name = necessary_CONVERSION(plot_prob_.getName())+ "_res_vs_missing";
 
   auto res_vs_missing = sct_corr::processor::hitmap(
     find_closest.getResidual().getX_def(),
@@ -353,7 +353,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     s_plot_prob().doNotSaveToDisk()
     );
 
-  std::string trueHitsInStrips_name = plot_prob_.getName().value + "_true";
+  std::string trueHitsInStrips_name = necessary_CONVERSION(plot_prob_.getName())+ "_true";
 
   auto trueHitsInStrips = sct_corr::processor::convert_hits_to_zs_data_GBL(
     trueHits_cut,
@@ -364,20 +364,20 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
 
   auto dut_rotated_17 = sct_corr::processor::rotate(
     trueHitsInStrips,
-    rotate_angle.value,
+    Un_necessary_CONVERSION(rotate_angle),
     s_plot_prob().doNotSaveToDisk()
     );
 
   auto dut_rotated_17_move = sct_corr::processor::coordinate_transform_move(
     dut_rotated_17,
-    move_x.value,
+    Un_necessary_CONVERSION(move_x),
     0,
     s_plot_prob(trueHitsInStrips_name.c_str())
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
 
-  std::string find_closest_name = plot_prob_.getName().value + "_closest";
+  std::string find_closest_name = necessary_CONVERSION(plot_prob_.getName())+ "_closest";
 
 
   auto find_closest = sct_processor::find_nearest_strip(
@@ -389,7 +389,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
-  std::string res_vs_missing_name = plot_prob_.getName().value + "_res_vs_missing";
+  std::string res_vs_missing_name = necessary_CONVERSION( plot_prob_.getName())+ "_res_vs_missing";
   auto res_vs_missing = sct_corr::processor::hitmap(
     find_closest.getResidual().getX_def(),
     find_closest.getHitOnPlaneA().getY_def(),
@@ -448,4 +448,36 @@ sct_corr::plane_def_GBL alibava_file::DUT_fitted_local_GBL() const {
   ret.set_plot_collection(m_plot_collection);
   return ret;
 }
+
+sz_data_file::sz_data_file(const char* fileName, const sct_corr::Xgear* gear_ /*= nullptr*/) 
+  :base_file(sct_corr::create_plot_collection(), gear_) {
+
+  m_main_file = std::make_shared<TFile>(fileName);
+  m_plot_collection->addFile(m_main_file.get());
+
+}
+
+
+sct_corr::plane_def sz_data_file::DUT_sz_data() const
+{
+  auto ret = sct_corr::plane_def(sct_type::collectionName_t("szData"), sct_type::ID_t(8));
+  ret.set_plot_collection(m_plot_collection);
+  return ret;
+}
+
+
+sct_corr::plane_def sz_data_file::TEL_sz_data(const sct_type::ID_t& id_) const
+{
+  auto ret = sct_corr::plane_def(sct_type::collectionName_t("szData"), sct_type::ID_t(id_));
+  ret.set_plot_collection(m_plot_collection);
+  return ret;
+}
+
+sct_corr::plane_def sz_data_file::APIX_sz_data() const
+{
+  auto ret = sct_corr::plane_def(sct_type::collectionName_t("szData"), sct_type::ID_t(7));
+  ret.set_plot_collection(m_plot_collection);
+  return ret;
+}
+
 }

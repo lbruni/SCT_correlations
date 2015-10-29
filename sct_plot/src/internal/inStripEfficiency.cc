@@ -36,15 +36,15 @@ sct_corr::inStripEfficiency::inStripEfficiency(
   double mod_x = 10000000000;
   double mod_y = 10000000000;
   if (search_axis == x_axis_def) {
-    mod_x = m_mod.value;
+    mod_x = Un_necessary_CONVERSION(m_mod);
   }
   if (search_axis == y_axis_def) {
-    mod_y = m_mod.value;
+    mod_y = Un_necessary_CONVERSION(m_mod);
   }
 
 
 
-  std::string true_hits_name = plot_prob.getName().value + "_true_hits";
+  std::string true_hits_name = necessary_CONVERSION(plot_prob.getName()) + "_true_hits";
   auto mod_total = processor::moduloHitMap(
     trueHits,
     mod_x,
@@ -54,7 +54,7 @@ sct_corr::inStripEfficiency::inStripEfficiency(
     );
 
   m_trueHits = mod_total.copy();
-  std::string dut_hits_name = plot_prob.getName().value + "_DUT_hits";
+  std::string dut_hits_name = necessary_CONVERSION(plot_prob.getName())+ "_DUT_hits";
   auto mod_DUT = processor::moduloHitMap(
     trueHits_with_dut,
     mod_x,
@@ -83,23 +83,27 @@ TH1D* sct_corr::inStripEfficiency::getEfficiency_map() const {
   return m_efficiency.get();
 }
 
+TH1D* sct_corr::inStripEfficiency::getHits() const {
+  return m_total_hits.get();
+}
+
 double sct_corr::inStripEfficiency::get_total_efficiency() const {
   return m_efficiency_total;
 }
 
 Long64_t sct_corr::inStripEfficiency::Draw(const S_DrawOption& d_option) {
-  TH1D trueHitsMod("mod_true", "true hits", 60, 0, m_mod.value);
-  TH1D DUtHitsMod("mod_dut", "DUT hits", 60, 0, m_mod.value);
-  auto total=Draw_true_hits(S_DrawOption().output_object(&trueHitsMod).draw_axis(m_search_axis));
+  m_total_hits= std::make_shared<TH1D>("mod_true", "true hits", 60, 0, necessary_CONVERSION(m_mod));
+  TH1D DUtHitsMod("mod_dut", "DUT hits", 60, 0,necessary_CONVERSION(m_mod));
+  auto total = Draw_true_hits(S_DrawOption().output_object(m_total_hits.get()).draw_axis(m_search_axis));
   auto ret = Draw_DUT_hits(S_DrawOption().output_object(&DUtHitsMod).draw_axis(m_search_axis));
 
   m_efficiency_total = (double)ret / (double)total;
-  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(&trueHitsMod, &DUtHitsMod)));
+  m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(m_total_hits.get(), &DUtHitsMod)));
   if (!m_efficiency) {
     return -1;
   }
   m_efficiency->Draw(d_option.getOptions());
-  m_efficiency->SetTitle(m_plot_prob.getName().value.c_str());
+  m_efficiency->SetTitle(necessary_CONVERSION(m_plot_prob.getName()).c_str());
   m_efficiency->GetXaxis()->SetTitle("instrip_pos");
   m_efficiency->GetYaxis()->SetTitle("Efficiency");
   //SCT_helpers::saveTH1_as_txt(*m_efficiency, "instripEffi.txt");

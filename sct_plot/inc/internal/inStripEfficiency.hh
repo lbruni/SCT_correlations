@@ -40,11 +40,12 @@ public:
   Long64_t Draw(const S_DrawOption& d_option);
 
   TH1D* getEfficiency_map() const;
+  TH1D* getHits() const;
   double get_total_efficiency() const;
 private:
   std::shared_ptr<sct_corr::plane_def> m_trueHits;
   std::shared_ptr<sct_corr::plane_def> m_DUT_hits;
-  std::shared_ptr<TH1D> m_efficiency;
+  std::shared_ptr<TH1D> m_efficiency,m_total_hits;
   sct_type::modulo_t m_mod;
   axis_def m_search_axis;
   s_plot_prob m_plot_prob;

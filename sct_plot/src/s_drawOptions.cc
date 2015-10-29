@@ -264,6 +264,11 @@ S_DrawOption& S_DrawOption::output_object(TObject* out_)
   m_output_object = out_;
   return *this;
 }
+
+TObject* S_DrawOption::get_output_object() const {
+  return m_output_object;
+}
+
 ////*********Set points to a TGraph
 /*void S_DrawOption::push_output_to_TGraph(Long64_t numberOfPoints,TTree * tree) const
 {

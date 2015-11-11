@@ -14,6 +14,7 @@ class TTree;
 class S_Cut;
 class S_DrawOption;
 
+
 class DllExport SCT_helpers {
 public:
   static void CutTH2(TH2* h2, const S_Cut& cut_);
@@ -30,6 +31,12 @@ public:
   static returnType* Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
     return dynamic_cast<returnType*>(Draw(plane_, opt));
   }
+
+  template <>
+  static TH1* Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt);
+  template <>
+  static TH2* Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt);
+
   static void saveTH1_as_txt(const TProfile& h1, const char* nameTXT);
   
 };

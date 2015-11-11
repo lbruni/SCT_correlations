@@ -21,7 +21,7 @@ find_nearest_strip::find_nearest_strip(
     std::cout << "[s_plane_collection_find_closest processor::find_nearest] referencing to different plot collection\n";
 
   }
-  auto collection_ = pl->addPlot(S_plot(new sct_corr::find_nearest_strip_processor(search_axis, cutOfff, plot_prob_)), planeA, planeB);
+  auto collection_ = pl->addPlot(sct_corr::S_plot(new sct_corr::find_nearest_strip_processor(search_axis, cutOfff, plot_prob_)), planeA, planeB);
   
   
   m_planes.setResidual(collection_.getByType(nearest_strip_distance_name)());

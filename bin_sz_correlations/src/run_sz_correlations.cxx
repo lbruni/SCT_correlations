@@ -88,20 +88,22 @@ int asyncMain(void *arg) {
 
   auto sz_dut = file__.DUT_sz_data();
   auto sz_tel = file__.TEL_sz_data(sct_type::ID_t(3));
+  auto apix = file__.APIX_sz_data();
+  auto cuted = sct_corr::processor::cut_x_y(sz_tel, S_XCut(300) + S_YCut(300),s_plot_prob().doNotSaveToDisk());
 
-  auto cuted = sct_corr::processor::cut_x_y(sz_tel, S_XCut(200) + S_YCut(200),s_plot_prob().doNotSaveToDisk());
-  auto corr = sct_corr::processor::correlation(sz_dut.getX_def(), cuted.getY_def(), s_plot_prob("correlation_x_y").SaveToDisk());
-  auto corryx = sct_corr::processor::correlation(sz_dut.getY_def(), cuted.getX_def(), s_plot_prob("correlation_y_x").SaveToDisk());
-  auto corrxx = sct_corr::processor::correlation(sz_dut.getX_def(), cuted.getX_def(), s_plot_prob("correlation_x_x").SaveToDisk());
-  auto corryy = sct_corr::processor::correlation(sz_dut.getY_def(), cuted.getY_def(), s_plot_prob("correlation_y_y").SaveToDisk());
+
+  auto corr = sct_corr::processor::correlation(sz_dut.getX_def(), apix.getY_def(), s_plot_prob("correlation_x_y").SaveToDisk());
+  auto corryx = sct_corr::processor::correlation(sz_dut.getY_def(), apix.getX_def(), s_plot_prob("correlation_y_x").SaveToDisk());
+  auto corrxx = sct_corr::processor::correlation(sz_dut.getX_def(), apix.getX_def(), s_plot_prob("correlation_x_x").SaveToDisk());
+  auto corryy = sct_corr::processor::correlation(sz_dut.getY_def(), apix.getY_def(), s_plot_prob("correlation_y_y").SaveToDisk());
 
 
 
 
   auto sz_dut_normalized = sct_corr::processor::coordinate_transform(sz_dut, 0.0745, 0, 1, 0, s_plot_prob().doNotSaveToDisk());
-  auto sz_tel_normalized = sct_corr::processor::coordinate_transform(cuted, 0.018, 0, 0.018, 0, s_plot_prob().doNotSaveToDisk());
-  auto res = sct_corr::processor::residual(sz_dut_normalized.getX_def(), sz_tel_normalized.getY_def());
-  pl1->loop();
+  auto sz_tel_normalized = sct_corr::processor::coordinate_transform(apix, 2.500000000e-01, 0, 5.000000000e-02, 0, s_plot_prob().doNotSaveToDisk());
+  auto res = sct_corr::processor::residual(sz_dut_normalized.getX_def(), sz_tel_normalized.getX_def());
+  pl1->loop(1000);
   new TCanvas();
   SCT_helpers::Draw<TH2>(corr, S_DrawOption().opt_colz())->SetTitle("correlation DUT  X vs Tel Y");
   

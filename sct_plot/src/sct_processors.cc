@@ -2,6 +2,7 @@
 #include "sct_plots.h"
 #include "TMath.h"
 #include "geometry/setup_description.hh"
+#include "internal/exceptions.hh"
 
 
 namespace sct_corr {
@@ -28,8 +29,7 @@ sct_corr::plane_def processor::if_a_get_b(
   auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
   if (!pl) {
-    std::cout << "[processor::modulo_find_nearest_strip] referencing to different plot collection\n";
-    return sct_corr::error_plane_def();
+    SCT_THROW("referencing to different plot collection");
   }
 
   plane_def a_cutted = processor::cut_x_y(planeA, cut_, s_plot_prob().doNotSaveToDisk());
@@ -103,8 +103,7 @@ s_plane_collection_find_closest processor::modulo_find_nearest_strip(
   auto pl = getPlotCollectionIfUnique(planeA, planeB);
 
   if (!pl) {
-    std::cout << "[processor::modulo_find_nearest_strip] referencing to different plot collection\n";
-    return s_plane_collection_find_closest();
+    SCT_THROW("referencing to different plot collection");
   }
 
   auto collection_ = pl->addPlot(
@@ -130,8 +129,7 @@ plane_def processor::correlation(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[processor::correlation] referencing to different plot collection\n";
-    return plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
+    SCT_THROW("referencing to different plot collection");
   }
 
   auto ret = pl->addPlot(sct_plot::correlation(plot_prob__), axisA, axisB)();
@@ -199,8 +197,7 @@ plane_def processor::hitmap(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[processor::hitmap] referencing to different plot collection\n";
-    return sct_corr::error_plane_def();
+    SCT_THROW("referencing to different plot collection");
   }
 
   auto ret = pl->addPlot(sct_plot::hitmap(plot_prob__), axisA, axisB)();
@@ -217,8 +214,7 @@ plane_def processor::moduloHitMap(
   auto pl = getPlotCollectionIfUnique(axisA, axisB);
 
   if (!pl) {
-    std::cout << "[processor::moduloHitMap] referencing to different plot collection\n";
-    return sct_corr::error_plane_def();
+    SCT_THROW("referencing to different plot collection");
   }
   auto ret = pl->addPlot(sct_plot::moduloHitMap(mod_x, mod_y, plot_prob), axisA, axisB)();
 
@@ -301,8 +297,8 @@ plane_def processor::convert_global_to_local(
     - layer.sensitive.rotation2*layer.sensitive.rotation3;
 
   if (det_A == 0) {
-    std::cout << "[sct_plot::convert_global_to_local] : Det_A ==0 " << std::endl;
-    return sct_corr::error_plane_def();
+    SCT_THROW("unable to invert matrix : Det_A ==0 ");
+
   }
 
 

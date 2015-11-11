@@ -2,10 +2,11 @@
 #define find_nearest_h__
 #include "plane_def.h"
 #include "s_plot_prob.h"
+#include "internal/platform.hh"
 
 namespace sct_processor {
 
-class find_nearest {
+class DllExport find_nearest {
 public:
   find_nearest(const sct_corr::plane_def& planeA,
                const sct_corr::plane_def& planeB,

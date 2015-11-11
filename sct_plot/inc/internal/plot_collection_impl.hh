@@ -38,9 +38,9 @@ private:
   Long64_t getMaxEntriesFromTree(Long64_t last);
   s_plane_collection addPlot_internal(S_plot plot_def);
   const sct_corr::axis_ref* getAxis_ref(const S_Axis & axis);
-  sct_corr::treeCollection* getCollection(const sct_type::collectionName_t& name);
+  sct_corr::rootEventBase* getCollection(const sct_type::collectionName_t& name);
   TTree*                    getTTree(const sct_type::collectionName_t& name) const;
-  S_plane* getPlane(const sct_type::ID_t& id_ , sct_corr::treeCollection* coll);
+  S_plane* getPlane(const sct_type::ID_t& id_, sct_corr::rootEventBase* coll);
   S_plane* pushPlane(const sct_corr::plane_def& pl);
 
   std::shared_ptr<sct_corr::sct_event_buffer> m_eventBuffer;

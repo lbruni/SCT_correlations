@@ -16,6 +16,7 @@ namespace sct_corr{
   class axis_ref;
   class plane;
   class plane_def;
+  class rootEventBase;
 }
 
 
@@ -26,7 +27,8 @@ public:
 
 
   S_plane(const sct_corr::plane_def& plane_def, sct_corr::treeCollection* hits);
-  void setTreeCollection(sct_corr::treeCollection* hits);
+  S_plane(const sct_corr::plane_def& plane_def, sct_corr::rootEventBase* hits);
+
   sct_corr::plane* getPlane() const;
 
 

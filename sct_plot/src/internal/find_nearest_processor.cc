@@ -2,6 +2,7 @@
 #include <iostream>
 #include "TMath.h"
 #include "internal/find_nearest_processor.hh"
+#include "sct_plots.h"
 
 namespace sct_corr{
 
@@ -75,7 +76,7 @@ find_nearest_processor::find_nearest_processor(double x_cutOff, double y_cutOff,
     return "find_nearest__";
   }
 }
-S_plot sct_plot::find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::find_nearest(Double_t x_cutoff, Double_t y_cutoff, const s_plot_prob& plot_prob)
 {
-      return S_plot(new sct_corr::find_nearest_processor(x_cutoff, y_cutoff,plot_prob));
+  return sct_corr::S_plot(new sct_corr::find_nearest_processor(x_cutoff, y_cutoff, plot_prob));
 }

@@ -1,6 +1,7 @@
 
 #include "internal/plot_hit2d.hh"
 #include "cluster.h"
+#include "sct_plots.h"
 namespace sct_corr {
 
 class Cluster_strip :public plot_hit2d {
@@ -110,15 +111,15 @@ s_plane_collection clusterSize::getOutputcollection() {
 }
 
 
-S_plot sct_plot::clustering_strip(axis_def searchAxis, Double_t Pixel_distance /*= 2*/, const s_plot_prob& plot_prob/*= ""*/) {
+sct_corr::S_plot sct_plot::clustering_strip(axis_def searchAxis, Double_t Pixel_distance /*= 2*/, const s_plot_prob& plot_prob/*= ""*/) {
 
-  return S_plot(new sct_corr::Cluster_strip(Pixel_distance, searchAxis,plot_prob));
+  return sct_corr::S_plot(new sct_corr::Cluster_strip(Pixel_distance, searchAxis, plot_prob));
 
 }
 
-S_plot sct_plot::clustering(Double_t Pixel_distance/*=2*/, const s_plot_prob& plot_prob) {
+sct_corr::S_plot sct_plot::clustering(Double_t Pixel_distance/*=2*/, const s_plot_prob& plot_prob) {
 
 
-  return S_plot(new sct_corr::clusterSize(Pixel_distance, plot_prob));
+  return sct_corr::S_plot(new sct_corr::clusterSize(Pixel_distance, plot_prob));
 }
 

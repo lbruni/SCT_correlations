@@ -22,6 +22,7 @@ namespace sct_corr{
   public:
     void set(const sct_type::collectionName_t& name, rootEventBase* ev);
     bool get(const sct_type::collectionName_t& name, rootEventBase* ev);
+    rootEventBase* get(const sct_type::collectionName_t& name);
     TFile* getOutputFile();
     void setOutputFile(TFile* file);
     bool IsCollection(const sct_type::collectionName_t& name);

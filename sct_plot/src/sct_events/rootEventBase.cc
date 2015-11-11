@@ -4,6 +4,9 @@
 #include "S_Axis.h"
 #include "internal/plane.hh"
 #include "internal/planeX_Y_hits.hh"
+#ifdef  _DEBUG
+#include "ReleaseVectorDef.h"
+#endif //  _DEBUG
 
 
 namespace sct_corr{

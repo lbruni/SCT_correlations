@@ -1,5 +1,6 @@
 #include "internal/plot_hit2d.hh"
 #include <iostream>
+#include "sct_plots.h"
 
 namespace sct_corr{
   class coordinate_transform : public plot_hit2d {
@@ -48,13 +49,13 @@ namespace sct_corr{
     return "coordinate_transform____";
   }
 }
-S_plot sct_plot::coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::coordinate_transform(Double_t x_slope, Double_t x_offset, Double_t y_slope, Double_t y_offset, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::coordinate_transform( x_slope, x_offset, y_slope, y_offset,plot_prob));
+  return sct_corr::S_plot(new sct_corr::coordinate_transform(x_slope, x_offset, y_slope, y_offset, plot_prob));
 }
 
-S_plot sct_plot::coordinate_transform_move(Double_t x_offset, Double_t y_offset, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::coordinate_transform_move(Double_t x_offset, Double_t y_offset, const s_plot_prob& plot_prob)
 {
 
   return   sct_plot::coordinate_transform(1, x_offset, 1, y_offset, plot_prob);

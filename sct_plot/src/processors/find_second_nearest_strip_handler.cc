@@ -6,6 +6,7 @@
 
 #include "internal/PLaneVsPlane_plots.hh"
 #include "S_Axis.h"
+#include <iostream>
 #define nearest_strip_distance_name "nearest_strip_distance"
 #define nearest_strip_plane1_name "nearest_strip_plane1"
 #define nearest_strip_plane2_name "nearest_strip_plane2"
@@ -138,7 +139,7 @@ find_second_nearest_strip::find_second_nearest_strip(
     std::cout << "[s_plane_collection_find_closest processor::find_nearest] referencing to different plot collection\n";
 
   }
-  m_planes = pl->addPlot(S_plot(new sct_corr::find_second_nearest_strip_processor(search_axis, cutOfff, plot_prob_)), planeA, planeB);
+  m_planes = pl->addPlot(sct_corr::S_plot(new sct_corr::find_second_nearest_strip_processor(search_axis, cutOfff, plot_prob_)), planeA, planeB);
 
 
 

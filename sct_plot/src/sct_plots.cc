@@ -212,8 +212,24 @@ TObject* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption
  return gPad->GetPrimitive("htemp");
 }
 
+template <>
+TH1* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
+
+  auto ret = dynamic_cast<TH1*>(Draw(plane_, opt));
+  if (ret) {
+    ret->SetTitle(necessary_CONVERSION(plane_.getName()).c_str());
+  }
+  return ret;
+}
 
 
 
+template <>
+TH2* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
 
-
+  auto ret = dynamic_cast<TH2*>(Draw(plane_, opt));
+  if (ret) {
+    ret->SetTitle(necessary_CONVERSION(plane_.getName()).c_str());
+  }
+  return ret;
+}

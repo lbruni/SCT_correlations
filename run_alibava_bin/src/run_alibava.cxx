@@ -94,7 +94,7 @@ int asyncMain(void *arg) {
 
   pl->Draw(corr, S_DrawOption().draw_y_VS_x().opt_colz().output_object(&h2));
 
-  auto p=SCT_helpers::LinearFit_Of_Profile(&h2,0.5);
+  auto p=SCT_helpers::LinearFit_Of_Profile(&h2,sct_type::procent_t(0.5));
   h2.Draw("samecolz");
   p.Draw("same");
   std::cout << p.GetParameter("p1") << std::endl;

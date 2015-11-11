@@ -57,7 +57,7 @@ namespace sct_processor {
 
 modulo::modulo(const sct_corr::plane_def& planeA, const sct_type::modulo_t& modulo_value, axis_def mod_axis, const s_plot_prob& plot_prob_ /*= "" */) {
   auto pl=planeA.get_plot();
-  m_planes = pl->addPlot(S_plot(new sct_corr::modulo_processor(modulo_value, mod_axis, plot_prob_)), planeA);
+  m_planes = pl->addPlot(sct_corr::S_plot(new sct_corr::modulo_processor(modulo_value, mod_axis, plot_prob_)), planeA);
 }
 
 sct_corr::plane_def modulo::getModulo() const {

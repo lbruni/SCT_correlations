@@ -9,7 +9,7 @@
 #include "s_DrawOption.h"
 #include "s_plane.h"
 #include "plane_def.h"
-#include "sct_plots.h"
+
 
 
 namespace sct_corr{
@@ -18,6 +18,7 @@ enum returnFill :int{
   FILL_DONE,
   FILL_SKIP
 };
+class sct_event_buffer;
   class plot{
   public:
 
@@ -39,7 +40,7 @@ enum returnFill :int{
     s_plot_prob m_prob;
     mutable  sct_type::collectionName_t m_name;
   };
-
+  using S_plot = std::shared_ptr<sct_corr::plot>;
 }
 
 #endif // plotsBase_h__

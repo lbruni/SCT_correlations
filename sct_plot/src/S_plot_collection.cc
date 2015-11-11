@@ -14,6 +14,8 @@
 #include "plane_def.h"
 #include <ctime>
 #include "internal/plot_collection_impl.hh"
+#include "internal/exceptions.hh"
+#include "sct_events/rootEventBase.hh"
 
 
 namespace sct_corr {
@@ -61,19 +63,19 @@ void plot_collection_impl::reset() {
 }
 
 s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const S_Axis& x_axis, const S_Axis& y_axis) {
-  plot_def.m_plot->pushAxis(getAxis_ref(x_axis));
-  plot_def.m_plot->pushAxis(getAxis_ref(y_axis));
+  plot_def->pushAxis(getAxis_ref(x_axis));
+  plot_def->pushAxis(getAxis_ref(y_axis));
   return addPlot_internal(std::move(plot_def));
 }
 
 
 s_plane_collection plot_collection_impl::addPlot_internal(S_plot plot_def) {
-  m_plots.push_back(std::make_pair(plot_def.getName(), std::move(plot_def)));
-  if (!m_plots.back().second.m_plot->MakeReadyForData(m_eventBuffer.get())) {
-    std::cout << "[S_plot_collection]  unable to create plot " << plot_def.getType() << ":" << plot_def.getName() << "\n";
-    return s_plane_collection();
+  std::string coll_name = Un_necessary_CONVERSION(plot_def->getName());
+  m_plots.push_back(std::make_pair(coll_name, std::move(plot_def)));
+  if (!m_plots.back().second->MakeReadyForData(m_eventBuffer.get())) {
+    SCT_THROW(std::string("unable to create plot ") + std::string(plot_def->getType()) + std::string(":") + necessary_CONVERSION(plot_def->getName()));
   }
-  auto ret = m_plots.back().second.getOutputcollection();
+  auto ret = m_plots.back().second->getOutputcollection();
   ret.set_plot_collection(m_self);
   return ret;
 }
@@ -91,10 +93,9 @@ s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const s_plane_
   for (auto &e : p1.m_planes) {
     auto p1_pointer = pushPlane(e.second);
     if (!p1_pointer) {
-      std::cout << "[S_plot_collection] planes not set correctly!!" << std::endl;
-      return s_plane_collection();
+      SCT_THROW("planes not set correctly");
     }
-    plot_def.m_plot->pushPlane(p1_pointer);
+    plot_def->pushPlane(p1_pointer);
   }
 
   return addPlot_internal(plot_def);
@@ -106,7 +107,7 @@ s_plane_collection plot_collection_impl::addPlot(S_plot plot_def, const s_plane_
 Long64_t plot_collection_impl::Draw(const char* name, const S_DrawOption& option) {
   for (auto &e : m_plots) {
     if (e.first == name) {
-      return  e.second.Draw(option);
+      return  e.second->Draw(option);
     }
   }
   auto tree_ = getTTree(sct_type::collectionName_t(name));
@@ -168,7 +169,7 @@ void plot_collection_impl::loop(Long64_t last /*= -1*/, Long64_t start /*= 0*/) 
     }
 
     for (auto& current_plot : m_plots) {
-      auto ret = current_plot.second.fill();
+      auto ret = current_plot.second->fill();
       if (ret==FILL_DONE) {
         std::cout << "run terminated by plot: " << current_plot.first << std::endl;
         return;
@@ -204,38 +205,34 @@ const sct_corr::axis_ref* plot_collection_impl::getAxis_ref(const S_Axis & axis)
   return getPlane(axis.m_planeID, getCollection(axis.m_collectionName))->getAxis(axis.m_axis);
 }
 
-sct_corr::treeCollection* plot_collection_impl::getCollection(const sct_type::collectionName_t& name) {
+sct_corr::rootEventBase* plot_collection_impl::getCollection(const sct_type::collectionName_t& name) {
   for (auto&e : m_trees) {
     if (Un_necessary_CONVERSION(e.first) == Un_necessary_CONVERSION(name)) { // mising opperator == 
-      return e.second;
+      return &(e.second->m_rootBuffer);
     }
   }
 
   if (m_eventBuffer->IsCollection(name)) {
-    sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(name, m_eventBuffer.get());
-
-    m_trees.push_back(std::make_pair(name, tree_pointer));
-    return tree_pointer;
+    
+    return m_eventBuffer->get(name);
   }
 
   if (m_file.empty()) {
-    std::cout << "file empty" << std::endl;
-    return nullptr;
+    SCT_THROW("file empty");
   }
   TTree *collection = getTTree(name);
 
 
 
   if (!collection) {
-    std::cout << "collection not found! Collection name: \"" << necessary_CONVERSION(name) << "\"" << std::endl;
-    return nullptr;
+    SCT_THROW("collection not found! Collection name: \"" + necessary_CONVERSION(name) + "\"");
   }
 
 
   sct_corr::treeCollection* tree_pointer = new sct_corr::treeCollection(collection);
 
   m_trees.push_back(std::make_pair(name, tree_pointer));
-  return tree_pointer;
+  return &(tree_pointer->m_rootBuffer);
 
 }
 
@@ -251,7 +248,7 @@ TTree* plot_collection_impl::getTTree(const sct_type::collectionName_t& name) co
   return nullptr;
 }
 
-S_plane* plot_collection_impl::getPlane(const sct_type::ID_t&  ID, sct_corr::treeCollection* coll) {
+S_plane* plot_collection_impl::getPlane(const sct_type::ID_t&  ID, sct_corr::rootEventBase* coll) {
   if (!coll) {
     return nullptr;
   }

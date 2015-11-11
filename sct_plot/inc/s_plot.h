@@ -24,24 +24,7 @@ namespace sct_corr{
 
 
 
-class DllExport S_plot{
-public:
-  S_plot();
-  S_plot(const S_plot&);
-  int fill();
-  Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x");
-  Long64_t Draw(const char* options, const TCut& cuts, const char* axis = "y:x");
-  Long64_t Draw(const S_DrawOption& opt);
-  s_plane_collection getOutputcollection();
-  const char* getName() const;
-  const char* getType() const;
-#ifndef __CINT__
-  S_plot(sct_corr::plot* plot_);
 
-  std::shared_ptr<sct_corr::plot> m_plot;
-#endif
-
-};
 
 
 #ifdef __CINT__

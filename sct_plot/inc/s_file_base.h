@@ -23,9 +23,9 @@ public:
 
   sct_corr::plot_collection* get_collection();
 
+  sct_corr::Xgear* get_gear() const;
 protected:
   sct_corr::plot_collection* get_plot_collection() const;
-  sct_corr::Xgear* get_gear() const;
   std::shared_ptr<sct_corr::plot_collection> m_plot_collection;
 private:
   const sct_corr::Xlayer* get_layer(sct_type::ID_t ID) const;

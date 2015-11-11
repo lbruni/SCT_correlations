@@ -11,28 +11,31 @@
 #include "s_plane.h"
 #include "plane_def.h"
 #include "geometry/setup_description.hh"
+#include "internal/exceptions.hh"
 
 
 S_plane::S_plane() : m_plane(nullptr) {
-  std::cout << "[s_plane] unsupported default constructor do not use" << std::endl;
+  SCT_THROW("unsupported default constructor do not use");
 }
 
 
 
 
-S_plane::S_plane(const sct_corr::plane_def& plane_def, sct_corr::treeCollection* hits) : m_plane_def(plane_def.copy()) {
-
-  m_plane = hits->m_rootBuffer.createPlane(m_plane_def->getID());
-
-
+S_plane::S_plane(const sct_corr::plane_def& plane_def, sct_corr::treeCollection* hits) : S_plane(plane_def,&hits->m_rootBuffer) {
+  
 }
 
 
 
 
+
+S_plane::S_plane(const sct_corr::plane_def& plane_def, sct_corr::rootEventBase* hits) : m_plane_def(plane_def.copy()) {
+  m_plane = hits->createPlane(m_plane_def->getID());
+}
 
 sct_corr::plane* S_plane::getPlane() const {
   return m_plane.get();
+  
 }
 
 const sct_type::collectionName_t& S_plane::getName() const {
@@ -52,24 +55,22 @@ bool S_plane::next() {
 
 const sct_corr::axis_ref* S_plane::getX() const {
   if (!m_plane) {
-    std::cout << "[s_plane] plane not set " << std::endl;
-    return nullptr;
+    SCT_THROW("plane not set ");
   }
   return m_plane->getAxis(x_axis_def);
 }
 
 const sct_corr::axis_ref* S_plane::getY() const {
   if (!m_plane) {
-    std::cout << "[s_plane] plane not set " << std::endl;
-    return nullptr;
+    SCT_THROW("plane not set ");
+
   }
   return m_plane->getAxis(y_axis_def);
 }
 
 const sct_corr::axis_ref* S_plane::getAxis(axis_def ax) const {
   if (!m_plane) {
-    std::cout << "[s_plane] plane not set " << std::endl;
-    return nullptr;
+    SCT_THROW("plane not set ");
   }
   return m_plane->getAxis(ax);
 }
@@ -83,13 +84,11 @@ const sct_corr::Xlayer* plane_def::getLayer() const {
   return nullptr;
 }
 std::shared_ptr<sct_corr::plot_collection> plane_def::get_plot() const {
-  if (std::shared_ptr<sct_corr::plot_collection> ret = m_plot.lock()) {
-
-    return ret;
-  } else {
-    std::cout << "plot is expired\n";
-  }
-  return nullptr;
+  std::shared_ptr<sct_corr::plot_collection> ret = m_plot.lock();
+  if (!ret) {
+    SCT_THROW("plot is expired");
+  } 
+  return ret;
 }
 
 std::shared_ptr<plane_def> plane_def::copy() const {
@@ -98,7 +97,7 @@ std::shared_ptr<plane_def> plane_def::copy() const {
 void plane_def::set_plot_collection(std::weak_ptr<sct_corr::plot_collection> plot_collection___) {
 #ifdef _DEBUG
   if (m_plot.lock()) {
-    std::cout << "m_plot was already defined " << std::endl;
+    SCT_THROW("m_plot was already defined ");
   }
 
 #endif // _DEBUG
@@ -141,7 +140,7 @@ S_Axis plane_def::get_Axis(axis_def ax) const {
       return e;
     }
   }
-  //throw std::exception("unknown type");
+  SCT_THROW("unknown type");
   return S_Axis();
 }
 
@@ -268,5 +267,6 @@ void s_plane_collection::clear() {
   m_planes.clear();
 }
 sct_corr::plane_def sct_corr::error_plane_def() {
+  SCT_THROW("use of error plane");
   return sct_corr::plane_def(sct_type::collectionName_t("error"), sct_type::ID_t(0));
 }

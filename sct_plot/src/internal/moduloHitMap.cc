@@ -38,6 +38,6 @@ namespace sct_corr{
     return "moduloHitMap__";
   }
 }
-S_plot sct_plot::moduloHitMap(double modulo_parameter_x ,double m_modulo_y, const s_plot_prob& plot_prob/*= ""*/) {
-  return S_plot(new sct_corr::moduloHitMap(modulo_parameter_x, m_modulo_y, plot_prob));
+sct_corr::S_plot sct_plot::moduloHitMap(double modulo_parameter_x, double m_modulo_y, const s_plot_prob& plot_prob/*= ""*/) {
+  return sct_corr::S_plot(new sct_corr::moduloHitMap(modulo_parameter_x, m_modulo_y, plot_prob));
 }

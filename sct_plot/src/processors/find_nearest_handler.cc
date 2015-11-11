@@ -22,7 +22,7 @@ find_nearest::find_nearest(
 
   }
 
-  auto collection_ = pl->addPlot(S_plot(new sct_corr::find_nearest_processor(x_cutoff, y_cutoff, plot_prob__)), planeA, planeB);
+  auto collection_ = pl->addPlot(sct_corr::S_plot(new sct_corr::find_nearest_processor(x_cutoff, y_cutoff, plot_prob__)), planeA, planeB);
 
 
   m_planes.setResidual(collection_.getByType("nearest_distance")());

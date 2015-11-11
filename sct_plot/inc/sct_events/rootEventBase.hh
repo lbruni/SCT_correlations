@@ -8,7 +8,7 @@
 class TTree;
 
 #ifdef _DEBUG
-#include "ReleaseVectorDef.h"
+class ReleaseVectorDef;
 #endif // _DEBUG
 
 

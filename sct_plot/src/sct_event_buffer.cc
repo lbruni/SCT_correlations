@@ -1,5 +1,6 @@
 #include "sct_event_buffer.h"
 #include "treeCollection.h"
+#include "internal/exceptions.hh"
 
 
 
@@ -10,8 +11,7 @@ void sct_event_buffer::set(const sct_type::collectionName_t& name, rootEventBase
   {
     if (IsCollection(name))
     {
-      std::cout << "[sct_event_buffer::set] name already used. name = " << necessary_CONVERSION(name) << std::endl;
-      return;
+      SCT_THROW(std::string("name already used. name =  ") + necessary_CONVERSION(name));
     }
     m_events.push_back(map_t(name, *ev));
   }
@@ -20,7 +20,7 @@ bool sct_event_buffer::get(const sct_type::collectionName_t& name, rootEventBase
   {
     if (!IsCollection(name))
     {
-      return false;
+      SCT_THROW(std::string("Collection not found in buffer. Collection name ") + necessary_CONVERSION(name));
     }
     for (auto&e:m_events)
     {
@@ -34,7 +34,19 @@ bool sct_event_buffer::get(const sct_type::collectionName_t& name, rootEventBase
     return true;
   }
 
-  TFile* sct_event_buffer::getOutputFile()
+rootEventBase* sct_event_buffer::get(const sct_type::collectionName_t& name) {
+  if (!IsCollection(name)) {
+    SCT_THROW(std::string("Collection not found in buffer. Collection name ") + necessary_CONVERSION(name));
+  }
+  for (auto&e : m_events) {
+    if (Un_necessary_CONVERSION(e.first) == Un_necessary_CONVERSION(name)) {
+     return &e.second;
+    }
+  }
+
+}
+
+TFile* sct_event_buffer::getOutputFile()
   {
     return m_outputFile;
   }

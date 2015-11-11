@@ -39,7 +39,7 @@ namespace sct_corr{
     return "residual___";
   }
 }
-S_plot sct_plot::residual(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::residual(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::residual(plot_prob));
+  return sct_corr::S_plot(new sct_corr::residual(plot_prob));
 }

@@ -16,6 +16,7 @@
 #include <thread>
 
 #include "TSystem.h"
+#include "internal/exceptions.hh"
 
 using namespace xml_util;
 using namespace TCLAP;
@@ -113,97 +114,100 @@ struct  inParam {
   char **argv;
 };
 int asyncMain(void *arg) {
+  try {
+    inParam* para = static_cast<inParam *>(arg);
+    int argc = para->argc;
+    char **argv = para->argv;
 
-  inParam* para = static_cast<inParam *>(arg);
-  int argc = para->argc;
-  char **argv = para->argv;
+    CmdLine cmd("ProcessFile", ' ', "0.1");
+    ValueArg<std::string> FileNameArg("i", "inFile", "xml filename", true, "", "string");
+    cmd.add(FileNameArg);
+    ValueArg<std::string>  inPath("p", "inPath", "path to the root files", true, "", "string");
+    cmd.add(inPath);
+    ValueArg<int> element("e", "element", "element of interest  in the XML file", true, 1, "int");
+    cmd.add(element);
 
-  CmdLine cmd("ProcessFile", ' ', "0.1");
-  ValueArg<std::string> FileNameArg("i", "inFile", "xml filename", true, "", "string");
-  cmd.add(FileNameArg);
-  ValueArg<std::string>  inPath("p", "inPath", "path to the root files", true, "", "string");
-  cmd.add(inPath);
-  ValueArg<int> element("e", "element", "element of interest  in the XML file", true, 1, "int");
-  cmd.add(element);
+    ValueArg<std::string> residualRange("c", "residualCut", "range for the residual -r -10:10 => min =-10 , max = 10  ", false, "-10:10", "range");
 
-  ValueArg<std::string> residualRange("c", "residualCut", "range for the residual -r -10:10 => min =-10 , max = 10  ", false, "-10:10", "range");
+    cmd.add(residualRange);
 
-  cmd.add(residualRange);
+    TCLAP::SwitchArg res("r", "residualplot", "draws the residual plot");
+    cmd.add(res);
 
-  TCLAP::SwitchArg res("r", "residualplot", "draws the residual plot");
-  cmd.add(res);
+    TCLAP::SwitchArg efficiency_map("m", "efficiencyMap", "draws the efficiency map");
+    cmd.add(efficiency_map);
 
-  TCLAP::SwitchArg efficiency_map("m", "efficiencyMap", "draws the efficiency map");
-  cmd.add(efficiency_map);
-
-  TCLAP::SwitchArg ResVsN("n", "ResVsN", "draws the Residual vs Event Number");
-  cmd.add(ResVsN);
-
-
-  TCLAP::SwitchArg DUT_hits("d", "DUThitMap", "draws the DUT hitmap");
-
-  cmd.add(DUT_hits);
+    TCLAP::SwitchArg ResVsN("n", "ResVsN", "draws the Residual vs Event Number");
+    cmd.add(ResVsN);
 
 
-  TCLAP::SwitchArg TrackHits("t", "TrackHitMap", "draws the Telescope hitmap");
+    TCLAP::SwitchArg DUT_hits("d", "DUThitMap", "draws the DUT hitmap");
 
-  cmd.add(TrackHits);
-
-  TCLAP::SwitchArg unknownCoordinate("u", "res_VS_unknown", "draws the residual VS the unknown coordinate");
-  cmd.add(unknownCoordinate);
-
-  TCLAP::SwitchArg DrawAll("a", "DrawAll", "DrawAllPlots");
-  cmd.add(DrawAll);
-
-  cmd.parse(argc, argv);  //terminates on error
+    cmd.add(DUT_hits);
 
 
+    TCLAP::SwitchArg TrackHits("t", "TrackHitMap", "draws the Telescope hitmap");
+
+    cmd.add(TrackHits);
+
+    TCLAP::SwitchArg unknownCoordinate("u", "res_VS_unknown", "draws the residual VS the unknown coordinate");
+    cmd.add(unknownCoordinate);
+
+    TCLAP::SwitchArg DrawAll("a", "DrawAll", "DrawAllPlots");
+    cmd.add(DrawAll);
+
+    cmd.parse(argc, argv);  //terminates on error
 
 
 
-  s_process_collection_standard p;
-  p.setPrintout(true);
 
-  gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 
-  TFile * __file1 = new TFile("dummy.root", "recreate");
+    s_process_collection_standard p;
+    p.setPrintout(true);
 
-  p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".",element.getValue());
-  std::unique_ptr<xmlImputFiles::MinMaxRange<double>> r;
+    gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 
-  if (residualRange.isSet()) {
-    r = make_range(residualRange.getValue());
+    TFile * __file1 = new TFile("dummy.root", "recreate");
+
+    p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".", element.getValue());
+    std::unique_ptr<xmlImputFiles::MinMaxRange<double>> r;
+
+    if (residualRange.isSet()) {
+      r = make_range(residualRange.getValue());
+    }
+    TApplication theApp("App", &argc, argv);
+    p.process();
+    if (res.isSet() || DrawAll.isSet()) {
+
+      drawResidual(p, r.get());
+    }
+
+    if (DUT_hits.isSet() || DrawAll.isSet()) {
+      Draw_DUT_hits(p);
+    }
+
+    if (TrackHits.isSet() || DrawAll.isSet()) {
+      Draw_Track_hits(p);
+    }
+
+    if (efficiency_map.isSet() || DrawAll.isSet()) {
+      draw_efficiency_map(p);
+    }
+    if (ResVsN.isSet() || DrawAll.isSet()) {
+      Draw_Residual_VS_N(p, r.get());
+    }
+    if (unknownCoordinate.isSet() || DrawAll.isSet()) {
+      Draw_missing_coordinate(p, r.get());
+    }
+
+
+    new TBrowser();
+
+    theApp.Run();
   }
-  TApplication theApp("App", &argc, argv);
-  p.process();
-  if (res.isSet() || DrawAll.isSet()) {
-
-    drawResidual(p, r.get());
+  catch (...) {
+    return sct_corr::handleExceptions();
   }
-
-  if (DUT_hits.isSet() || DrawAll.isSet()) {
-    Draw_DUT_hits(p);
-  }
-
-  if (TrackHits.isSet() || DrawAll.isSet()) {
-    Draw_Track_hits(p);
-  }
-
-  if (efficiency_map.isSet() || DrawAll.isSet()) {
-    draw_efficiency_map(p);
-  }
-  if (ResVsN.isSet() || DrawAll.isSet()) {
-    Draw_Residual_VS_N(p, r.get());
-  }
-  if (unknownCoordinate.isSet() || DrawAll.isSet()) {
-    Draw_missing_coordinate(p, r.get());
-  }
-
-
-  new TBrowser();
-
-  theApp.Run();
-
   return 0;
 }
 

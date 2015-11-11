@@ -70,11 +70,11 @@ namespace sct_corr{
   }
 
 }
-S_plot sct_plot::rotated(Double_t angle, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::rotated(Double_t angle, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::rotated_plane(angle,plot_prob));
+  return sct_corr::S_plot(new sct_corr::rotated_plane(angle, plot_prob));
 }
-S_plot sct_plot::linear_trans(Double_t a11, Double_t a21, Double_t a12, Double_t a22, const s_plot_prob& plot_prob/*= ""*/) {
-  return S_plot(new sct_corr::linear_transorm(a11, a21, a12, a22, plot_prob));
+sct_corr::S_plot sct_plot::linear_trans(Double_t a11, Double_t a21, Double_t a12, Double_t a22, const s_plot_prob& plot_prob/*= ""*/) {
+  return sct_corr::S_plot(new sct_corr::linear_transorm(a11, a21, a12, a22, plot_prob));
 }

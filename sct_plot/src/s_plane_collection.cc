@@ -3,6 +3,7 @@
 #include "plane_def.h"
 #include "s_DrawOption.h"
 #include "plane_def.h"
+#include "internal/exceptions.hh"
 
 
 sct_corr::plane_def s_plane_collection::get(Int_t i) const
@@ -11,6 +12,7 @@ sct_corr::plane_def s_plane_collection::get(Int_t i) const
   {
     return m_planes[i].second;
   }
+  SCT_THROW("plane not found");
   std::cout << "[s_plane_collection] out of range" << std::endl;
   return sct_corr::error_plane_def();
 }

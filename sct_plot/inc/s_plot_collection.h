@@ -10,7 +10,7 @@
 class TFile;
 class TTree;
 class s_plane_collection;
-class S_plot;
+
 class S_DrawOption;
 class S_Axis;
 class S_plane;
@@ -19,6 +19,8 @@ class plane_def;
 class axis_ref;
 class treeCollection;
 class sct_event_buffer;
+class plot;
+using S_plot = std::shared_ptr<plot>;
 }
 
 template <typename plane_tA, typename plane_tB>

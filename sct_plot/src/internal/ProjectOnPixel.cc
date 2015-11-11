@@ -36,7 +36,7 @@ namespace sct_corr{
     return "ProjectOnPixel___";
   }
 }
-S_plot sct_plot::projectOnPixel(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::projectOnPixel(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::ProjectOnPixel(plot_prob));
+  return sct_corr::S_plot(new sct_corr::ProjectOnPixel(plot_prob));
 }

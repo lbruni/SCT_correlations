@@ -3,6 +3,7 @@
 #include "TMath.h"
 #include "plane_def.h"
 #include "internal/find_nearest_strip_processor.hh"
+#include "sct_plots.h"
 
 
 namespace sct_corr{
@@ -75,7 +76,7 @@ namespace sct_corr{
     return "find_nearest_strip___";
   }
 }
-S_plot sct_plot::find_nearest_strip(axis_def search_axis, Double_t cutOfff /*=100000*/, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::find_nearest_strip(axis_def search_axis, Double_t cutOfff /*=100000*/, const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::find_nearest_strip_processor( search_axis, cutOfff,plot_prob));
+  return sct_corr::S_plot(new sct_corr::find_nearest_strip_processor(search_axis, cutOfff, plot_prob));
 }

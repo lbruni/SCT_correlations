@@ -4,6 +4,7 @@
 #include "TH2.h"
 #include "TCanvas.h"
 #include "internal/plane_hit.hh"
+#include "sct_plots.h"
 
 namespace sct_corr{
   class efficieny_map :public plotPlaneVsPlane{
@@ -111,13 +112,13 @@ namespace sct_corr{
     return "efficieny_map__";
   }
 }
-S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, Double_t x_cut, Double_t y_cut, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::efficieny_map( x_bin_, y_bin_, x_cut, y_cut,plot_prob));
+  return sct_corr::S_plot(new sct_corr::efficieny_map(x_bin_, y_bin_, x_cut, y_cut, plot_prob));
 }
 
-S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::efficiency_map(Double_t x_bin_, Double_t y_bin_, const s_plot_prob& plot_prob)
 {
 
   return efficiency_map( x_bin_, y_bin_, x_bin_, y_bin_, plot_prob);

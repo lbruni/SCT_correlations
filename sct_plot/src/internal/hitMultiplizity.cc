@@ -1,4 +1,5 @@
 #include "internal/plot_hit2d.hh"
+#include "sct_plots.h"
 namespace sct_corr{
 
   class hitMultiplizity :public plot_hit2d{
@@ -50,7 +51,7 @@ namespace sct_corr{
     return "hitMultiplizity___";
   }
 }
-S_plot sct_plot::hitMultiplizity(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::hitMultiplizity(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::hitMultiplizity(plot_prob));
+  return sct_corr::S_plot(new sct_corr::hitMultiplizity(plot_prob));
 }

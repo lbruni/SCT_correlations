@@ -32,7 +32,7 @@ namespace sct_corr{
     return "hitmap__";
   }
 }
-S_plot sct_plot::hitmap(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::hitmap(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::hitmap(plot_prob));
+  return sct_corr::S_plot(new sct_corr::hitmap(plot_prob));
 }

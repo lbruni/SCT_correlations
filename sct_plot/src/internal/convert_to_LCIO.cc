@@ -284,16 +284,16 @@ namespace sct_corr{
   }
 }
 
-S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::convert_to_LCIO(filename, runnum, plot_prob));
+  return sct_corr::S_plot(new sct_corr::convert_to_LCIO(filename, runnum, plot_prob));
 
 }
 #else
 #include "s_plot_prob.h"
-S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::save2LCIO(const char* filename, unsigned runnum, const s_plot_prob& plot_prob)
 {
-  return S_plot(nullptr);
+  return sct_corr::S_plot(nullptr);
 }
 
 #endif

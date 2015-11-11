@@ -163,6 +163,6 @@ s_plane_collection plane_distance::getOutputcollection() {
 
 }
 
-S_plot sct_plot::plane_distance(const s_plot_prob& plot_prob) {
-  return S_plot(new sct_corr::plane_distance(plot_prob));
+sct_corr::S_plot sct_plot::plane_distance(const s_plot_prob& plot_prob) {
+  return sct_corr::S_plot(new sct_corr::plane_distance(plot_prob));
 }

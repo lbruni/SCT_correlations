@@ -1,4 +1,5 @@
 #include "internal/plot_corr2d.hh"
+#include "sct_plots.h"
 
 namespace sct_corr{
   class correlations :public plot_corr2d{
@@ -37,8 +38,8 @@ namespace sct_corr{
   }
 
 }
-S_plot sct_plot::correlation(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::correlation(const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::correlations(plot_prob));
+  return sct_corr::S_plot(new sct_corr::correlations(plot_prob));
 }

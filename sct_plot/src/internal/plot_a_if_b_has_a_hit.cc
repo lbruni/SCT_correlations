@@ -38,7 +38,7 @@ namespace sct_corr{
   }
 
 }
-S_plot sct_plot::A_if_B(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::A_if_B(const s_plot_prob& plot_prob)
   {
-    return S_plot(new sct_corr::plot_a_if_b_has_a_hit(plot_prob));
+    return sct_corr::S_plot(new sct_corr::plot_a_if_b_has_a_hit(plot_prob));
   }

@@ -1,5 +1,6 @@
 #include "internal/PLaneVsPlane_plots.hh"
 #include "s_plane.h"
+#include "sct_plots.h"
 namespace sct_corr{
   class plot_Event_size :public plotPlaneVsPlane{
   public:
@@ -40,7 +41,7 @@ namespace sct_corr{
   }
 }
 
-S_plot sct_plot::Event_size(const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::Event_size(const s_plot_prob& plot_prob)
 {
-  return S_plot(new sct_corr::plot_Event_size(plot_prob));
+  return sct_corr::S_plot(new sct_corr::plot_Event_size(plot_prob));
 }

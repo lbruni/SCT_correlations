@@ -48,10 +48,10 @@ namespace sct_corr{
     return "cut_x_y__";
   }
 }
-S_plot sct_plot::cut_x_y(const S_Cut& cut_, const s_plot_prob& plot_prob)
+sct_corr::S_plot sct_plot::cut_x_y(const S_Cut& cut_, const s_plot_prob& plot_prob)
 {
 
-  return S_plot(new sct_corr::cut_x_y(cut_, plot_prob));
+  return sct_corr::S_plot(new sct_corr::cut_x_y(cut_, plot_prob));
 }
 
 

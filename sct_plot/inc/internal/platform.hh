@@ -11,6 +11,12 @@
 #define DllExport   
 #endif // WIN32
 
+#ifdef WIN32
+#define SCT_FUNC __FUNCSIG__
+#else
+#define  SCT_FUNC __PRETTY_FUNCTION__
+#endif // WIN32
+
 
 
 #endif // platform_h__

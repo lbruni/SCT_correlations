@@ -17,6 +17,7 @@
 #include "internal/residual_efficienct.hh"
 #include "internal/inStripEfficiency.hh"
 #include "sct_types.h"
+#include "internal/exceptions.hh"
 
 
 bool gDo_print = false;
@@ -226,7 +227,7 @@ int processorBase::Add_XML_RunList(const std::string& xmlInputFileName, std::str
 
   if (element != -1) {
     if (element >= (int)m_input_files_xml->fileList().size()) {
-      return -1;
+      SCT_THROW("out of boundary. Selected element number larger then file list size");
     }
     auto& e = m_input_files_xml->fileList()[element];
     push_files((path__ + std::string(e.name())).c_str(), e.threshold(), e.runNumber(), e.HV());
@@ -237,7 +238,10 @@ int processorBase::Add_XML_RunList(const std::string& xmlInputFileName, std::str
     }
 
   }
-
+  if (m_files.empty())
+  {
+    SCT_THROW("not input file found");
+  }
 
   return 0;
 }

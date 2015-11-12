@@ -34,9 +34,9 @@
 
 
 
+namespace SCT_helpers{
 
-
-void SCT_helpers::CutTH2(TH2* h, const S_Cut& cut_)
+void CutTH2(TH2* h, const S_Cut& cut_)
 {
 
   if (!h)
@@ -65,7 +65,7 @@ void SCT_helpers::CutTH2(TH2* h, const S_Cut& cut_)
   }
 }
 
-void SCT_helpers::CutTH1(TH1* h1, const S_Cut& cut_)
+void CutTH1(TH1* h1, const S_Cut& cut_)
 {
   Double_t x = 0, binContent = 0;
 
@@ -87,7 +87,7 @@ void SCT_helpers::CutTH1(TH1* h1, const S_Cut& cut_)
 
 }
 
-TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
+TH1* HistogrammSilhouette(TH2* h2, axis_def ax)
 {
 
   if (ax == x_axis_def)
@@ -146,14 +146,14 @@ TH1* SCT_helpers::HistogrammSilhouette(TH2* h2, axis_def ax)
 
 
 
-Long64_t SCT_helpers::DrawTTree(TTree * tree, const S_DrawOption& opt)
+Long64_t DrawTTree(TTree * tree, const S_DrawOption& opt)
 {
   return opt.Draw(tree);
 }
 
 
 
-TF1 SCT_helpers::LinearFit_Of_Profile(TH2* h2, const sct_type::procent_t& cut_prozent) {
+TF1 LinearFit_Of_Profile(TH2* h2, const sct_type::procent_t& cut_prozent) {
 
 
   auto max_ = h2->GetMaximum();
@@ -169,14 +169,14 @@ TF1 SCT_helpers::LinearFit_Of_Profile(TH2* h2, const sct_type::procent_t& cut_pr
 
 
 
-TH1* SCT_helpers::calc_efficiency(TH1* trueHits, TH1* dutHits) {
+TH1* calc_efficiency(TH1* trueHits, TH1* dutHits) {
 
   TH1* effi = (TH1*) dutHits->Clone("efficiency");
   effi->Divide(trueHits);
   return effi;
 
 }
-void SCT_helpers::saveTH1_as_txt(const TH1& h1, const char* nameTXT) {
+void saveTH1_as_txt(const TH1& h1, const char* nameTXT) {
   std::ofstream out(nameTXT);
   out << h1.GetTitle() << std::endl;
   out << h1.GetXaxis()->GetTitle() << " ; " << h1.GetYaxis()->GetTitle()<<std::endl;
@@ -189,7 +189,7 @@ void SCT_helpers::saveTH1_as_txt(const TH1& h1, const char* nameTXT) {
 }
 
 
-void SCT_helpers::saveTH1_as_txt(const TProfile& h1, const char* nameTXT) {
+void saveTH1_as_txt(const TProfile& h1, const char* nameTXT) {
   std::ofstream out(nameTXT);
   out << h1.GetTitle() << std::endl;
   out << h1.GetXaxis()->GetTitle() << " ; " << h1.GetYaxis()->GetTitle() << std::endl;
@@ -201,7 +201,7 @@ void SCT_helpers::saveTH1_as_txt(const TProfile& h1, const char* nameTXT) {
 
 }
 
-TObject* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
+TObject* Draw_obj(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
   auto pl = plane_.get_plot();
   pl->Draw(plane_, opt);
   
@@ -212,24 +212,4 @@ TObject* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption
  return gPad->GetPrimitive("htemp");
 }
 
-template <>
-TH1* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
-
-  auto ret = dynamic_cast<TH1*>(Draw(plane_, opt));
-  if (ret) {
-    ret->SetTitle(necessary_CONVERSION(plane_.getName()).c_str());
-  }
-  return ret;
-}
-
-
-
-template <>
-TH2* SCT_helpers::Draw(const sct_corr::plane_def& plane_, const S_DrawOption& opt) {
-
-  auto ret = dynamic_cast<TH2*>(Draw(plane_, opt));
-  if (ret) {
-    ret->SetTitle(necessary_CONVERSION(plane_.getName()).c_str());
-  }
-  return ret;
-}
+}	

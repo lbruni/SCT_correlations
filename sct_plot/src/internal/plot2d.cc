@@ -24,16 +24,18 @@ namespace sct_corr{
     
   }
 
- sct_corr::returnFill plot2d::fill()
-{
+  sct_corr::returnProcessEvent plot2d::ProcessCurrentEvent() {
+    ++m_current;
     m_outputEvent.reset();
 
 
     ProcessEvent();
-
-    m_outTree->fill();
-    ++m_current;
     return FILL_OK;
+  }
+
+  void plot2d::fill()
+{
+    m_outTree->fill();
   }
 
   void plot2d::pushHit(Double_t x, Double_t y)

@@ -167,18 +167,22 @@ void plot_collection_impl::loop(Long64_t last /*= -1*/, Long64_t start /*= 0*/) 
     for (auto& e : m_trees) {
       e.second->GetEntry(i);
     }
-
+    returnProcessEvent ret = FILL_OK;
     for (auto& current_plot : m_plots) {
-      auto ret = current_plot.second->fill();
-      if (ret==FILL_DONE) {
+      auto current_ret = current_plot.second->ProcessCurrentEvent();
+      if (current_ret == FILL_DONE) {
         std::cout << "run terminated by plot: " << current_plot.first << std::endl;
         return;
-      }else if (ret==FILL_SKIP)
-      {
-        break;
+      } else if (current_ret == FILL_SKIP) {
+        ret = FILL_SKIP;
       }
+    }
 
-
+    if (ret==FILL_OK)
+    {
+      for (auto& current_plot : m_plots) {
+        current_plot.second->fill();
+      }
     }
   }
 

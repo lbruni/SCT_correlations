@@ -18,9 +18,8 @@ Long64_t sct_corr::plot_residual_with_charge::Draw(const char* options, const ch
 }
 
 
-sct_corr::returnFill sct_corr::plot_residual_with_charge::fill()
-{
-
+sct_corr::returnProcessEvent sct_corr::plot_residual_with_charge::ProcessCurrentEvent() {
+  ++m_current;
   m_outputEvent.reset();
 
   bool first = true;
@@ -29,16 +28,19 @@ sct_corr::returnFill sct_corr::plot_residual_with_charge::fill()
     while (m_x->next()) {
       processHit(*m_HitA, *m_HitB);
     }
-    processHit_2(*m_HitB); 
+    processHit_2(*m_HitB);
   }
   while (m_x->next()) {
     processHit_1(*m_HitA);
 
   }
   processEventEnd();
-  m_outTree->fill();
-  ++m_current;
   return FILL_OK;
+  
+}
+
+void sct_corr::plot_residual_with_charge::fill() {
+  m_outTree->fill();
 }
 
 void sct_corr::plot_residual_with_charge::processEventStart() {

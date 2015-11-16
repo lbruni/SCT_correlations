@@ -56,8 +56,8 @@ void plotPlaneVsPlane::processEventEnd() {
 
 }
 
-returnFill plotPlaneVsPlane::fill()
-{
+returnProcessEvent  plotPlaneVsPlane::ProcessCurrentEvent() {
+  ++m_current;
   m_size_x = 0, m_size_y = 0;
   m_outPutEvent.reset();
 
@@ -82,9 +82,12 @@ returnFill plotPlaneVsPlane::fill()
 
 
   processEventEnd();
-  m_outTree->fill();
-  ++m_current;
   return FILL_OK;
+}
+
+void plotPlaneVsPlane::fill()
+{
+  m_outTree->fill();
 }
 
 void plotPlaneVsPlane::pushHit(Double_t x, Double_t y) {

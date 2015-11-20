@@ -66,48 +66,7 @@ std::unique_ptr<xmlImputFiles::MinMaxRange<double>> make_range(const std::string
   return   std::unique_ptr<xmlImputFiles::MinMaxRange<double>>(); 
 
 }
-void drawResidual(s_process_collection_standard& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
-  new TCanvas();
-  if (range_){
-      p.DrawResidual(range_->getMin(), range_->getMax());
 
-  } else {
-      p.DrawResidual();
-
-  }
-
-}
-
-void Draw_Track_hits(s_process_collection_standard& p) {
-  new TCanvas();
-  p.Draw_Hit_map();
-}
-void Draw_DUT_hits(s_process_collection_standard& p) {
-  new TCanvas();
-  p.Draw_DUT_Hits_map();
-}
-void draw_efficiency_map(s_process_collection_standard& p) {
-  new TCanvas();
-  p.Draw_Efficinecy_map();
-}
-
-void Draw_missing_coordinate(s_process_collection_standard& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
-  new TCanvas();
-  if (range_)
-  {
-    p.DrawResidualVsMissingCordinate(range_->getMin(),range_->getMax());
-  } else {
-    p.DrawResidualVsMissingCordinate();
-  }
-}
-void Draw_Residual_VS_N(s_process_collection_standard& p, const xmlImputFiles::MinMaxRange<double> * range_ = nullptr) {
-  new TCanvas();
-  if (range_) {
-    p.DrawResidualVsEvent(range_->getMin(), range_->getMax());
-  } else {
-    p.DrawResidualVsEvent();
-  }
-}
 
 struct  inParam {
   int argc;
@@ -124,6 +83,10 @@ int asyncMain(void *arg) {
     cmd.add(FileNameArg);
     ValueArg<std::string>  inPath("p", "inPath", "path to the root files", true, "", "string");
     cmd.add(inPath);
+    ValueArg<std::string>  output_path("o", "outPath", "output path", false, "dummy.root", "string");
+    cmd.add(output_path);
+    ValueArg<std::string>  processor_type("s", "Processor", "which processor to use Standard or Modulo", false, "Standard", "string");
+    cmd.add(processor_type);
     ValueArg<int> element("e", "element", "element of interest  in the XML file", true, 1, "int");
     cmd.add(element);
 
@@ -131,78 +94,47 @@ int asyncMain(void *arg) {
 
     cmd.add(residualRange);
 
-    TCLAP::SwitchArg res("r", "residualplot", "draws the residual plot");
-    cmd.add(res);
-
-    TCLAP::SwitchArg efficiency_map("m", "efficiencyMap", "draws the efficiency map");
-    cmd.add(efficiency_map);
-
-    TCLAP::SwitchArg ResVsN("n", "ResVsN", "draws the Residual vs Event Number");
-    cmd.add(ResVsN);
-
-
-    TCLAP::SwitchArg DUT_hits("d", "DUThitMap", "draws the DUT hitmap");
-
-    cmd.add(DUT_hits);
-
-
-    TCLAP::SwitchArg TrackHits("t", "TrackHitMap", "draws the Telescope hitmap");
-
-    cmd.add(TrackHits);
-
-    TCLAP::SwitchArg unknownCoordinate("u", "res_VS_unknown", "draws the residual VS the unknown coordinate");
-    cmd.add(unknownCoordinate);
-
-    TCLAP::SwitchArg DrawAll("a", "DrawAll", "DrawAllPlots");
-    cmd.add(DrawAll);
 
     cmd.parse(argc, argv);  //terminates on error
 
 
 
 
+    std::shared_ptr<sct_corr::processorBase> p;
+    if (processor_type.getValue() == "Standard")  {
+      p = make_shared<s_process_collection_standard>();
+    }
 
-    s_process_collection_standard p;
-    p.setPrintout(true);
+    if (processor_type.getValue() == "Modulo") {
+      p = make_shared<s_process_collection_modulo>();
+    }
+    if (!p)  {
+      SCT_THROW("processor not set correctly: unknown type = " + processor_type.getValue());
+    }
+    p->setPrintout(true);
 
     gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 
-    TFile * __file1 = new TFile("dummy.root", "recreate");
+    TFile * __file1 = new TFile(output_path.getValue().c_str(), "recreate");
 
-    p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".", element.getValue());
-    std::unique_ptr<xmlImputFiles::MinMaxRange<double>> r;
+    p->Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".", element.getValue());
 
-    if (residualRange.isSet()) {
-      r = make_range(residualRange.getValue());
-    }
+    auto  r = make_range(residualRange.getValue());
+#ifdef _DEBUG
     TApplication theApp("App", &argc, argv);
-    p.process();
-    if (res.isSet() || DrawAll.isSet()) {
+#endif // _DEBUG
 
-      drawResidual(p, r.get());
-    }
+    p->process();
 
-    if (DUT_hits.isSet() || DrawAll.isSet()) {
-      Draw_DUT_hits(p);
-    }
-
-    if (TrackHits.isSet() || DrawAll.isSet()) {
-      Draw_Track_hits(p);
-    }
-
-    if (efficiency_map.isSet() || DrawAll.isSet()) {
-      draw_efficiency_map(p);
-    }
-    if (ResVsN.isSet() || DrawAll.isSet()) {
-      Draw_Residual_VS_N(p, r.get());
-    }
-    if (unknownCoordinate.isSet() || DrawAll.isSet()) {
-      Draw_missing_coordinate(p, r.get());
-    }
+    p->saveHistograms(__file1, r.get());
 
 
     new TBrowser();
+#ifdef _DEBUG
+
     theApp.Run();
+#endif // _DEBUG
+
   }
   catch (...) {
     return sct_corr::handleExceptions();
@@ -217,10 +149,9 @@ int main(int argc, char **argv) {
   para.argc = argc;
   para.argv = argv;
   std::cout << "press q to quit the program" << std::endl;
-  //std::thread thr(asyncMain, &para);
-  asyncMain(&para);
-//thr.detach();
-  std::string i;
+ asyncMain(&para);
+
+    std::string i;
   while (i!="q") {
     std::cin >> i;
 

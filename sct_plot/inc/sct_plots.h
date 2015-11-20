@@ -36,7 +36,7 @@ class S_Axis;
 class S_treeCollection;
 class S_Cut;
 class s_plane_collection;
-class processorBase;
+
 class plane_def;
 
 namespace sct_corr {

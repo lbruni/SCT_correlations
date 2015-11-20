@@ -11,6 +11,7 @@
 #include "sct_events/rootEventRunOutput.hh"
 #include "sct_event_buffer.h"
 #include "plane_def.h"
+#include "xml_helpers/xml_fileList.hh"
 
 namespace sct_corr {
 class treeCollection_ouput;
@@ -152,7 +153,7 @@ public:
   void setGearFile(const char* name);
   void setPrintout(bool print);
   bool process();
-
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) = 0;
 
 
   const xmlImputFiles::XML_imput_file* get_xml_input() const;
@@ -201,6 +202,7 @@ public:
   Long64_t Draw_Hit_map();
   Long64_t Draw_DUT_Hits_map();
   TH2D* getResidualVsMissingCordinate();
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr);
 
 private:
 
@@ -233,61 +235,19 @@ private:
 
 
 };
-/*
-class DllExport s_process_collection_secound_highest :public sct_corr::processorBase {
-public:
-  s_process_collection_secound_highest();
-  virtual ~s_process_collection_secound_highest();
-  Long64_t DrawResidual(Double_t min_X, Double_t max_X);
-  Long64_t DrawResidual();
-  Long64_t DrawResidualVsEvent(Double_t min_X, Double_t max_X);
-  Long64_t DrawResidualVsEvent();
-  Long64_t DrawResidualVsMissingCordinate(Double_t min_X, Double_t max_X);
-  Long64_t DrawResidualVsMissingCordinate();
-  Long64_t Draw_Efficinecy_map();
-  Long64_t Draw_Hit_map();
-  Long64_t Draw_DUT_Hits_map();
-  TH2D* getResidualVsMissingCordinate();
-
-private:
-  virtual void start_collection(TFile* file__) override;
-  virtual  bool process_file(FileProberties* fileP) override;
-  void process_set_run_prob(const FileProberties& fileP);
-  void extract_efficiency();
-  void extract_hitMap();
-  void extract_residual();
-  void extract_rotation();
-  void process_reset();
-  void pushChannel(Double_t channel_x, Double_t channel_y, Double_t Effi, Double_t NumberOfEvents, Double_t Effi_error);
-  sct_corr::rootEventRunOutput m_outputl;
-  std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
-  sct_corr::sct_event_buffer m_buffer;
 
 
-  std::shared_ptr<TH1D> m_Residual;
-  std::shared_ptr<TH1D> m_Hits_total;
-  std::shared_ptr<TH1D> m_Hits_with_DUT_Hits;
-  std::shared_ptr<TH1D> m_Efficieny_map;
-  std::shared_ptr<TH1D> m_Efficieny_trueHits;
-  std::shared_ptr<TH2D> m_resVSMissing;
-  std::shared_ptr<TH2D> m_ResidualVsEvent;
-
-  s_plane_collection m_res_VS_event;
-  s_plane_collection_correlations m_output_planes;
-
-  std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
-  std::shared_ptr <sct_files::fitter_file> m_file_fitter;
-  TFile* m_dummy = nullptr;
 
 
-};
-*/
+
+
+
 class DllExport s_process_collection_modulo : public sct_corr::processorBase {
 public:
   s_process_collection_modulo();
   virtual ~s_process_collection_modulo();
 
-
+  virtual void saveHistograms(TFile* outPutFile  = nullptr , xmlImputFiles::MinMaxRange<double>* residual_cut  = nullptr ) override;
 private:
   
   virtual  bool process_file(FileProberties* fileP) override;
@@ -295,6 +255,8 @@ private:
   sct_corr::sct_event_buffer m_buffer;
 
   TFile* m_dummy = nullptr;
+
+  s_plane_collection_correlations m_gbl_collection;
 
   std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
   std::shared_ptr<sct_files::fitter_file> m_file_fitter;

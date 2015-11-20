@@ -56,20 +56,20 @@ struct  inParam {
   char **argv;
 };
 
-void add2File(TFile *file_, TH2 *h, const char* name) {
-    h->SetTitle(name);
-    h->SetName(name);
-    file_->Add(h);
+
+void add2File(TFile* file_, TH2* h, const char* name) {
+  h->SetTitle(name);
+  h->SetName(name);
+  file_->Add(h);
 }
-
-
-
 using namespace sct_type;
 int asyncMain(void *arg) {
   int argc_asdasddsa = 1;
   char **argv_sadsda = new char*[1];
   argv_sadsda[0] = "dummy";
+#ifdef _DEBUG
   TApplication theApp("App", &argc_asdasddsa, argv_sadsda);
+#endif // _DEBUG
 
   inParam* para = static_cast<inParam *>(arg);
   int argc = para->argc;
@@ -109,51 +109,6 @@ int asyncMain(void *arg) {
   auto sz_tel_normalized = sct_corr::processor::coordinate_transform(apix, 2.500000000e-01, 0, 5.000000000e-02, 0, s_plot_prob().doNotSaveToDisk());
   auto res = sct_corr::processor::residual(sz_dut_normalized.getX_def(), sz_tel_normalized.getX_def());
   pl1->loop();
- /* new TCanvas();
-  //SCT_helpers::Draw<TH2>(corr, S_DrawOption().opt_colz())->SetTitle("correlation DUT  X vs Tel Y");
-  
-  new TCanvas();
-  SCT_helpers::Draw<TH2>(corryx, S_DrawOption().opt_colz())->SetTitle("correlation DUT  Y vs Tel X");
-  new TCanvas();
-  SCT_helpers::Draw<TH2>(corrxx, S_DrawOption().opt_colz())->SetTitle("correlation DUT  X vs Tel X");
-  new TCanvas();
-  SCT_helpers::Draw<TH2>(corryy, S_DrawOption().opt_colz())->SetTitle("correlation DUT  Y vs Tel Y");
-
-  new TCanvas();
-  //SCT_helpers::Draw<TH2>(res, S_DrawOption().opt_colz().draw_x_VS_y())->SetTitle("correlation over time");
-  
-    auto th1=SCT_helpers::Draw<TH2>(corr, S_DrawOption().opt_colz());
-    th1->SetTitle("correlation DUT  X vs Tel Y");
-    th1->SetName("correlation_DUT_X_vs_Tel_Y");
-    file_1->Add(th1);
-*/
-   /* auto thh0 = SCT_helpers::Draw<TH2>(corr, S_DrawOption().opt_colz());
-    add2File(file_1, thh0, "correlation DUT_X_vs_Tel_Y");
-    
-    auto thh1 = SCT_helpers::Draw<TH2>(corryx, S_DrawOption().opt_colz());
-    add2File(file_1, thh1, "correlation DUT_Y_vs_Tel_X");
-    
-    auto thh2 = SCT_helpers::Draw<TH2>(corrxx, S_DrawOption().opt_colz());
-    add2File(file_1, thh2, "correlation DUT_X_vs_Tel_X");
-    
-    auto thh3 = SCT_helpers::Draw<TH2>(corryy, S_DrawOption().opt_colz());
-    add2File(file_1, thh3, "correlation DUT_Y_vs_Tel_Y");
-    
-    
-    auto th2=SCT_helpers::Draw<TH2>(res, S_DrawOption().opt_colz().draw_x_VS_y());
-    th2->SetTitle("correlation over time");
-    th2->SetName("correlation_over_time");
-    file_1->Add(th2);
-    
-    gBrowser = new TBrowser();
-    file_1->Write();
-  //theApp.Run();
-
-  //exit(0);
-  return 0;
-    
-    */
-    
     new TCanvas();
     auto th_x_y=SCT_helpers::Draw<TH2>(corr, S_DrawOption().opt_colz());
     add2File(file_1, th_x_y, "correlation_DUT_X_vs_Tel_Y");
@@ -190,17 +145,11 @@ int main(int argc, char **argv) {
   para.argv = argv;
 
   std::cout << "press q to quit the program" << std::endl;
- // std::thread thr(asyncMain, &para);
-  //thr.detach();
     asyncMain(&para);
 
-  std::string i;
+   std::string i;
 
-  //while (i != "q") {
-    //std::cin >> i;
 
-  //}
-  //exit(0);
 
   return 0;
 

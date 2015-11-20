@@ -43,7 +43,11 @@ int asyncMain(void *arg) {
   inParam* para = static_cast<inParam *>(arg);
   int argc = para->argc;
   char **argv = para->argv;
+#ifdef _DEBUG
   TApplication theApp("App", &argc, argv);
+
+#endif // _DEBUG
+
   TFile * file_ = new TFile("D:/alibava/dutTree_350V_sct.root");
   TFile * out_file = new TFile("output.root", "recreate");
   auto pl = sct_corr::create_plot_collection();
@@ -103,9 +107,10 @@ int asyncMain(void *arg) {
   pl->Draw(res, S_DrawOption().draw_x());
 
   gBrowser = new TBrowser();
-  theApp.Run();
-
-  exit(0);
+#ifdef _DEBUG
+theApp.Run();
+#endif
+    
   return 0;
 }
 int main(int argc, char **argv) {
@@ -121,15 +126,12 @@ int main(int argc, char **argv) {
   para.argc = argc;
   para.argv = argv;
 
-  std::cout << "press q to quit the program" << std::endl;
-  std::thread thr(asyncMain, &para);
-  thr.detach();
-  std::string i;
 
-  while (i != "q") {
-    std::cin >> i;
+ asyncMain(&para);
+  
 
-  }
+
+
 
 
   return 0;

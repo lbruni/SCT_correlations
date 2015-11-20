@@ -17,7 +17,8 @@ namespace sct_corr{
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") override;
     virtual Long64_t Draw(const S_DrawOption& opt) override;
     virtual void ProcessEvent() = 0;
-    virtual returnFill fill() override final;
+    virtual returnProcessEvent ProcessCurrentEvent() override final;
+    virtual void fill() override final;
     void pushHit(Double_t x, Double_t y);
     void pushHit(Double_t x, Double_t y, Double_t ID);
     void pushHit(const plane_hit& hit, Double_t ID);

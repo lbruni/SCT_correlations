@@ -13,7 +13,7 @@
 
 
 namespace sct_corr{
-enum returnFill :int{
+enum returnProcessEvent :int{
   FILL_OK,
   FILL_DONE,
   FILL_SKIP
@@ -27,7 +27,8 @@ class sct_event_buffer;
     virtual bool MakeReadyForData(sct_event_buffer* outputBuffer) = 0;
     virtual void pushAxis(const axis_ref* axis) = 0;
     virtual void pushPlane(S_plane* axis) = 0;
-    virtual returnFill fill() = 0;
+    virtual returnProcessEvent  ProcessCurrentEvent() = 0;
+    virtual void fill() = 0;
     virtual Long64_t Draw(const char* options, const char* cuts = "", const char* axis = "y:x") = 0;
     virtual Long64_t Draw(const S_DrawOption&) = 0;
     virtual void setParameter(const char* tag, const char * value);

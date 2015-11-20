@@ -7,6 +7,7 @@
 #include "sct_processors.h"
 #include "s_cuts.h"
 #include "sct_types.h"
+#include "internal/exceptions.hh"
 
 
 
@@ -115,8 +116,7 @@ s_plane_collection make_residual_efficiency_processor(
   auto plB = planeB.get_plot();
 
   if (plA.get() != plB.get()) {
-    std::cout << "[s_plane_collection_find_closest make_residual_efficiency_processor] referencing to different plot collection\n";
-    return s_plane_collection_find_closest();
+    SCT_THROW("referencing to different plot collection");
   }
 
 
@@ -185,14 +185,15 @@ Long64_t residual_efficienct::Draw() {
 }
 
 Long64_t residual_efficienct::Draw(const S_DrawOption& d_option) {
-  m_total_hits = std::make_shared<TH1D>("mod_true", "true hits", 100, -2, 2);
-  TH1D DUtHitsMod("mod_dut", "DUT hits", 100, -2, 2);
+  m_total_hits = std::make_shared<TH1D>("res_total_true_hits", "total true hits", 100, -2, 2);
+  TH1D DUtHitsMod("res_DUT_hits", "DUT hits", 100, -2, 2);
   S_DrawOption local_(d_option);
   m_total = Draw_true_hits(local_.output_object(m_total_hits.get()));
   auto m_dut_count = Draw_DUT_hits(local_.output_object(&DUtHitsMod));
 
 
   m_efficiency = std::shared_ptr<TH1D>(dynamic_cast<TH1D*>(SCT_helpers::calc_efficiency(m_total_hits.get(), &DUtHitsMod)));
+  m_efficiency->SetName("res_effieciency");
   if (!m_efficiency) {
     return -1;
   }

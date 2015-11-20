@@ -66,7 +66,10 @@ int asyncMain(void *arg) {
   inParam* para = static_cast<inParam *>(arg);
   int argc = para->argc;
   char **argv = para->argv;
+#ifdef _DEBUG
   TApplication theApp("App", &argc, argv);
+#endif // _DEBUG
+
   std::string path_ = "D:/GBL/DEVICE_1_ASIC_on_Position_7_Jim_350V/";
   std::string name_ = "run000688_";
   std::string name_suffix = "fitter";
@@ -144,7 +147,10 @@ int asyncMain(void *arg) {
  // SCT_helpers::Draw<TH1>(corr1, S_DrawOption().opt_colz().draw_x().cut_x(-5,5));
  SCT_helpers::Draw<TH2>(gbl_collection1.getResidualVSmissing(), S_DrawOption().opt_colz().draw_x_VS_y().cut_x(-5,5));
   gBrowser = new TBrowser();
+#ifdef _DEBUG
   theApp.Run();
+#endif // _DEBUG
+
   } catch (...) {
 
   return sct_corr::handleExceptions();
@@ -221,7 +227,9 @@ int asyncMain(void *arg) {
 
     return sct_corr::handleExceptions();
   }
-  theApp.Run();
+#ifdef _DEBUG
+    theApp.Run();
+#endif // _DEBUG
 
 
 
@@ -279,7 +287,9 @@ int asyncMain(void *arg) {
 
     return sct_corr::handleExceptions();
   }
+#ifdef _DEBUG
   theApp.Run();
+#endif // _DEBUG
 #endif // 0
 #if 0
 
@@ -393,9 +403,11 @@ int asyncMain(void *arg) {
   cl_instrip.Draw();
   SCT_helpers::saveTH1_as_txt(*cl_instrip.getProfile(), (path_ + name_ + "clusterSize" + "." + "txt").c_str());
   gBrowser = new TBrowser();
+#ifdef _DEBUG
   theApp.Run();
+#endif // _DEBUG
 
-  exit(0);
+
 #endif
   return 0;
 }
@@ -412,15 +424,8 @@ int main(int argc, char **argv) {
   para.argc = argc;
   para.argv = argv;
 
-  std::cout << "press q to quit the program" << std::endl;
-  std::thread thr(asyncMain, &para);
-  thr.detach();
-  std::string i;
-
-  while (i != "q") {
-    std::cin >> i;
-
-  }
+ 
+ asyncMain( &para);
 
 
   return 0;

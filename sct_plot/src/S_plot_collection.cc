@@ -154,7 +154,7 @@ Long64_t plot_collection_impl::getMaxEntriesFromTree(Long64_t last) {
 
 void plot_collection_impl::loop(Long64_t last /*= -1*/, Long64_t start /*= 0*/) {
 
-  //  std::clock_t    start_time = std::clock();
+
   last = getMaxEntriesFromTree(last);
   for (Long64_t i = start; i < last; ++i) {
 #ifdef _DEBUG
@@ -178,17 +178,12 @@ void plot_collection_impl::loop(Long64_t last /*= -1*/, Long64_t start /*= 0*/) 
       }
     }
 
-    if (ret==FILL_OK)
-    {
+    if (ret==FILL_OK) {
       for (auto& current_plot : m_plots) {
         current_plot.second->fill();
       }
     }
   }
-
-  //   auto end_clock = clock();
-  //   std::cout << "processed: " << last << " events in  ";
-  //   std::cout << (std::clock() - start_time) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 }
 
 bool plot_collection_impl::collectionExist(const sct_type::collectionName_t& name) const {

@@ -897,13 +897,13 @@ void s_process_collection_standard::saveHistograms(TFile* outPutFile /*= nullptr
   Draw_Residual_VS_N(*this, residual_cut);
   Draw_missing_coordinate(*this, residual_cut);
   if (outPutFile) {
-    outPutFile->Add(m_Efficieny_map.get());
-    outPutFile->Add(m_Efficieny_trueHits.get());
-    outPutFile->Add(m_Hits_total.get());
-    outPutFile->Add(m_Hits_with_DUT_Hits.get());
-    outPutFile->Add(m_ResidualVsEvent.get());
-    outPutFile->Add(m_resVSMissing.get());
-    outPutFile->Add(m_Residual.get());
+    outPutFile->Add(m_Efficieny_map->Clone());
+    outPutFile->Add(m_Efficieny_trueHits->Clone());
+    outPutFile->Add(m_Hits_total->Clone());
+    outPutFile->Add(m_Hits_with_DUT_Hits->Clone());
+    outPutFile->Add(m_ResidualVsEvent->Clone());
+    outPutFile->Add(m_resVSMissing->Clone());
+    outPutFile->Add(m_Residual->Clone());
   }
 }
 

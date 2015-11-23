@@ -7,6 +7,7 @@
 #include "rapidxml.hpp"
 #include "xml_helpers/xml_util.hh"
 #include "TMath.h"
+#include "internal/exceptions.hh"
 #define  sct_corr_XML_ERROR_DEFAULT_VALUE  -666666666666
 namespace sct_corr {
 using xml_n = rapidxml::xml_node < char >;
@@ -122,6 +123,7 @@ public:
         return &e;
       }
     }
+    SCT_THROW("Layer not Found. searching for Layer " + std::to_string(ID));
     return nullptr;
   }
   const Xlayer* layer_by_ID(double ID) const {
@@ -130,6 +132,7 @@ public:
         return &e;
       }
     }
+    SCT_THROW("Layer not Found. searching for Layer " + std::to_string(ID));
     return nullptr;
   }
   std::vector<Xlayer> layer;

@@ -244,11 +244,13 @@ TTree* plot_collection_impl::getTTree(const sct_type::collectionName_t& name) co
       return collection;
     }
   }
+  SCT_THROW("unable to find colllection. Collection name: " + necessary_CONVERSION(name));
   return nullptr;
 }
 
 S_plane* plot_collection_impl::getPlane(const sct_type::ID_t&  ID, sct_corr::rootEventBase* coll) {
   if (!coll) {
+    SCT_THROW("unable to get plane, Root Event base is empty.");
     return nullptr;
   }
 
@@ -260,6 +262,7 @@ S_plane* plot_collection_impl::pushPlane(const plane_def& pl) {
 
   auto pl_pointer = getCollection(pl.getName());
   if (!pl_pointer) {
+    SCT_THROW("Unable to push plane. collection not found. collection name: " + necessary_CONVERSION(pl.getName()));
     return nullptr;
   }
 

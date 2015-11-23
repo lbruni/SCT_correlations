@@ -685,7 +685,14 @@ s_process_collection_standard::~s_process_collection_standard() {
   if (m_dummy) {
     m_dummy->Write();
   }
-  delete m_dummy;
+ // delete m_dummy;
+  m_Residual.reset();
+  m_Hits_total.reset();
+  m_Hits_with_DUT_Hits.reset();
+  m_Efficieny_map.reset();
+  m_Efficieny_trueHits.reset();
+  m_resVSMissing.reset();
+  m_ResidualVsEvent.reset();
 }
 
 Long64_t s_process_collection_standard::DrawResidual(Double_t min_X, Double_t max_X) {

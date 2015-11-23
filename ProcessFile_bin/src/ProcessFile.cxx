@@ -97,7 +97,7 @@ int asyncMain(void *arg) {
 
     cmd.parse(argc, argv);  //terminates on error
 
-
+    TFile * __file1 = new TFile(output_path.getValue().c_str(), "recreate");
 
 
     std::shared_ptr<sct_corr::processorBase> p;
@@ -115,13 +115,13 @@ int asyncMain(void *arg) {
 
     gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
 
-    TFile * __file1 = new TFile(output_path.getValue().c_str(), "recreate");
+
 
     p->Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".", element.getValue());
 
     auto  r = make_range(residualRange.getValue());
 #ifdef _DEBUG
-    TApplication theApp("App", &argc, argv);
+    //TApplication theApp("App", &argc, argv);
 #endif // _DEBUG
 
     p->process();
@@ -129,10 +129,11 @@ int asyncMain(void *arg) {
     p->saveHistograms(__file1, r.get());
 
 
+//    delete __file1;
     new TBrowser();
 #ifdef _DEBUG
 
-    theApp.Run();
+   // theApp.Run();
 #endif // _DEBUG
 
   }
@@ -148,14 +149,10 @@ int main(int argc, char **argv) {
   inParam para;
   para.argc = argc;
   para.argv = argv;
-  std::cout << "press q to quit the program" << std::endl;
+ 
  asyncMain(&para);
  
-  std::string i;
-  while (i!="q") {
-    std::cin >> i;
 
-  }
   
 
   return 0;

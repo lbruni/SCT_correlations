@@ -51,6 +51,8 @@ add_subdirectory(ProcessCollection_bin)
 add_subdirectory(ProcessFile_bin)
 add_subdirectory(run_GBL_bin)
 add_subdirectory(bin_sz_correlations)
+add_subdirectory(apix_tel_correlations)
+
 #######################################################
 # Print out system information useful for bug reports #
 ############################################### #######

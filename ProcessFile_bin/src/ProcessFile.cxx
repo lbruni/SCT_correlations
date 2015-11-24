@@ -145,13 +145,15 @@ int asyncMain(void *arg) {
 
 int main(int argc, char **argv) {
 
+  try {
+    inParam para;
+    para.argc = argc;
+    para.argv = argv;
 
-  inParam para;
-  para.argc = argc;
-  para.argv = argv;
- 
- asyncMain(&para);
-
+    asyncMain(&para);
+  } catch (...) {
+    std::cout << "error on exit" << std::endl;
+  }
     
     
 

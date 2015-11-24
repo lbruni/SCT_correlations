@@ -686,12 +686,19 @@ s_process_collection_standard::~s_process_collection_standard() {
     m_dummy->Write();
   }
  // delete m_dummy;
+  std::cout << "deleting m_Residual" << std::endl;
   m_Residual.reset();
+  std::cout << "deleting m_Hits_total" << std::endl;
   m_Hits_total.reset();
+  std::cout << "deleting m_Hits_with_DUT_Hits" << std::endl;
   m_Hits_with_DUT_Hits.reset();
+  std::cout << "deleting m_Efficieny_map" << std::endl;
   m_Efficieny_map.reset();
+  std::cout << "deleting m_Efficieny_trueHits" << std::endl;
   m_Efficieny_trueHits.reset();
+  std::cout << "deleting m_resVSMissing" << std::endl;
   m_resVSMissing.reset();
+  std::cout << "deleting m_ResidualVsEvent" << std::endl;
   m_ResidualVsEvent.reset();
 }
 

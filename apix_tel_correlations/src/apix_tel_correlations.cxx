@@ -138,6 +138,7 @@ int asyncMain(void *arg) {
   
   out_file->Add(h_local);
   out_file->Add(h1_local);
+  out_file->Write(); 
 #ifdef _DEBUG
   theApp.Run();
 #endif // _DEBUG

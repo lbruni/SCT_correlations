@@ -996,7 +996,8 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
 #endif // _DEBUG
 
 
-
+  m_residualEffieciency->Draw();
+  m_instripEfficiency->Draw();
   push2outputEvent(m_outputl, *m_residualEffieciency->getEfficiency_map(), *m_residualEffieciency->get_total(), ID_t(0));
   push2outputEvent(m_outputl, *m_instripEfficiency->getEfficiency_map(), *m_instripEfficiency->getHits(), ID_t(1));
   return true;
@@ -1018,8 +1019,8 @@ void s_process_collection_modulo::saveHistograms(TFile* outPutFile /*= nullptr *
   m_residualEffieciency->Draw();
 
   if (outPutFile) {
-//    outPutFile->Add(m_instripClusterSize->getHistogram());
- //   outPutFile->Add(m_instripEfficiency->getEfficiency_map());
+    outPutFile->Add(m_instripClusterSize->getHistogram());
+    outPutFile->Add(m_instripEfficiency->getEfficiency_map());
     outPutFile->Add(m_residualEffieciency->getEfficiency_map());
     outPutFile->Add(m_residualEffieciency->get_total());
   }

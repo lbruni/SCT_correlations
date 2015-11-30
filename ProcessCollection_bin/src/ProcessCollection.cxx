@@ -48,16 +48,18 @@ int asyncMain(void *arg) {
     
     ValueArg<std::string>  outpath("o", "outPath", "output path", false, ".", "string");
     cmd.add(outpath);
-
+    ValueArg<std::string>  processor_type("s", "Processor", "which processor to use Standard or Modulo", false, "Standard", "string");
+    cmd.add(processor_type);
 #ifdef _DEBUG
     cmd.setExceptionHandling(false);
 #endif // _DEBUG
 
     cmd.parse(argc, argv);
-    s_process_collection_standard p;
-    p.Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
-    p.setPrintout(true);
-    p.process();
+    auto p = create_processor(processor_type.getValue());
+
+    p->Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), outpath.getValue());
+    p->setPrintout(true);
+    p->process();
   } catch (ArgException &e)  // catch any exceptions
   {
     cerr << "error: " << e.error() << " for arg " << e.argId() << endl;

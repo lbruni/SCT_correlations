@@ -265,7 +265,7 @@ private:
   std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
 };
 
-
+DllExport std::shared_ptr<sct_corr::processorBase> create_processor(const std::string& processorName);
 
 
 #endif // s_process_files_h__

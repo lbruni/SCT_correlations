@@ -548,6 +548,17 @@ void processorEfficiency::process_set_run_prob() {
 
 }
 
+std::shared_ptr<sct_corr::processorBase> create_processor(const std::string& processorName) {
+  if (processorName == "Standard") {
+   return std::make_shared<s_process_collection_standard>();
+  }
+
+  if (processorName == "Modulo") {
+    return std::make_shared<s_process_collection_modulo>();
+  }
+  SCT_THROW("Processor not found. Processor name: " + std::string(processorName));
+  return nullptr;
+}
 
 void s_process_collection_standard::extract_efficiency() {
 

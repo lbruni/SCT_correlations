@@ -23,6 +23,7 @@
 #include "processors/find_nearest_strip.hh"
 #include "processors/find_second_nearest_strip.hh"
 #include "internal/exceptions.hh"
+#include "xml_helpers/xml_fileList.hh"
 
 
 
@@ -201,6 +202,7 @@ s_plane_collection_correlations fitter_file::get_correlations(
 
     return get_Daff_correlations(fiducial_cut_, residualCut, rotate_angle, move_x, plot_prob_);
   }
+  SCT_THROW("collection not found");
   std::cout << "collection not found " << std::endl;
   return s_plane_collection_correlations();
 }
@@ -300,7 +302,7 @@ s_plane_collection_correlations fitter_file::get_Daff_correlations(
   const s_plot_prob& plot_prob_ /*= "" */
   ) const {
 
-
+  SCT_THROW("not implemented");
   std::cout << "[fitter_file::get_Daff_correlations]: not implemented \n";
   s_plane_collection_correlations ret;
   return ret;
@@ -313,7 +315,7 @@ s_plane_collection_correlations fitter_file::get_Daff_correlations_channel(
   sct_type::rot_angle_t rotate_angle,
   sct_type::move_t move_x,
   const s_plot_prob& plot_prob_) const {
-
+  SCT_THROW("not implemented");
   std::cout << "[fitter_file::get_Daff_correlations_channel]: not implemented \n";
   s_plane_collection_correlations ret;
   return ret;
@@ -357,16 +359,11 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     ).getHitOnPlaneB();
 
-  auto trueHits_cut = sct_corr::processor::cut_x_y(
-    trueHits,
-    fiducial_cut_,
-    s_plot_prob().doNotSaveToDisk()
-    );
 
-  std::string trueHitsInStrips_name = necessary_CONVERSION(plot_prob_.getName()) + "_true";
+
 
   auto trueHitsInStrips = sct_corr::processor::convert_hits_to_zs_data_GBL(
-    trueHits_cut,
+    trueHits,
     *get_gear()->detector.layer_by_ID(8),
     s_plot_prob().doNotSaveToDisk()
     );
@@ -378,6 +375,7 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     s_plot_prob().doNotSaveToDisk()
     );
 
+  std::string trueHitsInStrips_name = necessary_CONVERSION(plot_prob_.getName()) + "_true";
   auto dut_rotated_17_move = sct_corr::processor::coordinate_transform_move(
     dut_rotated_17,
     Un_necessary_CONVERSION(move_x),
@@ -386,12 +384,17 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     .setSaveOptione(plot_prob_.getPlotSaveOption())
     );
 
-
+  std::string trueHitsInStrips_name_cutted = necessary_CONVERSION(plot_prob_.getName()) + "_true_cutted";
+  auto trueHits_cut = sct_corr::processor::cut_x_y(
+    dut_rotated_17_move,
+    fiducial_cut_,
+    s_plot_prob(trueHitsInStrips_name_cutted.c_str()).setSaveOptione(plot_prob_.getPlotSaveOption())
+    );
   std::string find_closest_name = necessary_CONVERSION(plot_prob_.getName()) + "_closest";
 
 
   auto find_closest = sct_processor::find_nearest_strip(
-    dut_rotated_17_move,
+    trueHits_cut,
     DUT_zs_data(),
     x_axis_def,
     Un_necessary_CONVERSION(residualCut),
@@ -410,12 +413,20 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
   s_plane_collection_correlations ret;
   ret.setResidual(find_closest.getResidual());
   ret.setResidualVsMissing(res_vs_missing);
-  ret.setTotalTrueHits(dut_rotated_17_move);
+  ret.setTotalTrueHits(trueHits_cut);
   ret.setTrueHitsWithDUT(find_closest.getHitOnPlaneA());
   ret.setDUT_Hits(find_closest.getHitOnPlaneB());
   return ret;
 }
-
+s_plane_collection_correlations fitter_file::get_correlations_channel(const xmlImputFiles::XML_imput_file& xmlFile, const s_plot_prob& plot_prob_) const {
+  return get_correlations_channel(
+    xmlFile.globalConfig().cut(),
+    sct_type::residualCut_t(xmlFile.globalConfig().residual_cut()),
+    sct_type::rot_angle_t(xmlFile.globalConfig().Rotation()),
+    sct_type::move_t(xmlFile.globalConfig().Position_value()),
+    plot_prob_
+    );
+}
 s_plane_collection_correlations fitter_file::get_correlations_channel(
   const S_Cut& fiducial_cut_,
   sct_type::residualCut_t residualCut,
@@ -433,6 +444,7 @@ s_plane_collection_correlations fitter_file::get_correlations_channel(
 
     return get_Daff_correlations_channel(fiducial_cut_, residualCut, rotate_angle, move_x, plot_prob_);
   }
+  SCT_THROW("collection not found");
   std::cout << "collection not found " << std::endl;
   return s_plane_collection_correlations();
 }

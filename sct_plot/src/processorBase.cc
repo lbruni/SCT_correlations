@@ -359,7 +359,7 @@ bool processorBase::process() {
 
   TCanvas c;
 
-  auto files = xml_print("files");
+  auto files = xml_print("files1");
 
 
   auto _file1 = sct_corr::output_TFile_ptr(new TFile(
@@ -649,10 +649,7 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
   m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
 
   m_output_planes = m_file_fitter->get_correlations_channel(
-    get_xml_input()->globalConfig().cut(),
-    residualCut_t(get_xml_input()->globalConfig().residual_cut()),
-    rot_angle_t(get_xml_input()->globalConfig().Rotation()),
-    move_t(get_xml_input()->globalConfig().Position_value()),
+    *get_xml_input(),
     s_plot_prob("Hits_in_channels")
     .SaveToDisk()
     );
@@ -690,27 +687,16 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
 
 s_process_collection_standard::s_process_collection_standard() {
   m_dummy = new TFile("dummy1.root", "recreate");
+  if (!m_dummy->IsOpen())  {
+    SCT_THROW("unable to open file: dummy1.root");
+  }
 }
 
 s_process_collection_standard::~s_process_collection_standard() {
   if (m_dummy) {
     m_dummy->Write();
   }
- // delete m_dummy;
-  std::cout << "deleting m_Residual" << std::endl;
-  m_Residual.reset();
-  std::cout << "deleting m_Hits_total" << std::endl;
-  m_Hits_total.reset();
-  std::cout << "deleting m_Hits_with_DUT_Hits" << std::endl;
-  m_Hits_with_DUT_Hits.reset();
-  std::cout << "deleting m_Efficieny_map" << std::endl;
-  m_Efficieny_map.reset();
-  std::cout << "deleting m_Efficieny_trueHits" << std::endl;
-  m_Efficieny_trueHits.reset();
-  std::cout << "deleting m_resVSMissing" << std::endl;
-  m_resVSMissing.reset();
-  std::cout << "deleting m_ResidualVsEvent" << std::endl;
-  m_ResidualVsEvent.reset();
+
 }
 
 Long64_t s_process_collection_standard::DrawResidual(Double_t min_X, Double_t max_X) {
@@ -759,7 +745,7 @@ Long64_t s_process_collection_standard::DrawResidualVsEvent(Double_t min_X, Doub
     S_DrawOption()
     .draw_x_VS_y()
     .cut_x(min_X, max_X)
-    .output_object(m_resVSMissing.get())
+    .output_object(m_ResidualVsEvent.get())
     .opt_colz()
     );
 }
@@ -915,14 +901,15 @@ void s_process_collection_standard::saveHistograms(TFile* outPutFile /*= nullptr
   Draw_Residual_VS_N(*this, residual_cut);
   Draw_missing_coordinate(*this, residual_cut);
   if (outPutFile) {
-    outPutFile->Add(m_Efficieny_map->Clone());
-    outPutFile->Add(m_Efficieny_trueHits->Clone());
-    outPutFile->Add(m_Hits_total->Clone());
-    outPutFile->Add(m_Hits_with_DUT_Hits->Clone());
-    outPutFile->Add(m_ResidualVsEvent->Clone());
-    outPutFile->Add(m_resVSMissing->Clone());
-    outPutFile->Add(m_Residual->Clone());
+    outPutFile->Add(m_Efficieny_map.get());
+    outPutFile->Add(m_Efficieny_trueHits.get());
+    outPutFile->Add(m_Hits_total.get());
+    outPutFile->Add(m_Hits_with_DUT_Hits.get());
+    outPutFile->Add(m_ResidualVsEvent.get());
+    outPutFile->Add(m_resVSMissing.get());
+    outPutFile->Add(m_Residual.get());
   }
+  m_dummy->Write();
 }
 
 
@@ -967,83 +954,72 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
 
 
   m_gbl_collection = m_file_fitter->get_correlations_channel(
-    get_xml_input()->globalConfig().cut(),
-    residualCut_t(get_xml_input()->globalConfig().residual_cut()),
-    rot_angle_t(get_xml_input()->globalConfig().Rotation()),
-    move_t(get_xml_input()->globalConfig().Position_value()),
+    *get_xml_input(),
     s_plot_prob("Hits_in_channels")
     .SaveToDisk()
     );
   auto ActiveStrips = get_xml_input()->globalConfig().AvtiveStrips();
-  m_instripEfficiency = std::make_shared<sct_corr::inStripEfficiency>(
-    m_gbl_collection.getTotalTrueHits(),
-    m_gbl_collection.getTrueHitsWithDUT(),
-    S_XCut(ActiveStrips.getMin(),ActiveStrips.getMax()),
-    x_axis_def,
-    sct_type::modulo_t(3),
-    s_plot_prob("inStripEffi")
-    );
+   m_instripEfficiency = std::make_shared<sct_corr::inStripEfficiency>(
+     m_gbl_collection.getTotalTrueHits(),
+     m_gbl_collection.getTrueHitsWithDUT(),
+     S_XCut(ActiveStrips.getMin(),ActiveStrips.getMax()),
+     x_axis_def,
+     sct_type::modulo_t(3),
+     s_plot_prob("inStripEffi")
+     );
+ 
+   m_instripClusterSize = std::make_shared<sct_corr::inStripClusterSize>(
+     m_gbl_collection.getTrueHitsWithDUT(),
+     m_file_fitter->DUT_zs_data(),
+     10,
+     x_axis_def,
+     sct_type::modulo_t(3),
+     s_plot_prob("cluster_size_instrip").SaveToDisk()
+     );
 
-  m_instripClusterSize = std::make_shared<sct_corr::inStripClusterSize>(
-    m_gbl_collection.getTrueHitsWithDUT(),
-    m_file_fitter->DUT_zs_data(),
-    10,
-    x_axis_def,
-    sct_type::modulo_t(3),
-    s_plot_prob("cluster_size_instrip").SaveToDisk()
-    );
+
 
   m_residualEffieciency = std::make_shared<
     sct_corr::residual_efficienct>(
     m_gbl_collection.getTotalTrueHits(),
     m_file_fitter->DUT_zs_data(),
     S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
-    sct_type::stripNr_t(ActiveStrips.getMax()-ActiveStrips.getMin()),
+    sct_type::stripNr_t(ActiveStrips.getMax()+20),
     x_axis_def,
     s_plot_prob("Res_efficiency")
     );
 
 #ifdef _DEBUG
-  pl->loop(1000);
+  pl->loop(20000);
 #else
   pl->loop();
 #endif // _DEBUG
 
 
 
-  m_residualEffieciency->Draw();
-
-  std::string outName = "file_residual_effi_" + std::to_string(fileP->m_runNumber) + ".txt";
-  SCT_helpers::saveTH1_as_txt(*m_residualEffieciency->getEfficiency_map(), outName.c_str());
-
-  xml_print("Efficiency", m_residualEffieciency->get_efficiency());
-
-
-
-  m_instripClusterSize->Draw(S_DrawOption());
-
-
-
-  m_instripEfficiency->Draw();
-  std::string outName_instrip = "file_instrip_" + std::to_string(fileP->m_runNumber) + ".txt";
-  SCT_helpers::saveTH1_as_txt(*m_instripEfficiency->getEfficiency_map(), outName_instrip.c_str());
-
-
-
   push2outputEvent(m_outputl, *m_residualEffieciency->getEfficiency_map(), *m_residualEffieciency->get_total(), ID_t(0));
   push2outputEvent(m_outputl, *m_instripEfficiency->getEfficiency_map(), *m_instripEfficiency->getHits(), ID_t(1));
-
   return true;
 }
 
 void s_process_collection_modulo::saveHistograms(TFile* outPutFile /*= nullptr */, xmlImputFiles::MinMaxRange<double>* residual_cut /*= nullptr */) {
-  m_instripClusterSize->Draw();
-  m_instripEfficiency->Draw();
 
+#ifdef _DEBUG
+  new TCanvas();
+#endif
+  m_instripClusterSize->Draw();
+#ifdef _DEBUG
+  new TCanvas();
+#endif // _DEBUG
+  m_instripEfficiency->Draw();
+#ifdef _DEBUG
+  new TCanvas();
+#endif // _DEBUG
   m_residualEffieciency->Draw();
+
   if (outPutFile) {
-    outPutFile->Add(m_instripClusterSize->getHistogram());
-    outPutFile->Add(m_instripEfficiency->getEfficiency_map());
+//    outPutFile->Add(m_instripClusterSize->getHistogram());
+ //   outPutFile->Add(m_instripEfficiency->getEfficiency_map());
     outPutFile->Add(m_residualEffieciency->getEfficiency_map());
     outPutFile->Add(m_residualEffieciency->get_total());
   }

@@ -65,7 +65,7 @@ int asyncMain(void *arg) {
     cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     return -1;
   }
-  exit(0);
+
   return 0;
 }
 int main(int argc, char **argv) {
@@ -81,15 +81,10 @@ int main(int argc, char **argv) {
   para.argc = argc;
   para.argv = argv;
 
-  std::cout << "press q to quit the program" << std::endl;
-  std::thread thr(asyncMain, &para);
-  thr.detach();
-  std::string i;
-  
-  while (i != "q") {
-    std::cin >> i;
 
-  }
+  asyncMain(&para);
+  
+
 
 
   return 0;

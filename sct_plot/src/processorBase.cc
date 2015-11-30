@@ -274,9 +274,9 @@ int processorBase::Add_XML_RunList(const std::string& xmlInputFileName, std::str
   }
   auto collname = m_input_files_xml->globalConfig().CollectionName();
   if (element != -1) {
-    outputPath += "/" + collname + "_" + std::to_string(element) + ".root";
+    outputPath += "/" + collname + "_" + get_suffix() + "_" + std::to_string(element) + ".root";
   } else {
-    outputPath += "/" + collname + ".root";
+    outputPath += "/" + collname + "_" + get_suffix() + ".root";
   }
 
 
@@ -626,7 +626,6 @@ void s_process_collection_standard::extract_rotation() {
 void s_process_collection_standard::process_reset() {
   m_plotCollection.reset();
   m_res_VS_event.clear();
-  m_outputl.reset();
 }
 
 
@@ -912,6 +911,9 @@ void s_process_collection_standard::saveHistograms(TFile* outPutFile /*= nullptr
   m_dummy->Write();
 }
 
+std::string s_process_collection_standard::get_suffix() const {
+  return "standard";
+}
 
 TFile* FileProberties::getTfile() const {
   if (m_fileOwnd) {
@@ -1024,5 +1026,9 @@ void s_process_collection_modulo::saveHistograms(TFile* outPutFile /*= nullptr *
     outPutFile->Add(m_residualEffieciency->getEfficiency_map());
     outPutFile->Add(m_residualEffieciency->get_total());
   }
+}
+
+std::string s_process_collection_modulo::get_suffix() const {
+  return "modulo";
 }
 

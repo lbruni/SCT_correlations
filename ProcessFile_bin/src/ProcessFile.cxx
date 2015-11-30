@@ -100,17 +100,8 @@ int asyncMain(void *arg) {
     TFile * __file1 = new TFile(output_path.getValue().c_str(), "recreate");
 
 
-    std::shared_ptr<sct_corr::processorBase> p;
-    if (processor_type.getValue() == "Standard")  {
-      p = make_shared<s_process_collection_standard>();
-    }
+    auto p= create_processor(processor_type.getValue());
 
-    if (processor_type.getValue() == "Modulo") {
-      p = make_shared<s_process_collection_modulo>();
-    }
-    if (!p)  {
-      SCT_THROW("processor not set correctly: unknown type = " + processor_type.getValue());
-    }
     p->setPrintout(true);
 
     gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
@@ -119,21 +110,20 @@ int asyncMain(void *arg) {
 
     p->Add_XML_RunList(FileNameArg.getValue(), inPath.getValue(), ".", element.getValue());
 
-    auto  r = make_range(residualRange.getValue());
 #ifdef _DEBUG
-    //TApplication theApp("App", &argc, argv);
+    TApplication theApp("App", &argc, argv);
 #endif // _DEBUG
 
     p->process();
 
+    auto  r = make_range(residualRange.getValue());
     p->saveHistograms(__file1, r.get());
 
-
-//    delete __file1;
+    __file1->Write();
     new TBrowser();
 #ifdef _DEBUG
 
-   // theApp.Run();
+    theApp.Run();
 #endif // _DEBUG
 
   }

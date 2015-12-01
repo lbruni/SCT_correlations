@@ -359,7 +359,7 @@ bool processorBase::process() {
 
   TCanvas c;
 
-  auto files = xml_print("files");
+  auto files = xml_print("files9876");
 
 
   auto _file1 = sct_corr::output_TFile_ptr(new TFile(
@@ -620,6 +620,8 @@ void s_process_collection_standard::process_reset() {
 
 
 bool s_process_collection_standard::process_file(FileProberties* fileP) {
+    
+  
   process_reset();
   auto file_PRINTOUT = xml_print("file");
 

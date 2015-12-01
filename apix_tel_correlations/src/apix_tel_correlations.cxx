@@ -77,7 +77,8 @@ int asyncMain(void *arg) {
 
 
   CmdLine cmd("ProcessFile", ' ', "0.1");
-
+    ValueArg<double> CutOffArg("c", "cutoff", "in percentage", false, 20, "double");
+    cmd.add(CutOffArg);
   ValueArg<std::string> FileNameArg("i", "inFile", "xml filename", true, "", "string");
   cmd.add(FileNameArg);
   ValueArg<std::string>  inPath("p", "inPath", "path to the root files", true, ".", "string");
@@ -120,7 +121,7 @@ int asyncMain(void *arg) {
   pl1->loop();
   auto h =SCT_helpers::Draw<TH2>(corr_xx,S_DrawOption());
   auto h_local = (TH2*)h->Clone("corr_xx");
-  auto p = SCT_helpers::LinearFit_Of_Profile(h_local, sct_type::procent_t(20));
+  auto p = SCT_helpers::LinearFit_Of_Profile(h_local, sct_type::procent_t(CutOffArg.getValue()));
   h_local->Draw("colz");
   p.Draw("same");
   p.Print();
@@ -131,13 +132,15 @@ int asyncMain(void *arg) {
 
   auto h1 = SCT_helpers::Draw<TH2>(corr_yy, S_DrawOption());
   auto h1_local = (TH2*)h1->Clone("corr_yy");
-  auto p1 = SCT_helpers::LinearFit_Of_Profile(h1_local, sct_type::procent_t(20));
+  auto p1 = SCT_helpers::LinearFit_Of_Profile(h1_local, sct_type::procent_t(CutOffArg.getValue()));
   h1_local->Draw("colz");
   p1.Draw("same");
   p1.Print();
   
-  out_file->Add(h_local);
-  out_file->Add(h1_local);
+    out_file->Add(h_local);
+    out_file->Add(h1_local);
+    out_file->Write();
+    
 #ifdef _DEBUG
   theApp.Run();
 #endif // _DEBUG

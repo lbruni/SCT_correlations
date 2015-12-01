@@ -117,7 +117,7 @@ int asyncMain(void *arg) {
     add2File(file_1, th_y_x, "correlation_DUT_Y_vs_Tel_X");
     new TCanvas();
     auto th_x_x = SCT_helpers::Draw<TH2>(corrxx, S_DrawOption().opt_colz());
-    add2File(file_1, th_x_x, "correlation DUT_X_vs_Tel_X");
+    add2File(file_1, th_x_x, "correlation_DUT_X_vs_Tel_X");
     
     new TCanvas();
     auto th_y_y=SCT_helpers::Draw<TH2>(corryy, S_DrawOption().opt_colz());

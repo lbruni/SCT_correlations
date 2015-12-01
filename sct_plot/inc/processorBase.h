@@ -155,7 +155,6 @@ public:
   bool process();
   virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) = 0;
 
-
   const xmlImputFiles::XML_imput_file* get_xml_input() const;
   const sct_corr::Xgear* get_gear() const;
 protected:
@@ -163,6 +162,7 @@ protected:
   std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
   sct_corr::sct_event_buffer m_buffer;
 private:
+  virtual std::string get_suffix() const = 0;
 
   std::shared_ptr<xmlImputFiles::XML_imput_file> m_input_files_xml;
 
@@ -215,7 +215,7 @@ private:
 
 
 
-
+  virtual std::string get_suffix() const override;
 
 
   std::shared_ptr<TH1D> m_Residual;
@@ -250,6 +250,8 @@ public:
   virtual void saveHistograms(TFile* outPutFile  = nullptr , xmlImputFiles::MinMaxRange<double>* residual_cut  = nullptr ) override;
 private:
   
+  virtual std::string get_suffix() const override;
+
   virtual  bool process_file(FileProberties* fileP) override;
   std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
   sct_corr::sct_event_buffer m_buffer;
@@ -265,7 +267,7 @@ private:
   std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
 };
 
-
+DllExport std::shared_ptr<sct_corr::processorBase> create_processor(const std::string& processorName);
 
 
 #endif // s_process_files_h__

@@ -11,7 +11,9 @@
 
 #include "sct_types.h"
 
-
+namespace xmlImputFiles {
+class XML_imput_file;
+}
 namespace sct_files {
 class DllExport base_file {
 public:
@@ -57,6 +59,10 @@ public:
     const s_plot_prob& = ""
     ) const;
 
+  s_plane_collection_correlations get_correlations_channel(
+    const xmlImputFiles::XML_imput_file& xmlFile,
+    const s_plot_prob& = ""
+    ) const;
 
   sct_corr::plane_def apix_hit_local() const;
   sct_corr::plane_def apix_hit() const;
@@ -119,6 +125,7 @@ private:
 private:
   std::shared_ptr<TFile> m_main_file;
 };
+
 
 
 

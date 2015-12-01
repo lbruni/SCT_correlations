@@ -8,7 +8,8 @@
 #include "xml_helpers/xml_util.hh"
 #include "TMath.h"
 #include "internal/exceptions.hh"
-#define  sct_corr_XML_ERROR_DEFAULT_VALUE  -666666666666
+#define  sct_corr_XML_ERROR_DEFAULT_VALUE  double(-666666.666666)
+
 namespace sct_corr {
 using xml_n = rapidxml::xml_node < char >;
 struct Xladder {
@@ -16,13 +17,13 @@ public:
   Xladder(xml_n* n) :
 
     ID(xml_util::getAtribute(n, "ID", ID)),
-    positionX(xml_util::getAtribute(n, "positionX", positionX)),
-    positionY(xml_util::getAtribute(n, "positionY", positionY)),
-    positionZ(xml_util::getAtribute(n, "positionZ", positionZ)),
-    radLength(xml_util::getAtribute(n, "radLength", radLength)),
-    rotationXY(xml_util::getAtribute(n, "rotationXY", rotationXY)),
-    rotationZX(xml_util::getAtribute(n, "rotationZX", rotationZX)),
-    rotationZY(xml_util::getAtribute(n, "rotationZY", rotationZY)),
+    positionX(xml_util::getAtribute(n, "positionX", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    positionY(xml_util::getAtribute(n, "positionY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    positionZ(xml_util::getAtribute(n, "positionZ", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    radLength(xml_util::getAtribute(n, "radLength", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    rotationXY(xml_util::getAtribute(n, "rotationXY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    rotationZX(xml_util::getAtribute(n, "rotationZX", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    rotationZY(xml_util::getAtribute(n, "rotationZY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
 
 
     sizeX(xml_util::getAtribute(n, "sizeX", sizeX)),
@@ -47,28 +48,28 @@ struct Xsensitive {
 public:
   Xsensitive(xml_n* n) :
 
-    ID(xml_util::getAtribute(n, "ID", ID)),
-    npixelX(xml_util::getAtribute(n, "npixelX", npixelX)),
-    npixelY(xml_util::getAtribute(n, "npixelY", npixelY)),
+    ID(xml_util::getAtribute(n, "ID", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    npixelX(xml_util::getAtribute(n, "npixelX", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    npixelY(xml_util::getAtribute(n, "npixelY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
 
 
-    pitchX(xml_util::getAtribute(n, "pitchX", pitchX)),
-    pitchY(xml_util::getAtribute(n, "pitchY", pitchY)),
-    positionX(xml_util::getAtribute(n, "positionX", positionX)),
-    positionY(xml_util::getAtribute(n, "positionY", positionY)),
-    positionZ(xml_util::getAtribute(n, "positionZ", positionZ)),
-    radLength(xml_util::getAtribute(n, "radLength", radLength)),
+    pitchX(xml_util::getAtribute(n, "pitchX", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    pitchY(xml_util::getAtribute(n, "pitchY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    positionX(xml_util::getAtribute(n, "positionX", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    positionY(xml_util::getAtribute(n, "positionY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    positionZ(xml_util::getAtribute(n, "positionZ", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    radLength(xml_util::getAtribute(n, "radLength", sct_corr_XML_ERROR_DEFAULT_VALUE)),
 
-    resolution(xml_util::getAtribute(n, "resolution", resolution)),
-    rotation1(xml_util::getAtribute(n, "rotation1", rotation1)),
-    rotation2(xml_util::getAtribute(n, "rotation2", rotation2)),
-    rotation3(xml_util::getAtribute(n, "rotation3", rotation3)),
+    resolution(xml_util::getAtribute(n, "resolution", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    rotation1(xml_util::getAtribute(n, "rotation1", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    rotation2(xml_util::getAtribute(n, "rotation2", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    rotation3(xml_util::getAtribute(n, "rotation3", sct_corr_XML_ERROR_DEFAULT_VALUE)),
 
 
-    rotation4(xml_util::getAtribute(n, "rotation4", rotation4)),
-    sizeX(xml_util::getAtribute(n, "sizeX", sizeX)),
-    sizeY(xml_util::getAtribute(n, "sizeY", sizeY)),
-    thickness(xml_util::getAtribute(n, "thickness", thickness))
+    rotation4(xml_util::getAtribute(n, "rotation4", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    sizeX(xml_util::getAtribute(n, "sizeX", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    sizeY(xml_util::getAtribute(n, "sizeY", sct_corr_XML_ERROR_DEFAULT_VALUE)),
+    thickness(xml_util::getAtribute(n, "thickness", sct_corr_XML_ERROR_DEFAULT_VALUE))
 
   {
   }

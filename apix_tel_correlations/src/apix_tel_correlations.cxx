@@ -77,6 +77,7 @@ int asyncMain(void *arg) {
 
 
   CmdLine cmd("ProcessFile", ' ', "0.1");
+    
     ValueArg<double> CutOffArg("c", "cutoff", "in percentage", false, 20, "double");
     cmd.add(CutOffArg);
   ValueArg<std::string> FileNameArg("i", "inFile", "xml filename", true, "", "string");
@@ -137,10 +138,10 @@ int asyncMain(void *arg) {
   p1.Draw("same");
   p1.Print();
   
-    out_file->Add(h_local);
-    out_file->Add(h1_local);
-    out_file->Write();
-    
+  out_file->Add(h_local);
+  out_file->Add(h1_local);
+  out_file->Write(); 
+
 #ifdef _DEBUG
   theApp.Run();
 #endif // _DEBUG

@@ -392,6 +392,8 @@ s_plane_collection_correlations fitter_file::get_GBL_correlations_channel(
     );
   std::string find_closest_name = necessary_CONVERSION(plot_prob_.getName()) + "_closest";
 
+ // auto second_hit1 = sct_corr::processor::remove_closest(DUT_zs_data(), trueHits_cut, x_axis_def, s_plot_prob().doNotSaveToDisk());
+
 
   auto find_closest = sct_processor::find_nearest_strip(
     trueHits_cut,

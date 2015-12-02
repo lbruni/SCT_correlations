@@ -253,8 +253,8 @@ private:
   virtual std::string get_suffix() const override;
 
   virtual  bool process_file(FileProberties* fileP) override;
-  std::shared_ptr<sct_corr::treeCollection_ouput> m_outputTree;
-  sct_corr::sct_event_buffer m_buffer;
+
+
 
   TFile* m_dummy = nullptr;
 
@@ -266,6 +266,78 @@ private:
   std::shared_ptr<sct_corr::inStripClusterSize> m_instripClusterSize;
   std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
 };
+
+
+class DllExport s_process_collection_modulo_second : public sct_corr::processorBase {
+public:
+  s_process_collection_modulo_second();
+  virtual ~s_process_collection_modulo_second();
+
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) override;
+private:
+
+  virtual std::string get_suffix() const override;
+
+  virtual  bool process_file(FileProberties* fileP) override;
+
+
+
+  TFile* m_dummy = nullptr;
+
+  s_plane_collection_correlations m_gbl_collection;
+
+  std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
+  std::shared_ptr<sct_files::fitter_file> m_file_fitter;
+  std::shared_ptr<sct_corr::inStripEfficiency> m_instripEfficiency;
+  std::shared_ptr<sct_corr::inStripClusterSize> m_instripClusterSize;
+  std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
+};
+
+
+class DllExport s_process_collection_standard_second :public sct_corr::processorBase {
+public:
+  s_process_collection_standard_second();
+  virtual ~s_process_collection_standard_second();
+  Long64_t DrawResidual(Double_t min_X, Double_t max_X);
+
+
+  Long64_t Draw_Efficinecy_map();
+  Long64_t Draw_Hit_map();
+  Long64_t Draw_DUT_Hits_map();
+
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr);
+
+private:
+
+  virtual  bool process_file(FileProberties* fileP) override;
+  void extract_efficiency();
+  void extract_hitMap();
+  void extract_residual();
+  
+  void process_reset();
+
+
+
+  virtual std::string get_suffix() const override;
+
+
+  std::shared_ptr<TH1D> m_Residual;
+  std::shared_ptr<TH1D> m_Hits_total;
+  std::shared_ptr<TH1D> m_Hits_with_DUT_Hits;
+  std::shared_ptr<TH1D> m_Efficieny_map;
+  std::shared_ptr<TH1D> m_Efficieny_trueHits;
+
+
+  s_plane_collection_correlations m_gbl_collection;
+
+  s_plane_collection m_collection;
+  std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
+  std::shared_ptr <sct_files::fitter_file> m_file_fitter;
+  TFile* m_dummy = nullptr;
+
+
+};
+
 
 DllExport std::shared_ptr<sct_corr::processorBase> create_processor(const std::string& processorName);
 

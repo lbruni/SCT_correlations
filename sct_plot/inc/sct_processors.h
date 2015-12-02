@@ -16,6 +16,13 @@ public:
     const s_plot_prob& = ""
     );
 
+  static  plane_def remove_closest(
+    const plane_def& planeA,
+    const plane_def& planeB,
+    const  axis_def search_axis,
+    const s_plot_prob& = ""
+    );
+
   static plane_def if_a_get_b(
     const plane_def& planeA,
     const plane_def& planeB,

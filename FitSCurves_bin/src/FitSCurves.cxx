@@ -63,6 +63,9 @@ int main(int argc, char **argv) {
     cmd.add(outFilename);
     ValueArg<double> MPV_arg("m", "mpv", "start value for the landau gauss fit", false, 80, "double");
     cmd.add(MPV_arg);
+
+    ValueArg<double> MPV_arg_lower_cut("c", "mpv_lower_cut", "lower cut for mpv value", false, 280, "double");
+    cmd.add(MPV_arg_lower_cut);
     cmd.parse(argc, argv);
 
 
@@ -93,17 +96,20 @@ int main(int argc, char **argv) {
 
     }
     scurve_fit_collection p(outfile.c_str());
-    p.setStartMPV(MPV_arg.getValue());
+
+ 
     if (noise) {
       p.setNoiseRun(noise);
     } else if (Hits) {
       p.setBeamRuns(Hits);
     }
+    p.set_mpv_start_low_cut(MPV_arg_lower_cut.getValue());
+    p.setStartMPV(MPV_arg.getValue());
     gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
     p.processTotal("total_efficiency:Threshold:error_efficiency");
-    p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+    p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def);
 #ifdef _DEBUG
-    theApp.Run();
+ //   theApp.Run();
 #endif
     return 0;
   } catch (ArgException &e)  // catch any exceptions

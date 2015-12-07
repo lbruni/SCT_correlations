@@ -3,9 +3,9 @@
 #include "treeCollection.h"
 #include <iostream>
 #include "internal/plane_hit.hh"
+#include "internal/exceptions.hh"
 #include "factoryDef.hh"
 #include <algorithm>
-
 namespace sct_corr{
 
 
@@ -66,6 +66,17 @@ namespace sct_corr{
    return isPermutation(a1, a2.m_names);
  }
 
+
+ std::string to_string(const axis_names& ax) {
+
+   std::string ret;
+
+   for (auto &e:ax.m_names )   {
+
+     ret += " " + necessary_CONVERSION(e);
+   }
+   return ret;
+ }
 
  bool operator<(const axis_names&  a1, const axis_names& a2) {
    std::vector<std::string> m_dumm1, m_dumm2;

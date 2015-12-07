@@ -19,7 +19,12 @@
 #include "sct_types.h"
 #include "internal/exceptions.hh"
 #include "processors/find_nearest_strip.hh"
+#define  Class_factory_Utilities_THROW(x) SCT_THROW(x)
 
+std::string to_string(const std::string& par) {
+  return par;
+}
+#include "factoryDef.hh"
 
 bool gDo_print = false;
 int gPos = 0;
@@ -547,25 +552,19 @@ void processorEfficiency::process_set_run_prob() {
 }
 
 }
+void display_registered_processors(std::ostream& out) {
+  auto ret = Class_factory_Utilities::Factory<sct_corr::processorBase>::GetTypes();
+  out << "registered Processors: \n";
+  for (auto e : ret) {
+    out << e << std::endl;
 
-std::shared_ptr<sct_corr::processorBase> create_processor(const std::string& processorName) {
-  if (processorName == "Standard") {
-   return std::make_shared<s_process_collection_standard>();
-  }
-
-  if (processorName == "Modulo") {
-    return std::make_shared<s_process_collection_modulo>();
   }
 
-  if (processorName== "Modulo_second")
-  {
-    return std::make_shared<s_process_collection_modulo_second>();
-  }
-  if (processorName == "Standard_second") {
-    return std::make_shared<s_process_collection_standard_second>();
-  }
-  SCT_THROW("Processor not found. Processor name: " + std::string(processorName));
-  return nullptr;
+}
+std::unique_ptr<sct_corr::processorBase> create_processor(const std::string& processorName) {
+  std::string dummy;
+  return Class_factory_Utilities::Factory<sct_corr::processorBase>::Create(processorName, dummy);
+
 }
 
 void s_process_collection_standard::extract_efficiency() {
@@ -662,7 +661,7 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
     s_plot_prob("Hits_in_channels")
     .SaveToDisk()
     );
-  
+
 
 
   auto res = sct_corr::processor::residual(
@@ -694,9 +693,9 @@ bool s_process_collection_standard::process_file(FileProberties* fileP) {
 
 
 
-s_process_collection_standard::s_process_collection_standard() {
+s_process_collection_standard::s_process_collection_standard(Parameter_ref) {
   m_dummy = new TFile("dummy1.root", "recreate");
-  if (!m_dummy->IsOpen())  {
+  if (!m_dummy->IsOpen()) {
     SCT_THROW("unable to open file: dummy1.root");
   }
 }
@@ -918,7 +917,7 @@ void s_process_collection_standard::saveHistograms(TFile* outPutFile /*= nullptr
     outPutFile->Add(m_resVSMissing.get());
     outPutFile->Add(m_Residual.get());
   }
-  
+
 }
 
 std::string s_process_collection_standard::get_suffix() const {
@@ -944,7 +943,7 @@ void FileProberties::setTFile(TFile* file) {
   m_file = file;
 }
 
-s_process_collection_modulo::s_process_collection_modulo() {
+s_process_collection_modulo::s_process_collection_modulo(Parameter_ref) {
   m_dummy = new TFile("dummy1.root", "recreate");
 }
 
@@ -974,23 +973,23 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
 
 
 
-   m_instripEfficiency = std::make_shared<sct_corr::inStripEfficiency>(
-     m_gbl_collection.getTotalTrueHits(),
-     m_gbl_collection.getTrueHitsWithDUT(),
-     S_XCut(ActiveStrips.getMin(),ActiveStrips.getMax()),
-     x_axis_def,
-     sct_type::modulo_t(3),
-     s_plot_prob("inStripEffi")
-     );
- 
-   m_instripClusterSize = std::make_shared<sct_corr::inStripClusterSize>(
-     m_gbl_collection.getTrueHitsWithDUT(),
-     m_file_fitter->DUT_zs_data(),
-     10,
-     x_axis_def,
-     sct_type::modulo_t(3),
-     s_plot_prob("cluster_size_instrip").SaveToDisk()
-     );
+  m_instripEfficiency = std::make_shared<sct_corr::inStripEfficiency>(
+    m_gbl_collection.getTotalTrueHits(),
+    m_gbl_collection.getTrueHitsWithDUT(),
+    S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
+    x_axis_def,
+    sct_type::modulo_t(3),
+    s_plot_prob("inStripEffi")
+    );
+
+  m_instripClusterSize = std::make_shared<sct_corr::inStripClusterSize>(
+    m_gbl_collection.getTrueHitsWithDUT(),
+    m_file_fitter->DUT_zs_data(),
+    10,
+    x_axis_def,
+    sct_type::modulo_t(3),
+    s_plot_prob("cluster_size_instrip").SaveToDisk()
+    );
 
 
   // auto second_hit = sct_corr::processor::remove_closest(m_file_fitter->DUT_zs_data(), m_gbl_collection.getTotalTrueHits(), x_axis_def, s_plot_prob().doNotSaveToDisk());
@@ -1000,7 +999,7 @@ bool s_process_collection_modulo::process_file(FileProberties* fileP) {
     m_gbl_collection.getTotalTrueHits(),
     m_file_fitter->DUT_zs_data(),
     S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
-    sct_type::stripNr_t(ActiveStrips.getMax()+20),
+    sct_type::stripNr_t(ActiveStrips.getMax() + 20),
     x_axis_def,
     s_plot_prob("Res_efficiency")
     );
@@ -1046,7 +1045,7 @@ std::string s_process_collection_modulo::get_suffix() const {
   return "modulo";
 }
 
-s_process_collection_modulo_second::s_process_collection_modulo_second() {
+s_process_collection_modulo_second::s_process_collection_modulo_second(Parameter_ref) {
   m_dummy = new TFile("dummy1.root", "recreate");
   if (!m_dummy->IsOpen()) {
     SCT_THROW("unable to open file: dummy1.root");
@@ -1101,26 +1100,10 @@ bool s_process_collection_modulo_second::process_file(FileProberties* fileP) {
     s_plot_prob("inStripEffi")
     );
 
-  m_instripClusterSize = std::make_shared<sct_corr::inStripClusterSize>(
-    find_closest.getHitOnPlaneA(),
-    m_file_fitter->DUT_zs_data(),
-    10,
-    x_axis_def,
-    sct_type::modulo_t(3),
-    s_plot_prob("cluster_size_instrip").SaveToDisk()
-    );
 
 
 
-  m_residualEffieciency = std::make_shared<
-    sct_corr::residual_efficienct>(
-    m_gbl_collection.getTotalTrueHits(),
-    second_hit1,
-    S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
-    sct_type::stripNr_t(ActiveStrips.getMax() + 20),
-    x_axis_def,
-    s_plot_prob("Res_efficiency")
-    );
+
 
 #ifdef _DEBUG
   pl->loop(20000);
@@ -1129,37 +1112,26 @@ bool s_process_collection_modulo_second::process_file(FileProberties* fileP) {
 #endif // _DEBUG
 
 
-  m_residualEffieciency->Draw();
   m_instripEfficiency->Draw();
-  push2outputEvent(m_outputl, *m_residualEffieciency->getEfficiency_map(), *m_residualEffieciency->get_total(), ID_t(0));
-  push2outputEvent(m_outputl, *m_instripEfficiency->getEfficiency_map(), *m_instripEfficiency->getHits(), ID_t(1));
+
+  push2outputEvent(m_outputl, *m_instripEfficiency->getEfficiency_map(), *m_instripEfficiency->getHits(), ID_t(0));
   return true;
 }
 
 void s_process_collection_modulo_second::saveHistograms(TFile* outPutFile /*= nullptr*/, xmlImputFiles::MinMaxRange<double>* residual_cut /*= nullptr*/) {
 #ifdef _DEBUG
   new TCanvas();
-#endif
-  m_instripClusterSize->Draw();
-#ifdef _DEBUG
-  new TCanvas();
 #endif // _DEBUG
   m_instripEfficiency->Draw();
-#ifdef _DEBUG
-  new TCanvas();
-#endif // _DEBUG
-  m_residualEffieciency->Draw();
 
   if (outPutFile) {
-    outPutFile->Add(m_instripClusterSize->getHistogram());
     outPutFile->Add(m_instripEfficiency->getEfficiency_map());
-    outPutFile->Add(m_residualEffieciency->getEfficiency_map());
-    outPutFile->Add(m_residualEffieciency->get_total());
+    outPutFile->Add(m_instripEfficiency->getHits());
   }
 }
 
 void s_process_collection_standard_second::saveHistograms(TFile* outPutFile /*= nullptr*/, xmlImputFiles::MinMaxRange<double>* residual_cut /*= nullptr*/) {
-  DrawResidual(residual_cut->getMin(),residual_cut->getMax());
+  DrawResidual(residual_cut->getMin(), residual_cut->getMax());
 
   Draw_DUT_Hits_map();
 
@@ -1167,7 +1139,7 @@ void s_process_collection_standard_second::saveHistograms(TFile* outPutFile /*= 
 
   Draw_Efficinecy_map();
 
-  
+
   if (outPutFile) {
     outPutFile->Add(m_Efficieny_map.get());
     outPutFile->Add(m_Efficieny_trueHits.get());
@@ -1178,7 +1150,7 @@ void s_process_collection_standard_second::saveHistograms(TFile* outPutFile /*= 
 
 }
 
-s_process_collection_standard_second::s_process_collection_standard_second() {
+s_process_collection_standard_second::s_process_collection_standard_second(Parameter_ref) {
   m_dummy = new TFile("dummy1.root", "recreate");
   if (!m_dummy->IsOpen()) {
     SCT_THROW("unable to open file: dummy1.root");
@@ -1227,10 +1199,10 @@ bool s_process_collection_standard_second::process_file(FileProberties* fileP) {
     );
 
 
-  m_collection.push_back("TrueHits_with_DUT",find_closest.getHitOnPlaneA());
-  m_collection.push_back("residual",find_closest.getResidual());
+  m_collection.push_back("TrueHits_with_DUT", find_closest.getHitOnPlaneA());
+  m_collection.push_back("residual", find_closest.getResidual());
 
-  
+
 
 #ifdef _DEBUG
   m_plotCollection->loop(20000);
@@ -1292,7 +1264,7 @@ Long64_t s_process_collection_standard_second::Draw_Efficinecy_map() {
     );
 
   auto n = m_plotCollection->Draw(
-   m_collection.get("TrueHits_with_DUT")(),
+    m_collection.get("TrueHits_with_DUT")(),
     S_DrawOption()
     .draw_x()
     .output_object(m_Efficieny_map.get())
@@ -1395,4 +1367,235 @@ void s_process_collection_standard_second::extract_residual() {
     xml_print("residual_mean", residual_mean);
     m_outputl.set_offset(residual_mean);
   }
+}
+
+void s_process_collection_modulo_ex::saveHistograms(TFile* outPutFile /*= nullptr*/, xmlImputFiles::MinMaxRange<double>* residual_cut /*= nullptr*/) {
+#ifdef _DEBUG
+  new TCanvas();
+#endif // _DEBUG
+  m_instripEfficiency->Draw();
+  if (outPutFile) {
+    outPutFile->Add(m_instripEfficiency->getEfficiency_map());
+    outPutFile->Add(m_instripEfficiency->getHits());
+  }
+}
+
+std::string s_process_collection_modulo_ex::get_suffix() const {
+  return "modulo_ex";
+}
+
+bool s_process_collection_modulo_ex::process_file(FileProberties* fileP) {
+  m_plotCollection = sct_corr::create_plot_collection();
+  m_plotCollection->addFile(fileP->getTfile());
+  m_plotCollection->setOutputFile(m_dummy);
+  m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
+
+  auto pl = m_file_fitter->get_collection();
+
+
+
+  m_gbl_collection = m_file_fitter->get_correlations_channel(
+    *get_xml_input(),
+    s_plot_prob("Hits_in_channels")
+    .SaveToDisk()
+    );
+  auto ActiveStrips = get_xml_input()->globalConfig().AvtiveStrips();
+
+
+
+  m_instripEfficiency = std::make_shared<sct_corr::inStripEfficiency>(
+    m_gbl_collection.getTotalTrueHits(),
+    m_gbl_collection.getTrueHitsWithDUT(),
+    S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
+    x_axis_def,
+    sct_type::modulo_t(3),
+    s_plot_prob("inStripEffi")
+    );
+
+
+
+
+#ifdef _DEBUG
+  pl->loop(20000);
+#else
+  pl->loop();
+#endif // _DEBUG
+
+
+
+  m_instripEfficiency->Draw();
+  push2outputEvent(m_outputl, *m_instripEfficiency->getEfficiency_map(), *m_instripEfficiency->getHits(), ID_t(0));
+  return true;
+}
+
+s_process_collection_modulo_ex::~s_process_collection_modulo_ex() {
+
+}
+
+s_process_collection_modulo_ex::s_process_collection_modulo_ex(Parameter_ref) {
+  m_dummy = new TFile("dummy1.root", "recreate");
+}
+
+s_process_collection_residual::s_process_collection_residual(Parameter_ref) {
+  m_dummy = new TFile("dummy1.root", "recreate");
+}
+
+s_process_collection_residual::~s_process_collection_residual() {
+
+}
+
+void s_process_collection_residual::saveHistograms(TFile* outPutFile /*= nullptr*/, xmlImputFiles::MinMaxRange<double>* residual_cut /*= nullptr*/) {
+
+#ifdef _DEBUG
+  new TCanvas();
+#endif // _DEBUG
+  m_residualEffieciency->Draw();
+
+  if (outPutFile) {
+    outPutFile->Add(m_residualEffieciency->getEfficiency_map());
+    outPutFile->Add(m_residualEffieciency->get_total());
+  }
+}
+
+std::string s_process_collection_residual::get_suffix() const {
+  return "residual";
+}
+
+bool s_process_collection_residual::process_file(FileProberties* fileP) {
+
+  m_plotCollection = sct_corr::create_plot_collection();
+  m_plotCollection->addFile(fileP->getTfile());
+  m_plotCollection->setOutputFile(m_dummy);
+  m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
+
+  auto pl = m_file_fitter->get_collection();
+
+
+
+  m_gbl_collection = m_file_fitter->get_correlations_channel(
+    *get_xml_input(),
+    s_plot_prob("Hits_in_channels")
+    .SaveToDisk()
+    );
+  auto ActiveStrips = get_xml_input()->globalConfig().AvtiveStrips();
+
+
+  m_residualEffieciency = std::make_shared<
+    sct_corr::residual_efficienct>(
+    m_gbl_collection.getTotalTrueHits(),
+    m_file_fitter->DUT_zs_data(),
+    S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
+    sct_type::stripNr_t(ActiveStrips.getMax() + 20),
+    x_axis_def,
+    s_plot_prob("Res_efficiency")
+    );
+
+#ifdef _DEBUG
+  pl->loop(20000);
+#else
+  pl->loop();
+#endif // _DEBUG
+
+
+  m_residualEffieciency->Draw();
+  push2outputEvent(m_outputl, *m_residualEffieciency->getEfficiency_map(), *m_residualEffieciency->get_total(), ID_t(0));
+  return true;
+}
+
+using namespace sct_corr;
+registerBaseClassDef(processorBase);
+
+registerProcessor("Modulo", s_process_collection_modulo);
+registerProcessor("Modulo_ex", s_process_collection_modulo_ex);
+registerProcessor("Standard", s_process_collection_standard);
+registerProcessor("Standard_second", s_process_collection_standard_second);
+registerProcessor("Modulo_second", s_process_collection_modulo_second);
+registerProcessor("Residual", s_process_collection_residual);
+registerProcessor("Residual_second", s_process_collection_residual_second);
+
+s_process_collection_residual_second::s_process_collection_residual_second(Parameter_ref par) {
+
+  m_dummy = new TFile("dummy1.root", "recreate");
+  if (!m_dummy->IsOpen()) {
+    SCT_THROW("unable to open file: dummy1.root");
+  }
+
+}
+
+s_process_collection_residual_second::~s_process_collection_residual_second() {
+  if (m_dummy) {
+    m_dummy->Write();
+  }
+
+}
+
+void s_process_collection_residual_second::saveHistograms(TFile* outPutFile /*= nullptr*/, xmlImputFiles::MinMaxRange<double>* residual_cut /*= nullptr*/) {
+#ifdef _DEBUG
+  new TCanvas();
+#endif // _DEBUG
+  m_residualEffieciency->Draw();
+  if (outPutFile) {
+    outPutFile->Add(m_residualEffieciency->getEfficiency_map());
+    outPutFile->Add(m_residualEffieciency->get_total());
+  }
+}
+
+std::string s_process_collection_residual_second::get_suffix() const {
+  return "residual_second";
+}
+
+bool s_process_collection_residual_second::process_file(FileProberties* fileP) {
+  m_plotCollection = sct_corr::create_plot_collection();
+  m_plotCollection->addFile(fileP->getTfile());
+  m_plotCollection->setOutputFile(m_dummy);
+  m_file_fitter = std::make_shared<sct_files::fitter_file>(m_plotCollection, get_gear());
+
+  auto pl = m_file_fitter->get_collection();
+
+
+
+  m_gbl_collection = m_file_fitter->get_correlations_channel(
+    *get_xml_input(),
+    s_plot_prob("Hits_in_channels")
+    .SaveToDisk()
+    );
+  auto ActiveStrips = get_xml_input()->globalConfig().AvtiveStrips();
+
+  auto second_hit1 = sct_corr::processor::remove_closest(m_file_fitter->DUT_zs_data(), m_gbl_collection.getTotalTrueHits(), x_axis_def, s_plot_prob().doNotSaveToDisk());
+
+
+  auto find_closest = sct_processor::find_nearest_strip(
+    m_gbl_collection.getTotalTrueHits(),
+    second_hit1,
+    x_axis_def,
+    get_xml_input()->globalConfig().residual_cut(),
+    s_plot_prob("second_highest")
+    );
+
+
+  m_residualEffieciency = std::make_shared<sct_corr::residual_efficienct>(
+    m_gbl_collection.getTotalTrueHits(),
+    find_closest.getHitOnPlaneA(),
+    S_XCut(ActiveStrips.getMin(), ActiveStrips.getMax()),
+    sct_type::stripNr_t(ActiveStrips.getMax() + 20),
+    x_axis_def,
+    s_plot_prob("Res_efficiency")
+    );
+
+
+
+
+
+
+#ifdef _DEBUG
+  pl->loop(20000);
+#else
+  pl->loop();
+#endif // _DEBUG
+
+
+  m_residualEffieciency->Draw();
+
+  push2outputEvent(m_outputl, *m_residualEffieciency->getEfficiency_map(), *m_residualEffieciency->get_total(), ID_t(0));
+  return true;
 }

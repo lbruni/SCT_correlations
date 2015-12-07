@@ -34,11 +34,43 @@
 #include "TTree.h"
 #include "SCT_helpers.h"
 #include "scurve_fit_collection.hh"
+#include "internal/exceptions.hh"
+
+std::string trim(const std::string & s) {
+  static const std::string spaces = " \t\n\r\v";
+  size_t b = s.find_first_not_of(spaces);
+  size_t e = s.find_last_not_of(spaces);
+  if (b == std::string::npos || e == std::string::npos) {
+    return "";
+  }
+  return std::string(s, b, e - b + 1);
+}
 
 
 
-
-
+std::vector<std::string> split(const std::string & str, const std::string & delim, bool dotrim) {
+  std::string s(str);
+  std::vector<std::string> result;
+  if (str == "") return result;
+  size_t i;
+  while ((i = s.find_first_of(delim)) != std::string::npos) {
+    result.push_back(dotrim ? trim(s.substr(0, i)) : s.substr(0, i));
+    s = s.substr(i + 1);
+  }
+  result.push_back(s);
+  return result;
+}
+std::vector<std::string> split(const std::string & str, const std::string & delim) {
+  return split(str, delim, false);
+}
+std::vector<unsigned> parsenumbers(const std::string & s) {
+  std::vector<unsigned> result;
+  std::vector<std::string> ind = split(s, ",");
+  for (auto&e : ind) {
+    result.push_back(atoi(e.c_str()));
+  }
+  return result;
+}
 
 
 
@@ -63,8 +95,14 @@ int main(int argc, char **argv) {
     cmd.add(outFilename);
     ValueArg<double> MPV_arg("m", "mpv", "start value for the landau gauss fit", false, 80, "double");
     cmd.add(MPV_arg);
-    cmd.parse(argc, argv);
 
+    ValueArg<double> MPV_arg_lower_cut("c", "mpv_lower_cut", "lower cut for mpv value", false, 280, "double");
+    cmd.add(MPV_arg_lower_cut);
+
+    ValueArg<std::string> ignore_elements("i", "ignorsThreshold", "ignores threshold by index", false, "", "string");
+    cmd.add(ignore_elements);
+    cmd.parse(argc, argv);
+    auto index = parsenumbers(ignore_elements.getValue());
 
 
     std::string inFile = FileNameArg.getValue();
@@ -93,17 +131,20 @@ int main(int argc, char **argv) {
 
     }
     scurve_fit_collection p(outfile.c_str());
-    p.setStartMPV(MPV_arg.getValue());
+
+
     if (noise) {
       p.setNoiseRun(noise);
     } else if (Hits) {
       p.setBeamRuns(Hits);
     }
+    p.set_mpv_start_low_cut(MPV_arg_lower_cut.getValue());
+    p.setStartMPV(MPV_arg.getValue());
     gErrorIgnoreLevel = kError;  // ignoring root printouts (replace of histograms) 
     p.processTotal("total_efficiency:Threshold:error_efficiency");
-    p.processStrip("Occupancy:Threshold:Occupancy_error", x_axis_def, 1, 400);
+    p.processStrip("Occupancy:Threshold:Occupancy_error", index);
 #ifdef _DEBUG
-    theApp.Run();
+    //   theApp.Run();
 #endif
     return 0;
   } catch (ArgException &e)  // catch any exceptions

@@ -27,6 +27,7 @@ namespace sct_corr{
     std::vector<sct_type::AxesName_t> m_names;
 
   };
+  std::string to_string(const axis_names& ax);
   bool operator==(const axis_names& a1, const axis_names& a2);
   bool operator==(const axis_names& a1, const std::vector<std::string>& a2);
   bool operator==(const std::vector<sct_type::AxesName_t>& a1, const axis_names& a2);

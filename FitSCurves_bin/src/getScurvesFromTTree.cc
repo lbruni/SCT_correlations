@@ -24,13 +24,13 @@ getScurvesFromTTree::getScurvesFromTTree(TTree* tree) : m_tree(tree) {
   tree_pointer->GetEntry(0);
   m_max_index = tree_pointer->m_rootBuffer.getData(x_axis_def)->size();
 
-  m_Threshold.resize(static_cast<size_t>(tree_pointer->GetEntries()));
   m_Ocuupancy.resize(m_max_index);
   m_Occuoancy_error.resize(m_max_index);
   m_total_hits.resize(m_max_index);
   x_pos.resize(m_max_index);
 
   auto sorted_byThreshold = get_sort_by_threhsold();
+  m_Threshold.resize(sorted_byThreshold.size());
   size_t i = 0;
   for (auto& e : sorted_byThreshold) {
 

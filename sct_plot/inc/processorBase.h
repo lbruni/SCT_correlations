@@ -13,6 +13,8 @@
 #include "plane_def.h"
 #include "xml_helpers/xml_fileList.hh"
 
+#include "factory.hh"
+#define  registerProcessor(processorName,processorType) registerClass(processorBase,processorType,processorName)
 namespace sct_corr {
 class treeCollection_ouput;
 struct Xgear;
@@ -142,6 +144,9 @@ private:
 TYPE_CLASS_PTR(output_TFile_ptr, TFile*);
 class DllExport processorBase {
 public:
+  using MainType = std::string;
+  using Parameter_t = std::string;
+  using Parameter_ref = const std::string&;
   processorBase();
   virtual ~processorBase();
   void setOutputName(const char* name);
@@ -190,7 +195,7 @@ private:
 }
 class DllExport s_process_collection_standard :public sct_corr::processorBase {
 public:
-  s_process_collection_standard();
+  s_process_collection_standard(Parameter_ref par);
   virtual ~s_process_collection_standard();
   Long64_t DrawResidual(Double_t min_X, Double_t max_X);
   Long64_t DrawResidual();
@@ -244,7 +249,7 @@ private:
 
 class DllExport s_process_collection_modulo : public sct_corr::processorBase {
 public:
-  s_process_collection_modulo();
+  s_process_collection_modulo(Parameter_ref par);
   virtual ~s_process_collection_modulo();
 
   virtual void saveHistograms(TFile* outPutFile  = nullptr , xmlImputFiles::MinMaxRange<double>* residual_cut  = nullptr ) override;
@@ -267,10 +272,78 @@ private:
   std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
 };
 
+class DllExport s_process_collection_modulo_ex : public sct_corr::processorBase {
+public:
+  s_process_collection_modulo_ex(Parameter_ref);
+  virtual ~s_process_collection_modulo_ex();
+
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) override;
+private:
+
+  virtual std::string get_suffix() const override;
+
+  virtual  bool process_file(FileProberties* fileP) override;
+
+
+
+  TFile* m_dummy = nullptr;
+
+  s_plane_collection_correlations m_gbl_collection;
+
+  std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
+  std::shared_ptr<sct_files::fitter_file> m_file_fitter;
+  std::shared_ptr<sct_corr::inStripEfficiency> m_instripEfficiency;
+};
+
+class DllExport s_process_collection_residual : public sct_corr::processorBase {
+public:
+  s_process_collection_residual(Parameter_ref par);
+  virtual ~s_process_collection_residual();
+
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) override;
+private:
+
+  virtual std::string get_suffix() const override;
+
+  virtual  bool process_file(FileProberties* fileP) override;
+
+
+
+  TFile* m_dummy = nullptr;
+
+  s_plane_collection_correlations m_gbl_collection;
+
+  std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
+  std::shared_ptr<sct_files::fitter_file> m_file_fitter;
+  std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
+};
+
+class DllExport s_process_collection_residual_second : public sct_corr::processorBase {
+public:
+  s_process_collection_residual_second(Parameter_ref par);
+  virtual ~s_process_collection_residual_second();
+
+  virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) override;
+private:
+
+  virtual std::string get_suffix() const override;
+
+  virtual  bool process_file(FileProberties* fileP) override;
+
+
+
+  TFile* m_dummy = nullptr;
+
+  s_plane_collection_correlations m_gbl_collection;
+
+  std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
+  std::shared_ptr<sct_files::fitter_file> m_file_fitter;
+  std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
+};
 
 class DllExport s_process_collection_modulo_second : public sct_corr::processorBase {
 public:
-  s_process_collection_modulo_second();
+  s_process_collection_modulo_second(Parameter_ref par);
   virtual ~s_process_collection_modulo_second();
 
   virtual void saveHistograms(TFile* outPutFile = nullptr, xmlImputFiles::MinMaxRange<double>* residual_cut = nullptr) override;
@@ -289,14 +362,12 @@ private:
   std::shared_ptr<sct_corr::plot_collection> m_plotCollection;
   std::shared_ptr<sct_files::fitter_file> m_file_fitter;
   std::shared_ptr<sct_corr::inStripEfficiency> m_instripEfficiency;
-  std::shared_ptr<sct_corr::inStripClusterSize> m_instripClusterSize;
-  std::shared_ptr<sct_corr::residual_efficienct> m_residualEffieciency;
 };
 
 
 class DllExport s_process_collection_standard_second :public sct_corr::processorBase {
 public:
-  s_process_collection_standard_second();
+  s_process_collection_standard_second(Parameter_ref par);
   virtual ~s_process_collection_standard_second();
   Long64_t DrawResidual(Double_t min_X, Double_t max_X);
 
@@ -338,8 +409,8 @@ private:
 
 };
 
-
-DllExport std::shared_ptr<sct_corr::processorBase> create_processor(const std::string& processorName);
+DllExport void display_registered_processors(std::ostream&);
+DllExport std::unique_ptr<sct_corr::processorBase> create_processor(const std::string& processorName);
 
 
 #endif // s_process_files_h__

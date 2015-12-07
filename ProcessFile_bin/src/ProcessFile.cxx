@@ -128,6 +128,7 @@ int asyncMain(void *arg) {
 
   }
   catch (...) {
+    display_registered_processors(std::cout);
     return sct_corr::handleExceptions();
   }
   return 0;

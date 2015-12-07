@@ -41,7 +41,7 @@ public:
   void processTotal(const char * total_name);
 
   /////////PROCESS SINGLE STRIP EFF VS THRESHOLD
-  void processStrip(const char* stripName, axis_def axis__);
+  void processStrip(const char* stripName, std::vector<size_t>& ignoreIndex);
 
   TTree *m_tree = nullptr;
   double m_start_amp = 1,

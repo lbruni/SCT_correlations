@@ -210,6 +210,7 @@ returnTypes runTask(const loop_over_scurves& task_, next_t&& next, Args&&... arg
     outbuffer.x_pos = task_.m_scurves.getX();
     scurve_buffer buf(outbuffer, *task_.m_scurves.get_Threshold(), *task_.m_scurves.get_Ocuupancy(), *task_.m_scurves.get_total_hits());
     LOOP_TASK( runTask(setBuffer(buf, next), args...));
+    std::cout << outbuffer.x_pos << std::endl;
   }
   return return_ok;
 }
@@ -393,7 +394,7 @@ returnTypes runTask(removeOutlier& task_, next_t&& next, Args&&... args) {
   task_.N.push_back(N[0]);
   for (size_t i = 1; i < x.size() - 1; ++i) {
     auto y_in = interpolate(x_, x[i + 1], y_, y[i + 1], x[i]);
-    std::cout << TMath::Abs(y_in - y[i]) << std::endl;
+  //  std::cout << TMath::Abs(y_in - y[i]) << std::endl;
     if (TMath::Abs(y_in - y[i]) <task_.max_out) {
       task_.x.push_back(x[i]);
       task_.y.push_back(y[i]);
@@ -411,7 +412,39 @@ returnTypes runTask(removeOutlier& task_, next_t&& next, Args&&... args) {
   return runTask(setBuffer(buffer, next), args...);
 }
 
+class removeElements {
+public:
+  removeElements(std::vector<size_t> index_) :index(index_) {
 
+  }
+  scurve_buffer* buffer = nullptr;
+  std::vector<double> x, y, N;
+  std::vector<size_t> index;
+};
+
+
+template<typename next_t, typename... Args>
+returnTypes runTask(removeElements& task_, next_t&& next, Args&&... args) {
+  task_.x.clear();
+  task_.y.clear();
+  task_.N.clear();
+
+  auto & x = task_.buffer->x;
+  auto & y = task_.buffer->y;
+  auto & N = task_.buffer->N;
+  for (size_t i = 0; i < x.size() ; ++i) {
+   
+    if (std::find(task_.index.begin(), task_.index.end(), i) == task_.index.end()) {
+      task_.x.push_back(x[i]);
+      task_.y.push_back(y[i]);
+      task_.N.push_back(N[i]);
+    }
+
+  }
+
+  scurve_buffer buffer(task_.buffer->outbuffer, task_.x, task_.y, task_.N);
+  return runTask(setBuffer(buffer, next), args...);
+}
 
 class stop_ {
 public:
@@ -422,83 +455,21 @@ public:
 returnTypes runTask(const stop_& task_) {
   return return_ok;
 }
-void scurve_fit_collection::processStrip(const char* stripName, axis_def axis__) {
+void scurve_fit_collection::processStrip(const char* stripName, std::vector<size_t>& ignoreIndex) {
   
-
+ 
   runTask(
     loop_over_scurves(*m_tree_sc_curve),
-    print__(std::cout),
+    print__(m_out),
     filter_more_than(1000),
     filter_max_occupancy_higher_than(0.5),
     estimateStartValue(150),
-    removeOutlier(0.1),
+    removeElements(ignoreIndex),
+   // removeOutlier(0.1),
     fit_scurve(f),
     save_fit(m_c),
     stop_()
     );
-  m_tree_sc_curve->set_pos(m_tree_sc_curve->size() - 1);
-  const double max_x = m_tree_sc_curve->getX();
-  double dec = 0;
-  const auto max_index = m_tree_sc_curve->size();
-  for (size_t i = 0; i < max_index; ++i) {
-    m_out_data = output_data();
-    m_tree_sc_curve->set_pos(i);
-    if (m_tree_sc_curve->getX() > dec) {
-      std::cout << "process channel: " << m_tree_sc_curve->getX() << " of " << max_x << std::endl;
-      dec += 10;
-    }
-    auto thr = m_tree_sc_curve->get_Threshold();
-    auto occ = m_tree_sc_curve->get_Ocuupancy();
-    m_x_pos = m_tree_sc_curve->getX();
-    m_out_data.x_pos = m_x_pos;
-    double N_event = sum(*m_tree_sc_curve->get_total_hits());
-    //   std::cout << N_event << std::endl;
-    if (N_event < 1000) {
-      m_out_data.print(m_out);
-      continue;
-    }
-    auto d = std::max_element(occ->begin(), occ->end());
-    if (*d < 0.5) {
-      m_out_data.print(m_out);
-      continue;
-    }
-    if (occ->empty()) {
-      m_out_data.print(m_out);
-      continue;
-    }
+ 
 
-    auto r= remove_outlier(*thr, *occ);
-
-
-    const auto mpv_start = get_startPoint(r.first, r.second);
-    if (mpv_start < m_mpv_start_low_cut) {
-      m_out_data.print(m_out);
-      continue;
-    }
-    f.setStartLandauMean(mpv_start);
-    auto sigma = get_startSigma(r.first, r.second);
-    f.setStartGaussSigma(sigma);
-    m_out_data.sigma_estimated = sigma;
-    m_out_data.mpv_estimated = mpv_start;
-
-    TGraph g(r.first.size(), r.first.data(), r.second.data());
-    f(&g);
-
-
-    m_out_data.mpv_fit = f.getLandauMostProbable();
-    m_out_data.mpv_fit_error= f.getErrorOfLandauMP();
-    m_out_data.max_efficiency = f.getAmplitude();
-    m_out_data.gauss_sigma = f.getGaussSigma();
-    m_out_data.landau_sigma = f.getLandauSigma();
-    m_out_data.chiSquare = f.getChiSqare();
-    m_out_data.x_pos = m_x_pos;
-    
-
-   //   f.printResults();
-      f.DrawfitFunction();
-      std::string cname = std::string("scurve") + std::to_string(i) + std::string(".png");
-      m_c.SaveAs(cname.c_str());
-      m_out_data.print(m_out);
-
-  }
 }

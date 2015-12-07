@@ -199,8 +199,8 @@ public:
   loop_over_scurves(getScurvesFromTTree& scurves) :m_scurves(scurves) {}
   getScurvesFromTTree& m_scurves;
 };
-template<typename next_t, typename... Args>
-returnTypes runTask(const loop_over_scurves& task_, next_t&& next, Args&&... args) {
+
+TASK_DEFINITION(const loop_over_scurves& task_) {
   const auto max_index = task_.m_scurves.size();
 
   output_data outbuffer;
@@ -209,10 +209,10 @@ returnTypes runTask(const loop_over_scurves& task_, next_t&& next, Args&&... arg
     task_.m_scurves.set_pos(i);
     outbuffer.x_pos = task_.m_scurves.getX();
     scurve_buffer buf(outbuffer, *task_.m_scurves.get_Threshold(), *task_.m_scurves.get_Ocuupancy(), *task_.m_scurves.get_total_hits());
-    LOOP_TASK( runTask(setBuffer(buf, next), args...));
+    LOOP_TASK_NEXT(buf);
     std::cout << outbuffer.x_pos << std::endl;
   }
-  return return_ok;
+  RETURN_OK;
 }
 
 
@@ -223,19 +223,13 @@ public:
   scurve_buffer* buffer=nullptr;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask(const print__& task_, next_t&& next, Args&&... args) {
-  auto ret = runTask(setBuffer(*task_.buffer, next), args...);
+TASK_DEFINITION(print__& task_) {
+  auto ret = RUN_TASK(*task_.buffer);
   task_.buffer->outbuffer.print(task_.m_out);
   return ret;
 }
 
-returnTypes runTask(const print__& task_) {
-  
-  task_.buffer->outbuffer.print(task_.m_out);
-  return return_ok;
-}
+
 class filter_more_than{
 public:
   filter_more_than(int minNumber) :m_minElements(minNumber) {}
@@ -243,13 +237,13 @@ public:
   int m_minElements = 0;
 };
 
-template<typename next_t, typename... Args>
-returnTypes runTask(const filter_more_than& task_, next_t&& next, Args&&... args) {
+
+TASK_DEFINITION(const filter_more_than& task_) {
   double N_event = sum(task_.buffer->N);
   if (N_event<task_.m_minElements) {
     return returnTypes::return_skip;
   }
-  return runTask(setBuffer(*task_.buffer, next), args...);
+  RETURN_NEXT_TASK(*task_.buffer);
 
 }
 
@@ -260,9 +254,7 @@ public:
   double m_max_occupancy;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask(const filter_max_occupancy_higher_than& task_, next_t&& next, Args&&... args) {
+TASK_DEFINITION(const filter_max_occupancy_higher_than& task_) {
   
   auto& occ = task_.buffer->y;
   if (occ.empty()) {
@@ -272,7 +264,7 @@ returnTypes runTask(const filter_max_occupancy_higher_than& task_, next_t&& next
   if (*d < task_.m_max_occupancy) {
     return return_skip;
   }
-  return runTask(setBuffer(*task_.buffer, next), args...);
+  RETURN_NEXT_TASK(*task_.buffer);
 }
 
 class startValue {
@@ -284,13 +276,11 @@ public:
   double mpv = 0,sigma = 0;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask(const startValue& task_, next_t&& next, Args&&... args) {
+TASK_DEFINITION(const startValue&  task_) {
 
   task_.buffer->outbuffer.sigma_estimated = task_.sigma;
   task_.buffer->outbuffer.mpv_estimated = task_.mpv;
-  return runTask(setBuffer(*task_.buffer, next), args...);
+  RETURN_NEXT_TASK(*task_.buffer);
 }
 
 
@@ -303,9 +293,7 @@ public:
   double lower_cut = 0;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask(const estimateStartValue& task_, next_t&& next, Args&&... args) {
+TASK_DEFINITION(const estimateStartValue& task_) {
   
   const auto mpv_start = get_startPoint(task_.buffer->x, task_.buffer->y);
   if (mpv_start < task_.lower_cut) {
@@ -315,7 +303,7 @@ returnTypes runTask(const estimateStartValue& task_, next_t&& next, Args&&... ar
   auto sigma = get_startSigma(task_.buffer->x, task_.buffer->y);
   task_.buffer->outbuffer.sigma_estimated = sigma;
   task_.buffer->outbuffer.mpv_estimated = mpv_start;
-  return runTask(setBuffer(*task_.buffer, next), args...);
+  RETURN_NEXT_TASK(*task_.buffer);
 }
 
 class fit_scurve {
@@ -327,9 +315,7 @@ public:
   landgausFit& f;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask(const fit_scurve& task_, next_t&& next, Args&&... args) {
+TASK_DEFINITION(const fit_scurve& task_) {
 
   TGraph g(task_.buffer->x.size(), task_.buffer->x.data(), task_.buffer->y.data());
   auto & f = task_.f;
@@ -343,7 +329,7 @@ returnTypes runTask(const fit_scurve& task_, next_t&& next, Args&&... args) {
   m_out_data.landau_sigma = f.getLandauSigma();
   m_out_data.chiSquare = f.getChiSqare();
   f.DrawfitFunction();
-  return runTask(setBuffer(*task_.buffer, next), args...);
+  RETURN_NEXT_TASK(*task_.buffer);
 }
 class save_fit {
 public:
@@ -355,14 +341,12 @@ public:
   int i = 0;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask( save_fit& task_, next_t&& next, Args&&... args) {
+TASK_DEFINITION(save_fit&  task_) {
   std::string cname = std::string("scurve") + std::to_string(task_.i++) + std::string(".png");
   task_.c.SaveAs(cname.c_str());
 
 
-  return runTask(setBuffer(*task_.buffer, next), args...);
+  RETURN_NEXT_TASK(*task_.buffer);
 }
 
 class removeOutlier {
@@ -374,8 +358,8 @@ public:
  
 };
 
-template<typename next_t, typename... Args>
-returnTypes runTask(removeOutlier& task_, next_t&& next, Args&&... args) {
+
+TASK_DEFINITION(removeOutlier&  task_) {
   task_.x.clear();
   task_.y.clear();
   task_.N.clear();
@@ -385,7 +369,7 @@ returnTypes runTask(removeOutlier& task_, next_t&& next, Args&&... args) {
   auto & N = task_.buffer->N;
   if (x.size() != y.size() || x.size() < 3) {
     std::cout << "remove_outlier" << std::endl;
-    return return_skip;
+    RETURN_SKIP;
   }
   double x_ = x[0];
   double y_ = y[0];
@@ -409,7 +393,7 @@ returnTypes runTask(removeOutlier& task_, next_t&& next, Args&&... args) {
   task_.N.push_back(N.back());
 
   scurve_buffer buffer(task_.buffer->outbuffer, task_.x, task_.y, task_.N);
-  return runTask(setBuffer(buffer, next), args...);
+  RETURN_NEXT_TASK(buffer);
 }
 
 class removeElements {
@@ -422,9 +406,7 @@ public:
   std::vector<size_t> index;
 };
 
-
-template<typename next_t, typename... Args>
-returnTypes runTask(removeElements& task_, next_t&& next, Args&&... args) {
+TASK_DEFINITION(removeElements& task_) {
   task_.x.clear();
   task_.y.clear();
   task_.N.clear();
@@ -443,7 +425,7 @@ returnTypes runTask(removeElements& task_, next_t&& next, Args&&... args) {
   }
 
   scurve_buffer buffer(task_.buffer->outbuffer, task_.x, task_.y, task_.N);
-  return runTask(setBuffer(buffer, next), args...);
+  RETURN_NEXT_TASK(buffer);
 }
 
 class stop_ {
@@ -453,7 +435,7 @@ public:
 };
 
 returnTypes runTask(const stop_& task_) {
-  return return_ok;
+  RETURN_OK;
 }
 void scurve_fit_collection::processStrip(const char* stripName, std::vector<size_t>& ignoreIndex) {
   

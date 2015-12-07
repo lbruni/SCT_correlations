@@ -1,6 +1,20 @@
 #ifndef platform_h__
 #define platform_h__
 
+
+#define CONCATENATE_DETAIL(x, y) x##y
+#define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
+#define MAKE_UNIQUE(x)  CONCATENATE(x, __LINE__)
+
+
+#define  LOOP_TASK(x) auto MAKE_UNIQUE(_ret) = x; if (MAKE_UNIQUE(_ret) == return_skip) continue; else if (MAKE_UNIQUE(_ret) == return_stop) break
+
+enum returnTypes {
+  return_ok,
+  return_skip,
+  return_stop
+};
+
 #ifdef WIN32 
 #ifndef __CINT__
 #define DllExport   __declspec( dllexport )

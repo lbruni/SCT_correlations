@@ -398,12 +398,12 @@ TASK_DEFINITION(removeOutlier&  task_) {
 
 class removeElements {
 public:
-  removeElements(std::vector<size_t> index_) :index(index_) {
+  removeElements(std::vector<unsigned> index_) :index(index_) {
 
   }
   scurve_buffer* buffer = nullptr;
   std::vector<double> x, y, N;
-  std::vector<size_t> index;
+  std::vector<unsigned> index;
 };
 
 TASK_DEFINITION(removeElements& task_) {

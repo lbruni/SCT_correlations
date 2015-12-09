@@ -398,12 +398,12 @@ TASK_DEFINITION(removeOutlier&  task_) {
 
 class removeElements {
 public:
-  removeElements(std::vector<size_t> index_) :index(index_) {
+  removeElements(std::vector<unsigned> index_) :index(index_) {
 
   }
   scurve_buffer* buffer = nullptr;
   std::vector<double> x, y, N;
-  std::vector<size_t> index;
+  std::vector<unsigned> index;
 };
 
 TASK_DEFINITION(removeElements& task_) {
@@ -437,7 +437,7 @@ public:
 returnTypes runTask(const stop_& task_) {
   RETURN_OK;
 }
-void scurve_fit_collection::processStrip(const char* stripName, std::vector<unsigned>& ignoreIndex) {
+void scurve_fit_collection::processStrip(const char* stripName, const std::vector<unsigned>& ignoreIndex) {
   
  
   runTask(

@@ -437,7 +437,7 @@ public:
 returnTypes runTask(const stop_& task_) {
   RETURN_OK;
 }
-void scurve_fit_collection::processStrip(const char* stripName, std::vector<size_t>& ignoreIndex) {
+void scurve_fit_collection::processStrip(const char* stripName, std::vector<unsigned>& ignoreIndex) {
   
  
   runTask(
